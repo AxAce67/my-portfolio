@@ -45,11 +45,12 @@ type TechItem =
 
 function BrandIcon({ item }: { item: TechItem }) {
   const [imageFailed, setImageFailed] = useState(false);
+  const iconSrc = 'iconSrc' in item ? item.iconSrc : undefined;
 
-  if ('iconSrc' in item && !imageFailed) {
+  if (typeof iconSrc === 'string' && !imageFailed) {
     return (
       <Image
-        src={item.iconSrc}
+        src={iconSrc}
         alt={`${item.name} logo`}
         width={28}
         height={28}
@@ -59,7 +60,7 @@ function BrandIcon({ item }: { item: TechItem }) {
       />
     );
   }
-  if (item.iconSrc) {
+  if (typeof iconSrc === 'string') {
     const Fallback = item.fallbackIcon!;
     return <Fallback size={28} className="transition-all duration-300 text-muted-foreground group-hover:text-foreground" />;
   }
