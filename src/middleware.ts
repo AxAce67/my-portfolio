@@ -5,7 +5,9 @@ import { routing } from './i18n/routing';
 const intlMiddleware = createMiddleware(routing);
 
 function buildCsp(nonce: string, isDev: boolean) {
-    const scriptDirectives = [`'self'`, `'nonce-${nonce}'`, `'strict-dynamic'`, 'https://challenges.cloudflare.com'];
+    // Keep legacy browser fallback for Lighthouse/XSS audit.
+    // In modern browsers, nonce/hash takes precedence and `'unsafe-inline'` is ignored.
+    const scriptDirectives = [`'self'`, `'nonce-${nonce}'`, `'unsafe-inline'`, `'strict-dynamic'`, 'https://challenges.cloudflare.com'];
     if (isDev) {
         scriptDirectives.push(`'unsafe-eval'`);
     }
@@ -24,6 +26,8 @@ function buildCsp(nonce: string, isDev: boolean) {
         `worker-src 'self' blob:`,
         `style-src 'self' 'unsafe-inline'`,
         `script-src ${scriptDirectives.join(' ')}`,
+        `require-trusted-types-for 'script'`,
+        `trusted-types default`,
         `connect-src 'self' https://*.supabase.co wss://*.supabase.co https://count.getloli.com https://formspree.io https://challenges.cloudflare.com`,
         `upgrade-insecure-requests`,
     ].join('; ');

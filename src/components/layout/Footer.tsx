@@ -31,8 +31,7 @@ export function Footer() {
                                 <span
                                     key={label}
                                     className="text-muted-foreground opacity-50 cursor-not-allowed"
-                                    aria-label={label}
-                                    aria-disabled="true"
+                                    aria-label={`${label} (disabled)`}
                                 >
                                     <Icon className="w-4 h-4" strokeWidth={1.5} />
                                 </span>

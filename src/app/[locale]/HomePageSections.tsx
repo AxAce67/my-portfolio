@@ -143,7 +143,7 @@ function AboutSection() {
                     <span
                       key={link.id}
                       className="flex items-center justify-center gap-1.5 px-2 py-2 rounded-md border border-border text-muted-foreground opacity-50 cursor-not-allowed"
-                      aria-disabled="true"
+                      aria-label={`${link.label} (disabled)`}
                     >
                       <span>{link.icon}</span>
                       <span className="text-[10px] font-mono tracking-wide">{link.label}</span>
@@ -297,7 +297,7 @@ function AboutSection() {
                     <span
                       key={link.id}
                       className="flex items-center gap-2 px-3 py-1 rounded-lg border border-border text-muted-foreground opacity-50 cursor-not-allowed"
-                      aria-disabled="true"
+                      aria-label={`${link.label} (disabled)`}
                     >
                       <span>{link.icon}</span>
                       <span className="text-xs font-mono tracking-wide">{link.label}</span>
