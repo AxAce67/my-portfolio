@@ -297,14 +297,11 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
       }`}
       aria-hidden={hidden}
     >
-      {showScene ? (
-        <HeroScene quality={sceneQuality} />
-      ) : (
-        <div className="absolute inset-0 -z-10 pointer-events-none">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_35%,rgb(var(--foreground-rgb)_/_0.08),transparent_50%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_58%,rgb(var(--foreground-rgb)_/_0.06),transparent_48%)]" />
-        </div>
-      )}
+      <div className="absolute inset-0 -z-10 pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_35%,rgb(var(--foreground-rgb)_/_0.08),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_58%,rgb(var(--foreground-rgb)_/_0.06),transparent_48%)]" />
+      </div>
+      {showScene ? <HeroScene quality={sceneQuality} /> : null}
 
       <motion.p
         initial={false}
