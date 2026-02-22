@@ -228,10 +228,18 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const desktopQuery = window.matchMedia('(min-width: 1024px)');
     let sceneTimer: number | null = null;
+    let idleId: number | null = null;
+    const win = window as Window & {
+      requestIdleCallback?: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
 
     const scheduleScene = () => {
       if (sceneTimer !== null) {
         window.clearTimeout(sceneTimer);
+      }
+      if (idleId !== null && typeof win.cancelIdleCallback === 'function') {
+        win.cancelIdleCallback(idleId);
       }
 
       if (reducedMotionQuery.matches) {
@@ -240,11 +248,25 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
       }
 
       const isDesktop = desktopQuery.matches;
-      setSceneQuality(isDesktop ? 'full' : 'lite');
+      const navigatorWithConnection = navigator as Navigator & { connection?: { saveData?: boolean } };
+      const saveData = navigatorWithConnection.connection?.saveData === true;
+      const lowCpu = (navigator.hardwareConcurrency ?? 8) <= 4;
+      const shouldUseLite = !isDesktop || saveData || lowCpu;
+      setSceneQuality(shouldUseLite ? 'lite' : 'full');
 
-      sceneTimer = window.setTimeout(() => {
-        setShowScene(true);
-      }, isDesktop ? 250 : 350);
+      const revealScene = () => setShowScene(true);
+      const revealDelay = shouldUseLite ? 1800 : 900;
+
+      if (typeof win.requestIdleCallback === 'function') {
+        idleId = win.requestIdleCallback(
+          () => {
+            sceneTimer = window.setTimeout(revealScene, revealDelay);
+          },
+          { timeout: shouldUseLite ? 2500 : 1400 }
+        );
+      } else {
+        sceneTimer = window.setTimeout(revealScene, revealDelay);
+      }
     };
 
     const handlePreferenceChange = () => {
@@ -259,6 +281,9 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
     return () => {
       if (sceneTimer !== null) {
         window.clearTimeout(sceneTimer);
+      }
+      if (idleId !== null && typeof win.cancelIdleCallback === 'function') {
+        win.cancelIdleCallback(idleId);
       }
       reducedMotionQuery.removeEventListener?.('change', handlePreferenceChange);
       desktopQuery.removeEventListener?.('change', handlePreferenceChange);
