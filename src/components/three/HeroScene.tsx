@@ -222,8 +222,9 @@ export default function HeroScene({ quality = 'full' }: { quality?: 'full' | 'li
 
     return (
         <div
-            className={`absolute inset-0 -z-10 transition-opacity duration-700 ease-out ${isVisible ? 'opacity-100' : 'opacity-0'
+            className={`absolute inset-0 -z-10 transition-opacity ease-out ${isVisible ? 'opacity-100' : 'opacity-0'
                 }`}
+            style={{ transitionDuration: '1800ms' }}
         >
             <Canvas
                 camera={{ position: [0, 0, 6], fov: 50 }}
