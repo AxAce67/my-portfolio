@@ -27,7 +27,7 @@ function buildCsp(nonce: string, isDev: boolean) {
         `style-src 'self' 'unsafe-inline'`,
         `script-src ${scriptDirectives.join(' ')}`,
         `require-trusted-types-for 'script'`,
-        `trusted-types default`,
+        `trusted-types default nextjs nextjs#bundler`,
         `connect-src 'self' https://*.supabase.co wss://*.supabase.co https://count.getloli.com https://formspree.io https://challenges.cloudflare.com`,
         `upgrade-insecure-requests`,
     ].join('; ');
