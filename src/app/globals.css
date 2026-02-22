@@ -3,21 +3,677 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0a;
+  --background-rgb: 10 10 10;
+  --foreground: #fafafa;
+
+  --muted: #171717;
+  --muted-foreground: #a3a3a3;
+
+  --card: #141414;
+  --card-foreground: #fafafa;
+
+  --border: #262626;
+  --border-hover: #525252;
+
+  --accent: #fafafa;
+  --accent-muted: #a3a3a3;
+
+  --grid-color: rgba(255, 255, 255, 0.02);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.light {
+  --background: #ffffff;
+  --background-rgb: 255 255 255;
+  --foreground: #0a0a0a;
+
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+
+  --card: #ffffff;
+  --card-foreground: #0a0a0a;
+
+  --border: #e5e5e5;
+  --border-hover: #a3a3a3;
+
+  --accent: #0a0a0a;
+  --accent-muted: #404040;
+
+  --grid-color: rgba(0, 0, 0, 0.03);
+}
+
+/* ========== Base Styles ========== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto;
+  background: var(--background);
+  scrollbar-gutter: stable;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  overflow-y: scroll;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========== Grid Background ========== */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(circle, var(--grid-color) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ========== Scrollbar ========== */
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+/* ========== Selection ========== */
+
+::selection {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+/* ========== Components ========== */
+
+@layer components {
+
+  /* Nav link with slide-in underline */
+  .nav-link {
+    position: relative;
+    padding-bottom: 2px;
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--foreground);
+    transition: width 0.3s ease;
+  }
+
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    width: 100%;
+  }
+
+  /* Terminal-style section label */
+  .section-label {
+    font-family: var(--font-mono), monospace;
+    font-size: 0.8rem;
+    color: var(--muted-foreground);
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* Header */
+  .site-header {
+    border-bottom: 1px solid transparent;
+    background: transparent;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    transition:
+      background-color 280ms ease,
+      border-color 280ms ease,
+      backdrop-filter 280ms ease,
+      -webkit-backdrop-filter 280ms ease;
+  }
+
+  .site-header.is-scrolled {
+    background: rgb(var(--background-rgb) / 0.85);
+    border-bottom-color: var(--border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  /* Card hover effect */
+  .card-hover {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-hover:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-hover);
+  }
+
+  /* Minimal button */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--foreground);
+    color: var(--background);
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    min-height: 44px;
+  }
+
+  .btn-primary:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: var(--foreground);
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: 1px solid var(--border);
+    min-height: 44px;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--foreground);
+    transform: translateY(-1px);
+  }
+
+  /* Separator line */
+  .separator {
+    height: 1px;
+    background: var(--border);
+    width: 100%;
+  }
+
+  /* Infinite scroll container */
+  .scroll-container {
+    overflow: clip;
+    overflow-clip-margin: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    mask-image: linear-gradient(to right,
+        transparent,
+        black 10%,
+        black 90%,
+        transparent);
+    -webkit-mask-image: linear-gradient(to right,
+        transparent,
+        black 10%,
+        black 90%,
+        transparent);
+  }
+
+  /* Bento Grid Card */
+  .bento-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bento-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem;
+    padding: 1px;
+    background: linear-gradient(135deg, transparent 40%, var(--border-hover) 50%, transparent 60%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+
+  .bento-card:hover::before {
+    opacity: 1;
+  }
+
+  .bento-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+  }
+
+  /* Tech Stack Card */
+  .tech-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: default;
+  }
+
+  .tech-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  .dark .tech-card:hover {
+    box-shadow: 0 8px 25px -5px rgba(255, 255, 255, 0.05);
+  }
+
+  .tech-icon-wrapper {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    background: var(--muted);
+    transition: all 0.3s ease;
+  }
+
+  .tech-card:hover .tech-icon-wrapper {
+    background: transparent;
+  }
+
+  /* Project Card */
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .project-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.12);
+  }
+
+  .dark .project-card:hover {
+    box-shadow: 0 12px 30px -8px rgba(255, 255, 255, 0.05);
+  }
+
+  /* Gantt Chart */
+  .gantt-chart {
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: var(--card);
+  }
+
+  .gantt-header {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 0;
+  }
+
+  .gantt-label-col {
+    width: 120px;
+    min-width: 120px;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  @media (min-width: 640px) {
+    .gantt-label-col {
+      width: 160px;
+      min-width: 160px;
+    }
+  }
+
+  .gantt-stages-area {
+    flex: 1;
+    display: flex;
+    position: relative;
+    z-index: 2;
+    isolation: isolate;
+  }
+
+  .gantt-stage-col {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gantt-row {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    transition: background 0.2s ease;
+    position: relative;
+    z-index: 0;
+  }
+
+  .gantt-row::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--border);
+    z-index: 1;
+  }
+
+  .gantt-row:last-child::after {
+    display: none;
+  }
+
+  .gantt-row:hover {
+    background: var(--muted);
+  }
+
+  /* Continuous background gray line */
+  .gantt-bg-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--border);
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+
+  /* Animated foreground progress line */
+  .gantt-fg-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 3px;
+    background: var(--foreground);
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+
+  .gantt-stage-cell {
+    flex: 1;
+    position: relative;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Vertical grid separator */
+  .gantt-stage-cell::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+    z-index: 0;
+  }
+
+  .gantt-stage-cell:first-child::after {
+    display: none;
+  }
+
+  /* Arrow: solid triangle, positioned so left edge is at cell center */
+  .gantt-arrow {
+    position: absolute;
+    left: 50%;
+    top: calc(50% - 7px);
+    z-index: 3;
+    color: var(--foreground);
+    display: flex;
+    align-items: center;
+    line-height: 0;
+  }
+
+  .gantt-arrow svg {
+    display: block;
+  }
+
+  .gantt-check {
+    position: relative;
+    z-index: 3;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--foreground);
+    color: var(--background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 640px) {
+    .section-label {
+      font-size: 0.72rem;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+
+    .bento-card {
+      padding: 1rem;
+      border-radius: 0.85rem;
+    }
+
+    .tech-card {
+      border-radius: 0.65rem;
+    }
+
+    .tech-icon-wrapper {
+      width: 40px;
+      height: 40px;
+    }
+
+    .gantt-label-col {
+      width: 96px;
+      min-width: 96px;
+      padding: 0 0.65rem;
+    }
+
+    .gantt-header {
+      padding: 0.5rem 0;
+    }
+
+    .gantt-stage-col span {
+      font-size: 9px;
+      letter-spacing: 0.04em;
+    }
+
+    .gantt-stage-cell {
+      height: 34px;
+    }
+
+    .gantt-check {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    .card-hover:hover,
+    .bento-card:hover,
+    .project-card:hover,
+    .tech-card:hover,
+    .btn-primary:hover,
+    .btn-outline:hover {
+      transform: none;
+      box-shadow: none;
+      opacity: 1;
+    }
+  }
+
+  /* Scroll Track for Tech Stack */
+  .scroll-track {
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+  }
+
+  .scroll-left {
+    animation: scrollLeft 42s linear infinite;
+  }
+
+  .scroll-right {
+    animation: scrollRight 42s linear infinite;
+  }
+
+  /* Project article page */
+  .article-content {
+    font-size: 0.98rem;
+    line-height: 1.95;
+  }
+
+  .article-content h1,
+  .article-content h2,
+  .article-content h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+  }
+
+  .article-content p {
+    margin-top: 0.95rem;
+    color: rgb(from var(--foreground) r g b / 0.96);
+  }
+
+  .article-content .bn-container {
+    border: 0;
+    background: transparent;
+  }
+
+  .article-content .bn-editor {
+    padding: 0;
+  }
+
+  .article-content .bn-block-content {
+    padding: 1px 0;
+  }
+
+  .article-content--blocknote p {
+    margin-top: 0;
+    margin-bottom: 0;
+    color: inherit;
+  }
+
+  .article-content--blocknote h1,
+  .article-content--blocknote h2,
+  .article-content--blocknote h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: inherit;
+    letter-spacing: inherit;
+  }
+
+  .project-editor-blocknote .bn-editor {
+    min-height: 460px;
+    padding-inline: 20px;
+    padding-top: 14px;
+    padding-bottom: 18px;
+  }
+
+  @media (max-width: 640px) {
+    .project-editor-blocknote .bn-editor {
+      min-height: 360px;
+      padding-inline: 14px;
+    }
+
+    .scroll-left {
+      animation-duration: 58s;
+    }
+
+    .scroll-right {
+      animation-duration: 58s;
+    }
+  }
+}
+
+/* ========== Keyframes ========== */
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes scrollLeft {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-33.33%);
+  }
+}
+
+@keyframes scrollRight {
+  0% {
+    transform: translateX(-33.33%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 @layer utilities {

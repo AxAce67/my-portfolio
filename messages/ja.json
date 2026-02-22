@@ -1,0 +1,277 @@
+{
+  "Navigation": {
+    "about": "About",
+    "skills": "Skills",
+    "technologies": "Technologies",
+    "projects": "Projects",
+    "timeline": "Timeline",
+    "contact": "Contact"
+  },
+  "Hero": {
+    "greeting": "> initializing...",
+    "title": "アイデアを形にする",
+    "subtitle": "好きなものを作る。それだけ。",
+    "description": "個人開発者 Aki のポートフォリオ",
+    "scrollDown": "$ cd projects/ ↓"
+  },
+  "About": {
+    "sectionTitle": "// about/",
+    "heading": "About",
+    "profileLabel": "Profile",
+    "profileParagraph1": "日本の中学3年生として、個人開発でWebサイトやDiscord Bot、Ubuntuサーバー、Minecraftサーバーなどを作っています。",
+    "profileParagraph2": "小学6年生のときにChatGPTに出会ってから、さまざまなAIツールを使いながら開発フローを改善し、アイデアを形にするスピードを上げてきました。",
+    "profileParagraph3": "企画案を要件定義に落とし込み、MVPを素早く実装して、テストと改善を回しながら使いやすく育てるのが開発スタイルです。",
+    "profileParagraph4": "強みは、設計力・改善力・調査力。新しいトレンドも追いながら、使いやすさと運用しやすさを両立するプロダクトを目指しています。",
+    "statsProjects": "公開プロジェクト",
+    "statsTechnologies": "使用技術",
+    "statsYears": "開発年数",
+    "statsCommits": "セルフホストサーバー数",
+    "focusLabel": "Focus",
+    "focus": {
+      "productThinking": "Product Thinking",
+      "rapidPrototyping": "Rapid Prototyping",
+      "uiUxDesign": "UI/UX Design",
+      "problemSolving": "Problem Solving",
+      "research": "Research",
+      "continuousImprovement": "Continuous Improvement"
+    },
+    "linksLabel": "Links",
+    "role": "Independent Developer"
+  },
+  "Skills": {
+    "sectionTitle": "// skills/",
+    "heading": "スキル"
+  },
+  "TechStack": {
+    "sectionTitle": "// tech_stack/",
+    "heading": "技術スタック"
+  },
+  "Projects": {
+    "sectionTitle": "// projects/",
+    "heading": "Projects",
+    "viewList": "リスト",
+    "viewGrid": "グリッド",
+    "viewAll": "一覧を見る",
+    "createdAt": "作成",
+    "noPublishedProjects": "ただいま準備中です。もうしばらくお待ちください。",
+    "filterAll": "すべて",
+    "filterIdea": "構想中",
+    "filterDesign": "設計中",
+    "filterDevelopment": "実装中",
+    "filterCompleted": "完了",
+    "filterOnHold": "保留",
+    "searchPlaceholder": "プロジェクトを検索...",
+    "noProjects": "プロジェクトが見つかりません",
+    "viewDetails": "詳細を見る"
+  },
+  "Contact": {
+    "sectionTitle": "> send_message",
+    "heading": "お問い合わせ",
+    "name": "名前",
+    "email": "メールアドレス",
+    "message": "メッセージ",
+    "send": "送信",
+    "sending": "送信中...",
+    "success": "メッセージを送信しました！",
+    "turnstileRequired": "送信前に確認チェックを完了してください。",
+    "error": "送信に失敗しました。もう一度お試しください。"
+  },
+  "Footer": {
+    "copyright": "© {year} All rights reserved.",
+    "madeWith": "$ echo \"Made with ❤️ and ☕\""
+  },
+  "Theme": {
+    "light": "ライトモード",
+    "dark": "ダークモード"
+  },
+  "Language": {
+    "ja": "日本語",
+    "en": "English"
+  },
+  "Dashboard": {
+    "title": "Portfolio Dashboard",
+    "subtitle": "公開中コンテンツを管理します。",
+    "signOut": "サインアウト",
+    "noAdmin": "このアカウントには管理権限がありません。",
+    "tabs": {
+      "projects": "プロジェクト",
+      "activeProjects": "進行中プロジェクト",
+      "audit": "監査ログ"
+    },
+    "actions": {
+      "read": "閲覧",
+      "edit": "編集"
+    },
+    "publish": {
+      "published": "公開中",
+      "draft": "下書き"
+    },
+    "status": {
+      "idea": "構想中",
+      "design": "設計中",
+      "development": "実装中",
+      "completed": "完了",
+      "on_hold": "保留"
+    },
+    "projects": {
+      "manageTitle": "プロジェクト管理",
+      "manageDescription": "新規作成は専用エディタページで行います。",
+      "newProject": "新規作成",
+      "listTitle": "プロジェクト一覧",
+      "empty": "プロジェクトがまだありません。"
+    },
+    "toast": {
+      "project_created": "Project を作成しました。",
+      "project_updated": "Project を更新しました。",
+      "project_deleted": "Project を削除しました。",
+      "active_created": "Active Project を作成しました。",
+      "active_updated": "Active Project を更新しました。",
+      "active_deleted": "Active Project を削除しました。"
+    },
+    "deleteProject": {
+      "button": "削除",
+      "title": "プロジェクトを削除しますか？",
+      "description": "「{title}」を削除します。この操作は取り消せません。",
+      "cancel": "キャンセル",
+      "confirm": "削除"
+    },
+    "active": {
+      "title": "進行中プロジェクト",
+      "description": "進行中プロジェクトの並び順・ステージ・公開状態を管理します。",
+      "newButton": "進行中プロジェクトを追加",
+      "priority": "優先度",
+      "published": "公開中",
+      "draft": "下書き",
+      "empty": "進行中プロジェクトがまだありません。",
+      "stage": {
+        "planning": "企画",
+        "design": "設計",
+        "development": "実装",
+        "testing": "テスト",
+        "completed": "完了"
+      },
+      "fields": {
+        "name": "名前",
+        "namePlaceholder": "プロジェクト名",
+        "stage": "ステージ",
+        "priority": "優先度"
+      },
+      "createModal": {
+        "title": "進行中プロジェクトを作成"
+      },
+      "editModal": {
+        "title": "進行中プロジェクトを編集"
+      },
+      "deleteModal": {
+        "title": "進行中プロジェクトを削除しますか？",
+        "description": "「{name}」を削除します。この操作は取り消せません。"
+      },
+      "actions": {
+        "edit": "編集",
+        "delete": "削除",
+        "close": "閉じる",
+        "create": "作成",
+        "update": "更新",
+        "cancel": "キャンセル"
+      }
+    },
+    "audit": {
+      "title": "認証監査ログ",
+      "description": "ログイン成功/失敗の全ログをページング表示します。",
+      "authTab": "認証ログ",
+      "cspTab": "CSPログ",
+      "filterAll": "すべて",
+      "filterSuccess": "成功",
+      "filterInvalid": "失敗",
+      "filterRateLimited": "制限",
+      "total": "総件数",
+      "available": "あり",
+      "empty": "まだ監査ログがありません。",
+      "notConfigured": "監査ログテーブルが未設定です。SQLを適用してください。",
+      "prev": "前へ",
+      "next": "次へ",
+      "cspTitle": "CSP違反レポート",
+      "cspDescription": "ブラウザから送信されたCSP違反ログです。",
+      "cspEmpty": "CSP違反ログはまだありません。",
+      "cspNotConfigured": "CSPログテーブルが未設定です。SQLを適用してください。",
+      "labelEmail": "email",
+      "labelIp": "ip",
+      "labelIpHash": "ip hash",
+      "labelUserId": "user id",
+      "labelLocale": "locale",
+      "labelUserAgent": "user agent",
+      "labelDirective": "directive",
+      "labelBlocked": "blocked",
+      "labelDocument": "document",
+      "labelDisposition": "disposition"
+    },
+    "editor": {
+      "backToDashboard": "← ダッシュボードに戻る",
+      "draftLabel": "プロジェクト下書き",
+      "createTitle": "プロジェクトを作成",
+      "createDescription": "Notion風エディタで、見出し・リスト・画像を含む記事を作成できます。",
+      "createSubmit": "プロジェクトを作成",
+      "editTitle": "プロジェクト編集",
+      "saveChanges": "変更を保存"
+    },
+    "editorForm": {
+      "title": "タイトル",
+      "titlePlaceholder": "プロジェクト名",
+      "description": "説明",
+      "descriptionPlaceholder": "概要（2〜3文）",
+      "thumbnail": "サムネイル画像",
+      "thumbnailHint": "JPG / PNG / WEBP, up to 5MB",
+      "thumbnailPreview": "16:9 Thumbnail Preview",
+      "thumbnailRecommended": "推奨サイズ:",
+      "thumbnailSafeArea": "セーフエリア中央:",
+      "articleContent": "記事本文",
+      "published": "公開する",
+      "uploadAuthError": "ファイルをアップロードするにはログインが必要です。",
+      "uploadTypeError": "JPG / PNG / WEBP / AVIF 形式のみアップロードできます。",
+      "uploadSizeError": "ファイルサイズは 5MB 以下にしてください。",
+      "editorTipPrefix": "ブロックメニューは",
+      "editorTipSuffix": "で開けます。画像/ファイルアップロードに対応しています。",
+      "status": {
+        "idea": "構想中",
+        "design": "設計中",
+        "development": "実装中",
+        "completed": "完了",
+        "on_hold": "保留"
+      }
+    }
+  },
+  "ActiveProjects": {
+    "sectionLabel": "// in_progress",
+    "heading": "Active Projects",
+    "projectColumn": "Project",
+    "stagePlanning": "企画",
+    "stageDesign": "設計",
+    "stageDevelopment": "実装",
+    "stageTesting": "テスト",
+    "stageCompleted": "完了"
+  },
+  "ProjectList": {
+    "backToTop": "← トップのProjectsへ戻る",
+    "heading": "Projects Archive",
+    "description": "公開中プロジェクトの一覧です。",
+    "searchLabel": "検索",
+    "searchPlaceholder": "タイトル・説明・タグで検索...",
+    "createdAt": "作成",
+    "updatedAt": "更新",
+    "empty": "ただいま準備中です。もうしばらくお待ちください。",
+    "prev": "前へ",
+    "next": "次へ"
+  },
+  "ProjectDetail": {
+    "backToProjects": "← Projectsへ戻る",
+    "createdAt": "作成",
+    "updatedAt": "更新"
+  },
+  "NotFound": {
+    "code": "404 / Not Found",
+    "title": "ページが見つかりません",
+    "description": "お探しのページは存在しないか、移動された可能性があります。",
+    "backHome": "トップへ戻る",
+    "goProjects": "Projectsを見る"
+  }
+}
