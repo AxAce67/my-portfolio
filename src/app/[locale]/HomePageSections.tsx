@@ -5,8 +5,8 @@ import { useEffect, useRef, useState } from 'react';
 import type { FormEvent, ReactNode } from 'react';
 import Script from 'next/script';
 import Image from 'next/image';
-import { ArrowUpRight, Send, Terminal, Code2, Layers, Globe, Cpu, Box, Github, Twitter, Mail, List, LayoutGrid } from 'lucide-react';
-import { motion, useInView } from 'framer-motion';
+import { ArrowUpRight, Send, Terminal, Code2, Layers, Globe, Cpu, Box, Github, Twitter, Mail, List, LayoutGrid, CheckCircle2 } from 'lucide-react';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { ScrollReveal, StaggerContainer, StaggerItem } from '@/components/ui/ScrollReveal';
 import { Link } from '@/i18n/routing';
 import dynamic from 'next/dynamic';
@@ -78,6 +78,12 @@ type HomePageSectionsProps = {
   initialActiveProjects: ActiveProject[];
 };
 
+type AboutStatItem = {
+  value: number;
+  suffix?: string;
+  label: string;
+};
+
 declare global {
   interface Window {
     onTurnstileSuccess?: (token: string) => void;
@@ -105,9 +111,105 @@ export default function HomePageSections({
   );
 }
 
+function CountUpNumber({
+  end,
+  suffix = '',
+  durationMs = 1100,
+  play,
+}: {
+  end: number;
+  suffix?: string;
+  durationMs?: number;
+  play: boolean;
+}) {
+  const prefersReducedMotion = useReducedMotion();
+  const [value, setValue] = useState(0);
+  const [isDone, setIsDone] = useState(false);
+
+  useEffect(() => {
+    if (!play) {
+      setValue(0);
+      setIsDone(false);
+      return;
+    }
+
+    if (prefersReducedMotion) {
+      setValue(end);
+      setIsDone(true);
+      return;
+    }
+
+    let rafId = 0;
+    const startedAt = performance.now();
+    setValue(0);
+    setIsDone(false);
+
+    const easeOutCubic = (x: number) => 1 - Math.pow(1 - x, 3);
+    const tick = (time: number) => {
+      const elapsed = time - startedAt;
+      const progress = Math.min(1, elapsed / durationMs);
+      const eased = easeOutCubic(progress);
+      setValue(Math.round(end * eased));
+
+      if (progress < 1) {
+        rafId = window.requestAnimationFrame(tick);
+      } else {
+        setValue(end);
+        setIsDone(true);
+      }
+    };
+
+    rafId = window.requestAnimationFrame(tick);
+    return () => {
+      window.cancelAnimationFrame(rafId);
+    };
+  }, [durationMs, end, play, prefersReducedMotion]);
+
+  return (
+    <span className="tabular-nums">
+      {value}
+      {suffix ? (
+        <span className={`inline-block transition-opacity duration-200 ${isDone ? 'opacity-100' : 'opacity-0'}`}>{suffix}</span>
+      ) : null}
+    </span>
+  );
+}
+
+function AboutStatCard({
+  value,
+  suffix,
+  label,
+  durationMs,
+  className = '',
+}: {
+  value: number;
+  suffix?: string;
+  label: string;
+  durationMs: number;
+  className?: string;
+}) {
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  const isCardInView = useInView(cardRef, { once: true, amount: 0.9 });
+
+  return (
+    <div ref={cardRef} className={`bento-card about-card-motion flex flex-col items-center justify-center ${className}`.trim()}>
+      <p className="text-2xl sm:text-4xl font-bold tracking-tight tabular-nums">
+        <CountUpNumber end={value} suffix={suffix} durationMs={durationMs} play={isCardInView} />
+      </p>
+      <p className="text-[10px] text-muted-foreground mt-2 tracking-wider uppercase font-mono text-center">{label}</p>
+    </div>
+  );
+}
+
 function AboutSection() {
   const t = useTranslations('About');
   const focusAreas = ['productThinking', 'rapidPrototyping', 'uiUxDesign', 'problemSolving', 'research', 'continuousImprovement'] as const;
+  const stats: AboutStatItem[] = [
+    { value: 7, suffix: '+', label: t('statsProjects') },
+    { value: 20, suffix: '+', label: t('statsTechnologies') },
+    { value: 2, suffix: '+', label: t('statsYears') },
+    { value: 4, label: t('statsCommits') },
+  ];
 
   return (
     <section id="about" className="py-20 sm:py-32 lg:py-36">
@@ -122,7 +224,7 @@ function AboutSection() {
 
         <div className="md:hidden space-y-3">
           <ScrollReveal delay={0.15}>
-            <div className="bento-card">
+            <div className="bento-card about-card-motion">
               <div className="flex items-center gap-3 mb-4">
                 <Image
                   src="/images/profile/akiz-profile.jpg"
@@ -166,23 +268,17 @@ function AboutSection() {
           </ScrollReveal>
 
           <ScrollReveal delay={0.2}>
-            <div className="grid grid-cols-2 gap-2">
-              {[
-                ['7+', t('statsProjects')],
-                ['20+', t('statsTechnologies')],
-                ['2+', t('statsYears')],
-                ['4', t('statsCommits')],
-              ].map(([value, label]) => (
-                <div key={label} className="bento-card py-4 flex flex-col items-center justify-center">
-                  <p className="text-2xl font-bold tracking-tight">{value}</p>
-                  <p className="text-[10px] text-muted-foreground mt-1.5 tracking-wider uppercase font-mono text-center">{label}</p>
-                </div>
+            <StaggerContainer className="grid grid-cols-2 gap-2" staggerDelay={0.04}>
+              {stats.map(({ value, suffix, label }, idx) => (
+                <StaggerItem key={label}>
+                  <AboutStatCard value={value} suffix={suffix} label={label} durationMs={900 + idx * 80} className="py-4" />
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerContainer>
           </ScrollReveal>
 
           <ScrollReveal delay={0.25}>
-            <div className="bento-card">
+            <div className="bento-card about-card-motion">
               <div className="flex items-center gap-2 mb-3">
                 <Terminal className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
                 <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('profileLabel')}</span>
@@ -195,7 +291,7 @@ function AboutSection() {
           </ScrollReveal>
 
           <ScrollReveal delay={0.3}>
-            <div className="bento-card">
+            <div className="bento-card about-card-motion">
               <div className="flex items-center gap-2 mb-3">
                 <Code2 className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
                 <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('focusLabel')}</span>
@@ -213,7 +309,7 @@ function AboutSection() {
 
         <div className="hidden md:grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[minmax(120px,auto)] md:auto-rows-[minmax(140px,auto)]">
           <ScrollReveal delay={0.15} className="order-2 md:col-start-1 md:row-start-2 md:col-span-2 md:row-span-2">
-            <div className="bento-card p-5 h-full flex flex-col justify-start">
+            <div className="bento-card about-card-motion p-5 h-full flex flex-col justify-start">
               <div>
                 <div className="flex items-center gap-2 mb-4">
                   <Terminal className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
@@ -228,35 +324,23 @@ function AboutSection() {
           </ScrollReveal>
 
           <ScrollReveal delay={0.2}>
-            <div className="bento-card h-full flex flex-col items-center justify-center py-5">
-              <p className="text-3xl sm:text-4xl font-bold tracking-tight">7+</p>
-              <p className="text-[10px] text-muted-foreground mt-2 tracking-wider uppercase font-mono">{t('statsProjects')}</p>
-            </div>
+            <AboutStatCard value={stats[0].value} suffix={stats[0].suffix} label={stats[0].label} durationMs={980} className="h-full py-5" />
           </ScrollReveal>
 
-          <ScrollReveal delay={0.25}>
-            <div className="bento-card h-full flex flex-col items-center justify-center py-5">
-              <p className="text-3xl sm:text-4xl font-bold tracking-tight">20+</p>
-              <p className="text-[10px] text-muted-foreground mt-2 tracking-wider uppercase font-mono">{t('statsTechnologies')}</p>
-            </div>
+          <ScrollReveal delay={0.24}>
+            <AboutStatCard value={stats[1].value} suffix={stats[1].suffix} label={stats[1].label} durationMs={1060} className="h-full py-5" />
           </ScrollReveal>
 
-          <ScrollReveal delay={0.3}>
-            <div className="bento-card h-full flex flex-col items-center justify-center py-5">
-              <p className="text-3xl sm:text-4xl font-bold tracking-tight">2+</p>
-              <p className="text-[10px] text-muted-foreground mt-2 tracking-wider uppercase font-mono">{t('statsYears')}</p>
-            </div>
+          <ScrollReveal delay={0.28}>
+            <AboutStatCard value={stats[2].value} suffix={stats[2].suffix} label={stats[2].label} durationMs={1140} className="h-full py-5" />
           </ScrollReveal>
 
-          <ScrollReveal delay={0.35}>
-            <div className="bento-card h-full flex flex-col items-center justify-center py-5">
-              <p className="text-3xl sm:text-4xl font-bold tracking-tight">4</p>
-              <p className="text-[10px] text-muted-foreground mt-2 tracking-wider uppercase font-mono">{t('statsCommits')}</p>
-            </div>
+          <ScrollReveal delay={0.32}>
+            <AboutStatCard value={stats[3].value} label={stats[3].label} durationMs={1220} className="h-full py-5" />
           </ScrollReveal>
 
           <ScrollReveal delay={0.2} className="md:col-span-2">
-            <div className="bento-card h-full flex flex-col justify-center">
+            <div className="bento-card about-card-motion h-full flex flex-col justify-center">
               <div className="flex items-center gap-2 mb-3">
                 <Code2 className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
                 <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('focusLabel')}</span>
@@ -272,7 +356,7 @@ function AboutSection() {
           </ScrollReveal>
 
           <ScrollReveal delay={0.25} className="order-1 md:col-start-1 md:row-start-1 md:col-span-2 md:row-span-1">
-            <div className="bento-card h-full flex flex-col justify-between">
+            <div className="bento-card about-card-motion h-full flex flex-col justify-between">
               <div className="flex items-center gap-2 mb-4">
                 <Globe className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
                 <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('linksLabel')}</span>
@@ -743,10 +827,25 @@ function ActiveProjectsSection({ initialActiveProjects }: { initialActiveProject
 }
 
 function ContactSection() {
+  const SUCCESS_MODAL_MS = 5000;
   const t = useTranslations('Contact');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitPhase, setSubmitPhase] = useState<'idle' | 'verifying' | 'sending'>('idle');
   const [submitState, setSubmitState] = useState<'idle' | 'success' | 'error' | 'turnstile'>('idle');
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successRunId, setSuccessRunId] = useState(0);
   const [turnstileToken, setTurnstileToken] = useState('');
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [pendingPayload, setPendingPayload] = useState<{
+    name: string;
+    email: string;
+    subject: string;
+    message: string;
+    token: string;
+    honeypot: string;
+    elapsedMs: number;
+  } | null>(null);
+  const formRef = useRef<HTMLFormElement | null>(null);
   const mountedAtRef = useRef(Date.now());
   const sectionRef = useRef<HTMLElement | null>(null);
   const isContactInView = useInView(sectionRef, { margin: '240px 0px', once: true });
@@ -781,64 +880,80 @@ function ContactSection() {
   }, []);
 
   useEffect(() => {
-    if (submitState !== 'success') return;
-    const timerId = window.setTimeout(() => {
-      setSubmitState('idle');
-    }, 4000);
-    return () => window.clearTimeout(timerId);
+    if (submitState === 'success') {
+      setSuccessRunId((prev) => prev + 1);
+      setShowSuccessModal(true);
+    }
   }, [submitState]);
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (isSubmitting) return;
+  useEffect(() => {
+    if (!showSuccessModal) return;
+    const timerId = window.setTimeout(() => {
+      setShowSuccessModal(false);
+      setSubmitState('idle');
+    }, SUCCESS_MODAL_MS);
+    return () => window.clearTimeout(timerId);
+  }, [showSuccessModal, SUCCESS_MODAL_MS]);
 
-    setIsSubmitting(true);
+  const closeSuccessModal = () => {
+    setShowSuccessModal(false);
+    setSubmitState('idle');
+  };
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (isSubmitting || isPreviewOpen) return;
+
     setSubmitState('idle');
 
     const form = event.currentTarget;
+    formRef.current = form;
     const formData = new FormData(form);
     const honeypot = String(formData.get('_gotcha') ?? '').trim();
     const elapsedMs = Date.now() - mountedAtRef.current;
     const name = String(formData.get('name') ?? '').trim();
     const email = String(formData.get('email') ?? '').trim();
+    const subject = String(formData.get('subject') ?? '').trim();
     const message = String(formData.get('message') ?? '').trim();
     const token = String(formData.get('cf-turnstile-response') ?? turnstileToken ?? '').trim();
 
-    // Lightweight anti-spam: hidden field trap + too-fast submit guard.
-    if (honeypot || elapsedMs < 2500) {
-      form.reset();
-      setSubmitState('success');
-      setIsSubmitting(false);
+    if (!name || !email || !subject || !message) {
+      setSubmitState('error');
       return;
     }
 
     if (!turnstileSiteKey || !token) {
       setSubmitState('turnstile');
-      setIsSubmitting(false);
       return;
     }
 
+    setPendingPayload({ name, email, subject, message, token, honeypot, elapsedMs });
+    setIsPreviewOpen(true);
+  };
+
+  const confirmSubmit = async () => {
+    if (!pendingPayload) return;
+    setIsSubmitting(true);
+    setSubmitPhase('verifying');
+    setSubmitState('idle');
+
     try {
+      setSubmitPhase('sending');
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          name,
-          email,
-          message,
-          token,
-          honeypot,
-          elapsedMs,
-        }),
+        body: JSON.stringify(pendingPayload),
       });
 
       if (response.ok) {
-        form.reset();
+        formRef.current?.reset();
         window.turnstile?.reset();
         setTurnstileToken('');
         setSubmitState('success');
+        setIsPreviewOpen(false);
+        setPendingPayload(null);
       } else {
         setSubmitState('error');
       }
@@ -846,6 +961,7 @@ function ContactSection() {
       setSubmitState('error');
     } finally {
       setIsSubmitting(false);
+      setSubmitPhase('idle');
     }
   };
 
@@ -865,10 +981,10 @@ function ContactSection() {
 
         <ScrollReveal delay={0.2}>
           <form
+            ref={formRef}
             onSubmit={handleSubmit}
             className="space-y-6"
           >
-            <input type="hidden" name="_subject" value="New portfolio contact message" />
             <input
               type="text"
               name="_gotcha"
@@ -906,6 +1022,20 @@ function ContactSection() {
             </div>
 
             <div>
+              <label htmlFor="contact-subject" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
+                {t('subject')}
+                <span className="ml-1 text-[var(--accent-muted)]" aria-hidden="true">*</span>
+              </label>
+              <input
+                id="contact-subject"
+                name="subject"
+                type="text"
+                required
+                className="w-full bg-transparent border-b border-border focus:border-foreground outline-none pb-2 text-sm transition-colors"
+              />
+            </div>
+
+            <div>
               <label htmlFor="contact-message" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
                 {t('message')}
                 <span className="ml-1 text-[var(--accent-muted)]" aria-hidden="true">*</span>
@@ -934,13 +1064,97 @@ function ContactSection() {
               className="btn-primary w-full mt-4 flex items-center justify-center gap-2 disabled:opacity-60 disabled:pointer-events-none"
             >
               <Send className="w-4 h-4" strokeWidth={1.5} />
-              {isSubmitting ? t('sending') : t('send')}
+              {isSubmitting ? t('sending') : t('preview')}
             </button>
-            {submitState === 'success' && <p className="text-sm text-emerald-500">{t('success')}</p>}
             {submitState === 'turnstile' && <p className="text-sm text-amber-500">{t('turnstileRequired')}</p>}
             {submitState === 'error' && <p className="text-sm text-red-500">{t('error')}</p>}
           </form>
         </ScrollReveal>
+        {isPreviewOpen && pendingPayload ? (
+          <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center px-4">
+            <div className="w-full max-w-lg rounded-xl border border-border bg-card p-5 sm:p-6 shadow-2xl">
+              <h3 className="text-lg font-semibold tracking-tight mb-4">{t('previewTitle')}</h3>
+              <p className="text-xs font-mono text-muted-foreground mb-4">{t('previewDescription')}</p>
+              <div className="space-y-3 text-sm">
+                <div>
+                  <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('name')}</p>
+                  <p>{pendingPayload.name}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('email')}</p>
+                  <p>{pendingPayload.email}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('subject')}</p>
+                  <p>{pendingPayload.subject}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('message')}</p>
+                  <p className="whitespace-pre-wrap leading-relaxed">{pendingPayload.message}</p>
+                </div>
+              </div>
+              <div className="mt-6 flex flex-col-reverse sm:flex-row sm:justify-end gap-2">
+                <button
+                  type="button"
+                  className="btn-outline"
+                  onClick={() => setIsPreviewOpen(false)}
+                  disabled={isSubmitting}
+                >
+                  {t('backToEdit')}
+                </button>
+                <button
+                  type="button"
+                  className="btn-primary"
+                  onClick={confirmSubmit}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting
+                    ? submitPhase === 'verifying'
+                      ? t('verifying')
+                      : t('sending')
+                    : t('confirmSend')}
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : null}
+        {showSuccessModal ? (
+          <div className="fixed inset-0 z-[60] bg-background/75 backdrop-blur-sm flex items-center justify-center px-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 6 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              className="w-full max-w-sm rounded-xl border border-border bg-card p-6 shadow-2xl"
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.05, duration: 0.25 }}
+                className="mx-auto mb-4 h-14 w-14 rounded-full border border-emerald-500/30 bg-emerald-500/10 flex items-center justify-center"
+              >
+                <CheckCircle2 className="w-8 h-8 text-emerald-500" strokeWidth={1.6} />
+              </motion.div>
+              <h3 className="text-lg font-semibold tracking-tight text-center">{t('successTitle')}</h3>
+              <p className="mt-2 text-sm text-muted-foreground text-center">{t('success')}</p>
+              <p className="mt-1 text-[11px] font-mono text-muted-foreground text-center">{t('successAutoClose')}</p>
+
+              <div className="mt-4 h-1 w-full overflow-hidden rounded-full bg-muted">
+                <div
+                  key={successRunId}
+                  className="h-full success-countdown-bar"
+                  style={{ animationDuration: `${SUCCESS_MODAL_MS}ms` }}
+                />
+              </div>
+
+              <button
+                type="button"
+                className="btn-outline w-full mt-4"
+                onClick={closeSuccessModal}
+              >
+                {t('close')}
+              </button>
+            </motion.div>
+          </div>
+        ) : null}
       </div>
     </section>
   );

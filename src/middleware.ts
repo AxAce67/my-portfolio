@@ -4,10 +4,8 @@ import { routing } from './i18n/routing';
 
 const intlMiddleware = createMiddleware(routing);
 
-function buildCsp(nonce: string, isDev: boolean) {
-    // Keep legacy browser fallback for Lighthouse/XSS audit.
-    // In modern browsers, nonce/hash takes precedence and `'unsafe-inline'` is ignored.
-    const scriptDirectives = [`'self'`, `'nonce-${nonce}'`, `'unsafe-inline'`, `'strict-dynamic'`, 'https://challenges.cloudflare.com'];
+function buildCsp(isDev: boolean) {
+    const scriptDirectives = [`'self'`, `'unsafe-inline'`, 'https://challenges.cloudflare.com'];
     if (isDev) {
         scriptDirectives.push(`'unsafe-eval'`);
     }
@@ -31,8 +29,8 @@ function buildCsp(nonce: string, isDev: boolean) {
     ].join('; ');
 }
 
-function buildCspReportOnly(nonce: string, isDev: boolean) {
-    const reportOnlyPolicy = buildCsp(nonce, isDev)
+function buildCspReportOnly(isDev: boolean) {
+    const reportOnlyPolicy = buildCsp(isDev)
         .split('; ')
         .filter((directive) => directive !== 'upgrade-insecure-requests')
         .join('; ');
@@ -41,18 +39,10 @@ function buildCspReportOnly(nonce: string, isDev: boolean) {
 
 export default function middleware(request: NextRequest) {
     const response = intlMiddleware(request);
-    const nonce = crypto.randomUUID().replace(/-/g, '');
     const isDev = process.env.NODE_ENV !== 'production';
 
-    response.cookies.set('csp-nonce', nonce, {
-        httpOnly: true,
-        secure: !isDev,
-        sameSite: 'lax',
-        path: '/',
-    });
-    response.headers.set('x-nonce', nonce);
-    response.headers.set('Content-Security-Policy', buildCsp(nonce, isDev));
-    response.headers.set('Content-Security-Policy-Report-Only', buildCspReportOnly(nonce, isDev));
+    response.headers.set('Content-Security-Policy', buildCsp(isDev));
+    response.headers.set('Content-Security-Policy-Report-Only', buildCspReportOnly(isDev));
     response.headers.set(
         'Report-To',
         JSON.stringify({

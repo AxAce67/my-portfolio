@@ -1,11 +1,16 @@
 import { NextResponse } from 'next/server';
 
+export const runtime = 'edge';
+
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xeelrvkr';
 const TURNSTILE_VERIFY_ENDPOINT = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+const TURNSTILE_TIMEOUT_MS = 4500;
+const FORMSPREE_TIMEOUT_MS = 8000;
 
 type ContactPayload = {
   name?: string;
   email?: string;
+  subject?: string;
   message?: string;
   token?: string;
   honeypot?: string;
@@ -19,6 +24,16 @@ type TurnstileVerifyResponse = {
 
 function badRequest(message: string) {
   return NextResponse.json({ ok: false, message }, { status: 400 });
+}
+
+async function fetchWithTimeout(input: string, init: RequestInit, timeoutMs: number) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(input, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }
 
 export async function POST(request: Request) {
@@ -36,12 +51,13 @@ export async function POST(request: Request) {
 
   const name = String(payload.name ?? '').trim();
   const email = String(payload.email ?? '').trim();
+  const subject = String(payload.subject ?? '').trim();
   const message = String(payload.message ?? '').trim();
   const token = String(payload.token ?? '').trim();
   const honeypot = String(payload.honeypot ?? '').trim();
   const elapsedMs = Number(payload.elapsedMs ?? 0);
 
-  if (!name || !email || !message) {
+  if (!name || !email || !subject || !message) {
     return badRequest('Missing required fields.');
   }
   if (!token) {
@@ -60,14 +76,23 @@ export async function POST(request: Request) {
     ...(ipAddress ? { remoteip: ipAddress } : {}),
   });
 
-  const verifyResponse = await fetch(TURNSTILE_VERIFY_ENDPOINT, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: verifyBody.toString(),
-    cache: 'no-store',
-  });
+  let verifyResponse: Response;
+  try {
+    verifyResponse = await fetchWithTimeout(
+      TURNSTILE_VERIFY_ENDPOINT,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: verifyBody.toString(),
+        cache: 'no-store',
+      },
+      TURNSTILE_TIMEOUT_MS,
+    );
+  } catch {
+    return NextResponse.json({ ok: false, message: 'Turnstile verification timed out.' }, { status: 504 });
+  }
 
   if (!verifyResponse.ok) {
     return NextResponse.json({ ok: false, message: 'Failed to verify Turnstile.' }, { status: 502 });
@@ -81,19 +106,30 @@ export async function POST(request: Request) {
   const forwardBody = new URLSearchParams({
     name,
     email,
+    subject,
+    inquiry_subject: subject,
     message,
-    _subject: 'New portfolio contact message',
+    _subject: `[akiz.dev] ${subject}`,
   });
 
-  const forwardResponse = await fetch(FORMSPREE_ENDPOINT, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Accept: 'application/json',
-    },
-    body: forwardBody.toString(),
-    cache: 'no-store',
-  });
+  let forwardResponse: Response;
+  try {
+    forwardResponse = await fetchWithTimeout(
+      FORMSPREE_ENDPOINT,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Accept: 'application/json',
+        },
+        body: forwardBody.toString(),
+        cache: 'no-store',
+      },
+      FORMSPREE_TIMEOUT_MS,
+    );
+  } catch {
+    return NextResponse.json({ ok: false, message: 'Sending request timed out.' }, { status: 504 });
+  }
 
   if (!forwardResponse.ok) {
     return NextResponse.json({ ok: false, message: 'Failed to send message.' }, { status: 502 });
@@ -101,4 +137,3 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ ok: true });
 }
-

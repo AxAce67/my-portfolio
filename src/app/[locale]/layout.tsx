@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import Script from 'next/script';
-import { cookies } from 'next/headers';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -79,7 +78,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function LocaleLayout({ children, params }: Props) {
     const { locale } = await params;
-    const nonce = (await cookies()).get('csp-nonce')?.value;
 
     // Validate locale
     if (!routing.locales.includes(locale as 'ja' | 'en')) {
@@ -93,7 +91,6 @@ export default async function LocaleLayout({ children, params }: Props) {
             <head>
                 <Script
                     src="/theme-init.js"
-                    nonce={nonce}
                     strategy="beforeInteractive"
                     suppressHydrationWarning
                 />
@@ -101,7 +98,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             <body
                 className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased min-h-screen`}
             >
-                <ThemeProvider nonce={nonce}>
+                <ThemeProvider>
                     <NextIntlClientProvider messages={messages}>
                         <div className="relative z-10 flex flex-col min-h-screen">
                             <AppToaster />
