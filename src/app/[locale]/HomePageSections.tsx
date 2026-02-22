@@ -748,7 +748,16 @@ function ContactSection() {
   const [submitState, setSubmitState] = useState<'idle' | 'success' | 'error' | 'turnstile'>('idle');
   const [turnstileToken, setTurnstileToken] = useState('');
   const mountedAtRef = useRef(Date.now());
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const isContactInView = useInView(sectionRef, { margin: '240px 0px', once: true });
+  const [shouldLoadTurnstile, setShouldLoadTurnstile] = useState(false);
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
+  useEffect(() => {
+    if (isContactInView) {
+      setShouldLoadTurnstile(true);
+    }
+  }, [isContactInView]);
 
   useEffect(() => {
     window.onTurnstileSuccess = (token: string) => {
@@ -841,9 +850,9 @@ function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-20 sm:py-32 lg:py-36">
+    <section id="contact" ref={sectionRef} className="py-20 sm:py-32 lg:py-36">
       <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
-        {turnstileSiteKey ? (
+        {turnstileSiteKey && shouldLoadTurnstile ? (
           <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer strategy="afterInteractive" />
         ) : null}
         <ScrollReveal>
@@ -909,7 +918,7 @@ function ContactSection() {
                 className="w-full bg-transparent border-b border-border focus:border-foreground outline-none pb-2 text-sm transition-colors resize-none"
               />
             </div>
-            {turnstileSiteKey ? (
+            {turnstileSiteKey && shouldLoadTurnstile ? (
               <div
                 className="cf-turnstile"
                 data-sitekey={turnstileSiteKey}
@@ -921,7 +930,7 @@ function ContactSection() {
 
             <button
               type="submit"
-              disabled={isSubmitting || !turnstileSiteKey}
+              disabled={isSubmitting || !turnstileSiteKey || !shouldLoadTurnstile}
               className="btn-primary w-full mt-4 flex items-center justify-center gap-2 disabled:opacity-60 disabled:pointer-events-none"
             >
               <Send className="w-4 h-4" strokeWidth={1.5} />
