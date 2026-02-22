@@ -1,0 +1,277 @@
+{
+    "Navigation": {
+        "about": "About",
+        "skills": "Skills",
+        "technologies": "Technologies",
+        "projects": "Projects",
+        "timeline": "Timeline",
+        "contact": "Contact"
+    },
+    "Hero": {
+        "greeting": "> initializing...",
+        "title": "Turning Ideas into Reality",
+        "subtitle": "Building what I love. That's it.",
+        "description": "Portfolio of indie developer Aki",
+        "scrollDown": "$ cd projects/ ↓"
+    },
+    "About": {
+        "sectionTitle": "// about/",
+        "heading": "About",
+        "profileLabel": "Profile",
+        "profileParagraph1": "I am a junior high school student in Japan, building personal projects such as websites, Discord bots, Ubuntu servers, and Minecraft servers.",
+        "profileParagraph2": "Since discovering ChatGPT in sixth grade, I have used various AI tools to improve my workflow and speed up turning ideas into working products.",
+        "profileParagraph3": "My process is to turn ideas into requirements, build an MVP quickly, then iterate through testing and improvements.",
+        "profileParagraph4": "My strengths are design thinking, continuous improvement, and research. I keep up with trends while balancing usability and maintainability.",
+        "statsProjects": "Published Projects",
+        "statsTechnologies": "Technologies Used",
+        "statsYears": "Years Building",
+        "statsCommits": "Self-hosted Servers",
+        "focusLabel": "Focus",
+        "focus": {
+            "productThinking": "Product Thinking",
+            "rapidPrototyping": "Rapid Prototyping",
+            "uiUxDesign": "UI/UX Design",
+            "problemSolving": "Problem Solving",
+            "research": "Research",
+            "continuousImprovement": "Continuous Improvement"
+        },
+        "linksLabel": "Links",
+        "role": "Independent Developer"
+    },
+    "Skills": {
+        "sectionTitle": "// skills/",
+        "heading": "Skills"
+    },
+    "TechStack": {
+        "sectionTitle": "// tech_stack/",
+        "heading": "Tech Stack"
+    },
+    "Projects": {
+        "sectionTitle": "// projects/",
+        "heading": "Projects",
+        "viewList": "List",
+        "viewGrid": "Grid",
+        "viewAll": "View all",
+        "createdAt": "Created",
+        "noPublishedProjects": "Coming soon. Thanks for your patience.",
+        "filterAll": "All",
+        "filterIdea": "Idea",
+        "filterDesign": "Design",
+        "filterDevelopment": "Development",
+        "filterCompleted": "Completed",
+        "filterOnHold": "On Hold",
+        "searchPlaceholder": "Search projects...",
+        "noProjects": "No projects found",
+        "viewDetails": "View Details"
+    },
+    "Contact": {
+        "sectionTitle": "> send_message",
+        "heading": "Contact",
+        "name": "Name",
+        "email": "Email",
+        "message": "Message",
+        "send": "Send",
+        "sending": "Sending...",
+        "success": "Message sent successfully!",
+        "turnstileRequired": "Please complete the verification check before sending.",
+        "error": "Failed to send. Please try again."
+    },
+    "Footer": {
+        "copyright": "© {year} All rights reserved.",
+        "madeWith": "$ echo \"Made with ❤️ and ☕\""
+    },
+    "Theme": {
+        "light": "Light Mode",
+        "dark": "Dark Mode"
+    },
+    "Language": {
+        "ja": "日本語",
+        "en": "English"
+    },
+    "Dashboard": {
+        "title": "Portfolio Dashboard",
+        "subtitle": "Manage your published portfolio content.",
+        "signOut": "Sign Out",
+        "noAdmin": "This account does not have admin access.",
+        "tabs": {
+            "projects": "Projects",
+            "activeProjects": "Active Projects",
+            "audit": "Audit Logs"
+        },
+        "actions": {
+            "read": "Read",
+            "edit": "Edit"
+        },
+        "publish": {
+            "published": "published",
+            "draft": "draft"
+        },
+        "status": {
+            "idea": "Idea",
+            "design": "Design",
+            "development": "Development",
+            "completed": "Completed",
+            "on_hold": "On Hold"
+        },
+        "projects": {
+            "manageTitle": "Project Management",
+            "manageDescription": "Create new projects from the dedicated editor page.",
+            "newProject": "New Project",
+            "listTitle": "Projects",
+            "empty": "No projects yet."
+        },
+        "toast": {
+            "project_created": "Project created.",
+            "project_updated": "Project updated.",
+            "project_deleted": "Project deleted.",
+            "active_created": "Active project created.",
+            "active_updated": "Active project updated.",
+            "active_deleted": "Active project deleted."
+        },
+        "deleteProject": {
+            "button": "Delete",
+            "title": "Delete Project?",
+            "description": "Delete \"{title}\". This action cannot be undone.",
+            "cancel": "Cancel",
+            "confirm": "Delete"
+        },
+        "active": {
+            "title": "Active Projects",
+            "description": "Manage sort order, stage, and publish status for active projects.",
+            "newButton": "New Active Project",
+            "priority": "priority",
+            "published": "published",
+            "draft": "draft",
+            "empty": "No active projects yet.",
+            "stage": {
+                "planning": "Planning",
+                "design": "Design",
+                "development": "Development",
+                "testing": "Testing",
+                "completed": "Completed"
+            },
+            "fields": {
+                "name": "Name",
+                "namePlaceholder": "Name",
+                "stage": "Stage",
+                "priority": "Priority"
+            },
+            "createModal": {
+                "title": "Create Active Project"
+            },
+            "editModal": {
+                "title": "Edit Active Project"
+            },
+            "deleteModal": {
+                "title": "Delete Active Project?",
+                "description": "Delete \"{name}\". This action cannot be undone."
+            },
+            "actions": {
+                "edit": "Edit",
+                "delete": "Delete",
+                "close": "Close",
+                "create": "Create",
+                "update": "Update",
+                "cancel": "Cancel"
+            }
+        },
+        "audit": {
+            "title": "Auth Audit Logs",
+            "description": "Showing all login success/failure logs with pagination.",
+            "authTab": "Auth Logs",
+            "cspTab": "CSP Logs",
+            "filterAll": "All",
+            "filterSuccess": "Success",
+            "filterInvalid": "Failed",
+            "filterRateLimited": "Rate Limited",
+            "total": "Total",
+            "available": "Available",
+            "empty": "No audit logs yet.",
+            "notConfigured": "Audit log table is not configured. Please apply the SQL setup.",
+            "prev": "Previous",
+            "next": "Next",
+            "cspTitle": "CSP Violation Reports",
+            "cspDescription": "CSP violation logs reported by browsers.",
+            "cspEmpty": "No CSP violation logs yet.",
+            "cspNotConfigured": "CSP log table is not configured. Please apply the SQL setup.",
+            "labelEmail": "email",
+            "labelIp": "ip",
+            "labelIpHash": "ip hash",
+            "labelUserId": "user id",
+            "labelLocale": "locale",
+            "labelUserAgent": "user agent",
+            "labelDirective": "directive",
+            "labelBlocked": "blocked",
+            "labelDocument": "document",
+            "labelDisposition": "disposition"
+        },
+        "editor": {
+            "backToDashboard": "← Back to Dashboard",
+            "draftLabel": "Project Draft",
+            "createTitle": "Create Project",
+            "createDescription": "Use a Notion-style editor to create articles with headings, lists, and images.",
+            "createSubmit": "Create Project",
+            "editTitle": "Project Editor",
+            "saveChanges": "Save Changes"
+        },
+        "editorForm": {
+            "title": "Title",
+            "titlePlaceholder": "Project name",
+            "description": "Description",
+            "descriptionPlaceholder": "Summary (2-3 sentences)",
+            "thumbnail": "Thumbnail Image",
+            "thumbnailHint": "JPG / PNG / WEBP, up to 5MB",
+            "thumbnailPreview": "16:9 Thumbnail Preview",
+            "thumbnailRecommended": "Recommended:",
+            "thumbnailSafeArea": "Safe area center:",
+            "articleContent": "Article Content",
+            "published": "Published",
+            "uploadAuthError": "Please sign in before uploading files.",
+            "uploadTypeError": "Only JPG / PNG / WEBP / AVIF files are allowed.",
+            "uploadSizeError": "Please keep file size at 5MB or less.",
+            "editorTipPrefix": "Type",
+            "editorTipSuffix": "for block options. Image/File upload is enabled.",
+            "status": {
+                "idea": "Idea",
+                "design": "Design",
+                "development": "Development",
+                "completed": "Completed",
+                "on_hold": "On Hold"
+            }
+        }
+    },
+    "ActiveProjects": {
+        "sectionLabel": "// in_progress",
+        "heading": "Active Projects",
+        "projectColumn": "Project",
+        "stagePlanning": "Planning",
+        "stageDesign": "Design",
+        "stageDevelopment": "Development",
+        "stageTesting": "Testing",
+        "stageCompleted": "Completed"
+    },
+    "ProjectList": {
+        "backToTop": "← Back to Projects",
+        "heading": "Projects Archive",
+        "description": "A full list of published projects.",
+        "searchLabel": "Search",
+        "searchPlaceholder": "Search by title, description, or tag...",
+        "createdAt": "Created",
+        "updatedAt": "Updated",
+        "empty": "Coming soon. Thanks for your patience.",
+        "prev": "Previous",
+        "next": "Next"
+    },
+    "ProjectDetail": {
+        "backToProjects": "← Back to Projects",
+        "createdAt": "Created",
+        "updatedAt": "Updated"
+    },
+    "NotFound": {
+        "code": "404 / Not Found",
+        "title": "Page not found",
+        "description": "The page you requested does not exist or may have been moved.",
+        "backHome": "Back to Home",
+        "goProjects": "Go to Projects"
+    }
+}
