@@ -363,12 +363,12 @@ function SkillsSection() {
                 key={cat}
                 type="button"
                 onClick={() => setSelectedCategory(cat)}
-                className={`inline-flex w-full items-center justify-center gap-1 px-1.5 py-2 rounded-lg text-[10px] font-mono transition-colors ${
-                  selectedCategory === cat ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'
+                className={`inline-flex w-full items-center justify-center gap-1 px-1.5 py-2 rounded-lg text-[11px] font-mono transition-colors ${
+                  selectedCategory === cat ? 'bg-background text-foreground shadow-sm' : 'text-foreground/85 hover:text-foreground'
                 }`}
                 aria-pressed={selectedCategory === cat}
               >
-                <span className="text-muted-foreground">{categoryIcons[cat]}</span>
+                <span className={selectedCategory === cat ? 'text-foreground' : 'text-foreground/75'}>{categoryIcons[cat]}</span>
                 <span className="whitespace-nowrap leading-none">{categoryLabels[cat]}</span>
               </button>
             ))}
