@@ -547,7 +547,9 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                 type="button"
                 onClick={() => setViewMode('list')}
                 className={`inline-flex flex-1 sm:flex-none items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-mono transition-colors ${
-                  viewMode === 'list' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+                  viewMode === 'list'
+                    ? 'bg-background text-foreground shadow-sm'
+                    : 'text-foreground/80 hover:text-foreground hover:bg-background/60'
                 }`}
                 aria-pressed={viewMode === 'list'}
               >
@@ -558,7 +560,9 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                 type="button"
                 onClick={() => setViewMode('grid')}
                 className={`inline-flex flex-1 sm:flex-none items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-mono transition-colors ${
-                  viewMode === 'grid' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+                  viewMode === 'grid'
+                    ? 'bg-background text-foreground shadow-sm'
+                    : 'text-foreground/80 hover:text-foreground hover:bg-background/60'
                 }`}
                 aria-pressed={viewMode === 'grid'}
               >

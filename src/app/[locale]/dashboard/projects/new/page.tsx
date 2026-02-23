@@ -7,6 +7,8 @@ import { createProjectAction } from '../../actions';
 import ToastNotice from '../../ToastNotice';
 import ProjectEditorForm from '@/components/dashboard/ProjectEditorForm';
 
+export const dynamic = 'force-dynamic';
+
 type Props = {
   params: Promise<{ locale: string }>;
 };

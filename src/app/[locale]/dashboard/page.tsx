@@ -8,6 +8,8 @@ import ToastNotice from './ToastNotice';
 import ActiveProjectsManager from '@/components/dashboard/ActiveProjectsManager';
 import DeleteProjectButton from '@/components/dashboard/DeleteProjectButton';
 
+export const dynamic = 'force-dynamic';
+
 type Props = {
   params: Promise<{ locale: string }>;
   searchParams: Promise<{ tab?: string; toast?: string; toastAt?: string; auditPage?: string; auditType?: string; auditOutcome?: string }>;

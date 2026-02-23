@@ -2,13 +2,18 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
-import { getProjectById } from '@/lib/content/publicContent';
+import { getProjectById, getProjectsListData } from '@/lib/content/publicContent';
 import BackToProjectsLink from '@/components/projects/BackToProjectsLink';
 import { buildLocalePath, DEFAULT_OG_IMAGE_PATH, getLocaleSeo } from '@/lib/seo';
 
 type Props = {
   params: Promise<{ locale: string; id: string }>;
 };
+
+export async function generateStaticParams() {
+  const projects = await getProjectsListData();
+  return projects.map((project) => ({ id: project.id }));
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale: rawLocale, id } = await params;

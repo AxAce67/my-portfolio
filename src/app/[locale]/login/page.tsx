@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { loginAction } from './actions';
 import { sanitizeInternalPath } from '@/lib/security';
 
+export const dynamic = 'force-dynamic';
+
 type Props = {
   params: Promise<{ locale: string }>;
   searchParams: Promise<{ next?: string; error?: string }>;
