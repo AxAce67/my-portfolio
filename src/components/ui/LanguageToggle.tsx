@@ -15,6 +15,14 @@ export function LanguageToggle() {
     useEffect(() => {
         setDisplayLocale(locale === 'en' ? 'en' : 'ja');
         setIsSwitching(false);
+
+        // 新ページ到着時: フェードインアニメーション
+        document.documentElement.classList.remove('lang-switching-out');
+        document.documentElement.classList.add('lang-switching-in');
+        const tid = window.setTimeout(() => {
+            document.documentElement.classList.remove('lang-switching-in');
+        }, 500);
+        return () => window.clearTimeout(tid);
     }, [locale]);
 
     useEffect(() => {
@@ -27,13 +35,23 @@ export function LanguageToggle() {
 
     const toggleLocale = () => {
         if (isSwitching) return;
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const newLocale = displayLocale === 'ja' ? 'en' : 'ja';
         setDisplayLocale(newLocale);
         setIsSwitching(true);
 
+        if (prefersReducedMotion) {
+            router.replace(pathname, { locale: newLocale });
+            return;
+        }
+
+        // フェードアウトアニメーション開始
+        document.documentElement.classList.add('lang-switching-out');
+
+        // アニメーション完了後にナビゲーション
         switchTimerRef.current = window.setTimeout(() => {
             router.replace(pathname, { locale: newLocale });
-        }, 180);
+        }, 300);
     };
 
     return (

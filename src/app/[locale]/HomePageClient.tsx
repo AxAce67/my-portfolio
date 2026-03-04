@@ -292,9 +292,8 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
 
   return (
     <section
-      className={`relative min-h-[92svh] sm:min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 pt-14 sm:pt-0 overflow-hidden ${
-        hidden ? 'opacity-0 pointer-events-none' : 'opacity-100'
-      }`}
+      className={`relative min-h-[92svh] sm:min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 pt-14 sm:pt-0 overflow-hidden ${hidden ? 'opacity-0 pointer-events-none' : 'opacity-100'
+        }`}
       aria-hidden={hidden}
     >
       <div className="absolute inset-0 -z-10 pointer-events-none">
@@ -335,9 +334,8 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
         <p className="font-mono text-xs sm:text-base text-foreground text-center break-words">
           {displayedText}
           <span
-            className={`inline-block w-[1.5px] h-4 ml-0.5 bg-foreground align-middle transition-opacity ${
-              showCursor ? 'opacity-100' : 'opacity-0'
-            }`}
+            className={`inline-block w-[1.5px] h-4 ml-0.5 bg-foreground align-middle transition-opacity ${showCursor ? 'opacity-100' : 'opacity-0'
+              }`}
           />
         </p>
       </div>

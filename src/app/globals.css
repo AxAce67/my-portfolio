@@ -54,6 +54,7 @@ html {
   scroll-behavior: auto;
   background: var(--background);
   scrollbar-gutter: stable;
+  transition: background-color 0.35s ease;
 }
 
 body {
@@ -64,6 +65,72 @@ body {
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition:
+    color 0.35s ease,
+    background-color 0.35s ease;
+}
+
+/* ========== View Transitions ========== */
+
+/* 共通ベース */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* --- ダークモード切替: 円形展開 --- */
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+  animation: vt-circle-expand 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes vt-circle-expand {
+  from {
+    clip-path: circle(0% at var(--vt-x) var(--vt-y));
+  }
+
+  to {
+    clip-path: circle(var(--vt-r) at var(--vt-x) var(--vt-y));
+  }
+}
+
+/* --- 言語切替: CSS クラスベースのクロスフェード --- */
+html.lang-switching-out>body {
+  animation: lang-fade-out 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  pointer-events: none;
+}
+
+html.lang-switching-in>body {
+  animation: lang-fade-in 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+@keyframes lang-fade-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+@keyframes lang-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* ========== Grid Background ========== */
@@ -185,9 +252,10 @@ body::before {
     border-radius: 0.5rem;
     font-size: 0.875rem;
     font-weight: 500;
-    transition: all 0.2s ease;
+    transition: opacity 0.2s ease, transform 0.2s ease;
     border: 1px solid transparent;
     min-height: 44px;
+    will-change: transform;
   }
 
   .btn-primary:hover {
@@ -250,7 +318,11 @@ body::before {
     border: 1px solid var(--border);
     border-radius: 1rem;
     padding: 1.5rem;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+      transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 0.35s ease,
+      color 0.35s ease;
     position: relative;
     overflow: hidden;
   }
@@ -278,6 +350,23 @@ body::before {
   .bento-card:hover {
     border-color: var(--border-hover);
     transform: translateY(-2px);
+  }
+
+  .bento-card--static {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  .bento-card--static:hover {
+    transform: translateZ(0);
+  }
+
+  .bento-card--static:hover::before {
+    opacity: 0;
+  }
+
+  .cf-turnstile {
+    transition: none;
   }
 
   /* About section card motion */
@@ -308,7 +397,12 @@ body::before {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 0.75rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 0.35s ease,
+      color 0.35s ease;
     cursor: default;
   }
 
@@ -343,7 +437,12 @@ body::before {
     border: 1px solid var(--border);
     border-radius: 0.75rem;
     overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+      transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 0.35s ease,
+      color 0.35s ease;
   }
 
   .project-card:hover {
@@ -555,6 +654,7 @@ body::before {
   }
 
   @media (hover: none) and (pointer: coarse) {
+
     .card-hover:hover,
     .bento-card:hover,
     .about-card-motion:hover,
@@ -730,6 +830,329 @@ body::before {
 
   to {
     transform: scaleX(0);
+  }
+}
+
+/* ========== Footer ========== */
+
+.footer-container {
+  position: relative;
+  margin-top: 2rem;
+}
+
+.footer-gradient-border {
+  height: 1px;
+  background: linear-gradient(90deg,
+      transparent,
+      var(--border) 20%,
+      var(--accent-muted) 50%,
+      var(--border) 80%,
+      transparent);
+}
+
+.footer-inner {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Top: brand + social */
+.footer-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.footer-brand-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-brand-name {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.footer-brand-dot {
+  color: var(--accent-muted);
+}
+
+.footer-tagline {
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+  margin-top: 0.35rem;
+  line-height: 1.5;
+}
+
+/* Social icons row */
+.footer-social-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  color: var(--muted-foreground);
+  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-social-icon:hover {
+  color: var(--foreground);
+  border-color: var(--foreground);
+  transform: translateY(-2px);
+}
+
+.footer-social-icon--disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Counter */
+.footer-counter {
+  margin-bottom: 1.5rem;
+  opacity: 0.7;
+}
+
+/* Bottom bar */
+.footer-bottom {
+  width: 100%;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-made {
+  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  color: var(--muted-foreground);
+  opacity: 0.5;
+}
+
+.footer-bottom-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footer-copyright {
+  font-size: 0.7rem;
+  color: var(--muted-foreground);
+  opacity: 0.6;
+}
+
+.footer-dot-sep {
+  font-size: 0.6rem;
+  color: var(--muted-foreground);
+  opacity: 0.3;
+}
+
+.footer-legal-link {
+  font-size: 0.7rem;
+  color: var(--muted-foreground);
+  opacity: 0.6;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.footer-legal-link:hover {
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footer-inner {
+    padding: 2.5rem 1.25rem 1.5rem;
+  }
+}
+
+/* ========== Legal Pages (License, Terms) ========== */
+
+.legal-page {
+  min-height: 80vh;
+  padding: 7rem 1.5rem 5rem;
+}
+
+.legal-document {
+  max-width: 44rem;
+  margin: 0 auto;
+}
+
+/* Back link */
+.legal-doc-back {
+  display: inline-block;
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+  text-decoration: none;
+  margin-bottom: 2rem;
+  transition: color 0.2s ease;
+}
+
+.legal-doc-back:hover {
+  color: var(--foreground);
+}
+
+/* Document header */
+.legal-doc-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--foreground);
+}
+
+.legal-doc-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 0.75rem;
+}
+
+.legal-doc-meta {
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+  font-family: var(--font-mono);
+}
+
+/* Sections */
+.legal-doc-body {
+  counter-reset: none;
+}
+
+.legal-doc-section {
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.legal-doc-section:last-child {
+  border-bottom: none;
+}
+
+.legal-doc-heading {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.legal-doc-num {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--muted-foreground);
+  margin-right: 0.5rem;
+  font-size: 0.9em;
+}
+
+.legal-doc-text {
+  font-size: 0.9rem;
+  line-height: 2;
+  color: var(--foreground);
+  opacity: 0.85;
+}
+
+/* Blockquote for license text */
+.legal-doc-blockquote {
+  margin: 1.5rem 0 0;
+  padding: 1.5rem 2rem;
+  border-left: 3px solid var(--foreground);
+  background: var(--muted);
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.legal-doc-blockquote p {
+  color: var(--foreground);
+  opacity: 0.75;
+}
+
+/* Table for libraries */
+.legal-doc-table {
+  width: 100%;
+  margin-top: 1.5rem;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.legal-doc-table thead {
+  border-bottom: 2px solid var(--foreground);
+}
+
+.legal-doc-table th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+}
+
+.legal-doc-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--foreground);
+}
+
+.legal-doc-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.legal-doc-table code {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 0.15rem 0.4rem;
+  background: var(--muted);
+  border-radius: 0.25rem;
+}
+
+.legal-doc-link {
+  color: var(--muted-foreground);
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: color 0.2s ease;
+}
+
+.legal-doc-link:hover {
+  color: var(--foreground);
+}
+
+
+
+@media (max-width: 640px) {
+  .legal-page {
+    padding: 5rem 1.25rem 3rem;
+  }
+
+  .legal-doc-title {
+    font-size: 1.6rem;
+  }
+
+  .legal-doc-blockquote {
+    padding: 1rem 1.25rem;
+  }
+
+  .legal-doc-table th,
+  .legal-doc-table td {
+    padding: 0.5rem 0.625rem;
   }
 }
 

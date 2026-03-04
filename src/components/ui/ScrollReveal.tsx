@@ -1,23 +1,24 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { ReactNode } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 
 type Props = {
     children: ReactNode;
     className?: string;
     delay?: number;
-    direction?: 'up' | 'down' | 'left' | 'right' | 'none';
+    direction?: 'up' | 'down' | 'left' | 'right' | 'none' | 'scale';
     duration?: number;
     once?: boolean;
 };
 
 const directionOffset = {
-    up: { y: 40, x: 0 },
-    down: { y: -40, x: 0 },
-    left: { y: 0, x: -40 },
-    right: { y: 0, x: 40 },
-    none: { y: 0, x: 0 },
+    up: { y: 32, x: 0, scale: 1 },
+    down: { y: -32, x: 0, scale: 1 },
+    left: { y: 0, x: -32, scale: 1 },
+    right: { y: 0, x: 32, scale: 1 },
+    none: { y: 0, x: 0, scale: 1 },
+    scale: { y: 0, x: 0, scale: 0.95 },
 };
 
 export function ScrollReveal({
@@ -29,12 +30,48 @@ export function ScrollReveal({
     once = true,
 }: Props) {
     const offset = directionOffset[direction];
+    const prefersReducedMotion = useReducedMotion();
+    const ref = useRef<HTMLDivElement>(null);
+    const [isInView, setIsInView] = useState(false);
+
+    useEffect(() => {
+        const el = ref.current;
+        if (!el || prefersReducedMotion) return;
+
+        // レイアウト安定を待ってから Observer を設定
+        const timerId = window.setTimeout(() => {
+            const observer = new IntersectionObserver(
+                ([entry]) => {
+                    if (entry.isIntersecting) {
+                        setIsInView(true);
+                        if (once) observer.disconnect();
+                    }
+                },
+                { rootMargin: '-60px 0px' },
+            );
+            observer.observe(el);
+            cleanup = () => observer.disconnect();
+        }, 100);
+
+        let cleanup = () => { };
+        return () => {
+            window.clearTimeout(timerId);
+            cleanup();
+        };
+    }, [once, prefersReducedMotion]);
+
+    if (prefersReducedMotion) {
+        return <div className={className}>{children}</div>;
+    }
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: offset.y, x: offset.x }}
-            whileInView={{ opacity: 1, y: 0, x: 0 }}
-            viewport={{ once, margin: '-80px' }}
+            ref={ref}
+            initial={{ opacity: 0, y: offset.y, x: offset.x, scale: offset.scale }}
+            animate={isInView
+                ? { opacity: 1, y: 0, x: 0, scale: 1 }
+                : { opacity: 0, y: offset.y, x: offset.x, scale: offset.scale }
+            }
             transition={{
                 duration,
                 delay,

@@ -165,25 +165,25 @@ export function Header() {
                         />
                         <nav className="relative z-50 px-6 sm:px-8 pt-10 sm:pt-12">
                             <div className="w-full max-w-md rounded-2xl border border-border-hover bg-card p-4 sm:p-5 space-y-1 shadow-[0_20px_44px_-20px_rgba(0,0,0,0.55)]">
-                            {navItems.map((item, index) => (
-                                <motion.button
-                                    key={item}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: index * 0.08, duration: 0.3 }}
-                                    onClick={() => {
-                                        if (isHomePage) {
-                                            scrollToSection(sectionIds[item]);
-                                        } else {
-                                            router.push(`/#${sectionIds[item]}`);
-                                            setIsMenuOpen(false);
-                                        }
-                                    }}
-                                    className="w-full text-left text-lg sm:text-xl font-light tracking-wide px-2 py-3 text-foreground/90 hover:text-foreground transition-colors"
-                                >
-                                    {t(item)}
-                                </motion.button>
-                            ))}
+                                {navItems.map((item, index) => (
+                                    <motion.button
+                                        key={item}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: index * 0.08, duration: 0.3 }}
+                                        onClick={() => {
+                                            if (isHomePage) {
+                                                scrollToSection(sectionIds[item]);
+                                            } else {
+                                                router.push(`/#${sectionIds[item]}`);
+                                                setIsMenuOpen(false);
+                                            }
+                                        }}
+                                        className="w-full text-left text-lg sm:text-xl font-light tracking-wide px-2 py-3 text-foreground/90 hover:text-foreground transition-colors"
+                                    >
+                                        {t(item)}
+                                    </motion.button>
+                                ))}
                             </div>
                         </nav>
                     </motion.div>
