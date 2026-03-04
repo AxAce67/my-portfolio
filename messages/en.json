@@ -27,6 +27,16 @@
         "statsYears": "Years Building",
         "statsCommits": "Self-hosted Servers",
         "focusLabel": "Focus",
+        "momentum": {
+            "label": "Dev Motivation Meter",
+            "description": "A playful read on my current coding energy based on commits from the last 7 days.",
+            "weeklyCommits": "Commits this week",
+            "streak": "Streak",
+            "daySuffix": "d",
+            "updated": "Updated",
+            "unavailable": "Could not read the meter right now. Please try again in a moment.",
+            "note": "Numbers are directional. Momentum included"
+        },
         "focus": {
             "productThinking": "Product Thinking",
             "rapidPrototyping": "Rapid Prototyping",
@@ -67,10 +77,15 @@
     "Contact": {
         "sectionTitle": "> send_message",
         "heading": "Contact",
+        "description": "Questions, requests, or feedback — feel free to reach out.",
         "name": "Name",
+        "namePlaceholder": "Your name",
         "email": "Email",
+        "emailPlaceholder": "your@email.com",
         "subject": "Subject",
+        "subjectPlaceholder": "What is this about?",
         "message": "Message",
+        "messagePlaceholder": "Type your message here...",
         "send": "Send",
         "preview": "Review Message",
         "verifying": "Verifying...",
@@ -87,8 +102,13 @@
         "error": "Failed to send. Please try again."
     },
     "Footer": {
+        "tagline": "Building what I love. That's it.",
+        "quickLinks": "Quick Links",
+        "connect": "Connect",
         "copyright": "© {year} All rights reserved.",
-        "madeWith": "$ echo \"Made with ❤️ and ☕\""
+        "madeWith": "$ echo \"Made with ❤️ and ☕\"",
+        "terms": "Terms of Use",
+        "license": "License"
     },
     "Theme": {
         "light": "Light Mode",
@@ -283,5 +303,32 @@
         "description": "The page you requested does not exist or may have been moved.",
         "backHome": "Back to Home",
         "goProjects": "Go to Projects"
+    },
+    "License": {
+        "title": "License",
+        "description": "License information for this portfolio site",
+        "contentTitle": "Content Copyright",
+        "contentDescription": "All text, photographs, illustrations, designs, layouts, logos, and other creative works (collectively, \"Content\") published on this site are the property of the author (Aki) unless otherwise stated. Unauthorized reproduction, redistribution, modification, or secondary use of Content is prohibited. For personal reference or citation, please clearly attribute the source by including this site's URL. For commercial use, please contact us via the contact form in advance.",
+        "thirdPartyTitle": "Third-Party Libraries",
+        "thirdPartyDescription": "This site utilizes the following open source libraries and frameworks. Each library is governed by its own license, and details can be found in the respective repositories. Copyright for these libraries belongs to their respective developers or organizations.",
+        "backHome": "Back to Home"
+    },
+    "Terms": {
+        "title": "Terms of Use",
+        "description": "Terms of use for this portfolio site",
+        "lastUpdated": "Last updated: {date}",
+        "acceptanceTitle": "Acceptance of Terms",
+        "acceptanceDescription": "By accessing, browsing, or using this site (hereinafter \"the Site\"), you agree to be bound by all provisions of these Terms of Use (hereinafter \"the Terms\"). If you do not agree to these Terms, please discontinue use of the Site immediately. These Terms apply to all users who access or use the Site.",
+        "useTitle": "Use of the Site",
+        "useDescription": "The Site is published as a personal portfolio, intended to showcase the operator's skills, project history, and technical information. While every effort is made to ensure accuracy and currency, the completeness, accuracy, or usefulness of the information is not guaranteed. The following activities are prohibited: (1) interfering with the normal operation of the Site, (2) attempting or engaging in unauthorized access, (3) impersonating another person, (4) using the Site's content for commercial purposes without authorization, and (5) any other acts that violate applicable laws or public order.",
+        "ipTitle": "Intellectual Property",
+        "ipDescription": "All intellectual property rights (including copyright and trademark rights) in the Site's design, text, images, logos, icons, code, and all other content belong to the operator unless otherwise stated. Reproduction, modification, public transmission, distribution, transfer, lending, translation, adaptation, or any other use of this content without prior written consent from the operator is prohibited.",
+        "disclaimerTitle": "Disclaimer",
+        "disclaimerDescription": "Use of the Site is at the user's own risk. The operator assumes no liability for any damages incurred by the user or any third party arising from the use of (or inability to use) the Site. The operator does not guarantee and assumes no responsibility for the content, safety, or accuracy of any external sites linked from the Site. The Site may be interrupted, modified, or terminated without prior notice.",
+        "changesTitle": "Changes to Terms",
+        "changesDescription": "The operator may revise these Terms without prior notice as deemed necessary. Revised Terms become effective upon publication on the Site. While efforts will be made to notify users of significant changes on the Site, users are responsible for periodically reviewing these Terms. Continued use of the Site after revisions constitutes acceptance of the revised Terms.",
+        "contactTitle": "Contact",
+        "contactDescription": "For questions, comments regarding these Terms, or inquiries about content licensing, please use the contact form on the Site. Depending on the nature of the inquiry, it may take some time to respond.",
+        "backHome": "Back to Home"
     }
 }

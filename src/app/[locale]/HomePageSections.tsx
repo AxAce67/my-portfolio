@@ -1,15 +1,30 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
-import { useEffect, useRef, useState } from 'react';
-import type { FormEvent, ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import type { FormEvent, ReactNode, ComponentType } from 'react';
 import Script from 'next/script';
 import Image from 'next/image';
-import { ArrowUpRight, Send, Terminal, Code2, Layers, Globe, Cpu, Box, Github, Twitter, Mail, List, LayoutGrid, CheckCircle2 } from 'lucide-react';
-import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { ArrowUpRight, Send, Terminal, Code2, Globe, Box, Github, Twitter, Mail, List, LayoutGrid, CheckCircle2, Film, Sparkles, Wrench } from 'lucide-react';
+import { motion, useInView, useReducedMotion, AnimatePresence } from 'framer-motion';
 import { ScrollReveal, StaggerContainer, StaggerItem } from '@/components/ui/ScrollReveal';
 import { Link } from '@/i18n/routing';
 import dynamic from 'next/dynamic';
+import { TiltCard } from '@/components/ui/TiltCard';
+import {
+  SiTypescript,
+  SiJavascript,
+  SiPython,
+  SiHtml5,
+  SiCss,
+  SiNextdotjs,
+  SiReact,
+  SiTailwindcss,
+  SiSupabase,
+  SiClaude,
+  SiGooglegemini,
+} from '@icons-pack/react-simple-icons';
+import { SiOpenai, SiAdobepremierepro } from 'react-icons/si';
 import type { ActiveProject, CompletedProject } from './HomePageClient';
 
 const TechStackSection = dynamic(() => import('@/components/sections/TechStackSection'), {
@@ -23,32 +38,46 @@ const TechStackSection = dynamic(() => import('@/components/sections/TechStackSe
   ),
 });
 
-type SkillCategory = 'Languages' | 'AI' | 'Tools';
+type SkillCategory = 'Languages' | 'Frameworks' | 'AI' | 'Creative';
+type SkillIconComponent = ComponentType<{ size?: number | string; className?: string }>;
 type SkillItem = {
   name: string;
   category: SkillCategory;
   featured?: boolean;
+  icon?: SkillIconComponent;
+  level?: 'main' | 'familiar' | 'learning';
 };
 
+const FramerMotionIcon: SkillIconComponent = ({ size = 16, className = '' }) => (
+  <svg width={size} height={size} viewBox="0 0 14 21" fill="currentColor" className={className} aria-hidden="true">
+    <path d="M0 0h14v7H7zm0 7h7l7 7H7v7L0 14z" />
+  </svg>
+);
+
+const FilmoraIcon: SkillIconComponent = ({ size = 16, className = '' }) => (
+  <Film width={size} height={size} strokeWidth={1.5} className={className} />
+);
+
 const sampleSkills: SkillItem[] = [
-  { name: 'TypeScript', category: 'Languages', featured: true },
-  { name: 'JavaScript', category: 'Languages', featured: true },
-  { name: 'Python', category: 'Languages' },
-  { name: 'HTML', category: 'Languages' },
-  { name: 'CSS', category: 'Languages' },
+  { name: 'TypeScript', category: 'Languages', featured: true, icon: SiTypescript, level: 'main' },
+  { name: 'JavaScript', category: 'Languages', featured: true, icon: SiJavascript, level: 'main' },
+  { name: 'Python', category: 'Languages', icon: SiPython, level: 'familiar' },
+  { name: 'HTML', category: 'Languages', icon: SiHtml5, level: 'familiar' },
+  { name: 'CSS', category: 'Languages', icon: SiCss, level: 'familiar' },
 
-  { name: 'ChatGPT', category: 'AI', featured: true },
-  { name: 'Claude', category: 'AI' },
-  { name: 'Gemini', category: 'AI' },
-  { name: 'Claude Code / Codex', category: 'AI', featured: true },
+  { name: 'Next.js', category: 'Frameworks', featured: true, icon: SiNextdotjs, level: 'main' },
+  { name: 'React', category: 'Frameworks', featured: true, icon: SiReact, level: 'main' },
+  { name: 'Tailwind CSS', category: 'Frameworks', icon: SiTailwindcss, level: 'familiar' },
+  { name: 'Supabase', category: 'Frameworks', icon: SiSupabase, level: 'familiar' },
+  { name: 'Framer Motion', category: 'Frameworks', icon: FramerMotionIcon, level: 'familiar' },
 
-  { name: 'Next.js', category: 'Tools', featured: true },
-  { name: 'React', category: 'Tools', featured: true },
-  { name: 'Tailwind CSS', category: 'Tools' },
-  { name: 'Supabase', category: 'Tools' },
-  { name: 'Framer Motion', category: 'Tools' },
-  { name: 'Adobe Premiere Pro', category: 'Tools' },
-  { name: 'Wondershare Filmora', category: 'Tools' },
+  { name: 'ChatGPT', category: 'AI', featured: true, icon: SiOpenai, level: 'main' },
+  { name: 'Claude', category: 'AI', icon: SiClaude, level: 'familiar' },
+  { name: 'Gemini', category: 'AI', icon: SiGooglegemini, level: 'familiar' },
+  { name: 'Claude Code / Codex', category: 'AI', featured: true, icon: SiClaude, level: 'main' },
+
+  { name: 'Adobe Premiere Pro', category: 'Creative', featured: true, icon: SiAdobepremierepro, level: 'main' },
+  { name: 'Wondershare Filmora', category: 'Creative', icon: FilmoraIcon, level: 'familiar' },
 ];
 
 const profileLinks = [
@@ -84,6 +113,23 @@ type AboutStatItem = {
   label: string;
 };
 
+type GitHubMomentumStatus = 'loading' | 'ready' | 'error';
+type GitHubDaySummary = {
+  key: string;
+  shortLabel: string;
+  commits: number;
+};
+
+type GitHubMomentumApiResponse = {
+  ok: boolean;
+  username: string;
+  weeklyCommits: number;
+  streakDays: number;
+  daily: Array<{ date: string; commits: number }>;
+  updatedAt: string;
+  source: 'graphql' | 'events';
+};
+
 declare global {
   interface Window {
     onTurnstileSuccess?: (token: string) => void;
@@ -114,7 +160,7 @@ export default function HomePageSections({
 function CountUpNumber({
   end,
   suffix = '',
-  durationMs = 1100,
+  durationMs = 1400,
   play,
 }: {
   end: number;
@@ -144,11 +190,11 @@ function CountUpNumber({
     setValue(0);
     setIsDone(false);
 
-    const easeOutCubic = (x: number) => 1 - Math.pow(1 - x, 3);
+    const easeOutExpo = (x: number) => x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
     const tick = (time: number) => {
       const elapsed = time - startedAt;
       const progress = Math.min(1, elapsed / durationMs);
-      const eased = easeOutCubic(progress);
+      const eased = easeOutExpo(progress);
       setValue(Math.round(end * eased));
 
       if (progress < 1) {
@@ -189,20 +235,131 @@ function AboutStatCard({
   className?: string;
 }) {
   const cardRef = useRef<HTMLDivElement | null>(null);
-  const isCardInView = useInView(cardRef, { once: true, amount: 0.9 });
+  const isCardInView = useInView(cardRef, { once: true, amount: 0.5 });
 
   return (
-    <div ref={cardRef} className={`bento-card about-card-motion flex flex-col items-center justify-center ${className}`.trim()}>
-      <p className="text-2xl sm:text-4xl font-bold tracking-tight tabular-nums">
-        <CountUpNumber end={value} suffix={suffix} durationMs={durationMs} play={isCardInView} />
-      </p>
-      <p className="text-[10px] text-muted-foreground mt-2 tracking-wider uppercase font-mono text-center">{label}</p>
+    <TiltCard className={`bento-card about-card-motion flex flex-col items-center justify-center ${className}`.trim()}>
+      <div ref={cardRef} className="flex flex-col items-center justify-center">
+        <p className="text-2xl sm:text-4xl font-bold tracking-tight tabular-nums">
+          <CountUpNumber end={value} suffix={suffix} durationMs={durationMs} play={isCardInView} />
+        </p>
+        <p className="text-[10px] text-muted-foreground mt-2 tracking-wider uppercase font-mono text-center">{label}</p>
+      </div>
+    </TiltCard>
+  );
+}
+
+function MomentumLineChart({
+  days,
+}: {
+  days: GitHubDaySummary[];
+}) {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const rawMax = Math.max(...days.map((day) => day.commits), 0);
+  const getNiceMax = (value: number) => {
+    if (value <= 5) return 5;
+    const magnitude = 10 ** Math.floor(Math.log10(value));
+    const normalized = value / magnitude;
+    const niceNormalized = normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 5 ? 5 : 10;
+    return niceNormalized * magnitude;
+  };
+  const maxValue = getNiceMax(rawMax);
+  const midValue = Math.round(maxValue / 2);
+  const bottomValue = 0;
+  const activeDay = activeIndex !== null ? days[activeIndex] : null;
+  const chartStepX = 100 / Math.max(days.length, 1);
+  const chartStartX = chartStepX / 2;
+  const chartEndX = 100 - chartStartX;
+  const axisLabelX = Math.max(0.8, chartStartX - 1.2);
+  const points = days.map((day, index) => {
+    const x = chartStartX + index * chartStepX;
+    const y = 34 - (day.commits / maxValue) * 26;
+    return { x, y };
+  });
+  const linePoints = points.map((point) => `${point.x},${point.y}`).join(' ');
+
+  return (
+    <div className="space-y-2" onMouseLeave={() => setActiveIndex(null)}>
+      <div className="rounded-lg border border-border bg-muted/60 px-2 py-2">
+        <svg viewBox="0 0 100 40" className="w-full h-24" preserveAspectRatio="none" role="img" aria-label="Weekly commit trend">
+          <line x1={chartStartX} y1="34" x2={chartEndX} y2="34" stroke="currentColor" strokeOpacity={0.18} strokeWidth="0.5" vectorEffect="non-scaling-stroke" className="text-foreground" />
+          <line x1={chartStartX} y1="21" x2={chartEndX} y2="21" stroke="currentColor" strokeOpacity={0.14} strokeWidth="0.5" vectorEffect="non-scaling-stroke" className="text-foreground" />
+          <line x1={chartStartX} y1="8" x2={chartEndX} y2="8" stroke="currentColor" strokeOpacity={0.1} strokeWidth="0.5" vectorEffect="non-scaling-stroke" className="text-foreground" />
+          <text x={axisLabelX} y="8" textAnchor="end" dominantBaseline="middle" fontSize="2.5" fill="currentColor" fillOpacity="0.52" className="font-mono">{maxValue}</text>
+          <text x={axisLabelX} y="21" textAnchor="end" dominantBaseline="middle" fontSize="2.5" fill="currentColor" fillOpacity="0.48" className="font-mono">{midValue}</text>
+          <text x={axisLabelX} y="34" textAnchor="end" dominantBaseline="middle" fontSize="2.5" fill="currentColor" fillOpacity="0.44" className="font-mono">{bottomValue}</text>
+          <polyline
+            fill="none"
+            stroke="currentColor"
+            strokeOpacity={0.62}
+            strokeWidth="1.2"
+            vectorEffect="non-scaling-stroke"
+            points={linePoints}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-foreground"
+          />
+          {points.map((point, index) => (
+            <line
+              key={`${days[index].key}-point`}
+              x1={point.x}
+              x2={point.x}
+              y1={point.y - (index === activeIndex ? 0.9 : 0.6)}
+              y2={point.y + (index === activeIndex ? 0.9 : 0.6)}
+              stroke="currentColor"
+              strokeOpacity={index === activeIndex ? 0.95 : 0.45}
+              strokeWidth={index === activeIndex ? 1.4 : 1}
+              vectorEffect="non-scaling-stroke"
+              strokeLinecap="round"
+              className="text-foreground"
+            />
+          ))}
+          {points.map((point, index) => {
+            const x = Math.max(0, point.x - chartStepX / 2);
+            const width = chartStepX;
+            return (
+              <rect
+                key={`${days[index].key}-hit`}
+                x={x}
+                y="0"
+                width={width}
+                height="40"
+                fill="transparent"
+                onMouseEnter={() => setActiveIndex(index)}
+                onFocus={() => setActiveIndex(index)}
+                onClick={() => setActiveIndex(index)}
+                onBlur={() => setActiveIndex(null)}
+                className="cursor-pointer"
+              />
+            );
+          })}
+        </svg>
+      </div>
+      <div className="grid grid-cols-7 gap-2">
+        {days.map((day, index) => (
+          <button
+            key={`${day.key}-label`}
+            type="button"
+            onMouseEnter={() => setActiveIndex(index)}
+            onFocus={() => setActiveIndex(index)}
+            onClick={() => setActiveIndex(index)}
+            onBlur={() => setActiveIndex(null)}
+            className={`text-[10px] font-mono text-center transition-colors ${index === activeIndex ? 'text-foreground' : 'text-muted-foreground'}`}
+          >
+            {day.shortLabel}
+          </button>
+        ))}
+      </div>
+      <div className={`text-[11px] font-mono tabular-nums min-h-[1.25rem] transition-opacity ${activeDay ? 'text-muted-foreground opacity-100' : 'opacity-0'}`}>
+        {activeDay ? `${activeDay.shortLabel} ${activeDay.key} · ${activeDay.commits} commits` : '\u00A0'}
+      </div>
     </div>
   );
 }
 
 function AboutSection() {
   const t = useTranslations('About');
+  const locale = useLocale();
   const focusAreas = ['productThinking', 'rapidPrototyping', 'uiUxDesign', 'problemSolving', 'research', 'continuousImprovement'] as const;
   const stats: AboutStatItem[] = [
     { value: 7, suffix: '+', label: t('statsProjects') },
@@ -210,11 +367,76 @@ function AboutSection() {
     { value: 2, suffix: '+', label: t('statsYears') },
     { value: 4, label: t('statsCommits') },
   ];
+  const [momentumStatus, setMomentumStatus] = useState<GitHubMomentumStatus>('loading');
+  const [githubUsername, setGithubUsername] = useState('AxAce67');
+  const [weeklyCommits, setWeeklyCommits] = useState(0);
+  const [streakDays, setStreakDays] = useState(0);
+  const [dailyData, setDailyData] = useState<Array<{ date: string; commits: number }>>([]);
+  const [lastUpdatedAt, setLastUpdatedAt] = useState<string | null>(null);
+
+  const fallbackDays = useMemo(
+    () =>
+      Array.from({ length: 7 }, (_, index) => {
+        const now = new Date();
+        const date = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - (6 - index)));
+        return { date: date.toISOString().slice(0, 10), commits: 0 };
+      }),
+    [],
+  );
+  const daysForRender = dailyData.length === 7 ? dailyData : fallbackDays;
+  const daySummaries: GitHubDaySummary[] = daysForRender.map((day) => {
+    const date = new Date(`${day.date}T00:00:00Z`);
+    return {
+      key: day.date,
+      shortLabel: new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(date),
+      commits: day.commits,
+    };
+  });
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const fetchMomentum = async () => {
+      setMomentumStatus('loading');
+
+      try {
+        const response = await fetch('/api/github/momentum', {
+          signal: controller.signal,
+          cache: 'no-store',
+        });
+        const payload = (await response.json()) as GitHubMomentumApiResponse;
+        if (!response.ok || !payload.ok) {
+          throw new Error('Failed to fetch momentum from server API');
+        }
+        setGithubUsername(payload.username || 'AxAce67');
+        setDailyData(Array.isArray(payload.daily) ? payload.daily.slice(-7) : fallbackDays);
+        setWeeklyCommits(payload.weeklyCommits ?? 0);
+        setStreakDays(payload.streakDays ?? 0);
+        setLastUpdatedAt(payload.updatedAt ?? new Date().toISOString());
+        setMomentumStatus('ready');
+      } catch {
+        if (controller.signal.aborted) return;
+        setDailyData(fallbackDays);
+        setWeeklyCommits(0);
+        setStreakDays(0);
+        setLastUpdatedAt(null);
+        setMomentumStatus('error');
+      }
+    };
+
+    void fetchMomentum();
+    return () => controller.abort();
+  }, [fallbackDays]);
+
+  const weeklyValueLabel = momentumStatus === 'loading' ? '...' : weeklyCommits.toString();
+  const streakValueLabel = momentumStatus === 'loading' ? '...' : `${streakDays}${t('momentum.daySuffix')}`;
+  const updatedDateLabel = lastUpdatedAt
+    ? new Intl.DateTimeFormat(locale, { month: '2-digit', day: '2-digit' }).format(new Date(lastUpdatedAt))
+    : '--';
 
   return (
     <section id="about" className="py-20 sm:py-32 lg:py-36">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal>
+        <ScrollReveal direction="none">
           <p className="section-label">{t('sectionTitle')}</p>
         </ScrollReveal>
 
@@ -305,11 +527,42 @@ function AboutSection() {
               </div>
             </div>
           </ScrollReveal>
+
+          <ScrollReveal delay={0.34}>
+            <TiltCard className="bento-card about-card-motion">
+              <div className="flex items-center justify-between gap-3 mb-4">
+                <div className="flex items-center gap-2">
+                  <Github className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
+                  <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('momentum.label')}</span>
+                </div>
+                <span className="text-[10px] font-mono text-muted-foreground px-2 py-1 rounded-md border border-border">@{githubUsername}</span>
+              </div>
+              <p className="text-[13px] text-muted-foreground leading-relaxed">{t('momentum.description')}</p>
+              <div className="grid grid-cols-2 gap-2 mt-4">
+                <div className="rounded-lg border border-border bg-muted/60 px-3 py-2.5">
+                  <p className="text-xl font-bold tracking-tight tabular-nums">{weeklyValueLabel}</p>
+                  <p className="text-[10px] font-mono tracking-wide uppercase text-muted-foreground mt-1">{t('momentum.weeklyCommits')}</p>
+                </div>
+                <div className="rounded-lg border border-border bg-muted/60 px-3 py-2.5">
+                  <p className="text-xl font-bold tracking-tight tabular-nums">{streakValueLabel}</p>
+                  <p className="text-[10px] font-mono tracking-wide uppercase text-muted-foreground mt-1">{t('momentum.streak')}</p>
+                </div>
+              </div>
+              <div className="mt-4">
+                <MomentumLineChart days={daySummaries} />
+              </div>
+              <p className="text-[10px] text-muted-foreground mt-3">
+                {momentumStatus === 'error'
+                  ? t('momentum.unavailable')
+                  : `${t('momentum.updated')}: ${updatedDateLabel} · ${t('momentum.note')}`}
+              </p>
+            </TiltCard>
+          </ScrollReveal>
         </div>
 
         <div className="hidden md:grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[minmax(120px,auto)] md:auto-rows-[minmax(140px,auto)]">
-          <ScrollReveal delay={0.15} className="order-2 md:col-start-1 md:row-start-2 md:col-span-2 md:row-span-2">
-            <div className="bento-card about-card-motion p-5 h-full flex flex-col justify-start">
+          <ScrollReveal delay={0.15} direction="left" className="order-2 md:col-start-1 md:row-start-2 md:col-span-2 md:row-span-2">
+            <TiltCard className="bento-card about-card-motion p-5 h-full flex flex-col justify-start">
               <div>
                 <div className="flex items-center gap-2 mb-4">
                   <Terminal className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
@@ -320,27 +573,27 @@ function AboutSection() {
                 <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph3')}</p>
                 <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph4')}</p>
               </div>
-            </div>
+            </TiltCard>
           </ScrollReveal>
 
-          <ScrollReveal delay={0.2}>
-            <AboutStatCard value={stats[0].value} suffix={stats[0].suffix} label={stats[0].label} durationMs={980} className="h-full py-5" />
+          <ScrollReveal delay={0.2} direction="scale">
+            <AboutStatCard value={stats[0].value} suffix={stats[0].suffix} label={stats[0].label} durationMs={1200} className="h-full py-5" />
           </ScrollReveal>
 
-          <ScrollReveal delay={0.24}>
-            <AboutStatCard value={stats[1].value} suffix={stats[1].suffix} label={stats[1].label} durationMs={1060} className="h-full py-5" />
+          <ScrollReveal delay={0.24} direction="scale">
+            <AboutStatCard value={stats[1].value} suffix={stats[1].suffix} label={stats[1].label} durationMs={1300} className="h-full py-5" />
           </ScrollReveal>
 
-          <ScrollReveal delay={0.28}>
-            <AboutStatCard value={stats[2].value} suffix={stats[2].suffix} label={stats[2].label} durationMs={1140} className="h-full py-5" />
+          <ScrollReveal delay={0.28} direction="scale">
+            <AboutStatCard value={stats[2].value} suffix={stats[2].suffix} label={stats[2].label} durationMs={1400} className="h-full py-5" />
           </ScrollReveal>
 
-          <ScrollReveal delay={0.32}>
-            <AboutStatCard value={stats[3].value} label={stats[3].label} durationMs={1220} className="h-full py-5" />
+          <ScrollReveal delay={0.32} direction="scale">
+            <AboutStatCard value={stats[3].value} label={stats[3].label} durationMs={1500} className="h-full py-5" />
           </ScrollReveal>
 
-          <ScrollReveal delay={0.2} className="md:col-span-2">
-            <div className="bento-card about-card-motion h-full flex flex-col justify-center">
+          <ScrollReveal delay={0.2} direction="right" className="md:col-span-2">
+            <TiltCard className="bento-card about-card-motion h-full flex flex-col justify-center">
               <div className="flex items-center gap-2 mb-3">
                 <Code2 className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
                 <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('focusLabel')}</span>
@@ -352,11 +605,11 @@ function AboutSection() {
                   </span>
                 ))}
               </div>
-            </div>
+            </TiltCard>
           </ScrollReveal>
 
-          <ScrollReveal delay={0.25} className="order-1 md:col-start-1 md:row-start-1 md:col-span-2 md:row-span-1">
-            <div className="bento-card about-card-motion h-full flex flex-col justify-between">
+          <ScrollReveal delay={0.25} direction="right" className="order-1 md:col-start-1 md:row-start-1 md:col-span-2 md:row-span-1">
+            <TiltCard className="bento-card about-card-motion h-full flex flex-col justify-between">
               <div className="flex items-center gap-2 mb-4">
                 <Globe className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
                 <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('linksLabel')}</span>
@@ -400,7 +653,43 @@ function AboutSection() {
                   )
                 )}
               </div>
-            </div>
+            </TiltCard>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.35} direction="up" className="md:col-span-4">
+            <TiltCard className="bento-card about-card-motion h-full">
+              <div className="flex items-center justify-between gap-3 mb-5">
+                <div className="flex items-center gap-2">
+                  <Github className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
+                  <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('momentum.label')}</span>
+                </div>
+                <span className="text-[10px] font-mono text-muted-foreground px-2 py-1 rounded-md border border-border">@{githubUsername}</span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-4 md:items-start">
+                <div className="md:col-span-2 grid grid-cols-2 gap-3">
+                  <div className="rounded-lg border border-border bg-muted/60 p-3">
+                    <p className="text-3xl font-bold tracking-tight tabular-nums">{weeklyValueLabel}</p>
+                    <p className="text-[10px] font-mono tracking-wide uppercase text-muted-foreground mt-1">{t('momentum.weeklyCommits')}</p>
+                  </div>
+                  <div className="rounded-lg border border-border bg-muted/60 p-3">
+                    <p className="text-3xl font-bold tracking-tight tabular-nums">{streakValueLabel}</p>
+                    <p className="text-[10px] font-mono tracking-wide uppercase text-muted-foreground mt-1">{t('momentum.streak')}</p>
+                  </div>
+                  <p className="text-[12px] text-muted-foreground md:col-span-2">{t('momentum.description')}</p>
+                </div>
+
+                <div className="md:col-span-3">
+                  <MomentumLineChart days={daySummaries} />
+                </div>
+              </div>
+
+              <p className="text-[10px] text-muted-foreground mt-4">
+                {momentumStatus === 'error'
+                  ? t('momentum.unavailable')
+                  : `${t('momentum.updated')}: ${updatedDateLabel} · ${t('momentum.note')}`}
+              </p>
+            </TiltCard>
           </ScrollReveal>
         </div>
       </div>
@@ -409,96 +698,151 @@ function AboutSection() {
 }
 
 function SkillsSection() {
-  const categories: SkillCategory[] = ['Languages', 'AI', 'Tools'];
-  const [selectedCategory, setSelectedCategory] = useState<(typeof categories)[number]>('Languages');
-  const categoryLabels: Record<(typeof categories)[number], string> = {
+  const categories: SkillCategory[] = ['Languages', 'Frameworks', 'AI', 'Creative'];
+  const [selectedCategory, setSelectedCategory] = useState<SkillCategory>('Languages');
+  const categoryLabels: Record<SkillCategory, string> = {
     Languages: '言語',
+    Frameworks: 'フレームワーク',
     AI: 'AI活用',
-    Tools: 'クリエイティブ',
+    Creative: '動画制作',
   };
-  const categoryDescriptions: Record<(typeof categories)[number], string> = {
-    Languages: '主にWeb開発で使う言語',
-    AI: '実装・設計で活用するAI',
-    Tools: '開発と制作で使うツール',
+  const categoryDescriptions: Record<SkillCategory, string> = {
+    Languages: '主にWeb開発で使用するプログラミング言語',
+    Frameworks: 'Webアプリの開発に活用しているフレームワーク・ライブラリ',
+    AI: '実装・設計・学習で日常的に活用するAIツール',
+    Creative: '動画編集・コンテンツ制作ツール',
   };
-  const categoryIcons: Record<string, ReactNode> = {
+  const categoryIcons: Record<SkillCategory, ReactNode> = {
     Languages: <Code2 className="w-4 h-4" strokeWidth={1.5} />,
-    AI: <Cpu className="w-4 h-4" strokeWidth={1.5} />,
-    Tools: <Layers className="w-4 h-4" strokeWidth={1.5} />,
+    Frameworks: <Wrench className="w-4 h-4" strokeWidth={1.5} />,
+    AI: <Sparkles className="w-4 h-4" strokeWidth={1.5} />,
+    Creative: <Film className="w-4 h-4" strokeWidth={1.5} />,
   };
+  const levelLabels: Record<string, string> = {
+    main: 'メイン',
+    familiar: '実務レベル',
+    learning: '学習中',
+  };
+
   const selectedSkills = sampleSkills.filter((s) => s.category === selectedCategory);
 
   return (
     <section id="skills" className="py-20 sm:py-32 lg:py-36">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal>
+        <ScrollReveal direction="none">
           <p className="section-label">{'// skills'}</p>
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2">Skills</h2>
-          <p className="text-xs sm:text-sm text-muted-foreground mb-8 sm:mb-12">特に力を入れているスキル</p>
+          <p className="text-xs sm:text-sm text-muted-foreground mb-8 sm:mb-12">日常的に使っているスキルセット</p>
         </ScrollReveal>
 
+        {/* Mobile: タブ切り替え */}
         <div className="md:hidden">
-          <div className="grid grid-cols-3 gap-1 w-full rounded-xl border border-border p-1 bg-muted mb-4">
+          <div className="grid grid-cols-4 gap-1 w-full rounded-xl border border-border p-1 bg-muted mb-4">
             {categories.map((cat) => (
               <button
                 key={cat}
                 type="button"
                 onClick={() => setSelectedCategory(cat)}
-                className={`inline-flex w-full items-center justify-center gap-1 px-1.5 py-2 rounded-lg text-[11px] font-mono transition-colors ${
-                  selectedCategory === cat ? 'bg-background text-foreground shadow-sm' : 'text-foreground/85 hover:text-foreground'
-                }`}
+                className={`inline-flex w-full items-center justify-center gap-1 px-1 py-2.5 rounded-lg text-[10px] font-mono transition-all duration-200 ${selectedCategory === cat
+                  ? 'bg-background text-foreground shadow-sm'
+                  : 'text-foreground/70 hover:text-foreground'
+                  }`}
                 aria-pressed={selectedCategory === cat}
               >
-                <span className={selectedCategory === cat ? 'text-foreground' : 'text-foreground/75'}>{categoryIcons[cat]}</span>
-                <span className="whitespace-nowrap leading-none">{categoryLabels[cat]}</span>
+                <span className={`transition-colors ${selectedCategory === cat ? 'text-foreground' : 'text-foreground/60'}`}>
+                  {categoryIcons[cat]}
+                </span>
+                <span className="whitespace-nowrap leading-none hidden min-[380px]:inline">{categoryLabels[cat]}</span>
               </button>
             ))}
           </div>
 
-          <div className="bento-card p-4">
-            <p className="text-[11px] text-muted-foreground font-mono mb-3.5">{categoryDescriptions[selectedCategory]}</p>
-            <div className="flex flex-wrap gap-2">
-              {selectedSkills.map(({ name, featured }) => (
-                <span
-                  key={name}
-                  className={`inline-flex items-center rounded-full border border-border bg-muted/60 ${
-                    featured ? 'px-3.5 py-2 text-[12px]' : 'px-3 py-1.5 text-[11px]'
-                  } font-mono text-foreground/95`}
-                >
-                  {name}
-                </span>
-              ))}
-            </div>
-          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={selectedCategory}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2 }}
+              className="bento-card p-4"
+            >
+              <p className="text-[11px] text-muted-foreground font-mono mb-4">{categoryDescriptions[selectedCategory]}</p>
+              <div className="space-y-2">
+                {selectedSkills.map(({ name, icon: Icon, featured }) => (
+                  <div
+                    key={name}
+                    className={`skill-item-card flex items-center gap-3 rounded-xl border px-3.5 py-3 transition-all duration-200 ${featured
+                      ? 'border-border-hover bg-muted/80'
+                      : 'border-border bg-muted/40'
+                      }`}
+                  >
+                    {Icon && (
+                      <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-background border border-border flex items-center justify-center">
+                        <Icon size={16} className="text-foreground/80" />
+                      </span>
+                    )}
+                    <span className="flex-1 text-[13px] font-mono text-foreground/95 tracking-tight">{name}</span>
+                    {featured && (
+                      <span className="text-[9px] font-mono tracking-wider uppercase px-2 py-0.5 rounded-full bg-foreground/10 text-foreground/80">
+                        {levelLabels['main']}
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
 
-        <div className="hidden md:grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Desktop: 2x2 グリッド */}
+        <div className="hidden md:grid md:grid-cols-2 gap-5">
           {categories.map((cat, catIdx) => {
             const skills = sampleSkills.filter((s) => s.category === cat);
             return (
-              <ScrollReveal key={cat} delay={0.15 + catIdx * 0.08}>
-                <div className="bento-card p-5 h-full">
-                  <div className="flex items-center gap-2 mb-5">
-                    <span className="text-muted-foreground">{categoryIcons[cat]}</span>
-                    <span className="text-[11px] font-mono text-muted-foreground tracking-wider">{categoryLabels[cat]}</span>
-                  </div>
-                  <p className="text-[11px] text-muted-foreground font-mono mb-3.5">{categoryDescriptions[cat]}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {skills.map(({ name, featured }) => (
-                      <span
-                        key={name}
-                        className={`inline-flex items-center rounded-full border border-border bg-muted/60 ${
-                          featured ? 'px-3.5 py-2 text-[12px]' : 'px-3 py-1.5 text-[11px]'
-                        } font-mono text-foreground/95`}
-                      >
-                        {name}
+              <ScrollReveal key={cat} delay={0.15 + catIdx * 0.06}>
+                <TiltCard className="bento-card about-card-motion p-4 h-full">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="w-7 h-7 rounded-md bg-muted flex items-center justify-center text-muted-foreground">
+                        {categoryIcons[cat]}
                       </span>
+                      <div>
+                        <span className="text-[13px] font-semibold tracking-tight text-foreground">{categoryLabels[cat]}</span>
+                        <p className="text-[9px] text-muted-foreground font-mono leading-tight mt-0.5">{categoryDescriptions[cat]}</p>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-mono text-muted-foreground bg-muted px-2 py-1 rounded-md">
+                      {skills.length}
+                    </span>
+                  </div>
+                  <div className="space-y-1">
+                    {skills.map(({ name, icon: Icon, featured }) => (
+                      <div
+                        key={name}
+                        className={`flex items-center gap-2.5 rounded-md border px-2.5 py-2 transition-colors duration-200 ${featured
+                          ? 'border-border bg-muted/50'
+                          : 'border-transparent'
+                          }`}
+                      >
+                        {Icon && (
+                          <span className={`flex-shrink-0 w-6 h-6 rounded flex items-center justify-center ${featured ? 'bg-background border border-border' : 'bg-muted/60'
+                            }`}>
+                            <Icon size={12} className="text-foreground/70" />
+                          </span>
+                        )}
+                        <span className="flex-1 text-[12px] font-mono text-foreground/90 tracking-tight">{name}</span>
+                        {featured && (
+                          <span className="text-[9px] font-mono tracking-wider uppercase px-1.5 py-0.5 rounded-full bg-foreground/8 text-foreground/70">
+                            メイン
+                          </span>
+                        )}
+                      </div>
                     ))}
                   </div>
-                </div>
+                </TiltCard>
               </ScrollReveal>
             );
           })}
@@ -535,7 +879,7 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
   return (
     <section id="projects" className="py-20 sm:py-32 lg:py-36">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal>
+        <ScrollReveal direction="none">
           <p className="section-label">{t('sectionTitle')}</p>
         </ScrollReveal>
 
@@ -546,11 +890,10 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
               <button
                 type="button"
                 onClick={() => setViewMode('list')}
-                className={`inline-flex flex-1 sm:flex-none items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-mono transition-colors ${
-                  viewMode === 'list'
-                    ? 'bg-background text-foreground shadow-sm'
-                    : 'text-foreground/80 hover:text-foreground hover:bg-background/60'
-                }`}
+                className={`inline-flex flex-1 sm:flex-none items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-mono transition-colors ${viewMode === 'list'
+                  ? 'bg-background text-foreground shadow-sm'
+                  : 'text-foreground/80 hover:text-foreground hover:bg-background/60'
+                  }`}
                 aria-pressed={viewMode === 'list'}
               >
                 <List className="w-3.5 h-3.5" />
@@ -559,11 +902,10 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
               <button
                 type="button"
                 onClick={() => setViewMode('grid')}
-                className={`inline-flex flex-1 sm:flex-none items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-mono transition-colors ${
-                  viewMode === 'grid'
-                    ? 'bg-background text-foreground shadow-sm'
-                    : 'text-foreground/80 hover:text-foreground hover:bg-background/60'
-                }`}
+                className={`inline-flex flex-1 sm:flex-none items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-mono transition-colors ${viewMode === 'grid'
+                  ? 'bg-background text-foreground shadow-sm'
+                  : 'text-foreground/80 hover:text-foreground hover:bg-background/60'
+                  }`}
                 aria-pressed={viewMode === 'grid'}
               >
                 <LayoutGrid className="w-3.5 h-3.5" />
@@ -589,11 +931,10 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
               >
                 <div className={effectiveViewMode === 'grid' ? 'flex flex-col h-full' : 'flex flex-row'}>
                   <div
-                    className={`bg-muted overflow-hidden relative ${
-                      effectiveViewMode === 'grid'
-                        ? 'aspect-[4/3] rounded-t-xl'
-                        : 'w-32 min-w-32 aspect-[4/3] sm:w-56 sm:min-w-56 sm:aspect-video rounded-l-xl rounded-tr-none shrink-0'
-                    }`}
+                    className={`bg-muted overflow-hidden relative ${effectiveViewMode === 'grid'
+                      ? 'aspect-[4/3] rounded-t-xl'
+                      : 'w-32 min-w-32 aspect-[4/3] sm:w-56 sm:min-w-56 sm:aspect-video rounded-l-xl rounded-tr-none shrink-0'
+                      }`}
                   >
                     {project.image ? (
                       <Image
@@ -619,13 +960,12 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                   </div>
                   <div className={`${effectiveViewMode === 'grid' ? 'p-3 sm:p-5' : 'p-3 sm:p-6'} flex-1 min-w-0`}>
                     <h3
-                      className={`${
-                        effectiveViewMode === 'grid'
-                          ? 'text-sm sm:text-lg'
-                          : isMobileViewport
-                            ? 'text-sm leading-snug line-clamp-2'
-                            : 'text-lg'
-                      } font-semibold tracking-tight mb-2`}
+                      className={`${effectiveViewMode === 'grid'
+                        ? 'text-sm sm:text-lg'
+                        : isMobileViewport
+                          ? 'text-sm leading-snug line-clamp-2'
+                          : 'text-lg'
+                        } font-semibold tracking-tight mb-2`}
                     >
                       {project.title}
                     </h3>
@@ -635,13 +975,12 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                       </p>
                     )}
                     <p
-                      className={`${
-                        effectiveViewMode === 'grid'
-                          ? 'text-xs sm:text-sm text-muted-foreground leading-relaxed mb-3 line-clamp-2'
-                          : isMobileViewport
-                            ? 'text-xs text-muted-foreground leading-relaxed mb-3 line-clamp-3'
-                            : 'text-sm text-muted-foreground leading-relaxed mb-4'
-                      }`}
+                      className={`${effectiveViewMode === 'grid'
+                        ? 'text-xs sm:text-sm text-muted-foreground leading-relaxed mb-3 line-clamp-2'
+                        : isMobileViewport
+                          ? 'text-xs text-muted-foreground leading-relaxed mb-3 line-clamp-3'
+                          : 'text-sm text-muted-foreground leading-relaxed mb-4'
+                        }`}
                     >
                       {project.description}
                     </p>
@@ -685,6 +1024,10 @@ function ActiveProjectsSection({ initialActiveProjects }: { initialActiveProject
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const activeProjects = initialActiveProjects;
+  const VISIBLE_LIMIT = 5;
+  const [showAll, setShowAll] = useState(false);
+  const visibleProjects = showAll ? activeProjects : activeProjects.slice(0, VISIBLE_LIMIT);
+  const hiddenCount = activeProjects.length - VISIBLE_LIMIT;
   const stages = [
     text('stagePlanning', 'Planning'),
     text('stageDesign', 'Design'),
@@ -695,7 +1038,7 @@ function ActiveProjectsSection({ initialActiveProjects }: { initialActiveProject
   return (
     <section id="timeline" className="py-20 sm:py-32 lg:py-36">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal>
+        <ScrollReveal direction="none">
           <p className="section-label">{text('sectionLabel', '// in_progress')}</p>
         </ScrollReveal>
 
@@ -703,39 +1046,69 @@ function ActiveProjectsSection({ initialActiveProjects }: { initialActiveProject
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-10 sm:mb-16">{text('heading', 'Active Projects')}</h2>
         </ScrollReveal>
 
-        <div className="md:hidden">
+        <div className="md:hidden space-y-3">
           {activeProjects.length === 0 ? (
             <div className="bento-card">
               <p className="text-sm text-muted-foreground">No active projects yet.</p>
             </div>
           ) : (
-            <div className="overflow-x-auto pb-2">
-              <div className="grid grid-cols-5 gap-2 min-w-[560px]">
-                {stages.map((stageLabel, stageIndex) => {
-                  const projectsInStage = activeProjects.filter(
-                    (project) => Math.max(0, Math.min(stages.length - 1, project.stage)) === stageIndex
-                  );
-                  return (
-                    <div key={`mobile-stage-col-${stageLabel}`} className="rounded-xl border border-border bg-card p-2.5">
-                      <p className="text-[9px] font-mono text-muted-foreground uppercase tracking-wide mb-2">
-                        {stageLabel}
-                      </p>
-                      <div className="space-y-1.5">
-                        {projectsInStage.length === 0 ? (
-                          <p className="text-[10px] font-mono text-muted-foreground/70">-</p>
-                        ) : (
-                          projectsInStage.map((project) => (
-                            <div key={project.id} className="rounded-md border border-border bg-muted px-2 py-1.5">
-                              <p className="text-[11px] leading-tight text-foreground/95 break-words">{project.name}</p>
-                            </div>
-                          ))
-                        )}
+            <>
+              {visibleProjects.map((project) => {
+                const currentStage = Math.max(0, Math.min(stages.length - 1, project.stage));
+                return (
+                  <ScrollReveal key={project.id}>
+                    <div className="bento-card p-4">
+                      <p className="text-sm font-medium mb-4">{project.name}</p>
+                      <div className="relative">
+                        <div className="absolute top-[7px] left-0 right-0 h-[2px] bg-border" />
+                        <div
+                          className="absolute top-[7px] left-0 h-[2px] bg-foreground transition-all duration-700"
+                          style={{ width: `${(currentStage / (stages.length - 1)) * 100}%` }}
+                        />
+                        <div className="relative flex justify-between">
+                          {stages.map((stage, i) => {
+                            const isCompleted = i < currentStage;
+                            const isCurrent = i === currentStage;
+                            return (
+                              <div key={stage} className="flex flex-col items-center" style={{ width: `${100 / stages.length}%` }}>
+                                <div
+                                  className={`w-[15px] h-[15px] rounded-full border-2 flex items-center justify-center transition-all duration-300 ${isCompleted
+                                    ? 'bg-foreground border-foreground'
+                                    : isCurrent
+                                      ? 'bg-foreground border-foreground'
+                                      : 'bg-background border-border'
+                                    }`}
+                                >
+                                  {isCompleted && (
+                                    <svg width="8" height="8" viewBox="0 0 12 12" fill="none">
+                                      <path d="M2 6L5 9L10 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-background" />
+                                    </svg>
+                                  )}
+                                  {isCurrent && !isCompleted && (
+                                    <div className="w-[5px] h-[5px] rounded-full bg-background" />
+                                  )}
+                                </div>
+                                <span className={`text-[8px] font-mono mt-1.5 text-center leading-tight ${isCompleted || isCurrent ? 'text-foreground' : 'text-muted-foreground/50'}`}>
+                                  {stage}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
                     </div>
-                  );
-                })}
-              </div>
-            </div>
+                  </ScrollReveal>
+                );
+              })}
+              {hiddenCount > 0 && (
+                <button
+                  onClick={() => setShowAll(!showAll)}
+                  className="w-full py-2.5 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors border border-border rounded-xl hover:border-foreground/20"
+                >
+                  {showAll ? '閉じる ↑' : `+ ${hiddenCount}件を表示 ↓`}
+                </button>
+              )}
+            </>
           )}
         </div>
 
@@ -755,7 +1128,7 @@ function ActiveProjectsSection({ initialActiveProjects }: { initialActiveProject
             </div>
           </div>
 
-          {activeProjects.map((project, rowIdx) => (
+          {visibleProjects.map((project, rowIdx) => (
             <div key={project.id} className="gantt-row group">
               <div className="gantt-label-col">
                 <span className="text-sm font-medium group-hover:text-foreground transition-colors">{project.name}</span>
@@ -818,6 +1191,15 @@ function ActiveProjectsSection({ initialActiveProjects }: { initialActiveProject
               </div>
             </div>
           ))}
+
+          {hiddenCount > 0 && (
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="w-full py-3 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors border-t border-border hover:bg-muted/50"
+            >
+              {showAll ? '閉じる ↑' : `+ ${hiddenCount}件を表示 ↓`}
+            </button>
+          )}
 
           {activeProjects.length === 0 && (
             <div className="px-6 py-6">
@@ -975,105 +1357,118 @@ function ContactSection() {
         {turnstileSiteKey && shouldLoadTurnstile ? (
           <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer strategy="afterInteractive" />
         ) : null}
-        <ScrollReveal>
+        <ScrollReveal direction="none">
           <p className="section-label">{`> send_message`}</p>
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-8 sm:mb-12">Contact</h2>
+          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2 sm:mb-3">{t('heading')}</h2>
+          <p className="text-sm text-muted-foreground mb-8 sm:mb-12">
+            {t('description')}
+          </p>
         </ScrollReveal>
 
-        <ScrollReveal delay={0.2}>
-          <form
-            ref={formRef}
-            onSubmit={handleSubmit}
-            className="space-y-6"
-          >
-            <input
-              type="text"
-              name="_gotcha"
-              tabIndex={-1}
-              autoComplete="off"
-              aria-hidden="true"
-              className="hidden"
-            />
-            <div>
-              <label htmlFor="contact-name" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
-                {t('name')}
-                <span className="ml-1 text-[var(--accent-muted)]" aria-hidden="true">*</span>
-              </label>
-              <input
-                id="contact-name"
-                name="name"
-                type="text"
-                required
-                className="w-full bg-transparent border-b border-border focus:border-foreground outline-none pb-2 text-sm transition-colors"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="contact-email" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
-                {t('email')}
-                <span className="ml-1 text-[var(--accent-muted)]" aria-hidden="true">*</span>
-              </label>
-              <input
-                id="contact-email"
-                name="email"
-                type="email"
-                required
-                className="w-full bg-transparent border-b border-border focus:border-foreground outline-none pb-2 text-sm transition-colors"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="contact-subject" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
-                {t('subject')}
-                <span className="ml-1 text-[var(--accent-muted)]" aria-hidden="true">*</span>
-              </label>
-              <input
-                id="contact-subject"
-                name="subject"
-                type="text"
-                required
-                className="w-full bg-transparent border-b border-border focus:border-foreground outline-none pb-2 text-sm transition-colors"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="contact-message" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
-                {t('message')}
-                <span className="ml-1 text-[var(--accent-muted)]" aria-hidden="true">*</span>
-              </label>
-              <textarea
-                id="contact-message"
-                name="message"
-                required
-                rows={5}
-                className="w-full bg-transparent border-b border-border focus:border-foreground outline-none pb-2 text-sm transition-colors resize-none"
-              />
-            </div>
-            {turnstileSiteKey && shouldLoadTurnstile ? (
-              <div
-                className="cf-turnstile"
-                data-sitekey={turnstileSiteKey}
-                data-callback="onTurnstileSuccess"
-                data-expired-callback="onTurnstileExpired"
-                data-error-callback="onTurnstileError"
-              />
-            ) : null}
-
-            <button
-              type="submit"
-              disabled={isSubmitting || !turnstileSiteKey || !shouldLoadTurnstile}
-              className="btn-primary w-full mt-4 flex items-center justify-center gap-2 disabled:opacity-60 disabled:pointer-events-none"
+        <div>
+          <div className="bento-card bento-card--static p-5 sm:p-8">
+            <form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              className="space-y-5"
             >
-              <Send className="w-4 h-4" strokeWidth={1.5} />
-              {isSubmitting ? t('sending') : t('preview')}
-            </button>
-            {submitState === 'turnstile' && <p className="text-sm text-amber-500">{t('turnstileRequired')}</p>}
-            {submitState === 'error' && <p className="text-sm text-red-500">{t('error')}</p>}
-          </form>
-        </ScrollReveal>
+              <input
+                type="text"
+                name="_gotcha"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="hidden"
+              />
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label htmlFor="contact-name" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
+                    {t('name')}
+                    <span className="ml-1 text-[var(--accent-muted)]" aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    id="contact-name"
+                    name="name"
+                    type="text"
+                    required
+                    placeholder={t('namePlaceholder')}
+                    className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-all focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="contact-email" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
+                    {t('email')}
+                    <span className="ml-1 text-[var(--accent-muted)]" aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    required
+                    placeholder={t('emailPlaceholder')}
+                    className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-all focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="contact-subject" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
+                  {t('subject')}
+                  <span className="ml-1 text-[var(--accent-muted)]" aria-hidden="true">*</span>
+                </label>
+                <input
+                  id="contact-subject"
+                  name="subject"
+                  type="text"
+                  required
+                  placeholder={t('subjectPlaceholder')}
+                  className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-all focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="contact-message" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
+                  {t('message')}
+                  <span className="ml-1 text-[var(--accent-muted)]" aria-hidden="true">*</span>
+                </label>
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  required
+                  rows={5}
+                  placeholder={t('messagePlaceholder')}
+                  className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-all focus:border-foreground focus:bg-transparent resize-none placeholder:text-muted-foreground/40"
+                />
+              </div>
+
+              {turnstileSiteKey && shouldLoadTurnstile ? (
+                <div
+                  className="cf-turnstile"
+                  data-sitekey={turnstileSiteKey}
+                  data-callback="onTurnstileSuccess"
+                  data-expired-callback="onTurnstileExpired"
+                  data-error-callback="onTurnstileError"
+                />
+              ) : null}
+
+              <button
+                type="submit"
+                disabled={isSubmitting || !turnstileSiteKey || !shouldLoadTurnstile}
+                className="btn-primary w-full mt-2 flex items-center justify-center gap-2 disabled:opacity-60 disabled:pointer-events-none"
+              >
+                <Send className="w-4 h-4" strokeWidth={1.5} />
+                {isSubmitting ? t('sending') : t('preview')}
+              </button>
+              {submitState === 'turnstile' && <p className="text-sm text-amber-500">{t('turnstileRequired')}</p>}
+              {submitState === 'error' && <p className="text-sm text-red-500">{t('error')}</p>}
+            </form>
+          </div>
+        </div>
         {isPreviewOpen && pendingPayload ? (
           <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center px-4">
             <div className="w-full max-w-lg rounded-xl border border-border bg-card p-5 sm:p-6 shadow-2xl">
