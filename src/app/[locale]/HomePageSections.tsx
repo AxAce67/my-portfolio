@@ -243,7 +243,7 @@ function AboutStatCard({
         <p className="text-2xl sm:text-4xl font-bold tracking-tight tabular-nums">
           <CountUpNumber end={value} suffix={suffix} durationMs={durationMs} play={isCardInView} />
         </p>
-        <p className="text-[10px] text-muted-foreground mt-2 tracking-wider uppercase font-mono text-center">{label}</p>
+        <p className="text-[12px] text-muted-foreground mt-2 tracking-wider uppercase font-mono text-center">{label}</p>
       </div>
     </TiltCard>
   );
@@ -344,7 +344,7 @@ function MomentumLineChart({
             onFocus={() => setActiveIndex(index)}
             onClick={() => setActiveIndex(index)}
             onBlur={() => setActiveIndex(null)}
-            className={`text-[10px] font-mono text-center transition-colors ${index === activeIndex ? 'text-foreground' : 'text-muted-foreground'}`}
+            className={`text-[12px] font-mono text-center transition-colors ${index === activeIndex ? 'text-foreground' : 'text-muted-foreground'}`}
           >
             {day.shortLabel}
           </button>
@@ -470,7 +470,7 @@ function AboutSection() {
                       aria-label={`${link.label} (disabled)`}
                     >
                       <span>{link.icon}</span>
-                      <span className="text-[10px] font-mono tracking-wide">{link.label}</span>
+                      <span className="text-[12px] font-mono tracking-wide">{link.label}</span>
                     </span>
                   ) : (
                     <a
@@ -481,7 +481,7 @@ function AboutSection() {
                       rel="noreferrer noopener"
                     >
                       <span>{link.icon}</span>
-                      <span className="text-[10px] font-mono tracking-wide">{link.label}</span>
+                      <span className="text-[12px] font-mono tracking-wide">{link.label}</span>
                     </a>
                   )
                 )}
@@ -535,23 +535,23 @@ function AboutSection() {
                   <Github className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
                   <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('momentum.label')}</span>
                 </div>
-                <span className="text-[10px] font-mono text-muted-foreground px-2 py-1 rounded-md border border-border">@{githubUsername}</span>
+                <span className="text-[12px] font-mono text-muted-foreground px-2 py-1 rounded-md border border-border">@{githubUsername}</span>
               </div>
               <p className="text-[13px] text-muted-foreground leading-relaxed">{t('momentum.description')}</p>
               <div className="grid grid-cols-2 gap-2 mt-4">
                 <div className="rounded-lg border border-border bg-muted/60 px-3 py-2.5">
                   <p className="text-xl font-bold tracking-tight tabular-nums">{weeklyValueLabel}</p>
-                  <p className="text-[10px] font-mono tracking-wide uppercase text-muted-foreground mt-1">{t('momentum.weeklyCommits')}</p>
+                  <p className="text-[12px] font-mono tracking-wide uppercase text-muted-foreground mt-1">{t('momentum.weeklyCommits')}</p>
                 </div>
                 <div className="rounded-lg border border-border bg-muted/60 px-3 py-2.5">
                   <p className="text-xl font-bold tracking-tight tabular-nums">{streakValueLabel}</p>
-                  <p className="text-[10px] font-mono tracking-wide uppercase text-muted-foreground mt-1">{t('momentum.streak')}</p>
+                  <p className="text-[12px] font-mono tracking-wide uppercase text-muted-foreground mt-1">{t('momentum.streak')}</p>
                 </div>
               </div>
               <div className="mt-4">
                 <MomentumLineChart days={daySummaries} />
               </div>
-              <p className="text-[10px] text-muted-foreground mt-3">
+              <p className="text-[12px] text-muted-foreground mt-3">
                 {momentumStatus === 'error'
                   ? t('momentum.unavailable')
                   : `${t('momentum.updated')}: ${updatedDateLabel} · ${t('momentum.note')}`}
@@ -663,18 +663,18 @@ function AboutSection() {
                   <Github className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
                   <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('momentum.label')}</span>
                 </div>
-                <span className="text-[10px] font-mono text-muted-foreground px-2 py-1 rounded-md border border-border">@{githubUsername}</span>
+                <span className="text-[12px] font-mono text-muted-foreground px-2 py-1 rounded-md border border-border">@{githubUsername}</span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-5 gap-4 md:items-start">
                 <div className="md:col-span-2 grid grid-cols-2 gap-3">
                   <div className="rounded-lg border border-border bg-muted/60 p-3">
                     <p className="text-3xl font-bold tracking-tight tabular-nums">{weeklyValueLabel}</p>
-                    <p className="text-[10px] font-mono tracking-wide uppercase text-muted-foreground mt-1">{t('momentum.weeklyCommits')}</p>
+                    <p className="text-[12px] font-mono tracking-wide uppercase text-muted-foreground mt-1">{t('momentum.weeklyCommits')}</p>
                   </div>
                   <div className="rounded-lg border border-border bg-muted/60 p-3">
                     <p className="text-3xl font-bold tracking-tight tabular-nums">{streakValueLabel}</p>
-                    <p className="text-[10px] font-mono tracking-wide uppercase text-muted-foreground mt-1">{t('momentum.streak')}</p>
+                    <p className="text-[12px] font-mono tracking-wide uppercase text-muted-foreground mt-1">{t('momentum.streak')}</p>
                   </div>
                   <p className="text-[12px] text-muted-foreground md:col-span-2">{t('momentum.description')}</p>
                 </div>
@@ -684,7 +684,7 @@ function AboutSection() {
                 </div>
               </div>
 
-              <p className="text-[10px] text-muted-foreground mt-4">
+              <p className="text-[12px] text-muted-foreground mt-4">
                 {momentumStatus === 'error'
                   ? t('momentum.unavailable')
                   : `${t('momentum.updated')}: ${updatedDateLabel} · ${t('momentum.note')}`}
@@ -746,7 +746,7 @@ function SkillsSection() {
                 key={cat}
                 type="button"
                 onClick={() => setSelectedCategory(cat)}
-                className={`inline-flex w-full items-center justify-center gap-1 px-1 py-2.5 rounded-lg text-[10px] font-mono transition-all duration-200 ${selectedCategory === cat
+                className={`inline-flex w-full items-center justify-center gap-1 px-1 py-2.5 rounded-lg text-[12px] font-mono transition-all duration-200 ${selectedCategory === cat
                   ? 'bg-background text-foreground shadow-sm'
                   : 'text-foreground/70 hover:text-foreground'
                   }`}
@@ -814,7 +814,7 @@ function SkillsSection() {
                         <p className="text-[9px] text-muted-foreground font-mono leading-tight mt-0.5">{categoryDescriptions[cat]}</p>
                       </div>
                     </div>
-                    <span className="text-[10px] font-mono text-muted-foreground bg-muted px-2 py-1 rounded-md">
+                    <span className="text-[12px] font-mono text-muted-foreground bg-muted px-2 py-1 rounded-md">
                       {skills.length}
                     </span>
                   </div>
@@ -970,7 +970,7 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                       {project.title}
                     </h3>
                     {project.createdAt && (
-                      <p className={`${effectiveViewMode === 'grid' ? 'text-[10px]' : 'text-[11px]'} font-mono text-muted-foreground uppercase tracking-wide mb-2`}>
+                      <p className={`${effectiveViewMode === 'grid' ? 'text-[12px]' : 'text-[11px]'} font-mono text-muted-foreground uppercase tracking-wide mb-2`}>
                         {t('createdAt')}: {formatDate(project.createdAt)}
                       </p>
                     )}
@@ -1115,14 +1115,14 @@ function ActiveProjectsSection({ initialActiveProjects }: { initialActiveProject
         <div ref={ref} className="hidden md:block gantt-chart">
           <div className="gantt-header">
             <div className="gantt-label-col">
-              <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
+              <span className="text-[12px] font-mono text-muted-foreground uppercase tracking-wider">
                 {text('projectColumn', 'Project')}
               </span>
             </div>
             <div className="gantt-stages-area">
               {stages.map((stage) => (
                 <div key={stage} className="gantt-stage-col">
-                  <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">{stage}</span>
+                  <span className="text-[12px] font-mono text-muted-foreground uppercase tracking-wider">{stage}</span>
                 </div>
               ))}
             </div>

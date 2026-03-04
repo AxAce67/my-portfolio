@@ -5,17 +5,8 @@ import { useEffect, useRef, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import dynamic from 'next/dynamic';
 
-const HeroScene = dynamic(() => import('@/components/three/HeroScene'), {
-  ssr: false,
-  loading: () => (
-    <div className="absolute inset-0 -z-10 pointer-events-none">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_35%,rgb(var(--foreground-rgb)_/_0.08),transparent_50%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_58%,rgb(var(--foreground-rgb)_/_0.06),transparent_48%)]" />
-    </div>
-  ),
-});
-
 const HomePageSections = dynamic(() => import('./HomePageSections'), {
+  ssr: false,
   loading: () => (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
       <div className="h-8 w-44 bg-muted rounded mb-8" />
@@ -51,6 +42,7 @@ export default function HomePageClient({
 }: HomePageClientProps) {
   const [showSections, setShowSections] = useState(false);
   const [restoreProjectsOnBack, setRestoreProjectsOnBack] = useState(false);
+  const sectionsTriggerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const navigationEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
@@ -97,22 +89,40 @@ export default function HomePageClient({
       return;
     }
 
-    const fallbackId = window.setTimeout(() => setShowSections(true), 900);
-
-    if ('requestIdleCallback' in window) {
-      const idleId = window.requestIdleCallback(() => {
-        window.clearTimeout(fallbackId);
+    const onHashChange = () => {
+      if (window.location.hash) {
         setShowSections(true);
-      });
+      }
+    };
+    window.addEventListener('hashchange', onHashChange);
 
+    const triggerEl = sectionsTriggerRef.current;
+    if (!triggerEl) {
       return () => {
-        window.clearTimeout(fallbackId);
-        window.cancelIdleCallback(idleId);
+        window.removeEventListener('hashchange', onHashChange);
       };
     }
 
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry?.isIntersecting) {
+          setShowSections(true);
+          observer.disconnect();
+        }
+      },
+      {
+        root: null,
+        rootMargin: '220px 0px',
+        threshold: 0,
+      },
+    );
+
+    observer.observe(triggerEl);
+
     return () => {
-      window.clearTimeout(fallbackId);
+      window.removeEventListener('hashchange', onHashChange);
+      observer.disconnect();
     };
   }, []);
 
@@ -174,6 +184,7 @@ export default function HomePageClient({
   return (
     <>
       <HeroSection hidden={restoreProjectsOnBack} />
+      <div ref={sectionsTriggerRef} className="h-px w-full" aria-hidden />
       {showSections ? (
         <HomePageSections
           initialCompletedProjects={initialCompletedProjects}
@@ -186,111 +197,12 @@ export default function HomePageClient({
 
 function HeroSection({ hidden = false }: { hidden?: boolean }) {
   const t = useTranslations('Hero');
-  const [displayedText, setDisplayedText] = useState('');
-  const [showCursor, setShowCursor] = useState(true);
   const [isTypingDone, setIsTypingDone] = useState(false);
-  const [showScene, setShowScene] = useState(false);
-  const [sceneQuality, setSceneQuality] = useState<'full' | 'lite'>('full');
   const description = t('description');
-  const typingRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    let index = 0;
-    setDisplayedText('');
-    setIsTypingDone(false);
-
-    const startTyping = () => {
-      typingRef.current = setInterval(() => {
-        if (index < description.length) {
-          setDisplayedText(description.slice(0, index + 1));
-          index += 1;
-        } else {
-          if (typingRef.current) clearInterval(typingRef.current);
-          setIsTypingDone(true);
-        }
-      }, 80);
-    };
-
-    const delay = setTimeout(startTyping, 150);
-    return () => {
-      clearTimeout(delay);
-      if (typingRef.current) clearInterval(typingRef.current);
-    };
-  }, [description]);
-
-  useEffect(() => {
-    const interval = setInterval(() => setShowCursor((p) => !p), 700);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const desktopQuery = window.matchMedia('(min-width: 1024px)');
-    let sceneTimer: number | null = null;
-    let idleId: number | null = null;
-    const win = window as Window & {
-      requestIdleCallback?: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number;
-      cancelIdleCallback?: (handle: number) => void;
-    };
-
-    const scheduleScene = () => {
-      if (sceneTimer !== null) {
-        window.clearTimeout(sceneTimer);
-      }
-      if (idleId !== null && typeof win.cancelIdleCallback === 'function') {
-        win.cancelIdleCallback(idleId);
-      }
-
-      if (reducedMotionQuery.matches) {
-        setShowScene(false);
-        return;
-      }
-
-      const isDesktop = desktopQuery.matches;
-      if (!isDesktop) {
-        setShowScene(false);
-        return;
-      }
-      const navigatorWithConnection = navigator as Navigator & { connection?: { saveData?: boolean } };
-      const saveData = navigatorWithConnection.connection?.saveData === true;
-      const lowCpu = (navigator.hardwareConcurrency ?? 8) <= 4;
-      const shouldUseLite = !isDesktop || saveData || lowCpu;
-      setSceneQuality(shouldUseLite ? 'lite' : 'full');
-
-      const revealScene = () => setShowScene(true);
-      const revealDelay = shouldUseLite ? 2800 : 1800;
-
-      if (typeof win.requestIdleCallback === 'function') {
-        idleId = win.requestIdleCallback(
-          () => {
-            sceneTimer = window.setTimeout(revealScene, revealDelay);
-          },
-          { timeout: shouldUseLite ? 2500 : 1400 }
-        );
-      } else {
-        sceneTimer = window.setTimeout(revealScene, revealDelay);
-      }
-    };
-
-    const handlePreferenceChange = () => {
-      scheduleScene();
-    };
-
-    scheduleScene();
-
-    reducedMotionQuery.addEventListener?.('change', handlePreferenceChange);
-    desktopQuery.addEventListener?.('change', handlePreferenceChange);
-
-    return () => {
-      if (sceneTimer !== null) {
-        window.clearTimeout(sceneTimer);
-      }
-      if (idleId !== null && typeof win.cancelIdleCallback === 'function') {
-        win.cancelIdleCallback(idleId);
-      }
-      reducedMotionQuery.removeEventListener?.('change', handlePreferenceChange);
-      desktopQuery.removeEventListener?.('change', handlePreferenceChange);
-    };
+    const id = window.setTimeout(() => setIsTypingDone(true), 120);
+    return () => window.clearTimeout(id);
   }, []);
 
   return (
@@ -299,34 +211,33 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
         }`}
       aria-hidden={hidden}
     >
-      <div className="absolute inset-0 -z-10 pointer-events-none">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_35%,rgb(var(--foreground-rgb)_/_0.08),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_58%,rgb(var(--foreground-rgb)_/_0.06),transparent_48%)]" />
-      </div>
-      {showScene ? <HeroScene quality={sceneQuality} /> : null}
-
-      <p className="font-mono text-[10px] sm:text-xs text-muted-foreground mb-8 sm:mb-12 tracking-[0.18em] sm:tracking-widest">
-        {t('greeting')}
-      </p>
-
-      <div>
-        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-[-0.04em] text-center leading-[1.1]">
-          {t('title')}
-        </h1>
+      {/* Background layers */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="hero-spotlight-grid" />
+        <div className="hero-vignette-overlay" />
       </div>
 
-      <p className="text-sm sm:text-lg text-muted-foreground font-light mt-4 sm:mt-6 mb-8 sm:mb-10 tracking-wide text-center">
-        {t('subtitle')}
-      </p>
-
-      <div className="min-h-8 flex items-center px-2 sm:px-0">
-        <p className="font-mono text-xs sm:text-base text-foreground text-center break-words">
-          {displayedText}
-          <span
-            className={`inline-block w-[1.5px] h-4 ml-0.5 bg-foreground align-middle transition-opacity ${showCursor ? 'opacity-100' : 'opacity-0'
-              }`}
-          />
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center">
+        <p className="font-mono text-[12px] sm:text-xs text-muted-foreground mb-8 sm:mb-12 tracking-[0.18em] sm:tracking-widest">
+          {t('greeting')}
         </p>
+
+        <div>
+          <h1 className="hero-gradient-title text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-[-0.04em] text-center leading-[1.1]">
+            {t('title')}
+          </h1>
+        </div>
+
+        <p className="text-sm sm:text-lg text-muted-foreground font-light mt-4 sm:mt-6 mb-8 sm:mb-10 tracking-wide text-center">
+          {t('subtitle')}
+        </p>
+
+        <div className="min-h-8 flex items-center px-2 sm:px-0">
+          <p className="font-mono text-xs sm:text-base text-foreground text-center break-words">
+            {description}
+          </p>
+        </div>
       </div>
 
       {isTypingDone && (

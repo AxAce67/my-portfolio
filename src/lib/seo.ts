@@ -11,6 +11,10 @@ export function buildLocalePath(locale: 'ja' | 'en', path = ''): string {
   return `/${locale}${normalized === '/' ? '' : normalized}`;
 }
 
+export function buildLocaleUrl(locale: 'ja' | 'en', path = ''): string {
+  return `${getSiteUrl()}${buildLocalePath(locale, path)}`;
+}
+
 export function getLocaleSeo(locale: 'ja' | 'en') {
   if (locale === 'ja') {
     return {

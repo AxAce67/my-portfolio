@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import Script from 'next/script';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -11,20 +10,20 @@ import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { AppToaster } from '@/components/ui/AppToaster';
-import { buildLocalePath, DEFAULT_OG_IMAGE_PATH, getLocaleSeo, getSiteUrl } from '@/lib/seo';
+import { buildLocalePath, buildLocaleUrl, DEFAULT_OG_IMAGE_PATH, getLocaleSeo, getSiteUrl } from '@/lib/seo';
 import '../globals.css';
 
 const inter = localFont({
     src: '../fonts/GeistVF.woff',
     variable: '--font-sans',
-    display: 'swap',
+    display: 'optional',
     weight: '100 900',
 });
 
 const jetbrainsMono = localFont({
     src: '../fonts/GeistMonoVF.woff',
     variable: '--font-mono',
-    display: 'swap',
+    display: 'optional',
     weight: '100 900',
 });
 
@@ -42,7 +41,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const locale = (rawLocale === 'en' ? 'en' : 'ja') as 'ja' | 'en';
     const seo = getLocaleSeo(locale);
     const siteUrl = getSiteUrl();
-    const canonical = buildLocalePath(locale);
+    const canonicalPath = buildLocalePath(locale);
+    const canonical = buildLocaleUrl(locale);
 
     return {
         metadataBase: new URL(siteUrl),
@@ -54,14 +54,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         alternates: {
             canonical,
             languages: {
-                ja: buildLocalePath('ja'),
-                en: buildLocalePath('en'),
+                ja: buildLocaleUrl('ja'),
+                en: buildLocaleUrl('en'),
             },
         },
         openGraph: {
             type: 'website',
             locale: locale === 'ja' ? 'ja_JP' : 'en_US',
-            url: canonical,
+            url: canonicalPath,
             title: seo.homeTitle,
             description: seo.homeDescription,
             siteName: seo.siteName,
@@ -89,14 +89,17 @@ export default async function LocaleLayout({ children, params }: Props) {
     }
 
     const messages = await getMessages();
+    const isProduction = process.env.NODE_ENV === 'production';
+    const isVercelRuntime = process.env.VERCEL === '1' || process.env.VERCEL === 'true';
 
     return (
         <html lang={locale} suppressHydrationWarning>
             <head>
-                <Script
-                    src="/theme-init.js"
-                    strategy="beforeInteractive"
+                <script
                     suppressHydrationWarning
+                    dangerouslySetInnerHTML={{
+                        __html: "(()=>{try{const s=localStorage.getItem('theme');const d=window.matchMedia('(prefers-color-scheme: dark)').matches;const t=s==='light'||s==='dark'?s:(d?'dark':'light');const r=document.documentElement;r.classList.remove('light','dark');r.classList.add(t);}catch{const d=window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.add(d?'dark':'light');}})();",
+                    }}
                 />
             </head>
             <body
@@ -112,8 +115,12 @@ export default async function LocaleLayout({ children, params }: Props) {
                         </div>
                     </NextIntlClientProvider>
                 </ThemeProvider>
-                <Analytics />
-                <SpeedInsights />
+                {isProduction && isVercelRuntime ? (
+                    <>
+                        <Analytics />
+                        <SpeedInsights />
+                    </>
+                ) : null}
             </body>
         </html>
     );

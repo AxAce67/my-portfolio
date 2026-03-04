@@ -147,7 +147,7 @@ function TechCard({ item, idx, prefix }: { item: TechItem; idx: number; prefix: 
           <BrandIcon item={item} isHovered={isHovered} />
         </div>
         <span
-          className="text-[10px] font-mono text-muted-foreground transition-colors duration-300 text-center leading-tight whitespace-nowrap"
+          className="text-[12px] font-mono text-muted-foreground transition-colors duration-300 text-center leading-tight whitespace-nowrap"
           style={{ color: isHovered && item.brandColor ? item.brandColor : undefined }}
         >
           {item.name}
