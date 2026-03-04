@@ -3,7 +3,6 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 
 const HeroScene = dynamic(() => import('@/components/three/HeroScene'), {
@@ -248,6 +247,10 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
       }
 
       const isDesktop = desktopQuery.matches;
+      if (!isDesktop) {
+        setShowScene(false);
+        return;
+      }
       const navigatorWithConnection = navigator as Navigator & { connection?: { saveData?: boolean } };
       const saveData = navigatorWithConnection.connection?.saveData === true;
       const lowCpu = (navigator.hardwareConcurrency ?? 8) <= 4;
@@ -255,7 +258,7 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
       setSceneQuality(shouldUseLite ? 'lite' : 'full');
 
       const revealScene = () => setShowScene(true);
-      const revealDelay = shouldUseLite ? 1800 : 900;
+      const revealDelay = shouldUseLite ? 2800 : 1800;
 
       if (typeof win.requestIdleCallback === 'function') {
         idleId = win.requestIdleCallback(
@@ -302,33 +305,19 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
       </div>
       {showScene ? <HeroScene quality={sceneQuality} /> : null}
 
-      <motion.p
-        initial={false}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.25 }}
-        className="font-mono text-[10px] sm:text-xs text-muted-foreground mb-8 sm:mb-12 tracking-[0.18em] sm:tracking-widest"
-      >
+      <p className="font-mono text-[10px] sm:text-xs text-muted-foreground mb-8 sm:mb-12 tracking-[0.18em] sm:tracking-widest">
         {t('greeting')}
-      </motion.p>
+      </p>
 
-      <motion.div
-        initial={false}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-      >
+      <div>
         <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-[-0.04em] text-center leading-[1.1]">
           {t('title')}
         </h1>
-      </motion.div>
+      </div>
 
-      <motion.p
-        initial={false}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.25 }}
-        className="text-sm sm:text-lg text-muted-foreground font-light mt-4 sm:mt-6 mb-8 sm:mb-10 tracking-wide text-center"
-      >
+      <p className="text-sm sm:text-lg text-muted-foreground font-light mt-4 sm:mt-6 mb-8 sm:mb-10 tracking-wide text-center">
         {t('subtitle')}
-      </motion.p>
+      </p>
 
       <div className="min-h-8 flex items-center px-2 sm:px-0">
         <p className="font-mono text-xs sm:text-base text-foreground text-center break-words">
@@ -341,12 +330,7 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
       </div>
 
       {isTypingDone && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          className="absolute bottom-12"
-        >
+        <div className="absolute bottom-12 animate-fade-in">
           <button
             onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
             className="flex flex-col items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
@@ -354,7 +338,7 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
             <span className="font-mono text-[11px] tracking-wider">{t('scrollDown')}</span>
             <ChevronDown className="w-4 h-4 animate-float" strokeWidth={1.5} />
           </button>
-        </motion.div>
+        </div>
       )}
 
     </section>

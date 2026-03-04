@@ -9,7 +9,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "perf:lighthouse": "npm run build && start-server-and-test \"next start -p 3301\" http://127.0.0.1:3301 \"LH_BASE_URL=http://127.0.0.1:3301 node scripts/lighthouse-runner.mjs\""
   },
   "dependencies": {
     "@blocknote/core": "^0.46.2",
@@ -36,6 +37,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.71.1",
+    "sharp": "^0.34.5",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.5.0",
     "three": "^0.182.0",
@@ -47,7 +49,9 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.35",
+    "lighthouse": "^12.8.2",
     "postcss": "^8",
+    "start-server-and-test": "^2.1.2",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

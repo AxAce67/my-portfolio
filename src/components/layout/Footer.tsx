@@ -3,8 +3,7 @@
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { Github, Twitter, Mail } from 'lucide-react';
-import { Link, useRouter, usePathname } from '@/i18n/routing';
-import { useLocale } from 'next-intl';
+import { Link, useRouter } from '@/i18n/routing';
 
 const socialLinks = [
     { icon: Github, href: 'https://github.com/AxAce67', label: 'GitHub' },
@@ -14,9 +13,7 @@ const socialLinks = [
 
 export function Footer() {
     const t = useTranslations('Footer');
-    const locale = useLocale();
     const router = useRouter();
-    const pathname = usePathname();
     const year = new Date().getFullYear();
 
     const handleLegalClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
