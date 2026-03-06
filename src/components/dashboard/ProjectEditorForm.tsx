@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 
@@ -32,9 +32,18 @@ export default function ProjectEditorForm({
 }: ProjectEditorFormProps) {
   const t = useTranslations('Dashboard.editorForm');
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(initialValues?.thumbnail_url ?? null);
+  const initialContentJson = useMemo(
+    () => (Array.isArray(initialValues?.content_json) ? JSON.stringify(initialValues.content_json) : '[]'),
+    [initialValues?.content_json]
+  );
+  const [contentMd, setContentMd] = useState(initialValues?.content_md ?? '');
+  const [contentJson, setContentJson] = useState(initialContentJson);
 
   return (
     <form action={action} className="rounded-xl border border-border bg-card p-4 sm:p-6">
+      <input type="hidden" name="content_md" value={contentMd} />
+      <input type="hidden" name="content_json" value={contentJson} />
+
       <div className="space-y-4">
         <div>
           <label className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">{t('title')}</label>
@@ -99,6 +108,10 @@ export default function ProjectEditorForm({
           <BlockNoteEditorField
             initialMarkdown={initialValues?.content_md ?? ''}
             initialContentJson={initialValues?.content_json}
+            onContentChange={({ contentJson: nextContentJson, contentMd: nextContentMd }) => {
+              setContentJson(nextContentJson);
+              setContentMd(nextContentMd);
+            }}
           />
         </div>
 

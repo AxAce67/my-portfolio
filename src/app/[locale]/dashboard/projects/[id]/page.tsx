@@ -31,7 +31,6 @@ export default async function ProjectEditorPage({ params }: Props) {
     .from('portfolio_projects')
     .select('id, title, description, content_md, content_json, status, is_published, thumbnail_url')
     .eq('id', id)
-    .eq('user_id', authData.user.id)
     .single();
 
   if (!project) notFound();

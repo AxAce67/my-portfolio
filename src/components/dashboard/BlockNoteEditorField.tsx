@@ -114,9 +114,6 @@ export default function BlockNoteEditorField({
           theme={resolvedTheme === 'dark' ? 'dark' : 'light'}
         />
       </div>
-
-      <input type="hidden" name="content_json" value={contentJson} />
-      <input type="hidden" name="content_md" value={contentMd} />
       <p className="text-[11px] font-mono text-muted-foreground">
         {t('editorTipPrefix')} <code>/</code> {t('editorTipSuffix')}
       </p>

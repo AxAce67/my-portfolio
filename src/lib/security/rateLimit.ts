@@ -64,7 +64,7 @@ export async function recordFailure(key: string, windowSeconds: number) {
         ['INCR', key],
         ['EXPIRE', key, windowSeconds],
       ]);
-      const count = Number(result?.result?.[0]?.result ?? 0);
+      const count = Number(result?.[0]?.result ?? 0);
       if (Number.isFinite(count)) return count;
     } catch {
       // fall through to memory fallback

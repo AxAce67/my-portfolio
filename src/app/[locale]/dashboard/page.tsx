@@ -50,13 +50,11 @@ export default async function DashboardPage({ params, searchParams }: Props) {
   const { data: projects } = await supabase
     .from('portfolio_projects')
     .select('id, title, status, is_published, updated_at')
-    .eq('user_id', authData.user.id)
     .order('updated_at', { ascending: false });
 
   const { data: activeProjects } = await supabase
     .from('portfolio_active_projects')
     .select('id, name, stage, display_order, is_published, updated_at')
-    .eq('user_id', authData.user.id)
     .order('display_order', { ascending: true })
     .order('updated_at', { ascending: false });
 

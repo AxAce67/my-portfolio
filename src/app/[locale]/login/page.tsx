@@ -6,15 +6,17 @@ export const dynamic = 'force-dynamic';
 
 type Props = {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ next?: string; error?: string }>;
+  searchParams: Promise<{ next?: string | string[]; error?: string | string[] }>;
 };
 
 export default async function LoginPage({ params, searchParams }: Props) {
   const { locale } = await params;
   const query = await searchParams;
-  const nextPath = sanitizeInternalPath(query.next, `/${locale}/dashboard`);
-  const hasError = query.error === 'invalid_credentials';
-  const isRateLimited = query.error === 'rate_limited';
+  const rawNext = Array.isArray(query.next) ? query.next[0] : query.next;
+  const errorCode = Array.isArray(query.error) ? query.error[0] : query.error;
+  const nextPath = sanitizeInternalPath(rawNext, `/${locale}/dashboard`);
+  const hasError = errorCode === 'invalid_credentials';
+  const isRateLimited = errorCode === 'rate_limited';
 
   return (
     <section className="max-w-md mx-auto px-6 lg:px-8 py-24">

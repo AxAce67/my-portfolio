@@ -205,7 +205,7 @@ export async function updateProjectAction(locale: string, projectId: string, for
     });
   }
 
-  await supabase
+  const { data: updatedProject, error: updateError } = await supabase
     .from('portfolio_projects')
     .update({
       title: input.title,
@@ -217,7 +217,16 @@ export async function updateProjectAction(locale: string, projectId: string, for
       ...(thumbnailUrl ? { thumbnail_url: thumbnailUrl } : {}),
     })
     .eq('id', projectId)
-    .eq('user_id', userId);
+    .select('id')
+    .maybeSingle();
+
+  if (updateError) {
+    throw new Error(updateError.message);
+  }
+
+  if (!updatedProject) {
+    throw new Error('Project not found.');
+  }
 
   revalidatePath(`/${locale}`);
   revalidatePath(`/${locale}/dashboard`);
@@ -228,13 +237,22 @@ export async function updateProjectAction(locale: string, projectId: string, for
 }
 
 export async function deleteProjectAction(locale: string, projectId: string) {
-  const { supabase, userId } = await requireAdminUserId();
+  const { supabase } = await requireAdminUserId();
 
-  await supabase
+  const { data: deletedProject, error: deleteError } = await supabase
     .from('portfolio_projects')
     .delete()
     .eq('id', projectId)
-    .eq('user_id', userId);
+    .select('id')
+    .maybeSingle();
+
+  if (deleteError) {
+    throw new Error(deleteError.message);
+  }
+
+  if (!deletedProject) {
+    throw new Error('Project not found.');
+  }
 
   revalidatePath(`/${locale}`);
   revalidatePath(`/${locale}/dashboard`);
@@ -266,7 +284,7 @@ export async function createActiveProjectAction(locale: string, formData: FormDa
 }
 
 export async function updateActiveProjectAction(locale: string, projectId: string, formData: FormData) {
-  const { supabase, userId } = await requireAdminUserId();
+  const { supabase } = await requireAdminUserId();
   const input = activeProjectFormSchema.parse({
     name: String(formData.get('name') ?? ''),
     stage: parseInteger(formData.get('stage'), 0),
@@ -274,7 +292,7 @@ export async function updateActiveProjectAction(locale: string, projectId: strin
     is_published: parseBoolean(formData.get('is_published')),
   });
 
-  await supabase
+  const { data: updatedProject, error: updateError } = await supabase
     .from('portfolio_active_projects')
     .update({
       name: input.name,
@@ -283,7 +301,16 @@ export async function updateActiveProjectAction(locale: string, projectId: strin
       is_published: input.is_published,
     })
     .eq('id', projectId)
-    .eq('user_id', userId);
+    .select('id')
+    .maybeSingle();
+
+  if (updateError) {
+    throw new Error(updateError.message);
+  }
+
+  if (!updatedProject) {
+    throw new Error('Active project not found.');
+  }
 
   revalidatePath(`/${locale}`);
   revalidatePath(`/${locale}/dashboard`);
@@ -292,13 +319,22 @@ export async function updateActiveProjectAction(locale: string, projectId: strin
 }
 
 export async function deleteActiveProjectAction(locale: string, projectId: string) {
-  const { supabase, userId } = await requireAdminUserId();
+  const { supabase } = await requireAdminUserId();
 
-  await supabase
+  const { data: deletedProject, error: deleteError } = await supabase
     .from('portfolio_active_projects')
     .delete()
     .eq('id', projectId)
-    .eq('user_id', userId);
+    .select('id')
+    .maybeSingle();
+
+  if (deleteError) {
+    throw new Error(deleteError.message);
+  }
+
+  if (!deletedProject) {
+    throw new Error('Active project not found.');
+  }
 
   revalidatePath(`/${locale}`);
   revalidatePath(`/${locale}/dashboard`);

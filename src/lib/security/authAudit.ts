@@ -12,12 +12,24 @@ type LoginAuditPayload = {
   userId?: string | null;
 };
 
+const MAX_EMAIL_LENGTH = 320;
+
 function maskEmail(email: string) {
   const trimmed = email.trim().toLowerCase();
-  const [local, domain] = trimmed.split('@');
+  const separatorIndex = trimmed.lastIndexOf('@');
+
+  if (separatorIndex <= 0 || separatorIndex === trimmed.length - 1) {
+    return 'invalid_email';
+  }
+
+  const local = trimmed.slice(0, separatorIndex);
+  const domain = trimmed.slice(separatorIndex + 1);
   if (!local || !domain) return 'invalid_email';
-  const first = local.charAt(0);
-  return `${first}***@${domain}`;
+  const [first = ''] = Array.from(local);
+
+  if (!first) return 'invalid_email';
+
+  return `${first}***@${domain}`.slice(0, MAX_EMAIL_LENGTH);
 }
 
 function hashIpAddress(ipAddress: string) {
@@ -28,7 +40,7 @@ function hashIpAddress(ipAddress: string) {
 export async function recordLoginAudit(payload: LoginAuditPayload) {
   const row = {
     email_masked: maskEmail(payload.email),
-    email_input: payload.email.trim().toLowerCase().slice(0, 320),
+    email_input: payload.email.trim().toLowerCase().slice(0, MAX_EMAIL_LENGTH),
     ip_hash: hashIpAddress(payload.ipAddress),
     ip_address: payload.ipAddress.slice(0, 64),
     user_agent: payload.userAgent.slice(0, 500),
