@@ -256,19 +256,23 @@ body::before {
   }
 
   /* Minimal button */
-  .btn-primary {
+  .btn-primary,
+  .btn-outline {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: var(--foreground);
-    color: var(--background);
     padding: 0.75rem 2rem;
     border-radius: 0.5rem;
     font-size: 0.875rem;
     font-weight: 500;
+    min-height: 44px;
+  }
+
+  .btn-primary {
+    background: var(--foreground);
+    color: var(--background);
     transition: opacity 0.2s ease, transform 0.2s ease;
     border: 1px solid transparent;
-    min-height: 44px;
     will-change: transform;
   }
 
@@ -282,18 +286,10 @@ body::before {
   }
 
   .btn-outline {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
     background: transparent;
     color: var(--foreground);
-    padding: 0.75rem 2rem;
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 500;
     transition: all 0.2s ease;
     border: 1px solid var(--border);
-    min-height: 44px;
   }
 
   .btn-outline:hover {
@@ -324,6 +320,31 @@ body::before {
         black 10%,
         black 90%,
         transparent);
+  }
+
+  /* Shared surface cards */
+  .tech-card,
+  .project-card,
+  .gantt-chart {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+  }
+
+  .tech-card,
+  .project-card {
+    transition:
+      transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 0.35s ease,
+      color 0.35s ease;
+  }
+
+  .tech-card:hover,
+  .project-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
   }
 
   /* Bento Grid Card */
@@ -408,21 +429,10 @@ body::before {
 
   /* Tech Stack Card */
   .tech-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 0.75rem;
-    transition:
-      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-      border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-      box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-      background-color 0.35s ease,
-      color 0.35s ease;
     cursor: default;
   }
 
   .tech-card:hover {
-    border-color: var(--border-hover);
-    transform: translateY(-4px);
     box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1);
   }
 
@@ -447,21 +457,10 @@ body::before {
 
   /* Project Card */
   .project-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 0.75rem;
     overflow: hidden;
-    transition:
-      transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-      border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-      box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-      background-color 0.35s ease,
-      color 0.35s ease;
   }
 
   .project-card:hover {
-    border-color: var(--border-hover);
-    transform: translateY(-4px);
     box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.12);
   }
 
@@ -471,10 +470,7 @@ body::before {
 
   /* Gantt Chart */
   .gantt-chart {
-    border: 1px solid var(--border);
-    border-radius: 0.75rem;
     overflow: hidden;
-    background: var(--card);
   }
 
   .gantt-header {
@@ -900,7 +896,7 @@ body::before {
 
 .footer-container {
   position: relative;
-  margin-top: 2rem;
+  margin-top: 4rem;
 }
 
 .footer-gradient-border {
@@ -914,34 +910,53 @@ body::before {
 }
 
 .footer-inner {
-  max-width: 64rem;
+  max-width: 72rem;
   margin: 0 auto;
-  padding: 3rem 1.5rem 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+  padding: 2.75rem 1.5rem 1.75rem;
 }
 
-/* Top: brand + social */
-.footer-top {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.25rem;
-  margin-bottom: 1.5rem;
+.footer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 16rem;
+  gap: 2rem;
+  align-items: stretch;
 }
 
-.footer-brand-center {
+.footer-brand-panel {
+  position: relative;
+  padding-right: 2rem;
+  min-height: 12rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
+}
+
+.footer-brand-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.footer-link-panel {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.footer-section-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--muted-foreground);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .footer-brand-name {
   font-family: var(--font-mono);
-  font-size: 1.25rem;
+  font-size: 1.6rem;
   font-weight: 600;
+  line-height: 0.92;
   letter-spacing: 0.05em;
 }
 
@@ -949,104 +964,127 @@ body::before {
   color: var(--accent-muted);
 }
 
-.footer-tagline {
+.footer-tagline,
+.legal-doc-meta {
   font-size: 0.8rem;
   color: var(--muted-foreground);
-  margin-top: 0.35rem;
-  line-height: 1.5;
 }
 
-/* Social icons row */
+.footer-tagline {
+  max-width: 26rem;
+  line-height: 1.7;
+}
+
+.footer-counter {
+  display: inline-flex;
+  margin-top: 1rem;
+  opacity: 0.92;
+}
+
+.footer-counter-image {
+  width: 13.25rem;
+  height: auto;
+}
+
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  min-height: 100%;
+}
+
 .footer-social-row {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  flex-direction: column;
+  gap: 0.1rem;
+  max-width: 16rem;
 }
 
 .footer-social-icon {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 50%;
-  border: 1px solid var(--border);
+  justify-content: space-between;
+  gap: 0.55rem;
+  min-height: 2rem;
+  padding: 0.3rem 0;
   color: var(--muted-foreground);
-  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .footer-social-icon:hover {
   color: var(--foreground);
-  border-color: var(--foreground);
-  transform: translateY(-2px);
+  transform: translateX(2px);
 }
 
 .footer-social-icon--disabled {
-  opacity: 0.3;
+  opacity: 0.38;
   cursor: not-allowed;
   pointer-events: none;
 }
 
-/* Counter */
-.footer-counter {
-  margin-bottom: 1.5rem;
-  opacity: 0.7;
-}
-
-/* Bottom bar */
 .footer-bottom {
+  margin-top: 0.15rem;
   width: 100%;
-  padding-top: 1.25rem;
+  padding-top: 0.35rem;
   border-top: 1px solid var(--border);
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-.footer-made {
-  font-size: 0.65rem;
+.footer-made,
+.legal-doc-num {
   font-family: var(--font-mono);
   color: var(--muted-foreground);
-  opacity: 0.5;
 }
 
 .footer-bottom-row {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
   flex-wrap: wrap;
-  justify-content: center;
+  gap: 0.75rem;
 }
 
-.footer-copyright {
-  font-size: 0.7rem;
+.footer-copyright,
+.footer-legal-link {
+  font-size: 0.72rem;
   color: var(--muted-foreground);
-  opacity: 0.6;
-}
-
-.footer-dot-sep {
-  font-size: 0.6rem;
-  color: var(--muted-foreground);
-  opacity: 0.3;
+  opacity: 0.72;
 }
 
 .footer-legal-link {
-  font-size: 0.7rem;
-  color: var(--muted-foreground);
-  opacity: 0.6;
   text-decoration: none;
-  transition: opacity 0.2s ease;
+  transition: color 0.2s ease, opacity 0.2s ease;
 }
 
 .footer-legal-link:hover {
   opacity: 1;
+  color: var(--foreground);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .footer-link-panel {
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    min-height: auto;
+  }
+
   .footer-inner {
     padding: 2.5rem 1.25rem 1.5rem;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 
@@ -1091,11 +1129,9 @@ body::before {
   margin-bottom: 0.75rem;
 }
 
-.legal-doc-meta {
-  font-size: 0.8rem;
-  color: var(--muted-foreground);
-  font-family: var(--font-mono);
-}
+  .legal-doc-meta {
+    font-family: var(--font-mono);
+  }
 
 /* Sections */
 .legal-doc-body {
@@ -1118,13 +1154,11 @@ body::before {
   line-height: 1.4;
 }
 
-.legal-doc-num {
-  font-family: var(--font-mono);
-  font-weight: 500;
-  color: var(--muted-foreground);
-  margin-right: 0.5rem;
-  font-size: 0.9em;
-}
+  .legal-doc-num {
+    font-weight: 500;
+    margin-right: 0.5rem;
+    font-size: 0.9em;
+  }
 
 .legal-doc-text {
   font-size: 0.9rem;

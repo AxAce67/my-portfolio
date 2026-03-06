@@ -10,7 +10,11 @@ export function sanitizeInternalPath(input: string | null | undefined, fallback:
   try {
     const parsed = new URL(value, 'http://localhost');
     if (parsed.origin !== 'http://localhost') return fallback;
-    return `${parsed.pathname}${parsed.search}${parsed.hash}`;
+    const result = `${parsed.pathname}${parsed.search}${parsed.hash}`;
+
+    if (result.startsWith('//') || result.startsWith('\\\\')) return fallback;
+
+    return result;
   } catch {
     return fallback;
   }
