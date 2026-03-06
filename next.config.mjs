@@ -5,6 +5,15 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', '@icons-pack/react-simple-icons'],
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/ja',
+        permanent: false,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {
