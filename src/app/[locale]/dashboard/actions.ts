@@ -169,11 +169,15 @@ export async function createProjectAction(locale: string, formData: FormData) {
     });
 
     if (thumbnailUrl) {
-      await supabase
+      const { error: thumbnailUpdateError } = await supabase
         .from('portfolio_projects')
         .update({ thumbnail_url: thumbnailUrl })
         .eq('id', createdProject.id)
         .eq('user_id', userId);
+
+      if (thumbnailUpdateError) {
+        throw new Error(thumbnailUpdateError.message);
+      }
     }
   }
 
@@ -269,13 +273,25 @@ export async function createActiveProjectAction(locale: string, formData: FormDa
     is_published: parseBoolean(formData.get('is_published')),
   });
 
-  await supabase.from('portfolio_active_projects').insert({
-    user_id: userId,
-    name: input.name,
-    stage: input.stage,
-    display_order: input.display_order,
-    is_published: input.is_published,
-  });
+  const { data: createdProject, error: createError } = await supabase
+    .from('portfolio_active_projects')
+    .insert({
+      user_id: userId,
+      name: input.name,
+      stage: input.stage,
+      display_order: input.display_order,
+      is_published: input.is_published,
+    })
+    .select('id')
+    .maybeSingle();
+
+  if (createError) {
+    throw new Error(createError.message);
+  }
+
+  if (!createdProject) {
+    throw new Error('Failed to create active project.');
+  }
 
   revalidatePath(`/${locale}`);
   revalidatePath(`/${locale}/dashboard`);

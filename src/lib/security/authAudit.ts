@@ -58,6 +58,4 @@ export async function recordLoginAudit(payload: LoginAuditPayload) {
   } catch (error) {
     console.warn('[auth_audit_logs] insert exception:', error);
   }
-
-  console.info('[auth_audit_logs]', row);
 }
