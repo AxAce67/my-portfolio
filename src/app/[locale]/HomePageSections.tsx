@@ -1378,6 +1378,7 @@ function ContactSection() {
               <input
                 type="text"
                 name="_gotcha"
+                maxLength={200}
                 tabIndex={-1}
                 autoComplete="off"
                 aria-hidden="true"
@@ -1395,6 +1396,7 @@ function ContactSection() {
                     name="name"
                     type="text"
                     required
+                    maxLength={80}
                     placeholder={t('namePlaceholder')}
                     className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-all focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
                   />
@@ -1410,6 +1412,7 @@ function ContactSection() {
                     name="email"
                     type="email"
                     required
+                    maxLength={320}
                     placeholder={t('emailPlaceholder')}
                     className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-all focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
                   />
@@ -1426,6 +1429,7 @@ function ContactSection() {
                   name="subject"
                   type="text"
                   required
+                  maxLength={160}
                   placeholder={t('subjectPlaceholder')}
                   className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-all focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
                 />
@@ -1441,6 +1445,7 @@ function ContactSection() {
                   name="message"
                   required
                   rows={5}
+                  maxLength={5000}
                   placeholder={t('messagePlaceholder')}
                   className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-all focus:border-foreground focus:bg-transparent resize-none placeholder:text-muted-foreground/40"
                 />

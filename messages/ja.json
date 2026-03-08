@@ -151,12 +151,18 @@
       "empty": "プロジェクトがまだありません。"
     },
     "toast": {
-      "project_created": "Project を作成しました。",
-      "project_updated": "Project を更新しました。",
-      "project_deleted": "Project を削除しました。",
-      "active_created": "Active Project を作成しました。",
-      "active_updated": "Active Project を更新しました。",
-      "active_deleted": "Active Project を削除しました。"
+      "project_created": "プロジェクトを作成しました。",
+      "project_updated": "プロジェクトを更新しました。",
+      "project_deleted": "プロジェクトを削除しました。",
+      "project_create_failed": "プロジェクトを作成できませんでした。",
+      "project_update_failed": "プロジェクトを更新できませんでした。",
+      "project_delete_failed": "プロジェクトを削除できませんでした。",
+      "active_created": "進行中プロジェクトを作成しました。",
+      "active_updated": "進行中プロジェクトを更新しました。",
+      "active_deleted": "進行中プロジェクトを削除しました。",
+      "active_create_failed": "進行中プロジェクトを作成できませんでした。",
+      "active_update_failed": "進行中プロジェクトを更新できませんでした。",
+      "active_delete_failed": "進行中プロジェクトを削除できませんでした。"
     },
     "deleteProject": {
       "button": "削除",

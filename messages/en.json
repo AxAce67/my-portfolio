@@ -154,9 +154,15 @@
             "project_created": "Project created.",
             "project_updated": "Project updated.",
             "project_deleted": "Project deleted.",
+            "project_create_failed": "Failed to create project.",
+            "project_update_failed": "Failed to update project.",
+            "project_delete_failed": "Failed to delete project.",
             "active_created": "Active project created.",
             "active_updated": "Active project updated.",
-            "active_deleted": "Active project deleted."
+            "active_deleted": "Active project deleted.",
+            "active_create_failed": "Failed to create active project.",
+            "active_update_failed": "Failed to update active project.",
+            "active_delete_failed": "Failed to delete active project."
         },
         "deleteProject": {
             "button": "Delete",

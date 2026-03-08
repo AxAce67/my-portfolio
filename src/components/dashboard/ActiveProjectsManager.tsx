@@ -111,7 +111,11 @@ export default function ActiveProjectsManager({ locale, projects }: Props) {
                     {t('actions.close')}
                   </button>
                 </div>
-                <form action={createActiveProjectAction.bind(null, locale)} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <form
+                  action={createActiveProjectAction.bind(null, locale)}
+                  className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+                  onSubmit={() => setCreateOpen(false)}
+                >
                   <div className="sm:col-span-2">
                     <label className="block text-[11px] font-mono text-muted-foreground mb-1 uppercase tracking-wider">{t('fields.name')}</label>
                     <input name="name" required placeholder={t('fields.namePlaceholder')} className="w-full bg-transparent border border-border rounded-lg px-3 py-2 text-sm" />
@@ -152,7 +156,11 @@ export default function ActiveProjectsManager({ locale, projects }: Props) {
                     {t('actions.close')}
                   </button>
                 </div>
-                <form action={updateActiveProjectAction.bind(null, locale, editingProject.id)} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <form
+                  action={updateActiveProjectAction.bind(null, locale, editingProject.id)}
+                  className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+                  onSubmit={() => setEditingProjectId(null)}
+                >
                   <div className="sm:col-span-2">
                     <label className="block text-[11px] font-mono text-muted-foreground mb-1 uppercase tracking-wider">{t('fields.name')}</label>
                     <input name="name" defaultValue={editingProject.name} className="w-full bg-transparent border border-border rounded-lg px-3 py-2 text-sm" />
@@ -201,7 +209,7 @@ export default function ActiveProjectsManager({ locale, projects }: Props) {
                   <button type="button" className="btn-outline px-3 py-2 text-xs w-full sm:w-auto" onClick={() => setDeletingProjectId(null)}>
                     {t('actions.cancel')}
                   </button>
-                  <form action={deleteActiveProjectAction.bind(null, locale, deletingProject.id)}>
+                  <form action={deleteActiveProjectAction.bind(null, locale, deletingProject.id)} onSubmit={() => setDeletingProjectId(null)}>
                     <button
                       type="submit"
                       className="rounded-lg border border-red-600 bg-red-600 px-3 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90 w-full sm:w-auto"

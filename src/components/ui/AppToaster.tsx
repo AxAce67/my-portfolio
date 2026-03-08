@@ -14,6 +14,9 @@ export function AppToaster() {
       theme={resolvedTheme === 'dark' ? 'dark' : 'light'}
       toastOptions={{
         duration: 2600,
+        style: {
+          zIndex: 2147483648,
+        },
       }}
     />
   );

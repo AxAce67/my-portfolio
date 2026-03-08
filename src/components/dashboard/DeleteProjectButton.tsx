@@ -41,7 +41,7 @@ export default function DeleteProjectButton({ locale, projectId, projectTitle }:
                   <button type="button" className="btn-outline px-3 py-2 text-xs w-full sm:w-auto" onClick={() => setOpen(false)}>
                     {t('cancel')}
                   </button>
-                  <form action={action}>
+                  <form action={action} onSubmit={() => setOpen(false)}>
                     <button
                       type="submit"
                       className="rounded-lg border border-red-600 bg-red-600 px-3 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90 w-full sm:w-auto"

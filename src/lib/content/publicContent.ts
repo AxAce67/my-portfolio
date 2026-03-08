@@ -1,4 +1,5 @@
 import { unstable_cache } from 'next/cache';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { createPublicServerClient } from '@/lib/supabase/public-server';
 
 export type HomeProject = {
@@ -17,8 +18,16 @@ export type HomeActiveProject = {
   stage: number;
 };
 
+function createContentClient() {
+  if (process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() && process.env.NEXT_PUBLIC_SUPABASE_URL?.trim()) {
+    return createAdminClient();
+  }
+
+  return createPublicServerClient();
+}
+
 async function fetchPublishedProjectsWithTags(limit?: number): Promise<HomeProject[]> {
-  const supabase = createPublicServerClient();
+  const supabase = createContentClient();
   let query = supabase
     .from('portfolio_projects')
     .select('id, title, description, thumbnail_url, created_at, updated_at')
@@ -30,14 +39,21 @@ async function fetchPublishedProjectsWithTags(limit?: number): Promise<HomeProje
     query = query.limit(limit);
   }
 
-  const { data: projectRows } = await query;
+  const { data: projectRows, error: projectError } = await query;
+  if (projectError) {
+    throw new Error(`Failed to load published projects: ${projectError.message}`);
+  }
   const projectIds = (projectRows ?? []).map((row) => row.id);
-  const { data: tagRows } = projectIds.length
+  const { data: tagRows, error: tagError } = projectIds.length
     ? await supabase
         .from('portfolio_project_tags')
         .select('project_id, tag_name')
         .in('project_id', projectIds)
-    : { data: [] as { project_id: string; tag_name: string }[] };
+    : { data: [] as { project_id: string; tag_name: string }[], error: null };
+
+  if (tagError) {
+    throw new Error(`Failed to load project tags: ${tagError.message}`);
+  }
 
   const tagsByProject = new Map<string, string[]>();
   (tagRows ?? []).forEach((tag) => {
@@ -57,13 +73,17 @@ async function fetchPublishedProjectsWithTags(limit?: number): Promise<HomeProje
 }
 
 async function fetchPublishedActiveProjects(): Promise<HomeActiveProject[]> {
-  const supabase = createPublicServerClient();
-  const { data: rows } = await supabase
+  const supabase = createContentClient();
+  const { data: rows, error } = await supabase
     .from('portfolio_active_projects')
     .select('id, name, stage')
     .eq('is_published', true)
     .order('display_order', { ascending: true })
     .order('created_at', { ascending: true });
+
+  if (error) {
+    throw new Error(`Failed to load active projects: ${error.message}`);
+  }
 
   return (rows ?? []).map((row) => ({
     id: row.id,
@@ -98,13 +118,17 @@ export const getProjectsListData = unstable_cache(
 
 export const getProjectById = unstable_cache(
   async (id: string) => {
-    const supabase = createPublicServerClient();
-    const { data } = await supabase
+    const supabase = createContentClient();
+    const { data, error } = await supabase
       .from('portfolio_projects')
       .select('id, title, description, content_md, created_at, updated_at, is_published, thumbnail_url')
       .eq('id', id)
       .eq('is_published', true)
       .single();
+
+    if (error) {
+      throw new Error(`Failed to load project detail: ${error.message}`);
+    }
     return data;
   },
   ['project-detail-data-v1'],

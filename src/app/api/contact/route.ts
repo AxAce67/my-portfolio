@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { z } from 'zod';
 
 export const runtime = 'edge';
 
@@ -21,6 +22,16 @@ type TurnstileVerifyResponse = {
   success: boolean;
   'error-codes'?: string[];
 };
+
+const contactPayloadSchema = z.object({
+  name: z.string().trim().min(1).max(80),
+  email: z.string().trim().email().max(320),
+  subject: z.string().trim().min(1).max(160),
+  message: z.string().trim().min(1).max(5000),
+  token: z.string().trim().min(1).max(4096),
+  honeypot: z.string().trim().max(200).optional().default(''),
+  elapsedMs: z.number().finite().min(0).max(86_400_000).optional().default(0),
+});
 
 function badRequest(message: string) {
   return NextResponse.json({ ok: false, message }, { status: 400 });
@@ -49,20 +60,21 @@ export async function POST(request: Request) {
     return badRequest('Invalid request body.');
   }
 
-  const name = String(payload.name ?? '').trim();
-  const email = String(payload.email ?? '').trim();
-  const subject = String(payload.subject ?? '').trim();
-  const message = String(payload.message ?? '').trim();
-  const token = String(payload.token ?? '').trim();
-  const honeypot = String(payload.honeypot ?? '').trim();
-  const elapsedMs = Number(payload.elapsedMs ?? 0);
+  const parsed = contactPayloadSchema.safeParse({
+    name: payload.name ?? '',
+    email: payload.email ?? '',
+    subject: payload.subject ?? '',
+    message: payload.message ?? '',
+    token: payload.token ?? '',
+    honeypot: payload.honeypot ?? '',
+    elapsedMs: Number(payload.elapsedMs ?? 0),
+  });
 
-  if (!name || !email || !subject || !message) {
-    return badRequest('Missing required fields.');
+  if (!parsed.success) {
+    return badRequest('Invalid contact payload.');
   }
-  if (!token) {
-    return badRequest('Turnstile token is required.');
-  }
+
+  const { name, email, subject, message, token, honeypot, elapsedMs } = parsed.data;
 
   // Soft-drop obvious bot traffic without revealing detection details.
   if (honeypot || (Number.isFinite(elapsedMs) && elapsedMs > 0 && elapsedMs < 2500)) {

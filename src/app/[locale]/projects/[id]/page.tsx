@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { getProjectById, getProjectsListData } from '@/lib/content/publicContent';
 import BackToProjectsLink from '@/components/projects/BackToProjectsLink';
+import MarkdownArticle from '@/components/content/MarkdownArticle';
 import { buildLocalePath, DEFAULT_OG_IMAGE_PATH, getLocaleSeo } from '@/lib/seo';
 
 type Props = {
@@ -103,7 +104,7 @@ export default async function ProjectArticlePage({ params }: Props) {
         className="max-w-3xl mx-auto border-t border-border pt-8 article-content"
       >
         {project.content_md ? (
-          <div className="text-[15px] leading-8 whitespace-pre-wrap text-foreground/95">{project.content_md}</div>
+          <MarkdownArticle content={project.content_md} />
         ) : (
           <p className="text-sm text-muted-foreground">本文はまだありません。</p>
         )}
