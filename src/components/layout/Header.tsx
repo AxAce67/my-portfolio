@@ -27,6 +27,7 @@ export function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('');
     const [scrolled, setScrolled] = useState(false);
+    const shouldShowSolidHeader = scrolled || !isHomePage;
 
     useEffect(() => {
         if (!isHomePage) {
@@ -89,7 +90,7 @@ export function Header() {
 
     return (
         <header
-            className={`site-header fixed top-0 left-0 right-0 z-50 ${scrolled ? 'is-scrolled' : ''}`}
+            className={`site-header fixed top-0 left-0 right-0 z-50 ${shouldShowSolidHeader ? 'is-scrolled' : ''}`}
         >
             <nav className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-14 sm:h-16">

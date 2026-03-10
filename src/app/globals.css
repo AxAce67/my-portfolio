@@ -1287,7 +1287,7 @@ body::before {
 
 @media (max-width: 640px) {
   .legal-page {
-    padding: 5rem 1.25rem 3rem;
+    padding: 6rem 1.25rem 3rem;
   }
 
   .legal-doc-title {
