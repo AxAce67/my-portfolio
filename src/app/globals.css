@@ -743,7 +743,7 @@ body::before {
     color: rgb(from var(--foreground) r g b / 0.96);
   }
 
-  .article-content li + li {
+  .article-content li+li {
     margin-top: 0.35rem;
   }
 
@@ -963,46 +963,29 @@ body::before {
 }
 
 .footer-inner {
-  max-width: 72rem;
+  max-width: 42rem;
+  /* よりコンパクトに絞る */
   margin: 0 auto;
-  padding: 2.75rem 1.5rem 1.75rem;
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 16rem;
-  gap: 2rem;
-  align-items: stretch;
-}
-
-.footer-brand-panel {
-  position: relative;
-  padding-right: 2rem;
-  min-height: 12rem;
+  padding: 2.5rem 1.5rem 2rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+.footer-minimal-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.25rem;
+  width: 100%;
 }
 
 .footer-brand-copy {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0.35rem;
-}
-
-.footer-link-panel {
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.footer-section-label {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--muted-foreground);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .footer-brand-name {
@@ -1030,7 +1013,7 @@ body::before {
 
 .footer-counter {
   display: inline-flex;
-  margin-top: 1rem;
+  margin-top: 0.25rem;
   opacity: 0.92;
 }
 
@@ -1039,35 +1022,30 @@ body::before {
   height: auto;
 }
 
-.footer-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-  min-height: 100%;
-}
-
 .footer-social-row {
   display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-  max-width: 16rem;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
 }
 
 .footer-social-icon {
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.55rem;
-  min-height: 2rem;
-  padding: 0.3rem 0;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--muted);
   color: var(--muted-foreground);
   text-decoration: none;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .footer-social-icon:hover {
-  color: var(--foreground);
-  transform: translateX(2px);
+  background: var(--foreground);
+  color: var(--background);
+  transform: translateY(-2px);
 }
 
 .footer-social-icon--disabled {
@@ -1077,14 +1055,13 @@ body::before {
 }
 
 .footer-bottom {
-  margin-top: 0.15rem;
+  margin-top: 2rem;
   width: 100%;
-  padding-top: 0.35rem;
+  padding-top: 1.5rem;
   border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
 }
 
 .footer-made,
@@ -1118,26 +1095,47 @@ body::before {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    align-items: start;
-  }
-
-  .footer-link-panel {
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
-    min-height: auto;
-  }
-
+@media (max-width: 640px) {
   .footer-inner {
-    padding: 2.5rem 1.25rem 1.5rem;
+    padding: 2rem 1.25rem 1.5rem;
+  }
+
+  .footer-minimal-center {
+    gap: 1rem;
+  }
+
+  .footer-brand-name {
+    font-size: 1.5rem;
+  }
+
+  .footer-tagline {
+    font-size: 0.78rem;
+    line-height: 1.55;
+    max-width: none;
+  }
+
+  .footer-counter-image {
+    width: 12.25rem;
   }
 
   .footer-bottom {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: center;
+  }
+
+  .footer-bottom-row {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-copyright,
+  .footer-legal-link {
+    font-size: 0.8rem;
   }
 }
 
@@ -1182,9 +1180,9 @@ body::before {
   margin-bottom: 0.75rem;
 }
 
-  .legal-doc-meta {
-    font-family: var(--font-mono);
-  }
+.legal-doc-meta {
+  font-family: var(--font-mono);
+}
 
 /* Sections */
 .legal-doc-body {
@@ -1207,11 +1205,11 @@ body::before {
   line-height: 1.4;
 }
 
-  .legal-doc-num {
-    font-weight: 500;
-    margin-right: 0.5rem;
-    font-size: 0.9em;
-  }
+.legal-doc-num {
+  font-weight: 500;
+  margin-right: 0.5rem;
+  font-size: 0.9em;
+}
 
 .legal-doc-text {
   font-size: 0.9rem;

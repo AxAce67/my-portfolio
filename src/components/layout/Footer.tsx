@@ -60,55 +60,47 @@ export function Footer() {
             <div className="footer-gradient-border" />
 
             <div className="footer-inner">
-                <div className="footer-grid">
-                    <div className="footer-brand-panel">
-                        <div className="footer-brand-copy">
-                            <p className="footer-brand-name">
-                                <span>Akiz</span>
-                                <span className="footer-brand-dot">.</span>
-                            </p>
-                            <p className="footer-tagline">{t('tagline')}</p>
-                        </div>
-                        <div className="footer-counter">
-                            <Image
-                                src="https://count.getloli.com/@portfolio_Aki?name=portfolio_Aki&theme=love-and-deepspace&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto"
-                                alt="Web counter"
-                                width={212}
-                                height={72}
-                                unoptimized
-                                loading="lazy"
-                                referrerPolicy="no-referrer"
-                                className="footer-counter-image"
-                            />
-                        </div>
+                <div className="footer-minimal-center">
+                    <div className="footer-brand-copy">
+                        <p className="footer-brand-name">
+                            <span>Akiz</span>
+                            <span className="footer-brand-dot">.</span>
+                        </p>
+                        <p className="footer-tagline">{t('tagline')}</p>
                     </div>
 
-                    <div className="footer-link-panel">
-                        <div className="footer-section">
-                            <p className="footer-section-label">{t('connect')}</p>
-                            <div className="footer-social-row">
-                                {socialLinks.map(({ icon: Icon, href, label, disabled }) => (
-                                    disabled ? (
-                                        <span key={label} className="footer-social-icon footer-social-icon--disabled" title={label}>
-                                            <Icon className="w-4 h-4" strokeWidth={1.5} />
-                                            <span>{label}</span>
-                                        </span>
-                                    ) : (
-                                        <a
-                                            key={label}
-                                            href={href}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="footer-social-icon"
-                                            title={label}
-                                        >
-                                            <Icon className="w-4 h-4" strokeWidth={1.5} />
-                                            <span>{label}</span>
-                                        </a>
-                                    )
-                                ))}
-                            </div>
-                        </div>
+                    <div className="footer-social-row">
+                        {socialLinks.map(({ icon: Icon, href, label, disabled }) => (
+                            disabled ? (
+                                <span key={label} className="footer-social-icon footer-social-icon--disabled" title={label}>
+                                    <Icon className="w-5 h-5" strokeWidth={1.5} />
+                                </span>
+                            ) : (
+                                <a
+                                    key={label}
+                                    href={href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="footer-social-icon"
+                                    title={label}
+                                >
+                                    <Icon className="w-5 h-5" strokeWidth={1.5} />
+                                </a>
+                            )
+                        ))}
+                    </div>
+
+                    <div className="footer-counter">
+                        <Image
+                            src="https://count.getloli.com/@portfolio_Aki?name=portfolio_Aki&theme=love-and-deepspace&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto"
+                            alt="Web counter"
+                            width={212}
+                            height={72}
+                            unoptimized
+                            loading="lazy"
+                            referrerPolicy="no-referrer"
+                            className="footer-counter-image"
+                        />
                     </div>
                 </div>
 

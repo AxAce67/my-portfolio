@@ -23,8 +23,9 @@ import {
   SiSupabase,
   SiClaude,
   SiGooglegemini,
+  SiVercel,
 } from '@icons-pack/react-simple-icons';
-import { SiOpenai, SiAdobepremierepro } from 'react-icons/si';
+import { SiOpenai, SiAdobepremierepro, SiCanva } from 'react-icons/si';
 import type { ActiveProject, CompletedProject } from './HomePageClient';
 
 const TechStackSection = dynamic(() => import('@/components/sections/TechStackSection'), {
@@ -38,21 +39,16 @@ const TechStackSection = dynamic(() => import('@/components/sections/TechStackSe
   ),
 });
 
-type SkillCategory = 'Languages' | 'Frameworks' | 'AI' | 'Creative';
+type SkillCategory = 'Languages' | 'Stack' | 'AI' | 'Creative';
 type SkillIconComponent = ComponentType<{ size?: number | string; className?: string }>;
 type SkillItem = {
   name: string;
   category: SkillCategory;
   featured?: boolean;
   icon?: SkillIconComponent;
+  iconSrc?: string;
   level?: 'main' | 'familiar' | 'learning';
 };
-
-const FramerMotionIcon: SkillIconComponent = ({ size = 16, className = '' }) => (
-  <svg width={size} height={size} viewBox="0 0 14 21" fill="currentColor" className={className} aria-hidden="true">
-    <path d="M0 0h14v7H7zm0 7h7l7 7H7v7L0 14z" />
-  </svg>
-);
 
 const FilmoraIcon: SkillIconComponent = ({ size = 16, className = '' }) => (
   <Film width={size} height={size} strokeWidth={1.5} className={className} />
@@ -60,24 +56,25 @@ const FilmoraIcon: SkillIconComponent = ({ size = 16, className = '' }) => (
 
 const sampleSkills: SkillItem[] = [
   { name: 'TypeScript', category: 'Languages', featured: true, icon: SiTypescript, level: 'main' },
-  { name: 'JavaScript', category: 'Languages', featured: true, icon: SiJavascript, level: 'main' },
-  { name: 'Python', category: 'Languages', icon: SiPython, level: 'familiar' },
+  { name: 'Python', category: 'Languages', featured: true, icon: SiPython, level: 'main' },
+  { name: 'JavaScript', category: 'Languages', icon: SiJavascript, level: 'familiar' },
   { name: 'HTML', category: 'Languages', icon: SiHtml5, level: 'familiar' },
   { name: 'CSS', category: 'Languages', icon: SiCss, level: 'familiar' },
 
-  { name: 'Next.js', category: 'Frameworks', featured: true, icon: SiNextdotjs, level: 'main' },
-  { name: 'React', category: 'Frameworks', featured: true, icon: SiReact, level: 'main' },
-  { name: 'Tailwind CSS', category: 'Frameworks', icon: SiTailwindcss, level: 'familiar' },
-  { name: 'Supabase', category: 'Frameworks', icon: SiSupabase, level: 'familiar' },
-  { name: 'Framer Motion', category: 'Frameworks', icon: FramerMotionIcon, level: 'familiar' },
+  { name: 'Next.js', category: 'Stack', featured: true, icon: SiNextdotjs, level: 'main' },
+  { name: 'React', category: 'Stack', featured: true, icon: SiReact, level: 'main' },
+  { name: 'Tailwind CSS', category: 'Stack', icon: SiTailwindcss, level: 'familiar' },
+  { name: 'Supabase', category: 'Stack', icon: SiSupabase, level: 'familiar' },
+  { name: 'Vercel', category: 'Stack', icon: SiVercel, level: 'familiar' },
 
-  { name: 'ChatGPT', category: 'AI', featured: true, icon: SiOpenai, level: 'main' },
-  { name: 'Claude', category: 'AI', icon: SiClaude, level: 'familiar' },
+  { name: 'ChatGPT / Codex', category: 'AI', featured: true, icon: SiOpenai, level: 'main' },
+  { name: 'Claude / Claude Code', category: 'AI', featured: true, icon: SiClaude, level: 'main' },
   { name: 'Gemini', category: 'AI', icon: SiGooglegemini, level: 'familiar' },
-  { name: 'Claude Code / Codex', category: 'AI', featured: true, icon: SiClaude, level: 'main' },
+  { name: 'Manus', category: 'AI', iconSrc: '/brands/manus.svg', level: 'familiar' },
 
   { name: 'Adobe Premiere Pro', category: 'Creative', featured: true, icon: SiAdobepremierepro, level: 'main' },
   { name: 'Wondershare Filmora', category: 'Creative', icon: FilmoraIcon, level: 'familiar' },
+  { name: 'Canva', category: 'Creative', icon: SiCanva, level: 'familiar' },
 ];
 
 const profileLinks = [
@@ -258,13 +255,20 @@ function MomentumLineChart({
   const rawMax = Math.max(...days.map((day) => day.commits), 0);
   const getNiceMax = (value: number) => {
     if (value <= 5) return 5;
+
+    const niceSteps = [1, 1.5, 2, 2.5, 3, 4, 5, 7.5, 10];
     const magnitude = 10 ** Math.floor(Math.log10(value));
     const normalized = value / magnitude;
-    const niceNormalized = normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 5 ? 5 : 10;
+    const niceNormalized = niceSteps.find((step) => normalized <= step) ?? 10;
     return niceNormalized * magnitude;
   };
   const maxValue = getNiceMax(rawMax);
-  const midValue = Math.round(maxValue / 2);
+  const getTickLabel = (value: number) => {
+    if (value >= 100) return Math.round(value);
+    if (value >= 10) return Math.round(value * 2) / 2;
+    return Math.round(value * 10) / 10;
+  };
+  const midValue = getTickLabel(maxValue / 2);
   const bottomValue = 0;
   const activeDay = activeIndex !== null ? days[activeIndex] : null;
   const chartStepX = 100 / Math.max(days.length, 1);
@@ -698,23 +702,23 @@ function AboutSection() {
 }
 
 function SkillsSection() {
-  const categories: SkillCategory[] = ['Languages', 'Frameworks', 'AI', 'Creative'];
+  const categories: SkillCategory[] = ['Languages', 'Stack', 'AI', 'Creative'];
   const [selectedCategory, setSelectedCategory] = useState<SkillCategory>('Languages');
   const categoryLabels: Record<SkillCategory, string> = {
     Languages: '言語',
-    Frameworks: 'フレームワーク',
+    Stack: '開発基盤',
     AI: 'AI活用',
     Creative: '動画制作',
   };
   const categoryDescriptions: Record<SkillCategory, string> = {
     Languages: '主にWeb開発で使用するプログラミング言語',
-    Frameworks: 'Webアプリの開発に活用しているフレームワーク・ライブラリ',
+    Stack: 'アプリ構築・デプロイ・運用で使っている基盤とライブラリ',
     AI: '実装・設計・学習で日常的に活用するAIツール',
     Creative: '動画編集・コンテンツ制作ツール',
   };
   const categoryIcons: Record<SkillCategory, ReactNode> = {
     Languages: <Code2 className="w-4 h-4" strokeWidth={1.5} />,
-    Frameworks: <Wrench className="w-4 h-4" strokeWidth={1.5} />,
+    Stack: <Wrench className="w-4 h-4" strokeWidth={1.5} />,
     AI: <Sparkles className="w-4 h-4" strokeWidth={1.5} />,
     Creative: <Film className="w-4 h-4" strokeWidth={1.5} />,
   };
@@ -771,7 +775,7 @@ function SkillsSection() {
             >
               <p className="text-[11px] text-muted-foreground font-mono mb-4">{categoryDescriptions[selectedCategory]}</p>
               <div className="space-y-2">
-                {selectedSkills.map(({ name, icon: Icon, featured }) => (
+                {selectedSkills.map(({ name, icon: Icon, iconSrc, featured }) => (
                   <div
                     key={name}
                     className={`skill-item-card flex items-center gap-3 rounded-xl border px-3.5 py-3 transition-all duration-200 ${featured
@@ -779,9 +783,13 @@ function SkillsSection() {
                       : 'border-border bg-muted/40'
                       }`}
                   >
-                    {Icon && (
+                    {(Icon || iconSrc) && (
                       <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-background border border-border flex items-center justify-center">
-                        <Icon size={16} className="text-foreground/80" />
+                        {iconSrc ? (
+                          <Image src={iconSrc} alt="" width={16} height={16} className="w-4 h-4 object-contain" aria-hidden="true" />
+                        ) : Icon ? (
+                          <Icon size={16} className="text-foreground/80" />
+                        ) : null}
                       </span>
                     )}
                     <span className="flex-1 text-[13px] font-mono text-foreground/95 tracking-tight">{name}</span>
@@ -819,7 +827,7 @@ function SkillsSection() {
                     </span>
                   </div>
                   <div className="space-y-1">
-                    {skills.map(({ name, icon: Icon, featured }) => (
+                    {skills.map(({ name, icon: Icon, iconSrc, featured }) => (
                       <div
                         key={name}
                         className={`flex items-center gap-2.5 rounded-md border px-2.5 py-2 transition-colors duration-200 ${featured
@@ -827,10 +835,14 @@ function SkillsSection() {
                           : 'border-transparent'
                           }`}
                       >
-                        {Icon && (
+                        {(Icon || iconSrc) && (
                           <span className={`flex-shrink-0 w-6 h-6 rounded flex items-center justify-center ${featured ? 'bg-background border border-border' : 'bg-muted/60'
                             }`}>
-                            <Icon size={12} className="text-foreground/70" />
+                            {iconSrc ? (
+                              <Image src={iconSrc} alt="" width={12} height={12} className="w-3 h-3 object-contain" aria-hidden="true" />
+                            ) : Icon ? (
+                              <Icon size={12} className="text-foreground/70" />
+                            ) : null}
                           </span>
                         )}
                         <span className="flex-1 text-[12px] font-mono text-foreground/90 tracking-tight">{name}</span>
@@ -1055,15 +1067,24 @@ function ActiveProjectsSection({ initialActiveProjects }: { initialActiveProject
             <>
               {visibleProjects.map((project) => {
                 const currentStage = Math.max(0, Math.min(stages.length - 1, project.stage));
+                const lineInsetPercent = 50 / stages.length;
+                const lineTrackPercent = 100 - lineInsetPercent * 2;
+                const progressWidthPercent = lineInsetPercent + (currentStage / (stages.length - 1)) * lineTrackPercent;
                 return (
                   <ScrollReveal key={project.id}>
                     <div className="bento-card p-4">
                       <p className="text-sm font-medium mb-4">{project.name}</p>
                       <div className="relative">
-                        <div className="absolute top-[7px] left-0 right-0 h-[2px] bg-border" />
+                        <div
+                          className="absolute top-[7px] h-[2px] bg-border"
+                          style={{
+                            left: `${lineInsetPercent}%`,
+                            right: `${lineInsetPercent}%`,
+                          }}
+                        />
                         <div
                           className="absolute top-[7px] left-0 h-[2px] bg-foreground transition-all duration-700"
-                          style={{ width: `${(currentStage / (stages.length - 1)) * 100}%` }}
+                          style={{ width: `${progressWidthPercent}%` }}
                         />
                         <div className="relative flex justify-between">
                           {stages.map((stage, i) => {

@@ -53,10 +53,17 @@ function LicensePageContent() {
                         <p className="legal-doc-text">{t('contentDescription')}</p>
                     </section>
 
+                    <section className="legal-doc-section">
+                        <h2 className="legal-doc-heading">
+                            <span className="legal-doc-num">2.</span>{t('brandTitle')}
+                        </h2>
+                        <p className="legal-doc-text">{t('brandDescription')}</p>
+                    </section>
+
                     {/* Third-party */}
                     <section className="legal-doc-section">
                         <h2 className="legal-doc-heading">
-                            <span className="legal-doc-num">2.</span>{t('thirdPartyTitle')}
+                            <span className="legal-doc-num">3.</span>{t('thirdPartyTitle')}
                         </h2>
                         <p className="legal-doc-text">{t('thirdPartyDescription')}</p>
                         <table className="legal-doc-table">

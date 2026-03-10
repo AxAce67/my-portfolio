@@ -8,11 +8,11 @@
         "contact": "Contact"
     },
     "Hero": {
-        "greeting": "> initializing...",
+        "greeting": "",
         "title": "Turning Ideas into Reality",
         "subtitle": "Building what I love. That's it.",
         "description": "Portfolio of indie developer Aki",
-        "scrollDown": "$ cd projects/ ↓"
+        "scrollDown": "explore"
     },
     "About": {
         "sectionTitle": "// about/",
@@ -315,6 +315,8 @@
         "description": "License information for this portfolio site",
         "contentTitle": "Content Copyright",
         "contentDescription": "All text, photographs, illustrations, designs, layouts, logos, and other creative works (collectively, \"Content\") published on this site are the property of the author (Aki) unless otherwise stated. Unauthorized reproduction, redistribution, modification, or secondary use of Content is prohibited. For personal reference or citation, please clearly attribute the source by including this site's URL. For commercial use, please contact us via the contact form in advance.",
+        "brandTitle": "Third-Party Logos and Trademarks",
+        "brandDescription": "Third-party service names, logos, icons, and trademarks used on this site remain the property of their respective owners. They are used solely for identification and reference purposes and remain subject to each brand's applicable guidelines and usage terms.",
         "thirdPartyTitle": "Third-Party Libraries",
         "thirdPartyDescription": "This site utilizes the following open source libraries and frameworks. Each library is governed by its own license, and details can be found in the respective repositories. Copyright for these libraries belongs to their respective developers or organizations.",
         "backHome": "Back to Home"
