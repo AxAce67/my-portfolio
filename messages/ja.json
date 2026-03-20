@@ -2,9 +2,9 @@
   "Navigation": {
     "about": "About",
     "skills": "Skills",
-    "technologies": "Technologies",
+    "technologies": "Tech Stack",
     "projects": "Projects",
-    "timeline": "Timeline",
+    "timeline": "Active",
     "contact": "Contact"
   },
   "Hero": {
@@ -50,11 +50,30 @@
   },
   "Skills": {
     "sectionTitle": "// skills/",
-    "heading": "スキル"
+    "heading": "Skills",
+    "subtitle": "日常的に使っているスキルセット",
+    "categories": {
+      "languages": "言語",
+      "stack": "開発基盤",
+      "ai": "AI活用",
+      "creative": "動画制作"
+    },
+    "descriptions": {
+      "languages": "主にWeb開発で使用するプログラミング言語",
+      "stack": "アプリ構築・デプロイ・運用で使っている基盤とライブラリ",
+      "ai": "実装・設計・学習で日常的に活用するAIツール",
+      "creative": "動画編集・コンテンツ制作ツール"
+    },
+    "levels": {
+      "main": "メイン",
+      "familiar": "実務レベル",
+      "learning": "学習中"
+    }
   },
   "TechStack": {
     "sectionTitle": "// tech_stack/",
-    "heading": "技術スタック"
+    "heading": "Tech Stack",
+    "subtitle": "日常的に利用している技術・サービス一覧"
   },
   "Projects": {
     "sectionTitle": "// projects/",
@@ -76,8 +95,8 @@
   },
   "Contact": {
     "sectionTitle": "> send_message",
-    "heading": "お問い合わせ",
-    "description": "ご質問・ご依頼・フィードバック等、お気軽にどうぞ。",
+    "heading": "Contact",
+    "description": "ご質問・ご依頼・フィードバック等、お気軽にどうぞ！",
     "name": "名前",
     "namePlaceholder": "お名前",
     "email": "メールアドレス",
@@ -280,6 +299,7 @@
     "sectionLabel": "// in_progress",
     "heading": "Active Projects",
     "projectColumn": "Project",
+    "empty": "進行中プロジェクトがまだありません。",
     "stagePlanning": "企画",
     "stageDesign": "設計",
     "stageDevelopment": "実装",

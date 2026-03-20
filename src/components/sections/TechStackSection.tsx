@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import type { ComponentType } from 'react';
 import Image from 'next/image';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
@@ -158,6 +159,7 @@ function TechCard({ item, idx, prefix }: { item: TechItem; idx: number; prefix: 
 }
 
 export default function TechStackSection() {
+  const t = useTranslations('TechStack');
   const split = Math.ceil(techStack.length / 2);
   const row1 = techStack.slice(0, split);
   const row2 = techStack.slice(split);
@@ -166,12 +168,12 @@ export default function TechStackSection() {
     <section id="tech-stack" className="py-20 sm:py-32 lg:py-36 overflow-hidden">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal>
-          <p className="section-label text-center">{'// tech_stack'}</p>
+          <p className="section-label text-center">{t('sectionTitle')}</p>
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2 text-center">Technologies &amp; Services</h2>
-          <p className="text-xs sm:text-sm text-muted-foreground mb-8 sm:mb-12 text-center">日常的に利用している技術・サービス一覧</p>
+          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2 text-center">{t('heading')}</h2>
+          <p className="text-xs sm:text-sm text-muted-foreground mb-8 sm:mb-12 text-center">{t('subtitle')}</p>
         </ScrollReveal>
       </div>
 

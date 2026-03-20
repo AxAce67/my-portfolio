@@ -28,15 +28,20 @@ import {
 import { SiOpenai, SiAdobepremierepro, SiCanva } from 'react-icons/si';
 import type { ActiveProject, CompletedProject } from './HomePageClient';
 
-const TechStackSection = dynamic(() => import('@/components/sections/TechStackSection'), {
-  loading: () => (
+function TechStackLoading() {
+  const t = useTranslations('TechStack');
+  return (
     <section id="tech-stack" className="py-20 sm:py-32 lg:py-36">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p className="section-label text-center">{'// tech_stack'}</p>
-        <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-10 sm:mb-16 text-center">Technologies &amp; Services</h2>
+        <p className="section-label text-center">{t('sectionTitle')}</p>
+        <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-10 sm:mb-16 text-center">{t('heading')}</h2>
       </div>
     </section>
-  ),
+  );
+}
+
+const TechStackSection = dynamic(() => import('@/components/sections/TechStackSection'), {
+  loading: () => <TechStackLoading />,
 });
 
 type SkillCategory = 'Languages' | 'Stack' | 'AI' | 'Creative';
@@ -702,19 +707,20 @@ function AboutSection() {
 }
 
 function SkillsSection() {
+  const t = useTranslations('Skills');
   const categories: SkillCategory[] = ['Languages', 'Stack', 'AI', 'Creative'];
   const [selectedCategory, setSelectedCategory] = useState<SkillCategory>('Languages');
   const categoryLabels: Record<SkillCategory, string> = {
-    Languages: '言語',
-    Stack: '開発基盤',
-    AI: 'AI活用',
-    Creative: '動画制作',
+    Languages: t('categories.languages'),
+    Stack: t('categories.stack'),
+    AI: t('categories.ai'),
+    Creative: t('categories.creative'),
   };
   const categoryDescriptions: Record<SkillCategory, string> = {
-    Languages: '主にWeb開発で使用するプログラミング言語',
-    Stack: 'アプリ構築・デプロイ・運用で使っている基盤とライブラリ',
-    AI: '実装・設計・学習で日常的に活用するAIツール',
-    Creative: '動画編集・コンテンツ制作ツール',
+    Languages: t('descriptions.languages'),
+    Stack: t('descriptions.stack'),
+    AI: t('descriptions.ai'),
+    Creative: t('descriptions.creative'),
   };
   const categoryIcons: Record<SkillCategory, ReactNode> = {
     Languages: <Code2 className="w-4 h-4" strokeWidth={1.5} />,
@@ -723,9 +729,9 @@ function SkillsSection() {
     Creative: <Film className="w-4 h-4" strokeWidth={1.5} />,
   };
   const levelLabels: Record<string, string> = {
-    main: 'メイン',
-    familiar: '実務レベル',
-    learning: '学習中',
+    main: t('levels.main'),
+    familiar: t('levels.familiar'),
+    learning: t('levels.learning'),
   };
 
   const selectedSkills = sampleSkills.filter((s) => s.category === selectedCategory);
@@ -734,12 +740,12 @@ function SkillsSection() {
     <section id="skills" className="py-20 sm:py-32 lg:py-36">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="none">
-          <p className="section-label">{'// skills'}</p>
+          <p className="section-label">{t('sectionTitle')}</p>
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2">Skills</h2>
-          <p className="text-xs sm:text-sm text-muted-foreground mb-8 sm:mb-12">日常的に使っているスキルセット</p>
+          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2">{t('heading')}</h2>
+          <p className="text-xs sm:text-sm text-muted-foreground mb-8 sm:mb-12">{t('subtitle')}</p>
         </ScrollReveal>
 
         {/* Mobile: タブ切り替え */}
@@ -793,11 +799,11 @@ function SkillsSection() {
                       </span>
                     )}
                     <span className="flex-1 text-[13px] font-mono text-foreground/95 tracking-tight">{name}</span>
-                    {featured && (
-                      <span className="text-[9px] font-mono tracking-wider uppercase px-2 py-0.5 rounded-full bg-foreground/10 text-foreground/80">
-                        {levelLabels['main']}
-                      </span>
-                    )}
+                        {featured && (
+                          <span className="text-[9px] font-mono tracking-wider uppercase px-2 py-0.5 rounded-full bg-foreground/10 text-foreground/80">
+                            {levelLabels['main']}
+                          </span>
+                        )}
                   </div>
                 ))}
               </div>
@@ -848,7 +854,7 @@ function SkillsSection() {
                         <span className="flex-1 text-[12px] font-mono text-foreground/90 tracking-tight">{name}</span>
                         {featured && (
                           <span className="text-[9px] font-mono tracking-wider uppercase px-1.5 py-0.5 rounded-full bg-foreground/8 text-foreground/70">
-                            メイン
+                            {levelLabels['main']}
                           </span>
                         )}
                       </div>
@@ -1061,7 +1067,7 @@ function ActiveProjectsSection({ initialActiveProjects }: { initialActiveProject
         <div className="md:hidden space-y-3">
           {activeProjects.length === 0 ? (
             <div className="bento-card">
-              <p className="text-sm text-muted-foreground">No active projects yet.</p>
+              <p className="text-sm text-muted-foreground">{text('empty', 'No active projects yet.')}</p>
             </div>
           ) : (
             <>
@@ -1224,7 +1230,7 @@ function ActiveProjectsSection({ initialActiveProjects }: { initialActiveProject
 
           {activeProjects.length === 0 && (
             <div className="px-6 py-6">
-              <p className="text-sm text-muted-foreground">No active projects yet.</p>
+              <p className="text-sm text-muted-foreground">{text('empty', 'No active projects yet.')}</p>
             </div>
           )}
         </div>

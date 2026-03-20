@@ -2,9 +2,9 @@
     "Navigation": {
         "about": "About",
         "skills": "Skills",
-        "technologies": "Technologies",
+        "technologies": "Tech Stack",
         "projects": "Projects",
-        "timeline": "Timeline",
+        "timeline": "Active",
         "contact": "Contact"
     },
     "Hero": {
@@ -50,11 +50,30 @@
     },
     "Skills": {
         "sectionTitle": "// skills/",
-        "heading": "Skills"
+        "heading": "Skills",
+        "subtitle": "Everyday tools and strengths",
+        "categories": {
+            "languages": "Languages",
+            "stack": "Stack",
+            "ai": "AI Tools",
+            "creative": "Creative"
+        },
+        "descriptions": {
+            "languages": "Programming languages mainly used in web development",
+            "stack": "Platforms and libraries used to build, deploy, and operate apps",
+            "ai": "AI tools I use daily for implementation, design, and learning",
+            "creative": "Video editing and content creation tools"
+        },
+        "levels": {
+            "main": "Main",
+            "familiar": "Production",
+            "learning": "Learning"
+        }
     },
     "TechStack": {
         "sectionTitle": "// tech_stack/",
-        "heading": "Tech Stack"
+        "heading": "Tech Stack",
+        "subtitle": "Technologies and services I use regularly"
     },
     "Projects": {
         "sectionTitle": "// projects/",
@@ -280,6 +299,7 @@
         "sectionLabel": "// in_progress",
         "heading": "Active Projects",
         "projectColumn": "Project",
+        "empty": "No active projects yet.",
         "stagePlanning": "Planning",
         "stageDesign": "Design",
         "stageDevelopment": "Development",
