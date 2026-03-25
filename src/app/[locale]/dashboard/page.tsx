@@ -201,7 +201,7 @@ export default async function DashboardPage({ params, searchParams }: Props) {
                   <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 w-full sm:w-auto">
                     <Link href={`/${locale}/projects/${project.id}`} className="btn-outline flex-1 sm:flex-none px-3 py-2 text-xs">{t('actions.read')}</Link>
                     <Link href={`/${locale}/dashboard/projects/${project.id}`} className="btn-outline flex-1 sm:flex-none px-3 py-2 text-xs">{t('actions.edit')}</Link>
-                    <DeleteProjectButton locale={locale} projectId={project.id} projectTitle={project.title} />
+                    <DeleteProjectButton locale={locale} projectId={project.id} projectTitle={project.title ?? ''} />
                   </div>
                 </div>
               ))}
