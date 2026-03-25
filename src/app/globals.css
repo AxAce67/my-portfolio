@@ -955,7 +955,7 @@ body::before {
   font-size: 480px;
   font-weight: 700;
   letter-spacing: -0.04em;
-  fill: transparent;
+  fill: none;
   stroke: currentColor;
   stroke-width: 1.5;
   stroke-dasharray: 5500;
@@ -987,6 +987,9 @@ body::before {
 }
 
 @media (max-width: 639px) {
+  .hero-svg-text {
+    stroke-width: 1;
+  }
   .hero-v5-bottom {
     flex-wrap: wrap;
     align-items: center;
@@ -999,6 +1002,12 @@ body::before {
   /* Clock expands to push button to the right */
   .hero-clock {
     flex: 1;
+    white-space: nowrap;
+  }
+  /* Hide location label on mobile — show time only */
+  .hero-clock__loc,
+  .hero-clock__sep {
+    display: none;
   }
 }
 
