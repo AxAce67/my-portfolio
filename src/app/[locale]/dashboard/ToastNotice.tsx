@@ -10,7 +10,7 @@ export default function ToastNotice() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const handledRef = useRef<string>('');
+  const handledRef = useRef<string | null>(null);
   const messageMap = useMemo<Record<string, string>>(
     () => ({
       project_created: t('project_created'),
@@ -34,9 +34,13 @@ export default function ToastNotice() {
     const at = searchParams.get('toastAt') ?? '';
     const key = `${code}:${at}`;
 
-    if (!code || !messageMap[code] || handledRef.current === key) return;
+    const sessionKey = `toast-shown:${key}`;
+    if (!code || !messageMap[code]) return;
+    if (handledRef.current === key) return;
+    if (sessionStorage.getItem(sessionKey)) return;
 
     handledRef.current = key;
+    sessionStorage.setItem(sessionKey, '1');
     if (code.endsWith('_failed')) {
       toast.error(messageMap[code]);
     } else {
