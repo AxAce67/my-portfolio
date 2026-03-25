@@ -247,8 +247,8 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
       {/* Bottom bar: slogan left — CTA right */}
       <div className="hero-v5-bottom">
         <div className="flex flex-col gap-1">
-          <p className="text-base sm:text-lg font-medium tracking-tight">{t('title')}</p>
-          <p className="text-sm text-muted-foreground font-light">{t('subtitle')}</p>
+          <p className="text-base sm:text-lg lg:text-xl xl:text-2xl font-medium tracking-tight">{t('title')}</p>
+          <p className="text-sm sm:text-base lg:text-lg text-muted-foreground font-light">{t('subtitle')}</p>
         </div>
         <button
           onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}

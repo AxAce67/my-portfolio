@@ -994,6 +994,20 @@ body::before {
   }
 }
 
+@media (min-width: 1024px) {
+  .hero-v5-bottom .btn-primary {
+    font-size: 1rem;
+    padding: 0.875rem 2.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-v5-bottom .btn-primary {
+    font-size: 1.125rem;
+    padding: 1rem 3rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-svg-text,
   .hero-eyebrow--center,
