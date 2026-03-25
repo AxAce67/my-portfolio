@@ -81,8 +81,8 @@ export default function ProjectsListClient({ projects }: Props) {
             new Date(project.updatedAt as string).getTime() > new Date(project.createdAt as string).getTime();
           return (
             <Link key={project.id} href={`/projects/${project.id}`} prefetch className="block project-card group">
-              <div className="flex flex-col sm:flex-row sm:h-36 sm:overflow-hidden">
-                <div className="w-full aspect-video sm:aspect-auto sm:w-64 sm:min-w-64 bg-muted overflow-hidden rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none relative">
+              <div className="flex flex-col sm:flex-row sm:h-44 sm:overflow-hidden">
+                <div className="w-full aspect-video sm:aspect-auto sm:w-[313px] sm:min-w-[313px] bg-muted overflow-hidden rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none relative">
                   {project.thumbnailUrl ? (
                     <Image
                       src={project.thumbnailUrl}

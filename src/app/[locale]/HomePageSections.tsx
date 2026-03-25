@@ -947,11 +947,11 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                 }}
                 className={`block project-card group cursor-pointer ${effectiveViewMode === 'grid' ? 'h-full' : ''}`}
               >
-                <div className={effectiveViewMode === 'grid' ? 'flex flex-col h-full' : 'flex flex-row h-28 sm:h-36 overflow-hidden'}>
+                <div className={effectiveViewMode === 'grid' ? 'flex flex-col h-full' : 'flex flex-row h-28 sm:h-44 overflow-hidden'}>
                   <div
                     className={`bg-muted overflow-hidden relative ${effectiveViewMode === 'grid'
                       ? 'aspect-video rounded-t-xl'
-                      : 'w-[198px] min-w-[198px] sm:w-64 sm:min-w-64 rounded-l-xl rounded-tr-none shrink-0'
+                      : 'w-[198px] min-w-[198px] sm:w-[313px] sm:min-w-[313px] rounded-l-xl rounded-tr-none shrink-0'
                       }`}
                   >
                     {project.image ? (
