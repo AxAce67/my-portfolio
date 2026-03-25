@@ -56,10 +56,9 @@ export default async function ProjectArticlePage({ params }: Props) {
   const project = await getProjectById(id);
 
   if (!project) notFound();
-  const showUpdatedAt =
-    Boolean(project.updated_at) &&
-    Boolean(project.created_at) &&
-    new Date(project.updated_at as string).getTime() > new Date(project.created_at as string).getTime();
+  const createdDay = project.created_at ? new Date(project.created_at).toDateString() : null;
+  const updatedDay = project.updated_at ? new Date(project.updated_at).toDateString() : null;
+  const showUpdatedAt = updatedDay !== null && createdDay !== null && updatedDay !== createdDay;
 
   return (
     <article className="max-w-5xl mx-auto px-6 lg:px-8 py-16 sm:py-20">
