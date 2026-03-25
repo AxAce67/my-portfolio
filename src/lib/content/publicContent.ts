@@ -124,11 +124,11 @@ export const getProjectById = unstable_cache(
       .select('id, title, description, content_md, created_at, updated_at, is_published, thumbnail_url')
       .eq('id', id)
       .eq('is_published', true)
-      .single();
+      .maybeSingle();
 
     if (error) {
-      // PGRST116 = no rows found → treat as not found instead of server error
-      if (error.code === 'PGRST116') return null;
+      // Validation errors (e.g. invalid UUID format) → treat as not found
+      if (error.code === '22P02') return null;
       throw new Error(`Failed to load project detail: ${error.message}`);
     }
     return data;
