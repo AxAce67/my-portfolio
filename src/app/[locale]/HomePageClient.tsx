@@ -301,7 +301,7 @@ function HeroClock() {
       <span className="hero-clock__loc">Tokyo, Japan</span>
       <span className="hero-clock__sep" />
       <span className="hero-clock__time">{time || '--:--:--'}</span>
-      <span className="hero-clock__tz">JST</span>
+      <span className="hero-clock__tz">UTC+9</span>
     </div>
   );
 }
