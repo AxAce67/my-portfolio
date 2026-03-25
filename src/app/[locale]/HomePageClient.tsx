@@ -273,12 +273,27 @@ const tokyoFmt = new Intl.DateTimeFormat('en-GB', {
 
 function HeroClock() {
   const [time, setTime] = useState('');
+  const tidRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const tick = () => setTime(tokyoFmt.format(new Date()));
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
+    let offset = 0;
+
+    // Self-correcting tick: fires at the start of each second boundary
+    const scheduleTick = () => {
+      const now = Date.now() + offset;
+      setTime(tokyoFmt.format(new Date(now)));
+      const delay = 1000 - (now % 1000);
+      tidRef.current = setTimeout(scheduleTick, delay);
+    };
+
+    // Fetch NICT time once to compute offset, then start clock
+    fetch('https://ntp-a1.nict.go.jp/cgi-bin/json')
+      .then(r => r.json())
+      .then((d: { st: number }) => { offset = d.st * 1000 - Date.now(); })
+      .catch(() => {})
+      .finally(() => scheduleTick());
+
+    return () => { if (tidRef.current) clearTimeout(tidRef.current); };
   }, []);
 
   return (
