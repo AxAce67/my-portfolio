@@ -82,7 +82,7 @@ export default function ProjectsListClient({ projects }: Props) {
           return (
             <Link key={project.id} href={`/projects/${project.id}`} prefetch className="block project-card group">
               <div className="flex flex-col sm:flex-row">
-                <div className="aspect-video sm:w-64 sm:min-w-64 bg-muted overflow-hidden rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none relative">
+                <div className="aspect-video sm:w-64 sm:min-w-64 bg-muted overflow-hidden rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none relative self-start">
                   {project.thumbnailUrl ? (
                     <Image
                       src={project.thumbnailUrl}
