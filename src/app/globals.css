@@ -729,7 +729,13 @@ body::before {
     margin-bottom: 0.8rem;
     line-height: 1.35;
     letter-spacing: -0.01em;
+    font-weight: 700;
+    color: var(--foreground);
   }
+
+  .article-content h1 { font-size: 1.75rem; }
+  .article-content h2 { font-size: 1.35rem; }
+  .article-content h3 { font-size: 1.1rem; }
 
   .article-content p {
     margin-top: 0.95rem;
@@ -742,6 +748,9 @@ body::before {
     padding-left: 1.4rem;
     color: rgb(from var(--foreground) r g b / 0.96);
   }
+
+  .article-content ul { list-style-type: disc; }
+  .article-content ol { list-style-type: decimal; }
 
   .article-content li+li {
     margin-top: 0.35rem;
