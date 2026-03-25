@@ -187,8 +187,7 @@ export async function createProjectAction(locale: string, formData: FormData) {
       }
     }
 
-    revalidatePath(`/${locale}`);
-    revalidatePath(`/${locale}/dashboard`);
+    revalidatePath('/', 'layout');
     revalidateTag('home-page-data');
     redirect(`/${locale}/dashboard?tab=projects&toast=project_created&toastAt=${Date.now()}`);
   } catch (error) {
@@ -243,10 +242,7 @@ export async function updateProjectAction(locale: string, projectId: string, for
       throw new Error('Project not found.');
     }
 
-    revalidatePath(`/${locale}`);
-    revalidatePath(`/${locale}/dashboard`);
-    revalidatePath(`/${locale}/dashboard/projects/${projectId}`);
-    revalidatePath(`/${locale}/projects/${projectId}`);
+    revalidatePath('/', 'layout');
     revalidateTag('home-page-data');
     redirect(`/${locale}/dashboard?tab=projects&toast=project_updated&toastAt=${Date.now()}`);
   } catch (error) {
@@ -274,8 +270,7 @@ export async function deleteProjectAction(locale: string, projectId: string) {
       throw new Error('Project not found.');
     }
 
-    revalidatePath(`/${locale}`);
-    revalidatePath(`/${locale}/dashboard`);
+    revalidatePath('/', 'layout');
     revalidateTag('home-page-data');
     redirect(`/${locale}/dashboard?tab=projects&toast=project_deleted&toastAt=${Date.now()}`);
   } catch (error) {
@@ -314,8 +309,7 @@ export async function createActiveProjectAction(locale: string, formData: FormDa
       throw new Error('Failed to create active project.');
     }
 
-    revalidatePath(`/${locale}`);
-    revalidatePath(`/${locale}/dashboard`);
+    revalidatePath('/', 'layout');
     revalidateTag('home-page-data');
     redirect(`/${locale}/dashboard?tab=active&toast=active_created&toastAt=${Date.now()}`);
   } catch (error) {
@@ -354,8 +348,7 @@ export async function updateActiveProjectAction(locale: string, projectId: strin
       throw new Error('Active project not found.');
     }
 
-    revalidatePath(`/${locale}`);
-    revalidatePath(`/${locale}/dashboard`);
+    revalidatePath('/', 'layout');
     revalidateTag('home-page-data');
     redirect(`/${locale}/dashboard?tab=active&toast=active_updated&toastAt=${Date.now()}`);
   } catch (error) {
@@ -383,8 +376,7 @@ export async function deleteActiveProjectAction(locale: string, projectId: strin
       throw new Error('Active project not found.');
     }
 
-    revalidatePath(`/${locale}`);
-    revalidatePath(`/${locale}/dashboard`);
+    revalidatePath('/', 'layout');
     revalidateTag('home-page-data');
     redirect(`/${locale}/dashboard?tab=active&toast=active_deleted&toastAt=${Date.now()}`);
   } catch (error) {
