@@ -976,7 +976,7 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                       />
                     </div>
                   </div>
-                  <div className={`${effectiveViewMode === 'grid' ? 'p-3 sm:p-5' : 'p-3 sm:p-6'} flex-1 min-w-0`}>
+                  <div className={`${effectiveViewMode === 'grid' ? 'p-3 sm:p-5' : 'p-3 sm:p-4 flex flex-col justify-center'} flex-1 min-w-0 overflow-hidden`}>
                     <h3
                       className={`${effectiveViewMode === 'grid'
                         ? 'text-sm sm:text-lg'

@@ -94,7 +94,7 @@ export default function ProjectsListClient({ projects }: Props) {
                     />
                   ) : null}
                 </div>
-                <div className="p-6 flex-1">
+                <div className="p-4 flex-1 flex flex-col justify-center overflow-hidden">
                   <h2 className="text-xl font-semibold tracking-tight mb-2">{project.title}</h2>
                   <div className="mb-2 flex flex-wrap gap-3">
                     <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wide">
