@@ -957,7 +957,7 @@ body::before {
   letter-spacing: -0.04em;
   fill: transparent;
   stroke: currentColor;
-  stroke-width: 2;
+  stroke-width: 3;
   stroke-dasharray: 5500;
   stroke-dashoffset: 5500;
   animation: heroStrokeDraw 3.5s cubic-bezier(0.4, 0, 0.2, 1) 0.05s forwards;
