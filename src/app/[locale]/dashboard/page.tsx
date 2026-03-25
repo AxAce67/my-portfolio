@@ -31,6 +31,7 @@ export default async function DashboardPage({ params, searchParams }: Props) {
   const auditPageSize = 20;
   const auditFrom = (auditPage - 1) * auditPageSize;
   const auditTo = auditFrom + auditPageSize - 1;
+
   const supabase = await createClient();
   const { data: authData } = await supabase.auth.getUser();
 
@@ -47,63 +48,77 @@ export default async function DashboardPage({ params, searchParams }: Props) {
     );
   }
 
-  const { data: projects } = await supabase
-    .from('portfolio_projects')
-    .select('id, title, status, is_published, updated_at')
-    .order('updated_at', { ascending: false });
+  // Fetch only what the active tab needs, in parallel where possible
+  let projects: { id: string; title: string | null; status: string | null; is_published: boolean | null; updated_at: string | null }[] = [];
+  let activeProjects: { id: string; name: string; stage: number; display_order: number; is_published: boolean; updated_at: string | null }[] = [];
+  let authAuditLogs: { id: string; created_at: string; email_masked: string | null; email_input: string | null; ip_hash: string | null; ip_address: string | null; user_agent: string | null; locale: string | null; outcome: string; user_id: string | null }[] = [];
+  let authAuditError: boolean = false;
+  let totalAuthAuditCount = 0;
+  let totalAuthSuccessCount = 0;
+  let totalAuthInvalidCount = 0;
+  let totalAuthRateLimitedCount = 0;
+  let cspAuditLogs: { id: string; created_at: string; effective_directive: string | null; violated_directive: string | null; blocked_uri: string | null; document_uri: string | null; disposition: string | null }[] = [];
+  let cspAuditError: boolean = false;
+  let totalCspAuditCount = 0;
 
-  const { data: activeProjects } = await supabase
-    .from('portfolio_active_projects')
-    .select('id, name, stage, display_order, is_published, updated_at')
-    .order('display_order', { ascending: true })
-    .order('updated_at', { ascending: false });
+  if (activeTab === 'projects') {
+    const { data } = await supabase
+      .from('portfolio_projects')
+      .select('id, title, status, is_published, updated_at')
+      .order('updated_at', { ascending: false });
+    projects = data ?? [];
+  } else if (activeTab === 'active') {
+    const { data } = await supabase
+      .from('portfolio_active_projects')
+      .select('id, name, stage, display_order, is_published, updated_at')
+      .order('display_order', { ascending: true })
+      .order('updated_at', { ascending: false });
+    activeProjects = data ?? [];
+  } else {
+    // audit tab: run all queries in parallel
+    let authAuditBaseQuery = supabase
+      .from('auth_audit_logs')
+      .select('id, created_at, email_masked, email_input, ip_hash, ip_address, user_agent, locale, outcome, user_id', { count: 'exact' });
+    if (auditOutcome !== 'all') {
+      authAuditBaseQuery = authAuditBaseQuery.eq('outcome', auditOutcome);
+    }
 
-  let authAuditQuery = supabase
-    .from('auth_audit_logs')
-    .select('id, created_at, email_masked, email_input, ip_hash, ip_address, user_agent, locale, outcome, user_id', {
-      count: 'exact',
-    });
-  if (auditOutcome !== 'all') {
-    authAuditQuery = authAuditQuery.eq('outcome', auditOutcome);
+    const [
+      authLogsResult,
+      successCountResult,
+      invalidCountResult,
+      rateLimitedCountResult,
+      cspLogsResult,
+    ] = await Promise.all([
+      authAuditBaseQuery.order('created_at', { ascending: false }).range(auditFrom, auditTo),
+      supabase.from('auth_audit_logs').select('*', { count: 'exact', head: true }).eq('outcome', 'success'),
+      supabase.from('auth_audit_logs').select('*', { count: 'exact', head: true }).eq('outcome', 'invalid_credentials'),
+      supabase.from('auth_audit_logs').select('*', { count: 'exact', head: true }).eq('outcome', 'rate_limited'),
+      supabase
+        .from('csp_violation_logs')
+        .select('id, created_at, effective_directive, violated_directive, blocked_uri, document_uri, disposition', { count: 'exact' })
+        .order('created_at', { ascending: false })
+        .range(auditFrom, auditTo),
+    ]);
+
+    authAuditError = !!authLogsResult.error;
+    authAuditLogs = authLogsResult.error ? [] : (authLogsResult.data ?? []);
+    totalAuthAuditCount = authLogsResult.error ? 0 : (authLogsResult.count ?? 0);
+    totalAuthSuccessCount = successCountResult.error ? 0 : (successCountResult.count ?? 0);
+    totalAuthInvalidCount = invalidCountResult.error ? 0 : (invalidCountResult.count ?? 0);
+    totalAuthRateLimitedCount = rateLimitedCountResult.error ? 0 : (rateLimitedCountResult.count ?? 0);
+    cspAuditError = !!cspLogsResult.error;
+    cspAuditLogs = cspLogsResult.error ? [] : (cspLogsResult.data ?? []);
+    totalCspAuditCount = cspLogsResult.error ? 0 : (cspLogsResult.count ?? 0);
   }
-  const { data: authAuditLogs, error: authAuditError, count: authAuditCount } = await authAuditQuery
-    .order('created_at', { ascending: false })
-    .range(auditFrom, auditTo);
 
-  const { count: authSuccessCount, error: authSuccessCountError } = await supabase
-    .from('auth_audit_logs')
-    .select('*', { count: 'exact', head: true })
-    .eq('outcome', 'success');
-  const { count: authInvalidCount, error: authInvalidCountError } = await supabase
-    .from('auth_audit_logs')
-    .select('*', { count: 'exact', head: true })
-    .eq('outcome', 'invalid_credentials');
-  const { count: authRateLimitedCount, error: authRateLimitedCountError } = await supabase
-    .from('auth_audit_logs')
-    .select('*', { count: 'exact', head: true })
-    .eq('outcome', 'rate_limited');
-
-  const safeAuthAuditLogs = authAuditError ? [] : (authAuditLogs ?? []);
-  const totalAuthAuditCount = authAuditError ? 0 : (authAuditCount ?? 0);
-  const totalAuthSuccessCount = authSuccessCountError ? 0 : (authSuccessCount ?? 0);
-  const totalAuthInvalidCount = authInvalidCountError ? 0 : (authInvalidCount ?? 0);
-  const totalAuthRateLimitedCount = authRateLimitedCountError ? 0 : (authRateLimitedCount ?? 0);
   const totalAuthAuditPages = Math.max(1, Math.ceil(totalAuthAuditCount / auditPageSize));
   const hasPrevAuthAuditPage = auditPage > 1;
   const hasNextAuthAuditPage = auditPage < totalAuthAuditPages;
-
-  const { data: cspAuditLogs, error: cspAuditError, count: cspAuditCount } = await supabase
-    .from('csp_violation_logs')
-    .select('id, created_at, effective_directive, violated_directive, blocked_uri, document_uri, disposition', {
-      count: 'exact',
-    })
-    .order('created_at', { ascending: false })
-    .range(auditFrom, auditTo);
-  const safeCspAuditLogs = cspAuditError ? [] : (cspAuditLogs ?? []);
-  const totalCspAuditCount = cspAuditError ? 0 : (cspAuditCount ?? 0);
   const totalCspAuditPages = Math.max(1, Math.ceil(totalCspAuditCount / auditPageSize));
   const hasPrevCspAuditPage = auditPage > 1;
   const hasNextCspAuditPage = auditPage < totalCspAuditPages;
+
   const outcomeBadgeClass: Record<string, string> = {
     success: 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25',
     invalid_credentials: 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/25',
@@ -170,7 +185,7 @@ export default async function DashboardPage({ params, searchParams }: Props) {
           <div className="rounded-xl border border-border bg-card p-4 sm:p-6 space-y-4">
             <h2 className="text-xl font-semibold">{t('projects.listTitle')}</h2>
             <div className="space-y-2">
-              {(projects ?? []).map((project) => (
+              {projects.map((project) => (
                 <div key={project.id} className="border border-border rounded-lg px-3 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <div className="min-w-0">
                     <p className="text-sm font-medium">{project.title}</p>
@@ -190,7 +205,7 @@ export default async function DashboardPage({ params, searchParams }: Props) {
                   </div>
                 </div>
               ))}
-              {(projects ?? []).length === 0 && <p className="text-sm text-muted-foreground">{t('projects.empty')}</p>}
+              {projects.length === 0 && <p className="text-sm text-muted-foreground">{t('projects.empty')}</p>}
             </div>
           </div>
         </>
@@ -199,7 +214,7 @@ export default async function DashboardPage({ params, searchParams }: Props) {
       {activeTab === 'active' && (
         <ActiveProjectsManager
           locale={locale}
-          projects={activeProjects ?? []}
+          projects={activeProjects}
         />
       )}
 
@@ -259,7 +274,7 @@ export default async function DashboardPage({ params, searchParams }: Props) {
             <>
               {authAuditError ? (
                 <p className="text-sm text-muted-foreground">{t('audit.notConfigured')}</p>
-              ) : safeAuthAuditLogs.length === 0 ? (
+              ) : authAuditLogs.length === 0 ? (
                 <p className="text-sm text-muted-foreground">{t('audit.empty')}</p>
               ) : (
                 <>
@@ -282,7 +297,7 @@ export default async function DashboardPage({ params, searchParams }: Props) {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    {safeAuthAuditLogs.map((log) => (
+                    {authAuditLogs.map((log) => (
                       <div key={log.id} className="border border-border rounded-lg px-3 py-3 bg-background/50">
                         <div className="flex flex-wrap gap-2 items-center justify-between">
                           <span className={`text-[10px] font-mono px-2 py-0.5 rounded uppercase ${outcomeBadgeClass[log.outcome] ?? 'bg-muted text-muted-foreground border border-border'}`}>
@@ -346,7 +361,7 @@ export default async function DashboardPage({ params, searchParams }: Props) {
                 <div className="rounded-lg border border-dashed border-border px-3 py-4 text-sm text-muted-foreground">
                   {t('audit.cspNotConfigured')}
                 </div>
-              ) : safeCspAuditLogs.length === 0 ? (
+              ) : cspAuditLogs.length === 0 ? (
                 <div className="rounded-lg border border-dashed border-border px-3 py-4 text-sm text-muted-foreground">
                   {t('audit.cspEmpty')}
                 </div>
@@ -359,7 +374,7 @@ export default async function DashboardPage({ params, searchParams }: Props) {
                     </div>
                   </div>
                   <div className="space-y-2 mt-1">
-                    {safeCspAuditLogs.map((log) => (
+                    {cspAuditLogs.map((log) => (
                       <div key={log.id} className="border border-border rounded-lg px-3 py-3 bg-background/50">
                         <div className="flex flex-wrap gap-2 items-center justify-between">
                           <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-muted text-muted-foreground uppercase border border-border">

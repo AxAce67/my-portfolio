@@ -29,6 +29,7 @@ export default function ActiveProjectsManager({ locale, projects }: Props) {
   const [createOpen, setCreateOpen] = useState(false);
   const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
   const [deletingProjectId, setDeletingProjectId] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState(false);
   const stageOptions = [
     { value: 0, label: t('stage.planning') },
     { value: 1, label: t('stage.design') },
@@ -114,7 +115,7 @@ export default function ActiveProjectsManager({ locale, projects }: Props) {
                 <form
                   action={createActiveProjectAction.bind(null, locale)}
                   className="grid grid-cols-1 sm:grid-cols-2 gap-3"
-                  onSubmit={() => setCreateOpen(false)}
+                  onSubmit={() => { setIsPending(true); setCreateOpen(false); }}
                 >
                   <div className="sm:col-span-2">
                     <label className="block text-[11px] font-mono text-muted-foreground mb-1 uppercase tracking-wider">{t('fields.name')}</label>
@@ -137,7 +138,7 @@ export default function ActiveProjectsManager({ locale, projects }: Props) {
                       <input type="checkbox" name="is_published" defaultChecked />
                       {t('published')}
                     </label>
-                    <button type="submit" className="btn-primary w-full sm:w-auto">{t('actions.create')}</button>
+                    <button type="submit" disabled={isPending} className="btn-primary w-full sm:w-auto disabled:opacity-60">{isPending ? '...' : t('actions.create')}</button>
                   </div>
                 </form>
               </div>
@@ -159,7 +160,7 @@ export default function ActiveProjectsManager({ locale, projects }: Props) {
                 <form
                   action={updateActiveProjectAction.bind(null, locale, editingProject.id)}
                   className="grid grid-cols-1 sm:grid-cols-2 gap-3"
-                  onSubmit={() => setEditingProjectId(null)}
+                  onSubmit={() => { setIsPending(true); setEditingProjectId(null); }}
                 >
                   <div className="sm:col-span-2">
                     <label className="block text-[11px] font-mono text-muted-foreground mb-1 uppercase tracking-wider">{t('fields.name')}</label>
@@ -188,7 +189,7 @@ export default function ActiveProjectsManager({ locale, projects }: Props) {
                       <input type="checkbox" name="is_published" defaultChecked={editingProject.is_published} />
                       {t('published')}
                     </label>
-                    <button type="submit" className="btn-primary w-full sm:w-auto">{t('actions.update')}</button>
+                    <button type="submit" disabled={isPending} className="btn-primary w-full sm:w-auto disabled:opacity-60">{isPending ? '...' : t('actions.update')}</button>
                   </div>
                 </form>
               </div>
@@ -209,12 +210,13 @@ export default function ActiveProjectsManager({ locale, projects }: Props) {
                   <button type="button" className="btn-outline px-3 py-2 text-xs w-full sm:w-auto" onClick={() => setDeletingProjectId(null)}>
                     {t('actions.cancel')}
                   </button>
-                  <form action={deleteActiveProjectAction.bind(null, locale, deletingProject.id)} onSubmit={() => setDeletingProjectId(null)}>
+                  <form action={deleteActiveProjectAction.bind(null, locale, deletingProject.id)} onSubmit={() => { setIsPending(true); setDeletingProjectId(null); }}>
                     <button
                       type="submit"
-                      className="rounded-lg border border-red-600 bg-red-600 px-3 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90 w-full sm:w-auto"
+                      disabled={isPending}
+                      className="rounded-lg border border-red-600 bg-red-600 px-3 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60 w-full sm:w-auto"
                     >
-                      {t('actions.delete')}
+                      {isPending ? '...' : t('actions.delete')}
                     </button>
                   </form>
                 </div>

@@ -17,6 +17,7 @@ const modalBaseClass =
 export default function DeleteProjectButton({ locale, projectId, projectTitle }: Props) {
   const t = useTranslations('Dashboard.deleteProject');
   const [open, setOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const action = useMemo(() => deleteProjectAction.bind(null, locale, projectId), [locale, projectId]);
 
   return (
@@ -41,12 +42,13 @@ export default function DeleteProjectButton({ locale, projectId, projectTitle }:
                   <button type="button" className="btn-outline px-3 py-2 text-xs w-full sm:w-auto" onClick={() => setOpen(false)}>
                     {t('cancel')}
                   </button>
-                  <form action={action} onSubmit={() => setOpen(false)}>
+                  <form action={action} onSubmit={() => { setIsDeleting(true); setOpen(false); }}>
                     <button
                       type="submit"
-                      className="rounded-lg border border-red-600 bg-red-600 px-3 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90 w-full sm:w-auto"
+                      disabled={isDeleting}
+                      className="rounded-lg border border-red-600 bg-red-600 px-3 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60 w-full sm:w-auto"
                     >
-                      {t('confirm')}
+                      {isDeleting ? '...' : t('confirm')}
                     </button>
                   </form>
                 </div>
