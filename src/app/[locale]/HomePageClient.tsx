@@ -235,6 +235,7 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
             x="500"
             y="360"
             textAnchor="middle"
+            fill="none"
             className="hero-svg-text"
           >
             {t('name')}

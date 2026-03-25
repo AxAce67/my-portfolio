@@ -960,11 +960,12 @@ body::before {
   stroke-width: 3;
   stroke-dasharray: 5500;
   stroke-dashoffset: 5500;
-  animation: heroStrokeDraw 3.5s cubic-bezier(0.4, 0, 0.2, 1) 0.05s forwards;
+  animation: heroStrokeDraw 3.5s cubic-bezier(0.4, 0, 0.2, 1) 0.05s both;
 }
 
 @keyframes heroStrokeDraw {
-  to { stroke-dashoffset: 0; }
+  from { stroke-dashoffset: 5500; }
+  to   { stroke-dashoffset: 0; }
 }
 
 /* Centered eyebrow variant — sits above the SVG name */
