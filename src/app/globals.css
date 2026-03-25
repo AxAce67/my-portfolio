@@ -798,6 +798,67 @@ body::before {
     border-radius: 1rem;
   }
 
+  .bn-figure {
+    margin-top: 1.2rem;
+  }
+
+  .bn-figcaption {
+    margin-top: 0.4rem;
+    text-align: center;
+    font-size: 0.82em;
+    color: var(--muted-foreground);
+  }
+
+  .article-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.2rem;
+    font-size: 0.93em;
+  }
+
+  .article-content td,
+  .article-content th {
+    border: 1px solid var(--border);
+    padding: 0.45rem 0.75rem;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .bn-table-wrap {
+    overflow-x: auto;
+  }
+
+  .bn-check-list {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 1rem;
+  }
+
+  .bn-check-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-top: 0.35rem;
+  }
+
+  .bn-check-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1em;
+    height: 1em;
+    border: 1.5px solid var(--border);
+    border-radius: 3px;
+    flex-shrink: 0;
+    font-size: 0.75em;
+    color: var(--foreground);
+  }
+
+  .bn-check-text--done {
+    opacity: 0.5;
+    text-decoration: line-through;
+  }
+
   .article-content .bn-container {
     border: 0;
     background: transparent;

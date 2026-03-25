@@ -121,7 +121,7 @@ export const getProjectById = unstable_cache(
     const supabase = createContentClient();
     const { data, error } = await supabase
       .from('portfolio_projects')
-      .select('id, title, description, content_md, created_at, updated_at, is_published, thumbnail_url')
+      .select('id, title, description, content_md, content_json, created_at, updated_at, is_published, thumbnail_url')
       .eq('id', id)
       .eq('is_published', true)
       .maybeSingle();
