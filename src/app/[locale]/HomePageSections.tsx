@@ -951,7 +951,7 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                   <div
                     className={`bg-muted overflow-hidden relative ${effectiveViewMode === 'grid'
                       ? 'aspect-video rounded-t-xl'
-                      : 'w-40 min-w-40 sm:w-56 sm:min-w-56 aspect-video self-start rounded-l-xl rounded-tr-none shrink-0'
+                      : 'w-44 min-w-44 sm:w-72 sm:min-w-72 rounded-l-xl rounded-tr-none shrink-0'
                       }`}
                   >
                     {project.image ? (
