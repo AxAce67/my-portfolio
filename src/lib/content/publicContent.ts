@@ -127,6 +127,8 @@ export const getProjectById = unstable_cache(
       .single();
 
     if (error) {
+      // PGRST116 = no rows found → treat as not found instead of server error
+      if (error.code === 'PGRST116') return null;
       throw new Error(`Failed to load project detail: ${error.message}`);
     }
     return data;
