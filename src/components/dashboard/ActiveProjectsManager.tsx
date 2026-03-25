@@ -15,7 +15,7 @@ type ActiveProjectItem = {
   stage: number;
   display_order: number;
   is_published: boolean;
-  updated_at: string;
+  updated_at: string | null;
 };
 
 type Props = {
