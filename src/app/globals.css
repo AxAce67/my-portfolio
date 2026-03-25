@@ -917,12 +917,628 @@ body::before {
     radial-gradient(circle at center, transparent 30%, rgb(var(--background-rgb) / 0.8) 75%, rgb(var(--background-rgb)) 100%);
 }
 
-/* Hero gradient title */
+/* Hero gradient title — animated shimmer */
 .hero-gradient-title {
-  background: linear-gradient(135deg, var(--hero-title-from) 0%, var(--hero-title-to) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--hero-title-from) 0%,
+    var(--hero-title-to) 40%,
+    var(--hero-title-from) 80%
+  );
+  background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: heroGradientShine 7s linear infinite;
+}
+
+@keyframes heroGradientShine {
+  0%   { background-position: 0%   center; }
+  100% { background-position: 200% center; }
+}
+
+/* ========== Hero v5: Outline Name ========== */
+
+/* SVG stroke-draw name */
+.hero-svg-name {
+  width: clamp(200px, 94vw, 1200px);
+  height: auto;
+  display: block;
+  overflow: visible;
+  color: var(--foreground);
+  user-select: none;
+  pointer-events: none;
+}
+
+.hero-svg-text {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 480px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  fill: transparent;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-dasharray: 5500;
+  stroke-dashoffset: 5500;
+  animation: heroStrokeDraw 3.5s cubic-bezier(0.4, 0, 0.2, 1) 0.05s forwards;
+}
+
+@keyframes heroStrokeDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Centered eyebrow variant — sits above the SVG name */
+.hero-eyebrow--center {
+  text-align: center;
+  animation: heroFadeIn 0.5s ease 0.3s both;
+}
+
+/* Bottom bar: slogan left, CTA right */
+.hero-v5-bottom {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  animation: heroFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+
+@media (max-width: 479px) {
+  .hero-v5-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-svg-text,
+  .hero-eyebrow--center,
+  .hero-v5-bottom { animation: none; }
+  .hero-svg-text { stroke-dashoffset: 0; }
+}
+
+/* ========== Hero v5: Big Name ========== */
+
+/* Optional background image support */
+.hero-bg-image {
+  position: absolute;
+  inset: 0;
+  background-image: var(--hero-image, none);
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+/* Overlay — darkens image if set, transparent otherwise */
+.hero-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgb(var(--background-rgb) / var(--hero-overlay-opacity, 0));
+  z-index: 1;
+  transition: background 0.3s ease;
+}
+
+/* Large name */
+.hero-name {
+  font-size: clamp(4.5rem, 18vw, 14rem);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  display: block;
+}
+
+/* Separator line between name and info row */
+.hero-sep {
+  height: 1px;
+  background: var(--border);
+  width: 100%;
+  margin: 1.75rem 0 1.75rem;
+  animation: heroFadeIn 0.5s ease 0.6s both;
+}
+
+/* Info row: title+role | subtitle | CTA */
+.hero-info-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 1.5rem 3rem;
+  align-items: end;
+  width: 100%;
+  animation: heroFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
+}
+
+@media (max-width: 768px) {
+  .hero-info-row {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+  }
+  .hero-info-row > *:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-info-row {
+    grid-template-columns: 1fr;
+  }
+  .hero-info-row > * {
+    grid-column: 1;
+  }
+  .hero-sep {
+    margin: 1.25rem 0;
+  }
+}
+
+/* Name entrance */
+.hero-name-in {
+  animation: heroV3TitleIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-name-in,
+  .hero-sep,
+  .hero-info-row {
+    animation: none;
+  }
+}
+
+/* ========== Hero v4: Glass Card ========== */
+
+/* Ambient orbs — absolute within hero section */
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.hero-orb--1 {
+  width: clamp(320px, 55vw, 700px);
+  height: clamp(320px, 55vw, 700px);
+  top: -20%;
+  left: -15%;
+  background: rgb(var(--hero-accent-rgb) / 0.18);
+}
+
+.hero-orb--2 {
+  width: clamp(260px, 45vw, 600px);
+  height: clamp(260px, 45vw, 600px);
+  bottom: -15%;
+  right: -10%;
+  background: rgb(var(--hero-accent-soft-rgb) / 0.15);
+}
+
+.hero-orb--3 {
+  width: clamp(200px, 35vw, 480px);
+  height: clamp(200px, 35vw, 480px);
+  top: 8%;
+  right: 18%;
+  background: rgb(var(--hero-glow-rgb) / 0.11);
+}
+
+/* Light mode: brighter orbs */
+.light .hero-orb--1 { background: rgb(var(--hero-accent-rgb)      / 0.14); }
+.light .hero-orb--2 { background: rgb(var(--hero-accent-soft-rgb) / 0.12); }
+.light .hero-orb--3 { background: rgb(var(--hero-glow-rgb)        / 0.10); }
+
+/* Glassmorphism card */
+.hero-glass-card {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 36rem;
+  padding: 2.5rem 2.75rem;
+  background: rgb(var(--background-rgb) / 0.5);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.dark .hero-glass-card {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.06),
+    0 32px 80px -16px rgba(0, 0, 0, 0.7);
+}
+
+.light .hero-glass-card {
+  background: rgb(var(--background-rgb) / 0.75);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.95),
+    0 8px 48px -8px rgba(0, 0, 0, 0.12);
+}
+
+/* Card title */
+.hero-card-title {
+  font-size: clamp(2rem, 4.8vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+
+/* Tech stack tag line */
+.hero-stack-line {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.65rem;
+  color: var(--muted-foreground);
+  letter-spacing: 0.08em;
+}
+
+/* Card inner divider */
+.hero-card-rule {
+  height: 1px;
+  background: var(--border);
+}
+
+/* Card entrance */
+.hero-v4-card {
+  animation: heroV4CardIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+@keyframes heroV4CardIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-v4-card { animation: none; }
+}
+
+@media (max-width: 480px) {
+  .hero-glass-card {
+    padding: 2rem 1.75rem;
+    border-radius: 1.25rem;
+  }
+}
+
+/* ========== Hero v3: Atmospheric Depth ========== */
+
+/* 4-point mesh gradient — richer than single aurora */
+.hero-mesh {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 55% at 15% 25%,  rgb(var(--hero-accent-rgb)      / 0.13) 0, transparent 60%),
+    radial-gradient(ellipse 65% 50% at 85% 75%,  rgb(var(--hero-accent-soft-rgb) / 0.10) 0, transparent 55%),
+    radial-gradient(ellipse 55% 45% at 50% -5%,  rgb(var(--hero-glow-rgb)        / 0.12) 0, transparent 50%),
+    radial-gradient(ellipse 45% 55% at 78% 22%,  rgb(var(--hero-accent-rgb)      / 0.06) 0, transparent 45%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* SVG grain texture — inline, no data URI, no CSP issues */
+.hero-grain-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.045;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.light .hero-grain-svg {
+  opacity: 0.065;
+}
+
+/* Large decorative watermark behind content */
+.hero-watermark {
+  position: absolute;
+  font-size: clamp(8rem, 30vw, 26rem);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgb(var(--foreground-rgb) / 0.038);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -52%);
+  user-select: none;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 2;
+  line-height: 1;
+}
+
+/* Title sizing — one line at sm+ breakpoints */
+.hero-main-title {
+  font-size: clamp(2.2rem, 7vw, 6.5rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  text-align: center;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .hero-main-title {
+    white-space: normal;
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
+}
+
+/* Eyebrow label — replaces old pill badge */
+.hero-eyebrow {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.7rem;
+  color: var(--muted-foreground);
+  letter-spacing: 0.1em;
+}
+
+/* Light mode: stronger mesh gradient */
+.light .hero-mesh {
+  background:
+    radial-gradient(ellipse 80% 55% at 15% 25%,  rgb(var(--hero-accent-rgb)      / 0.18) 0, transparent 60%),
+    radial-gradient(ellipse 65% 50% at 85% 75%,  rgb(var(--hero-accent-soft-rgb) / 0.14) 0, transparent 55%),
+    radial-gradient(ellipse 55% 45% at 50% -5%,  rgb(var(--hero-glow-rgb)        / 0.16) 0, transparent 50%),
+    radial-gradient(ellipse 45% 55% at 78% 22%,  rgb(var(--hero-accent-rgb)      / 0.10) 0, transparent 45%);
+}
+
+/* Light mode: watermark slightly more visible */
+.light .hero-watermark {
+  -webkit-text-stroke-color: rgb(var(--foreground-rgb) / 0.06);
+}
+
+/* Animated scroll line */
+.hero-scroll-line {
+  width: 1px;
+  height: 48px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.hero-scroll-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, var(--muted-foreground) 40%, transparent);
+  animation: scrollLineDrop 2s ease-in-out infinite;
+  transform-origin: top;
+}
+
+@keyframes scrollLineDrop {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+
+/* Hero v3 entrance animations */
+.hero-v3-badge    { animation: heroFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both; }
+.hero-v3-title    { animation: heroV3TitleIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s  both; }
+.hero-v3-subtitle { animation: heroFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.52s both; }
+.hero-v3-ctas     { animation: heroFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.68s both; }
+.hero-v3-scroll   { animation: heroFadeUp 0.5s ease                           0.92s both; }
+
+@keyframes heroV3TitleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-v3-badge,
+  .hero-v3-title,
+  .hero-v3-subtitle,
+  .hero-v3-ctas,
+  .hero-v3-scroll {
+    animation: none;
+  }
+  .hero-gradient-title {
+    animation: none;
+    background-position: 0% center;
+  }
+}
+
+/* ========== Hero Aurora Background ========== */
+
+.hero-aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-aurora-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(110px);
+  will-change: transform;
+}
+
+.hero-aurora-blob--a {
+  width: 65%;
+  height: 60%;
+  top: -20%;
+  left: -8%;
+  background: rgb(var(--hero-accent-rgb) / 0.11);
+  animation: heroAuroraA 16s ease-in-out infinite alternate;
+}
+
+.hero-aurora-blob--b {
+  width: 55%;
+  height: 55%;
+  bottom: -10%;
+  right: -5%;
+  background: rgb(var(--hero-accent-soft-rgb) / 0.09);
+  animation: heroAuroraB 20s ease-in-out infinite alternate;
+}
+
+@keyframes heroAuroraA {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(50px, 35px) scale(1.1); }
+}
+
+@keyframes heroAuroraB {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-40px, -25px) scale(1.08); }
+}
+
+/* ========== Hero Badge ========== */
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.68rem;
+  color: var(--muted-foreground);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  background: rgb(var(--background-rgb) / 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgb(var(--hero-accent-rgb));
+  box-shadow: 0 0 7px rgb(var(--hero-accent-rgb) / 0.75);
+  animation: heroDotPulse 2.8s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes heroDotPulse {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 7px rgb(var(--hero-accent-rgb) / 0.75);
+  }
+  50% {
+    opacity: 0.45;
+    box-shadow: 0 0 2px rgb(var(--hero-accent-rgb) / 0.25);
+  }
+}
+
+/* ========== Hero Kinetic Type ========== */
+
+.hero-kinetic-title {
+  font-size: clamp(2.8rem, 13.5vw, 11rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  display: block;
+}
+
+.hero-kinetic-rule {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.75rem;
+  animation: heroFadeIn 0.5s ease 0.05s both;
+}
+
+.hero-kinetic-rule-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--border) 70%, transparent);
+  transform-origin: left;
+  animation: heroRuleExpand 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+.hero-kinetic-rule-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgb(var(--hero-accent-rgb) / 0.75);
+  flex-shrink: 0;
+  animation: heroFadeIn 0.4s ease 0.9s both;
+}
+
+@keyframes heroRuleExpand {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+@keyframes heroFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.hero-title-kinetic {
+  animation: heroTitleReveal 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-title-kinetic--1 { animation-delay: 0.22s; }
+.hero-title-kinetic--2 { animation-delay: 0.44s; }
+
+@keyframes heroTitleReveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0%   0 0); }
+}
+
+.hero-bottom-kinetic {
+  animation: heroFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.68s both;
+}
+
+.hero-scroll-kinetic {
+  animation: heroFadeUp 0.6s ease 0.95s both;
+}
+
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+.hero-cta-circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted-foreground);
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.hero-cta-circle:hover {
+  border-color: var(--foreground);
+  color: var(--foreground);
+  transform: translate(3px, -3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-aurora-blob,
+  .hero-badge-dot,
+  .hero-kinetic-rule-line,
+  .hero-kinetic-rule,
+  .hero-kinetic-rule-dot,
+  .hero-title-kinetic,
+  .hero-bottom-kinetic,
+  .hero-scroll-kinetic {
+    animation: none;
+  }
 }
 
 @keyframes scrollRight {

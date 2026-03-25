@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import dynamic from 'next/dynamic';
 
 const HomePageSections = dynamic(() => import('./HomePageSections'), {
@@ -197,61 +197,66 @@ export default function HomePageClient({
 
 function HeroSection({ hidden = false }: { hidden?: boolean }) {
   const t = useTranslations('Hero');
-  const [isTypingDone, setIsTypingDone] = useState(false);
-  const description = t('description');
-
-  useEffect(() => {
-    const id = window.setTimeout(() => setIsTypingDone(true), 120);
-    return () => window.clearTimeout(id);
-  }, []);
 
   return (
     <section
-      className={`relative min-h-[92svh] sm:min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 pt-14 sm:pt-0 overflow-hidden ${hidden ? 'opacity-0 pointer-events-none' : 'opacity-100'
-        }`}
+      className={`relative min-h-[92svh] sm:min-h-screen flex flex-col px-6 sm:px-10 lg:px-14 pt-14 sm:pt-16 pb-10 sm:pb-14 overflow-hidden ${hidden ? 'opacity-0 pointer-events-none' : ''}`}
       aria-hidden={hidden}
     >
-      {/* Background layers */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      {/* Ambient orbs */}
+      <div className="hero-orb hero-orb--1" aria-hidden="true" />
+      <div className="hero-orb hero-orb--2" aria-hidden="true" />
+      <div className="hero-orb hero-orb--3" aria-hidden="true" />
+
+      {/* Grid + grain + vignette */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 2 }}>
         <div className="hero-spotlight-grid" />
+        <svg className="hero-grain-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <filter id="hero-grain-f" x="0%" y="0%" width="100%" height="100%" colorInterpolationFilters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" stitchTiles="stitch" />
+          </filter>
+          <rect width="100%" height="100%" filter="url(#hero-grain-f)" />
+        </svg>
         <div className="hero-vignette-overlay" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center">
-        <p className="font-mono text-[12px] sm:text-xs text-muted-foreground mb-8 sm:mb-12 tracking-[0.18em] sm:tracking-widest">
-          {t('greeting')}
-        </p>
-
-        <div>
-          <h1 className="hero-gradient-title text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-[-0.04em] text-center leading-[1.1]">
-            {t('title')}
-          </h1>
-        </div>
-
-        <p className="text-sm sm:text-lg text-muted-foreground font-light mt-4 sm:mt-6 mb-8 sm:mb-10 tracking-wide text-center">
-          {t('subtitle')}
-        </p>
-
-        <div className="min-h-8 flex items-center px-2 sm:px-0">
-          <p className="font-mono text-xs sm:text-base text-foreground text-center break-words">
-            {description}
-          </p>
-        </div>
+      {/* Center: eyebrow + huge outline name */}
+      <div className="relative flex flex-1 flex-col items-center justify-center gap-1 sm:gap-2" style={{ zIndex: 10 }}>
+        <p className="hero-eyebrow hero-eyebrow--center">{t('role')}</p>
+        <svg
+          className="hero-svg-name"
+          viewBox="0 0 1000 400"
+          aria-label={t('name')}
+          role="img"
+          overflow="visible"
+          focusable="false"
+        >
+          <text
+            x="500"
+            y="360"
+            textAnchor="middle"
+            className="hero-svg-text"
+            vectorEffect="non-scaling-stroke"
+          >
+            {t('name')}
+          </text>
+        </svg>
       </div>
 
-      {isTypingDone && (
-        <div className="absolute bottom-12 animate-fade-in">
-          <button
-            onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
-            className="flex flex-col items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <span className="font-mono text-[11px] tracking-wider">{t('scrollDown')}</span>
-            <ChevronDown className="w-4 h-4 animate-float" strokeWidth={1.5} />
-          </button>
+      {/* Bottom bar: slogan left — CTA right */}
+      <div className="hero-v5-bottom">
+        <div className="flex flex-col gap-1">
+          <p className="text-base sm:text-lg font-medium tracking-tight">{t('title')}</p>
+          <p className="text-sm text-muted-foreground font-light">{t('subtitle')}</p>
         </div>
-      )}
-
+        <button
+          onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+          className="btn-primary flex items-center gap-2"
+        >
+          {t('ctaPrimary')}
+          <ArrowUpRight className="w-4 h-4" strokeWidth={2} />
+        </button>
+      </div>
     </section>
   );
 }

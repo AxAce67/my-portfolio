@@ -8,10 +8,11 @@
     "contact": "Contact"
   },
   "Hero": {
-    "greeting": "",
-    "title": "アイデアを形にする",
+    "name": "Aki",
+    "role": "// indie dev · student",
+    "title": "『アイデアを形にする』",
     "subtitle": "好きなものを作る。それだけ。",
-    "description": "個人開発者 Aki のポートフォリオ",
+    "ctaPrimary": "Projects を見る",
     "scrollDown": "explore"
   },
   "About": {
