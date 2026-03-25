@@ -950,8 +950,8 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                 <div className={effectiveViewMode === 'grid' ? 'flex flex-col h-full' : 'flex flex-row'}>
                   <div
                     className={`bg-muted overflow-hidden relative ${effectiveViewMode === 'grid'
-                      ? 'aspect-[4/3] rounded-t-xl'
-                      : 'w-32 min-w-32 aspect-[4/3] sm:w-56 sm:min-w-56 sm:aspect-video rounded-l-xl rounded-tr-none shrink-0'
+                      ? 'aspect-video rounded-t-xl'
+                      : 'w-32 min-w-32 aspect-video sm:w-56 sm:min-w-56 rounded-l-xl rounded-tr-none shrink-0'
                       }`}
                   >
                     {project.image ? (
