@@ -947,11 +947,11 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                 }}
                 className={`block project-card group cursor-pointer ${effectiveViewMode === 'grid' ? 'h-full' : ''}`}
               >
-                <div className={effectiveViewMode === 'grid' ? 'flex flex-col h-full' : 'flex flex-row'}>
+                <div className={effectiveViewMode === 'grid' ? 'flex flex-col h-full' : 'flex flex-row h-28 sm:h-36 overflow-hidden'}>
                   <div
                     className={`bg-muted overflow-hidden relative ${effectiveViewMode === 'grid'
                       ? 'aspect-video rounded-t-xl'
-                      : 'w-44 min-w-44 sm:w-72 sm:min-w-72 rounded-l-xl rounded-tr-none shrink-0'
+                      : 'w-[198px] min-w-[198px] sm:w-64 sm:min-w-64 rounded-l-xl rounded-tr-none shrink-0'
                       }`}
                   >
                     {project.image ? (
@@ -996,8 +996,8 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                       className={`${effectiveViewMode === 'grid'
                         ? 'text-xs sm:text-sm text-muted-foreground leading-relaxed mb-3 line-clamp-2'
                         : isMobileViewport
-                          ? 'text-xs text-muted-foreground leading-relaxed mb-3 line-clamp-3'
-                          : 'text-sm text-muted-foreground leading-relaxed mb-4'
+                          ? 'text-xs text-muted-foreground leading-relaxed mb-2 line-clamp-2'
+                          : 'text-sm text-muted-foreground leading-relaxed mb-3 line-clamp-2'
                         }`}
                     >
                       {project.description}

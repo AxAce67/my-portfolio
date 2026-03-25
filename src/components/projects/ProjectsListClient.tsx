@@ -81,8 +81,8 @@ export default function ProjectsListClient({ projects }: Props) {
             new Date(project.updatedAt as string).getTime() > new Date(project.createdAt as string).getTime();
           return (
             <Link key={project.id} href={`/projects/${project.id}`} prefetch className="block project-card group">
-              <div className="flex flex-col sm:flex-row">
-                <div className="w-full aspect-video sm:aspect-auto sm:w-80 sm:min-w-80 bg-muted overflow-hidden rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none relative">
+              <div className="flex flex-col sm:flex-row sm:h-36 sm:overflow-hidden">
+                <div className="w-full aspect-video sm:aspect-auto sm:w-64 sm:min-w-64 bg-muted overflow-hidden rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none relative">
                   {project.thumbnailUrl ? (
                     <Image
                       src={project.thumbnailUrl}
@@ -106,7 +106,7 @@ export default function ProjectsListClient({ projects }: Props) {
                       </p>
                     )}
                   </div>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">{project.description}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">{project.description}</p>
                   <div className="flex flex-wrap gap-2">
                     {project.tags.map((tag) => (
                       <span key={tag} className="text-[11px] font-mono text-muted-foreground bg-muted px-2.5 py-1 rounded">
