@@ -986,11 +986,19 @@ body::before {
   animation: heroFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
 }
 
-@media (max-width: 479px) {
+@media (max-width: 639px) {
   .hero-v5-bottom {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.25rem;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+  }
+  /* Text block takes full width on its own row */
+  .hero-v5-bottom > :first-child {
+    width: 100%;
+  }
+  /* Clock expands to push button to the right */
+  .hero-clock {
+    flex: 1;
   }
 }
 
