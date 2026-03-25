@@ -242,6 +242,7 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
             {t('name')}
           </text>
         </svg>
+        <HeroClock />
       </div>
 
       {/* Bottom bar: slogan left — CTA right */}
@@ -259,5 +260,33 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
         </button>
       </div>
     </section>
+  );
+}
+
+const tokyoFmt = new Intl.DateTimeFormat('en-GB', {
+  timeZone: 'Asia/Tokyo',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hour12: false,
+});
+
+function HeroClock() {
+  const [time, setTime] = useState('');
+
+  useEffect(() => {
+    const tick = () => setTime(tokyoFmt.format(new Date()));
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div className="hero-clock" aria-hidden="true">
+      <span className="hero-clock__loc">Tokyo, Japan</span>
+      <span className="hero-clock__sep" />
+      <span className="hero-clock__time">{time || '--:--:--'}</span>
+      <span className="hero-clock__tz">JST</span>
+    </div>
   );
 }
