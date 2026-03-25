@@ -236,6 +236,7 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
             y="360"
             textAnchor="middle"
             fill="none"
+            vectorEffect="non-scaling-stroke"
             className="hero-svg-text"
           >
             {t('name')}
