@@ -7,7 +7,6 @@ const nextConfig = {
     staleTimes: {
       static: 600,
     },
-    viewTransition: true,
   },
   async redirects() {
     return [
