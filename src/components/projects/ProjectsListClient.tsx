@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useLayoutEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { Search } from 'lucide-react';
@@ -30,6 +30,15 @@ export default function ProjectsListClient({ projects }: Props) {
   const transitionRouter = useTransitionRouter();
   const [keyword, setKeyword] = useState('');
   const [page, setPage] = useState(1);
+
+  // 戻り時にスクロール位置を復元（ViewTransitionsのfinishより先に実行される）
+  useLayoutEffect(() => {
+    const y = sessionStorage.getItem('projectsScrollY');
+    if (y) {
+      sessionStorage.removeItem('projectsScrollY');
+      window.scrollTo(0, parseInt(y, 10));
+    }
+  }, []);
 
   const filtered = useMemo(() => {
     const q = keyword.trim().toLowerCase();
@@ -95,6 +104,7 @@ export default function ProjectsListClient({ projects }: Props) {
                 className="block project-card group"
                 onClick={(e) => {
                   sessionStorage.setItem('projectsReferrer', 'archive');
+                  sessionStorage.setItem('projectsScrollY', String(window.scrollY));
                   if ('startViewTransition' in document) {
                     e.preventDefault();
                     transitionRouter.push(`/${locale}/projects/${project.id}`);

@@ -953,6 +953,8 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                 prefetch
                 onClick={(e) => {
                   sessionStorage.setItem('returnToProjects', '1');
+                  sessionStorage.removeItem('projectsReferrer');
+                  sessionStorage.removeItem('projectsScrollY');
                   if ('startViewTransition' in document) {
                     e.preventDefault();
                     transitionRouter.push(`/${locale}/projects/${project.id}`);
