@@ -2057,6 +2057,12 @@ body::before {
 }
 
 /* View Transitions */
+
+/* 背景色を合わせて透過時の白フラッシュを防ぐ */
+::view-transition {
+  background-color: var(--background);
+}
+
 ::view-transition-old(root) {
   animation: 120ms ease-out both vt-fade-out;
 }
