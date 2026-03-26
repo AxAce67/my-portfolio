@@ -244,6 +244,8 @@ export async function updateProjectAction(locale: string, projectId: string, for
 
     revalidatePath('/', 'layout');
     revalidateTag('home-page-data');
+    revalidatePath(`/ja/projects/${projectId}`);
+    revalidatePath(`/en/projects/${projectId}`);
     redirect(`/${locale}/dashboard?tab=projects&toast=project_updated&toastAt=${Date.now()}`);
   } catch (error) {
     if (isRedirectError(error)) throw error;
