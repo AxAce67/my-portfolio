@@ -876,7 +876,7 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
   const projects = initialProjects;
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
   const [isMobileViewport, setIsMobileViewport] = useState(false);
-  const effectiveViewMode: 'list' | 'grid' = isMobileViewport ? 'list' : viewMode;
+  const effectiveViewMode: 'list' | 'grid' = isMobileViewport ? 'grid' : viewMode;
 
   useEffect(() => {
     const mobileQuery = window.matchMedia('(max-width: 639px)');
