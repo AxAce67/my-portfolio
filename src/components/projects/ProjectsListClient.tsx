@@ -94,6 +94,7 @@ export default function ProjectsListClient({ projects }: Props) {
                 prefetch
                 className="block project-card group"
                 onClick={(e) => {
+                  sessionStorage.setItem('projectsReferrer', 'archive');
                   if ('startViewTransition' in document) {
                     e.preventDefault();
                     transitionRouter.push(`/${locale}/projects/${project.id}`);
