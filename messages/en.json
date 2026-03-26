@@ -83,6 +83,7 @@
         "viewGrid": "Grid",
         "viewAll": "View all",
         "createdAt": "Created",
+        "updatedAt": "Updated",
         "noPublishedProjects": "Coming soon. Thanks for your patience.",
         "filterAll": "All",
         "filterIdea": "Idea",

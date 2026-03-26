@@ -937,7 +937,11 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
           className={effectiveViewMode === 'grid' ? 'grid grid-cols-2 md:grid-cols-2 gap-3 sm:gap-6' : 'space-y-4'}
           staggerDelay={0.1}
         >
-          {projects.map((project) => (
+          {projects.map((project) => {
+            const createdDay = project.createdAt ? new Date(project.createdAt).toDateString() : null;
+            const updatedDay = project.updatedAt ? new Date(project.updatedAt).toDateString() : null;
+            const showUpdatedAt = updatedDay !== null && createdDay !== null && updatedDay !== createdDay;
+            return (
             <StaggerItem key={project.id}>
               <Link
                 href={`/projects/${project.id}`}
@@ -987,10 +991,17 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                     >
                       {project.title}
                     </h3>
-                    {project.createdAt && (
-                      <p className={`${effectiveViewMode === 'grid' ? 'text-[12px]' : 'text-[11px]'} font-mono text-muted-foreground uppercase tracking-wide mb-2`}>
-                        {t('createdAt')}: {formatDate(project.createdAt)}
-                      </p>
+                    {project.createdAt && (!isMobileViewport || effectiveViewMode === 'grid') && (
+                      <div className="flex flex-wrap gap-3 mb-2">
+                        <p className={`${effectiveViewMode === 'grid' ? 'text-[12px]' : 'text-[11px]'} font-mono text-muted-foreground uppercase tracking-wide`}>
+                          {t('createdAt')}: {formatDate(project.createdAt)}
+                        </p>
+                        {showUpdatedAt && (
+                          <p className={`${effectiveViewMode === 'grid' ? 'text-[12px]' : 'text-[11px]'} font-mono text-muted-foreground uppercase tracking-wide`}>
+                            {t('updatedAt')}: {formatDate(project.updatedAt)}
+                          </p>
+                        )}
+                      </div>
                     )}
                     <p
                       className={`${effectiveViewMode === 'grid'
@@ -1013,7 +1024,8 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                 </div>
               </Link>
             </StaggerItem>
-          ))}
+            );
+          })}
         </StaggerContainer>
 
         {projects.length === 0 && <p className="text-sm text-muted-foreground mt-4">{t('noPublishedProjects')}</p>}

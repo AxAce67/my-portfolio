@@ -75,28 +75,27 @@ export default function ProjectsListClient({ projects }: Props) {
 
       <div className="space-y-4">
         {currentItems.map((project) => {
-          const showUpdatedAt =
-            Boolean(project.updatedAt) &&
-            Boolean(project.createdAt) &&
-            new Date(project.updatedAt as string).getTime() > new Date(project.createdAt as string).getTime();
+          const createdDay = project.createdAt ? new Date(project.createdAt).toDateString() : null;
+          const updatedDay = project.updatedAt ? new Date(project.updatedAt).toDateString() : null;
+          const showUpdatedAt = updatedDay !== null && createdDay !== null && updatedDay !== createdDay;
           return (
             <Link key={project.id} href={`/projects/${project.id}`} prefetch className="block project-card group">
-              <div className="flex flex-col sm:flex-row sm:h-44 sm:overflow-hidden">
-                <div className="w-full aspect-video sm:aspect-auto sm:w-[313px] sm:min-w-[313px] bg-muted overflow-hidden rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none relative">
+              <div className="flex flex-row h-32 overflow-hidden sm:h-44">
+                <div className="w-28 min-w-28 sm:w-[313px] sm:min-w-[313px] bg-muted overflow-hidden rounded-l-xl rounded-tr-none shrink-0 relative">
                   {project.thumbnailUrl ? (
                     <Image
                       src={project.thumbnailUrl}
                       alt={`${project.title} thumbnail`}
                       fill
-                      sizes="(max-width: 640px) 100vw, 256px"
+                      sizes="(max-width: 640px) 112px, 313px"
                       className="absolute inset-0 object-cover"
                       loading="lazy"
                     />
                   ) : null}
                 </div>
-                <div className="p-4 flex-1 flex flex-col justify-center overflow-hidden">
-                  <h2 className="text-xl font-semibold tracking-tight mb-2">{project.title}</h2>
-                  <div className="mb-2 flex flex-wrap gap-3">
+                <div className="p-3 sm:p-4 flex-1 flex flex-col justify-center overflow-hidden">
+                  <h2 className="text-sm sm:text-xl font-semibold tracking-tight mb-1 sm:mb-2 line-clamp-2">{project.title}</h2>
+                  <div className="hidden sm:flex mb-2 flex-wrap gap-3">
                     <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wide">
                       {t('createdAt')}: {formatDate(project.createdAt)}
                     </p>
@@ -106,10 +105,10 @@ export default function ProjectsListClient({ projects }: Props) {
                       </p>
                     )}
                   </div>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">{project.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag) => (
-                      <span key={tag} className="text-[11px] font-mono text-muted-foreground bg-muted px-2.5 py-1 rounded">
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-2 line-clamp-2 hidden sm:block">{project.description}</p>
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                    {project.tags.slice(0, 3).map((tag) => (
+                      <span key={tag} className="text-[11px] font-mono text-muted-foreground bg-muted px-2 sm:px-2.5 py-1 rounded">
                         {tag}
                       </span>
                     ))}
