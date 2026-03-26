@@ -46,7 +46,11 @@ export default function ProjectsListClient({ projects }: Props) {
   return (
     <section className="max-w-5xl mx-auto px-6 lg:px-8 py-16 sm:py-20">
       <div className="mb-8">
-        <Link href="/#projects" className="text-xs font-mono text-muted-foreground hover:text-foreground">
+        <Link
+          href="/"
+          className="text-xs font-mono text-muted-foreground hover:text-foreground"
+          onClick={() => sessionStorage.setItem('returnToProjects', '1')}
+        >
           {t('backToTop')}
         </Link>
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mt-5">{t('heading')}</h1>
