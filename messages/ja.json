@@ -309,7 +309,7 @@
     "stageCompleted": "完了"
   },
   "ProjectList": {
-    "backToTop": "← トップのProjectsへ戻る",
+    "backToTop": "← Projectsへ戻る",
     "heading": "Projects Archive",
     "description": "公開中プロジェクトの一覧です。",
     "searchLabel": "検索",
