@@ -2,7 +2,7 @@
 
 import { revalidatePath, revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { isRedirectError } from 'next/dist/client/components/redirect';
+const isRedirectError = (e: unknown) => e instanceof Error && e.message === 'NEXT_REDIRECT';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 import { isAdminUser } from '@/lib/auth/admin';

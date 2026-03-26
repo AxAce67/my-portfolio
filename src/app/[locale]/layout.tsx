@@ -5,7 +5,6 @@ import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import { ViewTransitions } from 'next-view-transitions';
 import { routing } from '@/i18n/routing';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { Header } from '@/components/layout/Header';
@@ -94,7 +93,6 @@ export default async function LocaleLayout({ children, params }: Props) {
     const isVercelRuntime = process.env.VERCEL === '1' || process.env.VERCEL === 'true';
 
     return (
-        <ViewTransitions>
         <html lang={locale} suppressHydrationWarning>
             <head>
                 <script
@@ -125,6 +123,5 @@ export default async function LocaleLayout({ children, params }: Props) {
                 ) : null}
             </body>
         </html>
-        </ViewTransitions>
     );
 }
