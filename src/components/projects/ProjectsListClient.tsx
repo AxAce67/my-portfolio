@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Search } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import { useTransitionRouter } from 'next-view-transitions';
+import { StaggerContainer, StaggerItem } from '@/components/ui/ScrollReveal';
 
 const PAGE_SIZE = 12;
 
@@ -76,61 +77,66 @@ export default function ProjectsListClient({ projects }: Props) {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-1 sm:gap-4">
+      <StaggerContainer
+        key={`${keyword}-${normalizedPage}`}
+        className="grid grid-cols-2 gap-3 sm:grid-cols-1 sm:gap-4"
+        staggerDelay={0.08}
+      >
         {currentItems.map((project) => {
           const createdDay = project.createdAt ? new Date(project.createdAt).toDateString() : null;
           const updatedDay = project.updatedAt ? new Date(project.updatedAt).toDateString() : null;
           const showUpdatedAt = updatedDay !== null && createdDay !== null && updatedDay !== createdDay;
           const formatDate = (v: string | null) => v ? new Date(v).toLocaleDateString(locale === 'ja' ? 'ja-JP' : 'en-US') : '-';
           return (
-            <Link
-              key={project.id}
-              href={`/projects/${project.id}`}
-              prefetch
-              className="block project-card group"
-              onClick={(e) => {
-                if ('startViewTransition' in document) {
-                  e.preventDefault();
-                  transitionRouter.push(`/${locale}/projects/${project.id}`);
-                }
-              }}
-            >
-              <div className="flex flex-col sm:flex-row sm:h-44 sm:overflow-hidden">
-                <div className="aspect-video w-full sm:aspect-auto sm:w-[313px] sm:min-w-[313px] bg-muted overflow-hidden rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none shrink-0 relative" style={{ viewTransitionName: `proj-${project.id}` }}>
-                  {project.thumbnailUrl ? (
-                    <Image
-                      src={project.thumbnailUrl}
-                      alt={`${project.title} thumbnail`}
-                      fill
-                      sizes="(max-width: 640px) 50vw, 313px"
-                      className="absolute inset-0 object-cover"
-                      loading="lazy"
-                    />
-                  ) : null}
-                </div>
-                <div className="p-2.5 sm:p-4 flex-1 flex flex-col sm:justify-center overflow-hidden">
-                  <h2 className="text-sm sm:text-xl font-semibold tracking-tight mb-1 sm:mb-2 line-clamp-2">{project.title}</h2>
-                  <div className="hidden sm:flex mb-2 flex-wrap gap-3">
-                    <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wide">
-                      {t('createdAt')}: {formatDate(project.createdAt)}
-                    </p>
-                    {showUpdatedAt && (
+            <StaggerItem key={project.id}>
+              <Link
+                href={`/projects/${project.id}`}
+                prefetch
+                className="block project-card group"
+                onClick={(e) => {
+                  if ('startViewTransition' in document) {
+                    e.preventDefault();
+                    transitionRouter.push(`/${locale}/projects/${project.id}`);
+                  }
+                }}
+              >
+                <div className="flex flex-col sm:flex-row sm:h-44 sm:overflow-hidden">
+                  <div className="aspect-video w-full sm:aspect-auto sm:w-[313px] sm:min-w-[313px] bg-muted overflow-hidden rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none shrink-0 relative" style={{ viewTransitionName: `proj-${project.id}` }}>
+                    {project.thumbnailUrl ? (
+                      <Image
+                        src={project.thumbnailUrl}
+                        alt={`${project.title} thumbnail`}
+                        fill
+                        sizes="(max-width: 640px) 50vw, 313px"
+                        className="absolute inset-0 object-cover"
+                        loading="lazy"
+                      />
+                    ) : null}
+                  </div>
+                  <div className="p-2.5 sm:p-4 flex-1 flex flex-col sm:justify-center overflow-hidden">
+                    <h2 className="text-sm sm:text-xl font-semibold tracking-tight mb-1 sm:mb-2 line-clamp-2">{project.title}</h2>
+                    <div className="hidden sm:flex mb-2 flex-wrap gap-3">
                       <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wide">
-                        {t('updatedAt')}: {formatDate(project.updatedAt)}
+                        {t('createdAt')}: {formatDate(project.createdAt)}
                       </p>
-                    )}
-                  </div>
-                  <p className="hidden sm:block text-sm text-muted-foreground leading-relaxed mb-3 line-clamp-2">{project.description}</p>
-                  <div className="flex flex-wrap gap-1 sm:gap-2">
-                    {project.tags.slice(0, 2).map((tag) => (
-                      <span key={tag} className="text-[10px] sm:text-[11px] font-mono text-muted-foreground bg-muted px-2 sm:px-2.5 py-0.5 sm:py-1 rounded">
-                        {tag}
-                      </span>
-                    ))}
+                      {showUpdatedAt && (
+                        <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wide">
+                          {t('updatedAt')}: {formatDate(project.updatedAt)}
+                        </p>
+                      )}
+                    </div>
+                    <p className="hidden sm:block text-sm text-muted-foreground leading-relaxed mb-3 line-clamp-2">{project.description}</p>
+                    <div className="flex flex-wrap gap-1 sm:gap-2">
+                      {project.tags.slice(0, 2).map((tag) => (
+                        <span key={tag} className="text-[10px] sm:text-[11px] font-mono text-muted-foreground bg-muted px-2 sm:px-2.5 py-0.5 sm:py-1 rounded">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </StaggerItem>
           );
         })}
         {filtered.length === 0 && (
@@ -138,7 +144,7 @@ export default function ProjectsListClient({ projects }: Props) {
             {keyword.trim() ? t('noResults') : t('empty')}
           </p>
         )}
-      </div>
+      </StaggerContainer>
 
       {filtered.length > PAGE_SIZE && (
         <div className="mt-8 flex items-center justify-between gap-3">

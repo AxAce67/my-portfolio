@@ -1021,7 +1021,7 @@ body::before {
 }
 
 .hero-svg-text {
-  font-family: var(--font-sans), system-ui, sans-serif;
+  font-family: var(--font-mono), monospace;
   font-size: 480px;
   font-weight: 700;
   letter-spacing: -0.04em;
