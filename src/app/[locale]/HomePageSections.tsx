@@ -933,6 +933,9 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
           </div>
         </ScrollReveal>
 
+        {projects.length === 0 && (
+          <p className="text-sm text-muted-foreground">{t('noPublishedProjects')}</p>
+        )}
         <StaggerContainer
           className={effectiveViewMode === 'grid' ? 'grid grid-cols-2 md:grid-cols-2 gap-3 sm:gap-6' : 'space-y-4'}
           staggerDelay={0.1}
@@ -1028,7 +1031,6 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
           })}
         </StaggerContainer>
 
-        {projects.length === 0 && <p className="text-sm text-muted-foreground mt-4">{t('noPublishedProjects')}</p>}
         {projects.length > 0 && (
           <div className="mt-6 flex justify-end">
             <Link href="/projects" prefetch className="btn-outline px-4 py-2 text-xs">

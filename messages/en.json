@@ -317,6 +317,7 @@
         "createdAt": "Created",
         "updatedAt": "Updated",
         "empty": "Coming soon. Thanks for your patience.",
+        "noResults": "No matching projects found.",
         "prev": "Previous",
         "next": "Next"
     },

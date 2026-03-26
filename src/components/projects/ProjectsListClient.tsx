@@ -121,7 +121,9 @@ export default function ProjectsListClient({ projects }: Props) {
           );
         })}
         {filtered.length === 0 && (
-          <p className="col-span-2 sm:col-span-1 text-sm text-muted-foreground">{t('empty')}</p>
+          <p className="col-span-2 sm:col-span-1 text-sm text-muted-foreground">
+            {keyword.trim() ? t('noResults') : t('empty')}
+          </p>
         )}
       </div>
 
