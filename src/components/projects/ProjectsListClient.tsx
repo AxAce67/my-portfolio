@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { Search } from 'lucide-react';
 import { Link } from '@/i18n/routing';
+import { useTransitionRouter } from 'next-view-transitions';
 
 const PAGE_SIZE = 12;
 
@@ -25,6 +26,7 @@ type Props = {
 export default function ProjectsListClient({ projects }: Props) {
   const t = useTranslations('ProjectList');
   const locale = useLocale();
+  const transitionRouter = useTransitionRouter();
   const [keyword, setKeyword] = useState('');
   const [page, setPage] = useState(1);
 
@@ -81,7 +83,18 @@ export default function ProjectsListClient({ projects }: Props) {
           const showUpdatedAt = updatedDay !== null && createdDay !== null && updatedDay !== createdDay;
           const formatDate = (v: string | null) => v ? new Date(v).toLocaleDateString(locale === 'ja' ? 'ja-JP' : 'en-US') : '-';
           return (
-            <Link key={project.id} href={`/projects/${project.id}`} prefetch className="block project-card group">
+            <Link
+              key={project.id}
+              href={`/projects/${project.id}`}
+              prefetch
+              className="block project-card group"
+              onClick={(e) => {
+                if ('startViewTransition' in document) {
+                  e.preventDefault();
+                  transitionRouter.push(`/${locale}/projects/${project.id}`);
+                }
+              }}
+            >
               <div className="flex flex-col sm:flex-row sm:h-44 sm:overflow-hidden">
                 <div className="aspect-video w-full sm:aspect-auto sm:w-[313px] sm:min-w-[313px] bg-muted overflow-hidden rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none shrink-0 relative" style={{ viewTransitionName: `proj-${project.id}` }}>
                   {project.thumbnailUrl ? (

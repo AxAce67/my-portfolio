@@ -9,6 +9,7 @@ import { ArrowUpRight, Send, Terminal, Code2, Globe, Box, Github, Twitter, Mail,
 import { motion, useInView, useReducedMotion, AnimatePresence } from 'framer-motion';
 import { ScrollReveal, StaggerContainer, StaggerItem } from '@/components/ui/ScrollReveal';
 import { Link } from '@/i18n/routing';
+import { useTransitionRouter } from 'next-view-transitions';
 import dynamic from 'next/dynamic';
 import { TiltCard } from '@/components/ui/TiltCard';
 import {
@@ -873,6 +874,7 @@ function SkillsSection() {
 function ProjectsSection({ initialProjects }: { initialProjects: CompletedProject[] }) {
   const t = useTranslations('Projects');
   const locale = useLocale();
+  const transitionRouter = useTransitionRouter();
   const projects = initialProjects;
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
   const [isMobileViewport, setIsMobileViewport] = useState(false);
@@ -949,8 +951,12 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
               <Link
                 href={`/projects/${project.id}`}
                 prefetch
-                onClick={() => {
+                onClick={(e) => {
                   sessionStorage.setItem('returnToProjects', '1');
+                  if ('startViewTransition' in document) {
+                    e.preventDefault();
+                    transitionRouter.push(`/${locale}/projects/${project.id}`);
+                  }
                 }}
                 className={`block project-card group cursor-pointer ${effectiveViewMode === 'grid' ? 'h-full' : ''}`}
               >
