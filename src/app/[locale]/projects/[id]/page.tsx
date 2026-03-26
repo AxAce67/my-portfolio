@@ -96,6 +96,7 @@ export default async function ProjectArticlePage({ params }: Props) {
             height={900}
             sizes="(max-width: 768px) 100vw, 768px"
             className="w-full h-auto object-cover"
+            priority
           />
         </div>
       ) : null}

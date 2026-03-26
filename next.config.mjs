@@ -4,6 +4,9 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const nextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', '@icons-pack/react-simple-icons'],
+    staleTimes: {
+      static: 600,
+    },
   },
   async redirects() {
     return [
