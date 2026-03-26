@@ -88,7 +88,7 @@ export default async function ProjectArticlePage({ params }: Props) {
       </div>
 
       {project.thumbnail_url ? (
-        <div className="mb-10 overflow-hidden rounded-2xl border border-border max-w-3xl mx-auto">
+        <div className="mb-10 overflow-hidden rounded-2xl border border-border max-w-3xl mx-auto" style={{ viewTransitionName: `proj-${project.id}` }}>
           <Image
             src={project.thumbnail_url}
             alt={`${project.title} thumbnail`}

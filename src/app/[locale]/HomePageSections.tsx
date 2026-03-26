@@ -960,6 +960,7 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                       ? 'aspect-video rounded-t-xl'
                       : 'w-[198px] min-w-[198px] sm:w-[313px] sm:min-w-[313px] rounded-l-xl rounded-tr-none shrink-0'
                       }`}
+                    style={{ viewTransitionName: `proj-${project.id}` }}
                   >
                     {project.image ? (
                       <Image
