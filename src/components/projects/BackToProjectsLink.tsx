@@ -20,12 +20,14 @@ export default function BackToProjectsLink({ homeHref, archiveHref, className, c
       prefetch
       className={className}
       onClick={(e) => {
-        const dest = sessionStorage.getItem('projectsReferrer') === 'archive' ? archiveHref : homeHref;
+        const isArchive = sessionStorage.getItem('projectsReferrer') === 'archive';
+        const dest = isArchive ? archiveHref : homeHref;
         sessionStorage.removeItem('projectsReferrer');
         sessionStorage.setItem('returnToProjects', '1');
         if ('startViewTransition' in document) {
           e.preventDefault();
-          transitionRouter.push(dest);
+          // scroll: false でアーカイブ戻りはuseLayoutEffectのスクロール復元に任せる
+          transitionRouter.push(dest, { scroll: !isArchive });
         }
       }}
     >
