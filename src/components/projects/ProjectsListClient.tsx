@@ -43,9 +43,6 @@ export default function ProjectsListClient({ projects }: Props) {
   const normalizedPage = Math.min(page, totalPages);
   const currentItems = filtered.slice((normalizedPage - 1) * PAGE_SIZE, normalizedPage * PAGE_SIZE);
 
-  const formatDate = (value: string | null) =>
-    value ? new Date(value).toLocaleDateString(locale === 'ja' ? 'ja-JP' : 'en-US') : '-';
-
   return (
     <section className="max-w-5xl mx-auto px-6 lg:px-8 py-16 sm:py-20">
       <div className="mb-8">
@@ -75,9 +72,6 @@ export default function ProjectsListClient({ projects }: Props) {
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-1 sm:gap-4">
         {currentItems.map((project) => {
-          const createdDay = project.createdAt ? new Date(project.createdAt).toDateString() : null;
-          const updatedDay = project.updatedAt ? new Date(project.updatedAt).toDateString() : null;
-          const showUpdatedAt = updatedDay !== null && createdDay !== null && updatedDay !== createdDay;
           return (
             <Link key={project.id} href={`/projects/${project.id}`} prefetch className="block project-card group">
               <div className="flex flex-col sm:flex-row sm:h-44 sm:overflow-hidden">
@@ -95,16 +89,6 @@ export default function ProjectsListClient({ projects }: Props) {
                 </div>
                 <div className="p-2.5 sm:p-4 flex-1 flex flex-col sm:justify-center overflow-hidden">
                   <h2 className="text-sm sm:text-xl font-semibold tracking-tight mb-1 sm:mb-2 line-clamp-2">{project.title}</h2>
-                  <div className="hidden sm:flex mb-2 flex-wrap gap-3">
-                    <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wide">
-                      {t('createdAt')}: {formatDate(project.createdAt)}
-                    </p>
-                    {showUpdatedAt && (
-                      <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wide">
-                        {t('updatedAt')}: {formatDate(project.updatedAt)}
-                      </p>
-                    )}
-                  </div>
                   <p className="hidden sm:block text-sm text-muted-foreground leading-relaxed mb-3 line-clamp-2">{project.description}</p>
                   <div className="flex flex-wrap gap-1 sm:gap-2">
                     {project.tags.slice(0, 2).map((tag) => (
