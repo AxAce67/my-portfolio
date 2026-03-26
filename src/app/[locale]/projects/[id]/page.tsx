@@ -63,7 +63,7 @@ export default async function ProjectArticlePage({ params }: Props) {
   return (
     <article className="max-w-5xl mx-auto px-6 lg:px-8 py-16 sm:py-20">
       <div className="max-w-3xl mx-auto">
-        <BackToProjectsLink href={`/${locale}#projects`} className="text-xs font-mono text-muted-foreground hover:text-foreground">
+        <BackToProjectsLink href={`/${locale}`} className="text-xs font-mono text-muted-foreground hover:text-foreground">
           {t('backToProjects')}
         </BackToProjectsLink>
 
