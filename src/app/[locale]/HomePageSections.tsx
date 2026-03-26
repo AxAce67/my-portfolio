@@ -938,6 +938,9 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
           staggerDelay={0.1}
         >
           {projects.map((project) => {
+            const createdDay = project.createdAt ? new Date(project.createdAt).toDateString() : null;
+            const updatedDay = project.updatedAt ? new Date(project.updatedAt).toDateString() : null;
+            const showUpdatedAt = updatedDay !== null && createdDay !== null && updatedDay !== createdDay;
             return (
             <StaggerItem key={project.id}>
               <Link
@@ -988,6 +991,18 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                     >
                       {project.title}
                     </h3>
+                    {!isMobileViewport && project.createdAt && (
+                      <div className="flex flex-wrap gap-3 mb-2">
+                        <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wide">
+                          {t('createdAt')}: {formatDate(project.createdAt)}
+                        </p>
+                        {showUpdatedAt && (
+                          <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wide">
+                            {t('updatedAt')}: {formatDate(project.updatedAt)}
+                          </p>
+                        )}
+                      </div>
+                    )}
                     <p
                       className={`${effectiveViewMode === 'grid'
                         ? 'text-xs sm:text-sm text-muted-foreground leading-relaxed mb-3 line-clamp-2'
