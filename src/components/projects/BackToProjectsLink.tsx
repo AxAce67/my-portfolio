@@ -1,6 +1,6 @@
 'use client';
 
-import { Link } from '@/i18n/routing';
+import Link from 'next/link';
 import type { ReactNode } from 'react';
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
 export default function BackToProjectsLink({ href, className, children }: Props) {
   return (
     <Link
-      href={href as Parameters<typeof Link>[0]['href']}
+      href={href}
       prefetch
       className={className}
       onClick={() => {
