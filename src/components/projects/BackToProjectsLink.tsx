@@ -14,9 +14,12 @@ type Props = {
 
 export default function BackToProjectsLink({ homeHref, archiveHref, className, homeLabel, archiveLabel }: Props) {
   const transitionRouter = useTransitionRouter();
-  const [isArchive] = useState(() =>
-    typeof window !== 'undefined' && sessionStorage.getItem('projectsReferrer') === 'archive'
+  const [referrer] = useState(() =>
+    typeof window !== 'undefined' ? sessionStorage.getItem('projectsReferrer') : null
   );
+  const isArchive = referrer === 'archive';
+  // ホームまたはアーカイブから来た場合はrouter.back()でrouter cacheを使い即座に復元
+  const canGoBack = referrer === 'home' || referrer === 'archive';
 
   return (
     <Link
@@ -24,12 +27,15 @@ export default function BackToProjectsLink({ homeHref, archiveHref, className, h
       prefetch
       className={className}
       onClick={(e) => {
-        const dest = isArchive ? archiveHref : homeHref;
         sessionStorage.removeItem('projectsReferrer');
         sessionStorage.setItem('returnToProjects', '1');
         if ('startViewTransition' in document) {
           e.preventDefault();
-          transitionRouter.push(dest, { scroll: false });
+          if (canGoBack) {
+            transitionRouter.back();
+          } else {
+            transitionRouter.push(isArchive ? archiveHref : homeHref, { scroll: false });
+          }
         }
       }}
     >

@@ -952,7 +952,7 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                   sessionStorage.setItem('homeScrollY', String(window.scrollY));
                   sessionStorage.setItem('homeFromProjectId', project.id);
                   sessionStorage.setItem('projectsViewMode', effectiveViewMode);
-                  sessionStorage.removeItem('projectsReferrer');
+                  sessionStorage.setItem('projectsReferrer', 'home');
                   sessionStorage.removeItem('projectsScrollY');
                   if ('startViewTransition' in document) {
                     e.preventDefault();
