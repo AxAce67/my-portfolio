@@ -24,7 +24,7 @@ function buildCsp(isDev: boolean) {
         `worker-src 'self' blob:`,
         `style-src 'self' 'unsafe-inline'`,
         `script-src ${scriptDirectives.join(' ')}`,
-        `connect-src 'self' https://*.supabase.co wss://*.supabase.co https://count.getloli.com https://formspree.io https://challenges.cloudflare.com https://ntp-a1.nict.go.jp`,
+        `connect-src 'self' https://*.supabase.co wss://*.supabase.co https://count.getloli.com https://formspree.io https://challenges.cloudflare.com`,
         `upgrade-insecure-requests`,
     ].join('; ');
 }

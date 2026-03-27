@@ -309,22 +309,15 @@ function HeroClock() {
   const tidRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    let offset = 0;
-
     // Self-correcting tick: fires at the start of each second boundary
     const scheduleTick = () => {
-      const now = Date.now() + offset;
+      const now = Date.now();
       setTime(tokyoFmt.format(new Date(now)));
       const delay = 1000 - (now % 1000);
       tidRef.current = setTimeout(scheduleTick, delay);
     };
 
-    // Fetch NICT time once to compute offset, then start clock
-    fetch('/api/nict-time')
-      .then(r => r.json())
-      .then((d: { st?: number }) => { if (typeof d.st === 'number') offset = d.st * 1000 - Date.now(); })
-      .catch(() => {})
-      .finally(() => scheduleTick());
+    scheduleTick();
 
     return () => { if (tidRef.current) clearTimeout(tidRef.current); };
   }, []);
