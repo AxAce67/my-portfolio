@@ -13,12 +13,18 @@ export function PageTransitionIn() {
         const overlay = document.getElementById(OVERLAY_ID);
         if (!overlay) return;
 
-        setTimeout(() => {
-            overlay.style.transition = 'opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-            overlay.style.opacity = '0';
-            overlay.addEventListener('transitionend', () => overlay.remove(), { once: true });
-            setTimeout(() => overlay.remove(), 800);
-        }, 80);
+        // 本番ストリーミング環境でコンテンツが描画されるまで待つ
+        // double rAF でペイント確定後、さらに余裕を持たせてからフェードアウト
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    overlay.style.transition = 'opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                    overlay.style.opacity = '0';
+                    overlay.addEventListener('transitionend', () => overlay.remove(), { once: true });
+                    setTimeout(() => overlay.remove(), 800);
+                }, 200);
+            });
+        });
     }, [pathname]);
 
     return null;

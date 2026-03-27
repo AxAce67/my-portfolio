@@ -27,18 +27,21 @@ export function LanguageToggle() {
         const overlay = document.getElementById(OVERLAY_ID);
         if (!overlay) return;
 
-        setTimeout(() => {
-            const savedY = parseInt(sessionStorage.getItem(SCROLL_KEY) ?? '0', 10);
-            sessionStorage.removeItem(SCROLL_KEY);
-            window.scrollTo(0, savedY);
+        // 本番ストリーミング環境でコンテンツが描画されるまで待つ
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                const savedY = parseInt(sessionStorage.getItem(SCROLL_KEY) ?? '0', 10);
+                sessionStorage.removeItem(SCROLL_KEY);
+                window.scrollTo(0, savedY);
 
-            setTimeout(() => {
-                overlay.style.transition = 'opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-                overlay.style.opacity = '0';
-                overlay.addEventListener('transitionend', () => overlay.remove(), { once: true });
-                setTimeout(() => overlay.remove(), 800);
-            }, 80);
-        }, 0);
+                setTimeout(() => {
+                    overlay.style.transition = 'opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                    overlay.style.opacity = '0';
+                    overlay.addEventListener('transitionend', () => overlay.remove(), { once: true });
+                    setTimeout(() => overlay.remove(), 800);
+                }, 200);
+            });
+        });
     }, [locale]);
 
     const switchLocale = (newLocale: 'ja' | 'en') => {
