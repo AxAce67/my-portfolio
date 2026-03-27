@@ -106,7 +106,7 @@ export default async function LocaleLayout({ children, params }: Props) {
                     id="theme-init"
                     strategy="beforeInteractive"
                     dangerouslySetInnerHTML={{
-                        __html: "(()=>{try{const s=localStorage.getItem('theme');const d=window.matchMedia('(prefers-color-scheme: dark)').matches;const t=s==='light'||s==='dark'?s:(d?'dark':'light');const r=document.documentElement;r.classList.remove('light','dark');r.classList.add(t);}catch{const d=window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.add(d?'dark':'light');}})();",
+                        __html: "(()=>{let t='light';try{const s=localStorage.getItem('theme');const d=window.matchMedia('(prefers-color-scheme: dark)').matches;t=s==='light'||s==='dark'?s:(d?'dark':'light');const r=document.documentElement;r.classList.remove('light','dark');r.classList.add(t);}catch{const d=window.matchMedia('(prefers-color-scheme: dark)').matches;t=d?'dark':'light';document.documentElement.classList.add(t);}const bg=t==='dark'?'rgba(10,10,10,0.95)':'rgba(255,255,255,0.95)';const o=document.createElement('div');o.id='__page-fade-overlay__';o.style.cssText='position:fixed;inset:0;background:'+bg+';backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:99999;opacity:1;pointer-events:all';document.documentElement.appendChild(o);})();",
                     }}
                 />
             </head>
