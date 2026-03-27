@@ -320,9 +320,9 @@ function HeroClock() {
     };
 
     // Fetch NICT time once to compute offset, then start clock
-    fetch('https://ntp-a1.nict.go.jp/cgi-bin/json')
+    fetch('/api/nict-time')
       .then(r => r.json())
-      .then((d: { st: number }) => { offset = d.st * 1000 - Date.now(); })
+      .then((d: { st?: number }) => { if (typeof d.st === 'number') offset = d.st * 1000 - Date.now(); })
       .catch(() => {})
       .finally(() => scheduleTick());
 

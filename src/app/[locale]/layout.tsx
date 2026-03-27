@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import Script from 'next/script';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -90,6 +91,8 @@ export default async function LocaleLayout({ children, params }: Props) {
         notFound();
     }
 
+    const validLocale = (locale === 'en' ? 'en' : 'ja') as 'ja' | 'en';
+    const seo = getLocaleSeo(validLocale);
     const messages = await getMessages();
     const isProduction = process.env.NODE_ENV === 'production';
     const isVercelRuntime = process.env.VERCEL === '1' || process.env.VERCEL === 'true';
@@ -98,8 +101,10 @@ export default async function LocaleLayout({ children, params }: Props) {
         <ViewTransitions>
         <html lang={locale} suppressHydrationWarning>
             <head>
-                <script
-                    suppressHydrationWarning
+                <meta name="description" content={seo.homeDescription} />
+                <Script
+                    id="theme-init"
+                    strategy="beforeInteractive"
                     dangerouslySetInnerHTML={{
                         __html: "(()=>{try{const s=localStorage.getItem('theme');const d=window.matchMedia('(prefers-color-scheme: dark)').matches;const t=s==='light'||s==='dark'?s:(d?'dark':'light');const r=document.documentElement;r.classList.remove('light','dark');r.classList.add(t);}catch{const d=window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.add(d?'dark':'light');}})();",
                     }}
