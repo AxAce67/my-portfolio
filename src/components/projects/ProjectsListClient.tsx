@@ -10,6 +10,10 @@ import { StaggerContainer, StaggerItem } from '@/components/ui/ScrollReveal';
 
 const PAGE_SIZE = 12;
 
+// リモート画像用の blur placeholder（Supabase URL は自動生成不可のため固定値を使用）
+const BLUR_DATA_URL =
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAAFklEQVQI12NgYGBg+P//PwMDAwMDAwMDCAAIBAEBkQBjbwAAAABJRU5ErkJggg==';
+
 export type ProjectListItem = {
   id: string;
   title: string | null;
@@ -30,6 +34,11 @@ export default function ProjectsListClient({ projects }: Props) {
   const transitionRouter = useTransitionRouter();
   const [keyword, setKeyword] = useState('');
   const [page, setPage] = useState(1);
+  // 戻りナビゲーション時はカードをすぐに visible にする（viewTransitionName 要素を不透明にするため）
+  const [forceCardVisible] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return sessionStorage.getItem('projectsScrollY') !== null;
+  });
 
   // 戻り時にスクロール位置を復元（ViewTransitionsのfinishより先に実行される）
   useLayoutEffect(() => {
@@ -61,7 +70,13 @@ export default function ProjectsListClient({ projects }: Props) {
         <Link
           href="/"
           className="text-xs font-mono text-muted-foreground hover:text-foreground"
-          onClick={() => sessionStorage.setItem('returnToProjects', '1')}
+          onClick={(e) => {
+            sessionStorage.setItem('returnToProjects', '1');
+            if ('startViewTransition' in document) {
+              e.preventDefault();
+              transitionRouter.push(`/${locale}`);
+            }
+          }}
         >
           {t('backToTop')}
         </Link>
@@ -90,6 +105,7 @@ export default function ProjectsListClient({ projects }: Props) {
         key={`${keyword}-${normalizedPage}`}
         className="grid grid-cols-2 gap-3 sm:grid-cols-1 sm:gap-4"
         staggerDelay={0.08}
+        forceVisible={forceCardVisible}
       >
         {currentItems.map((project) => {
           const createdDay = project.createdAt ? new Date(project.createdAt).toDateString() : null;
@@ -121,6 +137,8 @@ export default function ProjectsListClient({ projects }: Props) {
                         sizes="(max-width: 640px) 50vw, 313px"
                         className="absolute inset-0 object-cover"
                         loading="lazy"
+                        placeholder="blur"
+                        blurDataURL={BLUR_DATA_URL}
                       />
                     ) : null}
                   </div>

@@ -1,8 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
-import { Link } from '@/i18n/routing';
-import { PageTransitionIn } from '@/components/ui/PageTransitionIn';
+import { FadeLink } from '@/components/ui/FadeLink';
 
 type Props = {
     params: Promise<{ locale: string }>;
@@ -21,11 +20,16 @@ const thirdPartyLibraries = [
     { name: 'Next.js', license: 'MIT', href: 'https://github.com/vercel/next.js' },
     { name: 'React', license: 'MIT', href: 'https://github.com/facebook/react' },
     { name: 'Framer Motion', license: 'MIT', href: 'https://github.com/framer/motion' },
-{ name: 'next-intl', license: 'MIT', href: 'https://github.com/amannn/next-intl' },
+    { name: 'next-intl', license: 'MIT', href: 'https://github.com/amannn/next-intl' },
     { name: 'next-themes', license: 'MIT', href: 'https://github.com/pacocoursey/next-themes' },
-    { name: 'Lucide Icons', license: 'ISC', href: 'https://github.com/lucide-icons/lucide' },
+    { name: 'next-view-transitions', license: 'MIT', href: 'https://github.com/shuding/next-view-transitions' },
     { name: 'Tailwind CSS', license: 'MIT', href: 'https://github.com/tailwindlabs/tailwindcss' },
+    { name: 'Lucide Icons', license: 'ISC', href: 'https://github.com/lucide-icons/lucide' },
     { name: 'Sonner', license: 'MIT', href: 'https://github.com/emilkowalski/sonner' },
+    { name: '@supabase/supabase-js', license: 'MIT', href: 'https://github.com/supabase/supabase-js' },
+    { name: 'BlockNote', license: 'MPL-2.0', href: 'https://github.com/TypeCellOS/BlockNote' },
+    { name: 'Mantine', license: 'MIT', href: 'https://github.com/mantinedev/mantine' },
+    { name: 'Geist', license: 'MIT', href: 'https://github.com/vercel/geist-font' },
 ];
 
 function LicensePageContent() {
@@ -33,11 +37,10 @@ function LicensePageContent() {
 
     return (
         <div className="legal-page">
-            <PageTransitionIn />
             <article className="legal-document">
-                <Link href="/" className="legal-doc-back">
+                <FadeLink href="/" className="legal-doc-back">
                     ← {t('backHome')}
-                </Link>
+                </FadeLink>
                 <header className="legal-doc-header">
                     <h1 className="legal-doc-title">{t('title')}</h1>
                     <p className="legal-doc-meta">{t('description')}</p>
@@ -59,18 +62,26 @@ function LicensePageContent() {
                         <p className="legal-doc-text">{t('brandDescription')}</p>
                     </section>
 
+                    {/* Source Code */}
+                    <section className="legal-doc-section">
+                        <h2 className="legal-doc-heading">
+                            <span className="legal-doc-num">3.</span>{t('sourceTitle')}
+                        </h2>
+                        <p className="legal-doc-text">{t('sourceDescription')}</p>
+                    </section>
+
                     {/* Third-party */}
                     <section className="legal-doc-section">
                         <h2 className="legal-doc-heading">
-                            <span className="legal-doc-num">3.</span>{t('thirdPartyTitle')}
+                            <span className="legal-doc-num">4.</span>{t('thirdPartyTitle')}
                         </h2>
                         <p className="legal-doc-text">{t('thirdPartyDescription')}</p>
                         <table className="legal-doc-table">
                             <thead>
                                 <tr>
-                                    <th>Library</th>
-                                    <th>License</th>
-                                    <th>Source</th>
+                                    <th>{t('tableLibrary')}</th>
+                                    <th>{t('tableLicense')}</th>
+                                    <th>{t('tableSource')}</th>
                                 </tr>
                             </thead>
                             <tbody>

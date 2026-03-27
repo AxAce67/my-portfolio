@@ -323,8 +323,19 @@
     },
     "ProjectDetail": {
         "backToProjects": "← Back to Projects",
+        "backToArchive": "← Back to Archive",
         "createdAt": "Created",
-        "updatedAt": "Updated"
+        "updatedAt": "Updated",
+        "noContent": "No content yet."
+    },
+    "Login": {
+        "title": "Dashboard Login",
+        "email": "Email",
+        "password": "Password",
+        "submit": "Sign In",
+        "backToSite": "← Back to Site",
+        "errorInvalid": "Incorrect email or password.",
+        "errorRateLimit": "Too many attempts. Please wait about 10 minutes before trying again."
     },
     "NotFound": {
         "code": "404 / Not Found",
@@ -336,6 +347,11 @@
     "License": {
         "title": "License",
         "description": "License information for this portfolio site",
+        "tableLibrary": "Library",
+        "tableLicense": "License",
+        "tableSource": "Source",
+        "sourceTitle": "Source Code License",
+        "sourceDescription": "The source code of this site, including its design, implementation, and configuration, is All Rights Reserved unless otherwise stated. Unauthorized reproduction, repurposing, modification, or redistribution is prohibited.",
         "contentTitle": "Content Copyright",
         "contentDescription": "All text, photographs, illustrations, designs, layouts, logos, and other creative works (collectively, \"Content\") published on this site are the property of the author (Aki) unless otherwise stated. Unauthorized reproduction, redistribution, modification, or secondary use of Content is prohibited. For personal reference or citation, please clearly attribute the source by including this site's URL. For commercial use, please contact us via the contact form in advance.",
         "brandTitle": "Third-Party Logos and Trademarks",
@@ -348,6 +364,11 @@
         "title": "Terms of Use",
         "description": "Terms of use for this portfolio site",
         "lastUpdated": "Last updated: {date}",
+        "sectionNum": "Section {n}",
+        "privacyTitle": "Personal Information",
+        "privacyDescription": "Personal information such as name and email address collected through the contact form on this Site is used solely for the purpose of responding to inquiries and communicating with the user. Such information will not be shared with third parties without the user's consent, and will not be used for any purpose beyond that stated, except as required by applicable law.",
+        "governingTitle": "Governing Law and Jurisdiction",
+        "governingDescription": "These Terms shall be governed by and construed in accordance with the laws of Japan. Any dispute arising out of or relating to these Terms shall be subject to the exclusive jurisdiction of the Tokyo District Court as the court of first instance.",
         "acceptanceTitle": "Acceptance of Terms",
         "acceptanceDescription": "By accessing, browsing, or using this site (hereinafter \"the Site\"), you agree to be bound by all provisions of these Terms of Use (hereinafter \"the Terms\"). If you do not agree to these Terms, please discontinue use of the Site immediately. These Terms apply to all users who access or use the Site.",
         "useTitle": "Use of the Site",

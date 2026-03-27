@@ -88,11 +88,16 @@ export function StaggerContainer({
     children,
     className = '',
     staggerDelay = 0.1,
+    forceVisible = false,
 }: {
     children: ReactNode;
     className?: string;
     staggerDelay?: number;
+    forceVisible?: boolean;
 }) {
+    if (forceVisible) {
+        return <div className={className}>{children}</div>;
+    }
     return (
         <motion.div
             initial="hidden"
@@ -116,10 +121,15 @@ export function StaggerContainer({
 export function StaggerItem({
     children,
     className = '',
+    forceVisible = false,
 }: {
     children: ReactNode;
     className?: string;
+    forceVisible?: boolean;
 }) {
+    if (forceVisible) {
+        return <div className={className}>{children}</div>;
+    }
     return (
         <motion.div
             variants={{

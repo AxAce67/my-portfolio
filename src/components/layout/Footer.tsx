@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { Github, Twitter, Mail } from 'lucide-react';
 import { Link, usePathname, useRouter } from '@/i18n/routing';
 
+const OVERLAY_ID = '__page-fade-overlay__';
+
 const socialLinks = [
     { icon: Github, href: 'https://github.com/AxAce67', label: 'GitHub' },
     { icon: Twitter, href: 'https://x.com/real_Aki', label: 'X' },
@@ -30,29 +32,41 @@ export function Footer() {
     const handleLegalClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
         e.preventDefault();
 
-        if (pathname === href) {
-            document.documentElement.classList.remove('lang-switching-out');
-            document.documentElement.classList.remove('lang-switching-in');
-            return;
-        }
+        if (pathname === href) return;
+        if (document.getElementById(OVERLAY_ID)) return;
 
         if (navTimerRef.current !== null) {
             window.clearTimeout(navTimerRef.current);
         }
 
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
         if (prefersReducedMotion) {
             router.push(href);
             return;
         }
 
-        document.documentElement.classList.remove('lang-switching-in');
-        document.documentElement.classList.add('lang-switching-out');
+        const bgColor = getComputedStyle(document.documentElement).backgroundColor;
+        const bgAlpha = bgColor.replace(/^rgb\(/, 'rgba(').replace(/\)$/, ', 0.9)');
+
+        const overlay = document.createElement('div');
+        overlay.id = OVERLAY_ID;
+        overlay.style.cssText = [
+            'position:fixed', 'inset:0',
+            `background:${bgAlpha}`,
+            'backdrop-filter:blur(20px)',
+            '-webkit-backdrop-filter:blur(20px)',
+            'z-index:99999', 'opacity:0', 'pointer-events:all',
+        ].join(';');
+        document.body.appendChild(overlay);
+
+        void overlay.offsetHeight;
+        overlay.style.transition = 'opacity 0.3s ease';
+        overlay.style.opacity = '1';
+
         navTimerRef.current = window.setTimeout(() => {
             router.push(href);
             navTimerRef.current = null;
-        }, 140);
+        }, 320);
     };
 
     return (

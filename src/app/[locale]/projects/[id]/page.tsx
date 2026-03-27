@@ -3,6 +3,9 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { getProjectById, getProjectsListData } from '@/lib/content/publicContent';
+
+const BLUR_DATA_URL =
+  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAAFklEQVQI12NgYGBg+P//PwMDAwMDAwMDCAAIBAEBkQBjbwAAAABJRU5ErkJggg==';
 import BackToProjectsLink from '@/components/projects/BackToProjectsLink';
 import MarkdownArticle from '@/components/content/MarkdownArticle';
 import BlockNoteContent from '@/components/content/BlockNoteContent';
@@ -63,9 +66,13 @@ export default async function ProjectArticlePage({ params }: Props) {
   return (
     <article className="max-w-5xl mx-auto px-6 lg:px-8 py-16 sm:py-20">
       <div className="max-w-3xl mx-auto">
-        <BackToProjectsLink homeHref={`/${locale}`} archiveHref={`/${locale}/projects`} className="text-xs font-mono text-muted-foreground hover:text-foreground">
-          {t('backToProjects')}
-        </BackToProjectsLink>
+        <BackToProjectsLink
+          homeHref={`/${locale}`}
+          archiveHref={`/${locale}/projects`}
+          homeLabel={t('backToProjects')}
+          archiveLabel={t('backToArchive')}
+          className="text-xs font-mono text-muted-foreground hover:text-foreground"
+        />
 
         <header className="mt-7 mb-10">
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">{project.title}</h1>
@@ -97,6 +104,8 @@ export default async function ProjectArticlePage({ params }: Props) {
             sizes="(max-width: 768px) 100vw, 768px"
             className="w-full h-auto object-cover"
             priority
+            placeholder="blur"
+            blurDataURL={BLUR_DATA_URL}
           />
         </div>
       ) : null}
@@ -109,7 +118,7 @@ export default async function ProjectArticlePage({ params }: Props) {
         ) : project.content_md ? (
           <MarkdownArticle content={project.content_md} />
         ) : (
-          <p className="text-sm text-muted-foreground">本文はまだありません。</p>
+          <p className="text-sm text-muted-foreground">{t('noContent')}</p>
         )}
       </div>
     </article>

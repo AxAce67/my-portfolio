@@ -86,19 +86,13 @@ body {
 
 /* ========== View Transitions ========== */
 
-/* 共通ベース */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
-/* --- ダークモード切替: 円形展開 --- */
-::view-transition-old(root) {
+/* --- ダークモード切替: 円形展開（.theme-transition クラス付与時のみ） --- */
+.theme-transition::view-transition-old(root) {
   z-index: 1;
+  animation: none;
 }
 
-::view-transition-new(root) {
+.theme-transition::view-transition-new(root) {
   z-index: 9999;
   animation: vt-circle-expand 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -113,39 +107,7 @@ body {
   }
 }
 
-/* --- 言語切替: CSS クラスベースのクロスフェード --- */
-html.lang-switching-out>body {
-  animation: lang-fade-out 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  pointer-events: none;
-}
 
-html.lang-switching-in>body {
-  animation: lang-fade-in 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
-}
-
-@keyframes lang-fade-out {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  to {
-    opacity: 0;
-    transform: scale(0.97);
-  }
-}
-
-@keyframes lang-fade-in {
-  from {
-    opacity: 0;
-    transform: scale(1.02);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
 
 /* ========== Grid Background ========== */
 

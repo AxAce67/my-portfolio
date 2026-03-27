@@ -11,6 +11,7 @@ import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { AppToaster } from '@/components/ui/AppToaster';
+import { PageTransitionIn } from '@/components/ui/PageTransitionIn';
 import { buildLocalePath, buildLocaleUrl, DEFAULT_OG_IMAGE_PATH, getLocaleSeo, getSiteUrl } from '@/lib/seo';
 import '../globals.css';
 
@@ -111,6 +112,7 @@ export default async function LocaleLayout({ children, params }: Props) {
                     <NextIntlClientProvider messages={messages}>
                         <div className="relative z-10 flex flex-col min-h-screen">
                             <AppToaster />
+                            <PageTransitionIn />
                             <Header />
                             <main className="flex-1">{children}</main>
                             <Footer />

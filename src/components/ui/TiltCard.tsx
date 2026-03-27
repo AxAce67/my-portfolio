@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState, useCallback } from 'react';
-import type { ReactNode, MouseEvent } from 'react';
+import type { ReactNode, PointerEvent } from 'react';
 
 type TiltCardProps = {
     children: ReactNode;
@@ -24,8 +24,9 @@ export function TiltCard({
         transition: 'transform 0.4s cubic-bezier(0.03, 0.98, 0.52, 0.99)',
     });
 
-    const handleMouseMove = useCallback(
-        (e: MouseEvent<HTMLDivElement>) => {
+    const handlePointerMove = useCallback(
+        (e: PointerEvent<HTMLDivElement>) => {
+            if (e.pointerType !== 'mouse') return;
             const card = cardRef.current;
             if (!card) return;
 
@@ -46,7 +47,8 @@ export function TiltCard({
         [maxTilt, scale, perspective]
     );
 
-    const handleMouseLeave = useCallback(() => {
+    const handlePointerLeave = useCallback((e: PointerEvent<HTMLDivElement>) => {
+        if (e.pointerType !== 'mouse') return;
         setStyle({
             transform: `perspective(${perspective}px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)`,
             transition: 'transform 0.4s cubic-bezier(0.03, 0.98, 0.52, 0.99)',
@@ -58,8 +60,8 @@ export function TiltCard({
             ref={cardRef}
             className={className}
             style={{ ...style, willChange: 'transform' }}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
+            onPointerMove={handlePointerMove}
+            onPointerLeave={handlePointerLeave}
         >
             {children}
         </div>

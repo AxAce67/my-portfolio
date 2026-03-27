@@ -1,19 +1,9 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
-import dynamic from 'next/dynamic';
-
-const HomePageSections = dynamic(() => import('./HomePageSections'), {
-  ssr: false,
-  loading: () => (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-      <div className="h-8 w-44 bg-muted rounded mb-8" />
-      <div className="h-32 bg-muted rounded" />
-    </div>
-  ),
-});
+import HomePageSections from './HomePageSections';
 
 export type CompletedProject = {
   id: string;
@@ -40,13 +30,43 @@ export default function HomePageClient({
   initialCompletedProjects,
   initialActiveProjects,
 }: HomePageClientProps) {
-  const [showSections, setShowSections] = useState(false);
+  // showSections is initialized synchronously from sessionStorage so that HomePageSections
+  // is in the DOM on the first render during back navigation, enabling the morph animation.
+  // restoreProjectsOnBack starts as false to keep the hero visible in the view-transition
+  // new-state screenshot (the useEffect below sets it after paint if needed).
+  const [showSections, setShowSections] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return sessionStorage.getItem('returnToProjects') === '1';
+  });
   const [restoreProjectsOnBack, setRestoreProjectsOnBack] = useState(false);
+  // Tracks whether useLayoutEffect already scrolled (to prevent double-scroll in useEffect).
+  const scrollRestoredRef = useRef(false);
   const sectionsTriggerRef = useRef<HTMLDivElement | null>(null);
+
+  // Restore scroll synchronously before the view transition captures the new-state
+  // screenshot, so the project card is in the viewport and the morph animation works.
+  // No state changes here to avoid an extra synchronous re-render that could disrupt timing.
+  useLayoutEffect(() => {
+    const savedScrollY = sessionStorage.getItem('homeScrollY');
+    if (!savedScrollY) return;
+    window.scrollTo(0, parseInt(savedScrollY, 10));
+    scrollRestoredRef.current = true;
+    // scrollTo(homeScrollY) alone may be incorrect when TechStackSection is in loading state
+    // (dynamic import makes the page shorter), so ensure the card is visible by calling
+    // scrollIntoView *after* scrollTo. This runs after ProjectsSection.useLayoutEffect
+    // (child effects fire first), so it won't be overridden.
+    const projectId = sessionStorage.getItem('homeFromProjectId');
+    if (projectId) {
+      sessionStorage.removeItem('homeFromProjectId');
+      const el = document.querySelector<HTMLElement>(`[data-card-id="${projectId}"]`);
+      if (el) el.scrollIntoView({ block: 'nearest' });
+    }
+  }, []);
 
   useEffect(() => {
     const navigationEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
     const isReload = navigationEntry?.type === 'reload';
+    // returnToProjects may have already been consumed by the useLayoutEffect above
     const shouldRestoreProjects = sessionStorage.getItem('returnToProjects') === '1';
 
     if (shouldRestoreProjects) {
@@ -132,6 +152,19 @@ export default function HomePageClient({
     const hash = window.location.hash?.replace('#', '');
 
     if (restoreProjectsOnBack) {
+      const savedScrollY = sessionStorage.getItem('homeScrollY');
+      if (savedScrollY) {
+        sessionStorage.removeItem('homeScrollY');
+        sessionStorage.removeItem('returnToProjects');
+        // useLayoutEffect may have already scrolled synchronously (for morph animation).
+        // Only scroll here if it didn't (e.g., SSR or useLayoutEffect was skipped).
+        if (!scrollRestoredRef.current) {
+          window.scrollTo(0, parseInt(savedScrollY, 10));
+        }
+        setRestoreProjectsOnBack(false);
+        return;
+      }
+
       let attempts = 0;
       const maxAttempts = 16;
       const tryRestoreProjects = () => {
@@ -183,7 +216,7 @@ export default function HomePageClient({
 
   return (
     <>
-      <HeroSection hidden={restoreProjectsOnBack} />
+      <HeroSection />
       <div ref={sectionsTriggerRef} className="h-px w-full" aria-hidden />
       {showSections ? (
         <HomePageSections

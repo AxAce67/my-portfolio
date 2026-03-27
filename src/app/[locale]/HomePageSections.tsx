@@ -10,7 +10,7 @@ import { motion, useInView, useReducedMotion, AnimatePresence } from 'framer-mot
 import { ScrollReveal, StaggerContainer, StaggerItem } from '@/components/ui/ScrollReveal';
 import { Link } from '@/i18n/routing';
 import { useTransitionRouter } from 'next-view-transitions';
-import dynamic from 'next/dynamic';
+import TechStackSectionStatic from '@/components/sections/TechStackSection';
 import { TiltCard } from '@/components/ui/TiltCard';
 import {
   SiTypescript,
@@ -29,21 +29,7 @@ import {
 import { SiOpenai, SiAdobepremierepro, SiCanva } from 'react-icons/si';
 import type { ActiveProject, CompletedProject } from './HomePageClient';
 
-function TechStackLoading() {
-  const t = useTranslations('TechStack');
-  return (
-    <section id="tech-stack" className="py-20 sm:py-32 lg:py-36">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p className="section-label text-center">{t('sectionTitle')}</p>
-        <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-10 sm:mb-16 text-center">{t('heading')}</h2>
-      </div>
-    </section>
-  );
-}
-
-const TechStackSection = dynamic(() => import('@/components/sections/TechStackSection'), {
-  loading: () => <TechStackLoading />,
-});
+const TechStackSection = TechStackSectionStatic;
 
 type SkillCategory = 'Languages' | 'Stack' | 'AI' | 'Creative';
 type SkillIconComponent = ComponentType<{ size?: number | string; className?: string }>;
@@ -876,8 +862,16 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
   const locale = useLocale();
   const transitionRouter = useTransitionRouter();
   const projects = initialProjects;
-  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>(() => {
+    if (typeof window === 'undefined') return 'list';
+    return (sessionStorage.getItem('projectsViewMode') as 'list' | 'grid') ?? 'list';
+  });
   const [isMobileViewport, setIsMobileViewport] = useState(false);
+  // 戻りナビゲーション時はカードをすぐに visible にする（viewTransitionName 要素を不透明にするため）
+  const [forceCardVisible] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return sessionStorage.getItem('returnToProjects') === '1';
+  });
   const effectiveViewMode: 'list' | 'grid' = isMobileViewport ? 'grid' : viewMode;
 
   useEffect(() => {
@@ -887,6 +881,7 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
     mobileQuery.addEventListener?.('change', syncViewport);
     return () => mobileQuery.removeEventListener?.('change', syncViewport);
   }, []);
+
   const formatDate = (value: string | null) => {
     if (!value) return null;
     return new Intl.DateTimeFormat(locale === 'ja' ? 'ja-JP' : 'en-US', {
@@ -941,18 +936,22 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
         <StaggerContainer
           className={effectiveViewMode === 'grid' ? 'grid grid-cols-2 md:grid-cols-2 gap-3 sm:gap-6' : 'space-y-4'}
           staggerDelay={0.1}
+          forceVisible={forceCardVisible}
         >
           {projects.map((project) => {
             const createdDay = project.createdAt ? new Date(project.createdAt).toDateString() : null;
             const updatedDay = project.updatedAt ? new Date(project.updatedAt).toDateString() : null;
             const showUpdatedAt = updatedDay !== null && createdDay !== null && updatedDay !== createdDay;
             return (
-            <StaggerItem key={project.id}>
+            <StaggerItem key={project.id} forceVisible={forceCardVisible}>
               <Link
                 href={`/projects/${project.id}`}
                 prefetch
                 onClick={(e) => {
                   sessionStorage.setItem('returnToProjects', '1');
+                  sessionStorage.setItem('homeScrollY', String(window.scrollY));
+                  sessionStorage.setItem('homeFromProjectId', project.id);
+                  sessionStorage.setItem('projectsViewMode', effectiveViewMode);
                   sessionStorage.removeItem('projectsReferrer');
                   sessionStorage.removeItem('projectsScrollY');
                   if ('startViewTransition' in document) {
@@ -964,6 +963,7 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
               >
                 <div className={effectiveViewMode === 'grid' ? 'flex flex-col h-full' : 'flex flex-row h-28 sm:h-44 overflow-hidden'}>
                   <div
+                    data-card-id={project.id}
                     className={`bg-muted overflow-hidden relative ${effectiveViewMode === 'grid'
                       ? 'aspect-video rounded-t-xl'
                       : 'w-[198px] min-w-[198px] sm:w-[313px] sm:min-w-[313px] rounded-l-xl rounded-tr-none shrink-0'

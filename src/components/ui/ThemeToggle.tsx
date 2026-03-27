@@ -44,12 +44,13 @@ export function ThemeToggle() {
         document.documentElement.style.setProperty('--vt-y', `${y}px`);
         document.documentElement.style.setProperty('--vt-r', `${maxRadius}px`);
 
+        document.documentElement.classList.add('theme-transition');
         const transition = document.startViewTransition(() => {
             setTheme(newTheme);
         });
 
-        transition.ready.then(() => {
-            // アニメーションは CSS で制御
+        transition.finished.finally(() => {
+            document.documentElement.classList.remove('theme-transition');
         });
     };
 
