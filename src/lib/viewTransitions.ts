@@ -28,7 +28,7 @@ function prefersReducedMotion() {
 }
 
 function prefersCompactMotion() {
-  return window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  return window.matchMedia('(max-width: 820px), (hover: none) and (pointer: coarse)').matches;
 }
 
 export function shouldUseMobileRouteTransitions() {
@@ -98,12 +98,23 @@ export function runRouteTransition(
     root.classList.add(ROUTE_TRANSITION_MOBILE_CLASS);
     root.style.setProperty(ROUTE_DIRECTION_VAR, options?.direction === 'backward' ? '-1' : '1');
 
+    if (transitionDocument.startViewTransition) {
+      const transition = transitionDocument.startViewTransition(() => {
+        action();
+      });
+
+      transition.finished.finally(() => {
+        window.setTimeout(cleanup, 90);
+      });
+      return;
+    }
+
     window.setTimeout(() => {
       action();
       root.classList.add(ROUTE_TRANSITION_MOBILE_EXIT_CLASS);
-    }, 96);
+    }, 72);
 
-    window.setTimeout(cleanup, 320);
+    window.setTimeout(cleanup, 260);
     return;
   }
 
