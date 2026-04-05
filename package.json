@@ -10,6 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p tsconfig.typecheck.json",
     "perf:lighthouse": "NEXT_PUBLIC_SITE_URL=http://127.0.0.1:3301 npm run build && start-server-and-test \"NEXT_PUBLIC_SITE_URL=http://127.0.0.1:3301 next start -p 3301\" http://127.0.0.1:3301 \"LH_BASE_URL=http://127.0.0.1:3301 node scripts/lighthouse-runner.mjs\""
   },
   "dependencies": {

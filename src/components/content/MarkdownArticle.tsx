@@ -1,4 +1,5 @@
 import React from 'react';
+import { ContentLink } from '@/components/content/ContentLink';
 
 type MarkdownArticleProps = {
   content: string;
@@ -39,7 +40,16 @@ function renderInline(text: string) {
         const [, alt, src] = imageMatch;
         parts.push(
           // eslint-disable-next-line @next/next/no-img-element
-          <img key={`inline-${key += 1}`} src={src} alt={alt} className="markdown-article-image" loading="lazy" />
+          <img
+            key={`inline-${key += 1}`}
+            src={src}
+            alt={alt}
+            className="markdown-article-image"
+            loading="lazy"
+            decoding="async"
+            width={1200}
+            height={675}
+          />
         );
       }
     } else {
@@ -47,9 +57,9 @@ function renderInline(text: string) {
       if (linkMatch) {
         const [, label, href] = linkMatch;
         parts.push(
-          <a key={`inline-${key += 1}`} href={href} target="_blank" rel="noopener noreferrer">
+          <ContentLink key={`inline-${key += 1}`} href={href}>
             {label}
-          </a>
+          </ContentLink>
         );
       }
     }

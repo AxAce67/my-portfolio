@@ -183,11 +183,19 @@ export async function GET() {
   try {
     if (token) {
       const data = await fetchMomentumViaGraphql(username, token, dayKeys);
-      return NextResponse.json(data);
+      return NextResponse.json(data, {
+        headers: {
+          'Cache-Control': `public, max-age=${GITHUB_REVALIDATE_SECONDS}, stale-while-revalidate=${GITHUB_REVALIDATE_SECONDS}`,
+        },
+      });
     }
 
     const data = await fetchMomentumViaPublicEvents(username, dayKeys);
-    return NextResponse.json(data);
+    return NextResponse.json(data, {
+      headers: {
+        'Cache-Control': `public, max-age=${GITHUB_REVALIDATE_SECONDS}, stale-while-revalidate=${GITHUB_REVALIDATE_SECONDS}`,
+      },
+    });
   } catch {
     return NextResponse.json(
       {
@@ -199,7 +207,12 @@ export async function GET() {
         updatedAt: new Date().toISOString(),
         source: token ? 'graphql' : 'events',
       } satisfies MomentumResponse,
-      { status: 502 },
+      {
+        status: 502,
+        headers: {
+          'Cache-Control': 'no-store',
+        },
+      },
     );
   }
 }

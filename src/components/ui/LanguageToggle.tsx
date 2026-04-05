@@ -44,6 +44,7 @@ export function LanguageToggle() {
     const menuId = useId();
     const containerRef = useRef<HTMLDivElement | null>(null);
     const buttonRef = useRef<HTMLButtonElement | null>(null);
+    const optionRefs = useRef<Array<HTMLButtonElement | null>>([]);
     const enterTimerRef = useRef<number | null>(null);
     const themeLockObserverRef = useRef<MutationObserver | null>(null);
     const themeLockClassRef = useRef<'light' | 'dark' | null>(null);
@@ -143,6 +144,11 @@ export function LanguageToggle() {
             return;
         }
 
+        const activeIndex = locales.findIndex((code) => code === displayLocale);
+        window.requestAnimationFrame(() => {
+            optionRefs.current[activeIndex >= 0 ? activeIndex : 0]?.focus();
+        });
+
         const handlePointerDown = (event: PointerEvent) => {
             if (!containerRef.current?.contains(event.target as Node)) {
                 setIsOpen(false);
@@ -163,7 +169,7 @@ export function LanguageToggle() {
             document.removeEventListener('pointerdown', handlePointerDown);
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, [isOpen]);
+    }, [displayLocale, isOpen]);
 
     useEffect(() => {
         return () => {
@@ -183,6 +189,12 @@ export function LanguageToggle() {
 
         const localizedPath = `/${nextLocale}${pathname === '/' ? '' : pathname}`;
         router.prefetch(localizedPath);
+    };
+
+    const focusOption = (index: number) => {
+        const total = locales.length;
+        const nextIndex = (index + total) % total;
+        optionRefs.current[nextIndex]?.focus();
     };
 
     const switchLocale = (nextLocale: AppLocale) => {
@@ -237,10 +249,20 @@ export function LanguageToggle() {
                 ref={buttonRef}
                 type="button"
                 className="locale-select__trigger"
-                aria-haspopup="listbox"
+                aria-haspopup="menu"
                 aria-expanded={isOpen}
                 aria-controls={menuId}
                 aria-label={`${t('label')}: ${currentLocaleMeta.label}`}
+                onKeyDown={(event) => {
+                    if (isPending) {
+                        return;
+                    }
+
+                    if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        setIsOpen(true);
+                    }
+                }}
                 onClick={() => {
                     if (isPending) {
                         return;
@@ -264,13 +286,13 @@ export function LanguageToggle() {
 
             <div
                 id={menuId}
-                role="listbox"
+                role="menu"
                 aria-label={t('label')}
                 aria-hidden={!isOpen}
                 className={`locale-select__menu ${isOpen ? 'locale-select__menu--open' : ''}`}
             >
                 <div className="locale-select__menu-inner">
-                    {locales.map((code) => {
+                    {locales.map((code, index) => {
                         const nextLocaleMeta = getLocaleMeta(code);
                         const isActive = displayLocale === code;
                         const isQueued = pendingLocale === code;
@@ -278,12 +300,46 @@ export function LanguageToggle() {
                         return (
                             <button
                                 key={code}
+                                ref={(node) => {
+                                    optionRefs.current[index] = node;
+                                }}
                                 type="button"
-                                role="option"
-                                aria-selected={isActive}
+                                role="menuitemradio"
+                                aria-checked={isActive}
                                 aria-label={t('switchTo', { language: nextLocaleMeta.label })}
                                 className="locale-select__option"
                                 disabled={isQueued}
+                                onKeyDown={(event) => {
+                                    if (event.key === 'ArrowDown') {
+                                        event.preventDefault();
+                                        focusOption(index + 1);
+                                        return;
+                                    }
+
+                                    if (event.key === 'ArrowUp') {
+                                        event.preventDefault();
+                                        focusOption(index - 1);
+                                        return;
+                                    }
+
+                                    if (event.key === 'Home') {
+                                        event.preventDefault();
+                                        focusOption(0);
+                                        return;
+                                    }
+
+                                    if (event.key === 'End') {
+                                        event.preventDefault();
+                                        focusOption(locales.length - 1);
+                                        return;
+                                    }
+
+                                    if (event.key === 'Escape') {
+                                        event.preventDefault();
+                                        setIsOpen(false);
+                                        buttonRef.current?.focus();
+                                    }
+                                }}
                                 onMouseEnter={() => prefetchLocale(code)}
                                 onFocus={() => prefetchLocale(code)}
                                 onClick={() => {

@@ -87,7 +87,6 @@ export default async function LocaleLayout({ children, params }: Props) {
     }
 
     const validLocale = locale;
-    const seo = getLocaleSeo(validLocale);
     const messages = await getMessages();
     const isProduction = process.env.NODE_ENV === 'production';
     const isVercelRuntime = process.env.VERCEL === '1' || process.env.VERCEL === 'true';
@@ -97,7 +96,6 @@ export default async function LocaleLayout({ children, params }: Props) {
         <ViewTransitions>
         <html lang={locale} suppressHydrationWarning>
             <head>
-                <meta name="description" content={seo.homeDescription} />
                 <Script
                     id="theme-init"
                     strategy="beforeInteractive"

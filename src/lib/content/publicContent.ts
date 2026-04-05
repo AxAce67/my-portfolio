@@ -91,11 +91,23 @@ async function fetchPublishedActiveProjects(): Promise<HomeActiveProject[]> {
 
 export const getHomePageData = unstable_cache(
   async () => {
-    const [projects, activeProjects] = await Promise.all([
+    const [projects, activeProjects] = await Promise.allSettled([
       fetchPublishedProjectsWithTags(8),
       fetchPublishedActiveProjects(),
     ]);
-    return { projects, activeProjects };
+
+    if (projects.status === 'rejected') {
+      console.error('[publicContent] Failed to load home projects', projects.reason);
+    }
+
+    if (activeProjects.status === 'rejected') {
+      console.error('[publicContent] Failed to load active projects', activeProjects.reason);
+    }
+
+    return {
+      projects: projects.status === 'fulfilled' ? projects.value : [],
+      activeProjects: activeProjects.status === 'fulfilled' ? activeProjects.value : [],
+    };
   },
   ['home-page-data-v2'],
   {
@@ -105,7 +117,14 @@ export const getHomePageData = unstable_cache(
 );
 
 export const getProjectsListData = unstable_cache(
-  async () => fetchPublishedProjectsWithTags(),
+  async () => {
+    try {
+      return await fetchPublishedProjectsWithTags();
+    } catch (error) {
+      console.error('[publicContent] Failed to load projects list', error);
+      return [];
+    }
+  },
   ['projects-list-data-v1'],
   {
     tags: ['home-page-data'],

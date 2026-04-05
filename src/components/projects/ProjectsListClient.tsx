@@ -7,7 +7,7 @@ import { Search } from 'lucide-react';
 import { Link, useRouter } from '@/i18n/routing';
 import { useTransitionRouter } from 'next-view-transitions';
 import { StaggerContainer, StaggerItem } from '@/components/ui/ScrollReveal';
-import { isPlainLeftClick, runRouteTransition } from '@/lib/viewTransitions';
+import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, shouldUseMobileRouteTransitions } from '@/lib/viewTransitions';
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
 import { navigationStateKeys, readSessionNumber, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 
@@ -129,7 +129,15 @@ export default function ProjectsListClient({ projects }: Props) {
 
                   writeSessionValue(navigationStateKeys.projectsReferrer, 'archive');
                   writeSessionValue(navigationStateKeys.projectsScrollY, String(window.scrollY));
-                  if ('startViewTransition' in document) {
+                  if (shouldUseMobileRouteTransitions()) {
+                    e.preventDefault();
+                    runRouteTransition(() => {
+                      router.push(`/projects/${project.id}`, { scroll: false });
+                    });
+                    return;
+                  }
+
+                  if (canUseSharedElementTransitions()) {
                     e.preventDefault();
                     transitionRouter.push(`/${locale}/projects/${project.id}`);
                   }

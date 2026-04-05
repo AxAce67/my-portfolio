@@ -25,23 +25,41 @@ export default async function LoginPage({ params, searchParams }: Props) {
       <div className="rounded-xl border border-border bg-card p-6 space-y-5">
         <h1 className="text-2xl font-bold tracking-tight">{t('title')}</h1>
 
-        {hasError && (
-          <p className="text-sm text-red-500">{t('errorInvalid')}</p>
-        )}
-        {isRateLimited && (
-          <p className="text-sm text-red-500">{t('errorRateLimit')}</p>
-        )}
+        <div aria-live="polite" className="min-h-5">
+          {hasError && (
+            <p className="text-sm text-red-500">{t('errorInvalid')}</p>
+          )}
+          {isRateLimited && (
+            <p className="text-sm text-red-500">{t('errorRateLimit')}</p>
+          )}
+        </div>
 
         <form action={loginAction.bind(null, locale)} className="space-y-3">
           <input type="hidden" name="next" value={nextPath} />
           <div>
-            <label className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">{t('email')}</label>
-            <input name="email" type="email" required className="w-full bg-transparent border border-border rounded-lg px-3 py-2 text-sm" />
+            <label htmlFor="login-email" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">{t('email')}</label>
+            <input
+              id="login-email"
+              name="email"
+              type="email"
+              inputMode="email"
+              autoComplete="email"
+              spellCheck={false}
+              required
+              className="w-full bg-transparent border border-border rounded-lg px-3 py-2 text-sm"
+            />
           </div>
 
           <div>
-            <label className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">{t('password')}</label>
-            <input name="password" type="password" required className="w-full bg-transparent border border-border rounded-lg px-3 py-2 text-sm" />
+            <label htmlFor="login-password" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">{t('password')}</label>
+            <input
+              id="login-password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              required
+              className="w-full bg-transparent border border-border rounded-lg px-3 py-2 text-sm"
+            />
           </div>
 
           <button type="submit" className="btn-primary w-full">{t('submit')}</button>

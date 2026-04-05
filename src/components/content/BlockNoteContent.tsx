@@ -1,4 +1,5 @@
 import React from 'react';
+import { ContentLink } from '@/components/content/ContentLink';
 
 // BlockNote block / inline types (subset used in default schema)
 type TextStyle = {
@@ -51,9 +52,9 @@ function InlineNodes({ content, prefix }: { content: InlineContent[]; prefix: st
         const key = `${prefix}-${i}`;
         if (item.type === 'link') {
           return (
-            <a key={key} href={item.href} target="_blank" rel="noopener noreferrer">
+            <ContentLink key={key} href={item.href}>
               <InlineNodes content={item.content} prefix={`${key}-c`} />
-            </a>
+            </ContentLink>
           );
         }
         const { text, styles } = item;
@@ -186,6 +187,7 @@ function BlockNodes({ blocks, prefix = 'b' }: { blocks: Block[]; prefix?: string
         if (!url) break;
         const caption = block.props.caption as string | undefined;
         const width = block.props.previewWidth as number | undefined;
+        const height = block.props.previewHeight as number | undefined;
         elements.push(
           <figure key={key} className="bn-figure">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -194,6 +196,9 @@ function BlockNodes({ blocks, prefix = 'b' }: { blocks: Block[]; prefix?: string
               alt={caption || ''}
               className="markdown-article-image"
               loading="lazy"
+              decoding="async"
+              width={width ?? 1200}
+              height={height ?? Math.round((width ?? 1200) * 9 / 16)}
               style={width ? { width: `${width}px`, maxWidth: '100%' } : undefined}
             />
             {caption && <figcaption className="bn-figcaption">{caption}</figcaption>}

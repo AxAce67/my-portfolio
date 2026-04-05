@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTransitionRouter } from 'next-view-transitions';
 import { useEffect, useState } from 'react';
-import { isPlainLeftClick } from '@/lib/viewTransitions';
+import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, shouldUseMobileRouteTransitions } from '@/lib/viewTransitions';
 import { navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 
 type Props = {
@@ -40,7 +40,15 @@ export default function BackToProjectsLink({ homeHref, archiveHref, className, h
 
         removeSessionValue(navigationStateKeys.projectsReferrer);
         writeSessionValue(navigationStateKeys.returnToProjects, '1');
-        if ('startViewTransition' in document) {
+        if (shouldUseMobileRouteTransitions()) {
+          e.preventDefault();
+          runRouteTransition(() => {
+            router.push(targetHref, { scroll: false });
+          }, { direction: 'backward' });
+          return;
+        }
+
+        if (canUseSharedElementTransitions()) {
           e.preventDefault();
           if (isArchive) {
             transitionRouter.push(targetHref, { scroll: false });
