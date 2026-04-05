@@ -101,9 +101,9 @@ export function runRouteTransition(
     window.setTimeout(() => {
       action();
       root.classList.add(ROUTE_TRANSITION_MOBILE_EXIT_CLASS);
-    }, 88);
+    }, 96);
 
-    window.setTimeout(cleanup, 360);
+    window.setTimeout(cleanup, 320);
     return;
   }
 

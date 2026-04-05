@@ -166,28 +166,25 @@ html.route-transition-active::after {
 html.route-transition-mobile-active::before {
   opacity: 1;
   background:
-    linear-gradient(
-      125deg,
-      rgb(var(--background-rgb) / 0.985) 0%,
-      rgb(var(--background-rgb) / 0.965) 56%,
-      rgb(var(--hero-accent-rgb) / 0.2) 100%
-    );
+    linear-gradient(180deg, rgb(var(--background-rgb) / 0.96) 0%, rgb(var(--background-rgb) / 0.985) 100%),
+    radial-gradient(circle at 50% 14%, rgb(var(--hero-accent-rgb) / 0.08), transparent 52%);
   box-shadow:
     0 0 0 1px rgb(var(--foreground-rgb) / 0.05),
-    0 32px 88px rgb(var(--foreground-rgb) / 0.12);
-  animation: mobile-route-sheet-in 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    0 22px 64px rgb(var(--foreground-rgb) / 0.08);
+  animation: mobile-route-fade-in 110ms cubic-bezier(0.33, 1, 0.68, 1) both;
 }
 
 html.route-transition-mobile-active.route-transition-mobile-exit::before {
-  animation: mobile-route-sheet-out 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: mobile-route-fade-out 170ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 html.route-transition-mobile-active .app-shell {
-  animation: mobile-route-shell-out 180ms cubic-bezier(0.4, 0, 1, 1) both;
+  transform-origin: 50% 0%;
+  animation: mobile-route-shell-fade-out 110ms cubic-bezier(0.4, 0, 1, 1) both;
 }
 
 html.route-transition-mobile-active.route-transition-mobile-exit .app-shell {
-  animation: mobile-route-shell-in 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: mobile-route-shell-fade-in 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 html.route-transition-active.route-transition-compact::after {
@@ -572,29 +569,27 @@ html::view-transition-new(site-header) {
   }
 }
 
-@keyframes mobile-route-sheet-in {
+@keyframes mobile-route-fade-in {
   from {
-    transform: translate3d(calc(var(--route-direction, 1) * 102%), 0, 0);
+    opacity: 0;
   }
 
   to {
-    transform: translate3d(calc(var(--route-direction, 1) * 10%), 0, 0);
+    opacity: 1;
   }
 }
 
-@keyframes mobile-route-sheet-out {
+@keyframes mobile-route-fade-out {
   from {
     opacity: 1;
-    transform: translate3d(calc(var(--route-direction, 1) * 10%), 0, 0);
   }
 
   to {
-    opacity: 0.94;
-    transform: translate3d(calc(var(--route-direction, 1) * -104%), 0, 0);
+    opacity: 0;
   }
 }
 
-@keyframes mobile-route-shell-out {
+@keyframes mobile-route-shell-fade-out {
   from {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
@@ -602,17 +597,17 @@ html::view-transition-new(site-header) {
   }
 
   to {
-    opacity: 0.76;
-    transform: translate3d(calc(var(--route-direction, 1) * -14px), 0, 0) scale(0.985);
-    filter: blur(2px);
+    opacity: 0.82;
+    transform: translate3d(0, 0, 0) scale(0.992);
+    filter: blur(1.5px);
   }
 }
 
-@keyframes mobile-route-shell-in {
+@keyframes mobile-route-shell-fade-in {
   from {
-    opacity: 0.7;
-    transform: translate3d(calc(var(--route-direction, 1) * 16px), 0, 0) scale(0.99);
-    filter: blur(3px);
+    opacity: 0.88;
+    transform: translate3d(0, 8px, 0) scale(0.994);
+    filter: blur(2px);
   }
 
   to {
