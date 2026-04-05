@@ -478,7 +478,7 @@ function AboutSection() {
                   <p className="text-[11px] text-muted-foreground font-mono tracking-wide uppercase">{t('role')}</p>
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-1.5">
+              <div className="grid grid-cols-1 min-[360px]:grid-cols-3 gap-1.5">
                 {profileLinks.map((link) =>
                   link.disabled ? (
                     <span
@@ -944,7 +944,7 @@ function ProjectsSection({ initialProjects, returningProjectId }: { initialProje
           <p className="text-sm text-muted-foreground">{t('noPublishedProjects')}</p>
         )}
         <StaggerContainer
-          className={effectiveViewMode === 'grid' ? 'grid grid-cols-2 md:grid-cols-2 gap-3 sm:gap-6' : 'space-y-4'}
+          className={effectiveViewMode === 'grid' ? 'grid grid-cols-1 min-[420px]:grid-cols-2 md:grid-cols-2 gap-3 sm:gap-6' : 'space-y-4'}
           staggerDelay={0.1}
           forceVisible={forceCardVisible}
         >
@@ -1628,7 +1628,7 @@ function ContactSection() {
               aria-labelledby="contact-preview-title"
               aria-describedby="contact-preview-description"
               tabIndex={-1}
-              className="w-full max-w-lg rounded-xl border border-border bg-card p-5 sm:p-6 shadow-2xl"
+              className="w-full max-w-lg max-h-[calc(100svh-2rem)] overflow-y-auto rounded-xl border border-border bg-card p-5 sm:p-6 shadow-2xl"
             >
               <h3 id="contact-preview-title" className="text-lg font-semibold tracking-tight mb-4">{t('previewTitle')}</h3>
               <p id="contact-preview-description" className="text-xs font-mono text-muted-foreground mb-4">{t('previewDescription')}</p>
@@ -1693,7 +1693,7 @@ function ContactSection() {
               tabIndex={-1}
               initial={{ opacity: 0, scale: 0.95, y: 6 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              className="w-full max-w-sm rounded-xl border border-border bg-card p-6 shadow-2xl"
+              className="w-full max-w-sm max-h-[calc(100svh-2rem)] overflow-y-auto rounded-xl border border-border bg-card p-6 shadow-2xl"
             >
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}

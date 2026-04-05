@@ -166,21 +166,6 @@ export function LanguageToggle() {
     }, [isOpen]);
 
     useEffect(() => {
-        if (!isOpen) {
-            return;
-        }
-
-        locales.forEach((nextLocale) => {
-            if (nextLocale === displayLocale) {
-                return;
-            }
-
-            const localizedPath = `/${nextLocale}${pathname === '/' ? '' : pathname}`;
-            router.prefetch(localizedPath);
-        });
-    }, [displayLocale, isOpen, pathname, router]);
-
-    useEffect(() => {
         return () => {
             if (enterTimerRef.current !== null) {
                 window.clearTimeout(enterTimerRef.current);
@@ -190,6 +175,15 @@ export function LanguageToggle() {
             }
         };
     }, []);
+
+    const prefetchLocale = (nextLocale: AppLocale) => {
+        if (nextLocale === displayLocale) {
+            return;
+        }
+
+        const localizedPath = `/${nextLocale}${pathname === '/' ? '' : pathname}`;
+        router.prefetch(localizedPath);
+    };
 
     const switchLocale = (nextLocale: AppLocale) => {
         if (nextLocale === displayLocale || pendingLocale !== null) {
@@ -290,6 +284,8 @@ export function LanguageToggle() {
                                 aria-label={t('switchTo', { language: nextLocaleMeta.label })}
                                 className="locale-select__option"
                                 disabled={isQueued}
+                                onMouseEnter={() => prefetchLocale(code)}
+                                onFocus={() => prefetchLocale(code)}
                                 onClick={() => {
                                     switchLocale(code);
                                 }}

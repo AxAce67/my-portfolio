@@ -19,6 +19,7 @@ type ClickLikeEvent = {
 
 const ROUTE_TRANSITION_CLASS = 'route-transition-active';
 const ROUTE_DIRECTION_VAR = '--route-direction';
+const ROUTE_TRANSITION_COMPACT_CLASS = 'route-transition-compact';
 
 export function isPlainLeftClick(event: ClickLikeEvent) {
   return !event.defaultPrevented && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
@@ -53,17 +54,20 @@ export function runRouteTransition(
   }
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const prefersCompactMotion = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
   const transitionDocument = document as TransitionCapableDocument;
   const root = document.documentElement;
   const cleanup = () => {
     root.classList.remove(ROUTE_TRANSITION_CLASS);
+    root.classList.remove(ROUTE_TRANSITION_COMPACT_CLASS);
     root.style.removeProperty(ROUTE_DIRECTION_VAR);
   };
   const scheduleCleanup = () => {
-    window.setTimeout(cleanup, 140);
+    window.setTimeout(cleanup, prefersCompactMotion ? 90 : 140);
   };
 
   root.classList.add(ROUTE_TRANSITION_CLASS);
+  root.classList.toggle(ROUTE_TRANSITION_COMPACT_CLASS, prefersCompactMotion);
   root.style.setProperty(ROUTE_DIRECTION_VAR, options?.direction === 'backward' ? '-1' : '1');
 
   if (prefersReducedMotion || !transitionDocument.startViewTransition) {

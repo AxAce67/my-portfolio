@@ -33,6 +33,20 @@ export function Header() {
     const shouldShowSolidHeader = scrolled || !isHomePage;
 
     useEffect(() => {
+        if (!isMenuOpen) {
+            document.body.style.removeProperty('overflow');
+            return;
+        }
+
+        const previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+
+        return () => {
+            document.body.style.overflow = previousOverflow;
+        };
+    }, [isMenuOpen]);
+
+    useEffect(() => {
         if (!isHomePage) {
             setActiveSection('');
             const handleScrollOnly = () => setScrolled(window.scrollY > 20);
@@ -169,13 +183,13 @@ export function Header() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="md:hidden fixed inset-0 top-14 sm:top-16 z-40"
+                        className="md:hidden fixed inset-0 top-14 sm:top-16 z-40 overflow-y-auto"
                     >
                         <div
                             className="absolute inset-0 bg-background/98 backdrop-blur-xl"
                             onClick={() => setIsMenuOpen(false)}
                         />
-                        <nav className="relative z-50 px-6 sm:px-8 pt-10 sm:pt-12">
+                        <nav className="relative z-50 px-5 sm:px-8 pt-8 sm:pt-12 pb-[max(1.5rem,env(safe-area-inset-bottom))] min-h-full">
                             <div className="w-full max-w-md rounded-2xl border border-border-hover bg-card p-4 sm:p-5 space-y-1 shadow-[0_20px_44px_-20px_rgba(0,0,0,0.55)]">
                                 {navItems.map((item, index) => (
                                     <motion.button

@@ -110,7 +110,7 @@ export default function ProjectsListClient({ projects }: Props) {
 
       <StaggerContainer
         key={`${keyword}-${normalizedPage}`}
-        className="grid grid-cols-2 gap-3 sm:grid-cols-1 sm:gap-4"
+        className="grid grid-cols-1 min-[420px]:grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-4"
         staggerDelay={0.08}
         forceVisible={forceCardVisible}
       >
@@ -176,7 +176,7 @@ export default function ProjectsListClient({ projects }: Props) {
           );
         })}
         {filtered.length === 0 && (
-          <p className="col-span-2 sm:col-span-1 text-sm text-muted-foreground">
+          <p className="col-span-1 min-[420px]:col-span-2 sm:col-span-1 text-sm text-muted-foreground">
             {keyword.trim() ? t('noResults') : t('empty')}
           </p>
         )}

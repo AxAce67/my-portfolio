@@ -21,6 +21,20 @@ const directionOffset = {
     scale: { y: 0, x: 0, scale: 0.95 },
 };
 
+function useLightweightMotion() {
+    const [isLightweight, setIsLightweight] = useState(false);
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(hover: none) and (pointer: coarse)');
+        const update = () => setIsLightweight(mediaQuery.matches);
+        update();
+        mediaQuery.addEventListener?.('change', update);
+        return () => mediaQuery.removeEventListener?.('change', update);
+    }, []);
+
+    return isLightweight;
+}
+
 export function ScrollReveal({
     children,
     className = '',
@@ -31,6 +45,7 @@ export function ScrollReveal({
 }: Props) {
     const offset = directionOffset[direction];
     const prefersReducedMotion = useReducedMotion();
+    const useCompactMotion = useLightweightMotion();
     const ref = useRef<HTMLDivElement>(null);
     const [isInView, setIsInView] = useState(false);
 
@@ -38,8 +53,8 @@ export function ScrollReveal({
         const el = ref.current;
         if (!el || prefersReducedMotion) return;
 
-        // レイアウト安定を待ってから Observer を設定
-        const timerId = window.setTimeout(() => {
+        let cleanup = () => { };
+        const rafId = window.requestAnimationFrame(() => {
             const observer = new IntersectionObserver(
                 ([entry]) => {
                     if (entry.isIntersecting) {
@@ -47,33 +62,37 @@ export function ScrollReveal({
                         if (once) observer.disconnect();
                     }
                 },
-                { rootMargin: '-60px 0px' },
+                { rootMargin: useCompactMotion ? '-24px 0px' : '-60px 0px' },
             );
             observer.observe(el);
             cleanup = () => observer.disconnect();
-        }, 100);
+        });
 
-        let cleanup = () => { };
         return () => {
-            window.clearTimeout(timerId);
+            window.cancelAnimationFrame(rafId);
             cleanup();
         };
-    }, [once, prefersReducedMotion]);
+    }, [once, prefersReducedMotion, useCompactMotion]);
 
     if (prefersReducedMotion) {
         return <div className={className}>{children}</div>;
     }
 
+    const motionOffset = useCompactMotion
+        ? { y: offset.y * 0.45, x: offset.x * 0.45, scale: direction === 'scale' ? 0.985 : offset.scale }
+        : offset;
+    const motionDuration = useCompactMotion ? Math.min(duration, 0.38) : duration;
+
     return (
         <motion.div
             ref={ref}
-            initial={{ opacity: 0, y: offset.y, x: offset.x, scale: offset.scale }}
+            initial={{ opacity: 0, y: motionOffset.y, x: motionOffset.x, scale: motionOffset.scale }}
             animate={isInView
                 ? { opacity: 1, y: 0, x: 0, scale: 1 }
-                : { opacity: 0, y: offset.y, x: offset.x, scale: offset.scale }
+                : { opacity: 0, y: motionOffset.y, x: motionOffset.x, scale: motionOffset.scale }
             }
             transition={{
-                duration,
+                duration: motionDuration,
                 delay,
                 ease: [0.25, 0.1, 0.25, 1],
             }}
@@ -95,19 +114,27 @@ export function StaggerContainer({
     staggerDelay?: number;
     forceVisible?: boolean;
 }) {
+    const prefersReducedMotion = useReducedMotion();
+    const useCompactMotion = useLightweightMotion();
+
+    if (prefersReducedMotion) {
+        return <div className={className}>{children}</div>;
+    }
+
     if (forceVisible) {
         return <div className={className}>{children}</div>;
     }
+
     return (
         <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-80px' }}
+            viewport={{ once: true, margin: useCompactMotion ? '-24px' : '-80px' }}
             variants={{
                 hidden: {},
                 visible: {
                     transition: {
-                        staggerChildren: staggerDelay,
+                        staggerChildren: useCompactMotion ? Math.min(staggerDelay, 0.05) : staggerDelay,
                     },
                 },
             }}
@@ -127,17 +154,25 @@ export function StaggerItem({
     className?: string;
     forceVisible?: boolean;
 }) {
+    const prefersReducedMotion = useReducedMotion();
+    const useCompactMotion = useLightweightMotion();
+
+    if (prefersReducedMotion) {
+        return <div className={className}>{children}</div>;
+    }
+
     if (forceVisible) {
         return <div className={className}>{children}</div>;
     }
+
     return (
         <motion.div
             variants={{
-                hidden: { opacity: 0, y: 30 },
+                hidden: { opacity: 0, y: useCompactMotion ? 12 : 30 },
                 visible: {
                     opacity: 1,
                     y: 0,
-                    transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] },
+                    transition: { duration: useCompactMotion ? 0.32 : 0.5, ease: [0.25, 0.1, 0.25, 1] },
                 },
             }}
             className={className}
