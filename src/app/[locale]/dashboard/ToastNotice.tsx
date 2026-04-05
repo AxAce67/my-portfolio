@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
+import { readSessionValue, writeSessionValue } from '@/lib/navigationState';
 
 export default function ToastNotice() {
   const t = useTranslations('Dashboard.toast');
@@ -37,10 +38,10 @@ export default function ToastNotice() {
     const sessionKey = `toast-shown:${key}`;
     if (!code || !messageMap[code]) return;
     if (handledRef.current === key) return;
-    if (sessionStorage.getItem(sessionKey)) return;
+    if (readSessionValue(sessionKey)) return;
 
     handledRef.current = key;
-    sessionStorage.setItem(sessionKey, '1');
+    writeSessionValue(sessionKey, '1');
     if (code.endsWith('_failed')) {
       toast.error(messageMap[code]);
     } else {

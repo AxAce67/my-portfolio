@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 const GITHUB_GRAPHQL_ENDPOINT = 'https://api.github.com/graphql';
 const GITHUB_REST_ENDPOINT = 'https://api.github.com';
+const GITHUB_REVALIDATE_SECONDS = 900;
 
 type MomentumResponse = {
   ok: boolean;
@@ -86,7 +87,7 @@ async function fetchMomentumViaGraphql(username: string, token: string, dayKeys:
       query,
       variables: { from, to },
     }),
-    cache: 'no-store',
+    next: { revalidate: GITHUB_REVALIDATE_SECONDS },
   });
 
   if (!response.ok) {
@@ -141,9 +142,15 @@ async function fetchMomentumViaPublicEvents(username: string, dayKeys: string[])
   const weekStartIso = `${dayKeys[0]}T00:00:00Z`;
 
   const responses = await Promise.all([
-    fetch(`${GITHUB_REST_ENDPOINT}/users/${username}/events/public?per_page=100&page=1`, { cache: 'no-store' }),
-    fetch(`${GITHUB_REST_ENDPOINT}/users/${username}/events/public?per_page=100&page=2`, { cache: 'no-store' }),
-    fetch(`${GITHUB_REST_ENDPOINT}/users/${username}/events/public?per_page=100&page=3`, { cache: 'no-store' }),
+    fetch(`${GITHUB_REST_ENDPOINT}/users/${username}/events/public?per_page=100&page=1`, {
+      next: { revalidate: GITHUB_REVALIDATE_SECONDS },
+    }),
+    fetch(`${GITHUB_REST_ENDPOINT}/users/${username}/events/public?per_page=100&page=2`, {
+      next: { revalidate: GITHUB_REVALIDATE_SECONDS },
+    }),
+    fetch(`${GITHUB_REST_ENDPOINT}/users/${username}/events/public?per_page=100&page=3`, {
+      next: { revalidate: GITHUB_REVALIDATE_SECONDS },
+    }),
   ]);
 
   if (responses.some((response) => !response.ok)) {

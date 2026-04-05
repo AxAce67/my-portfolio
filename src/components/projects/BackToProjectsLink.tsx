@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { useTransitionRouter } from 'next-view-transitions';
 import { useState } from 'react';
+import { isPlainLeftClick } from '@/lib/viewTransitions';
+import { navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 
 type Props = {
   homeHref: string;
@@ -15,7 +17,7 @@ type Props = {
 export default function BackToProjectsLink({ homeHref, archiveHref, className, homeLabel, archiveLabel }: Props) {
   const transitionRouter = useTransitionRouter();
   const [referrer] = useState(() =>
-    typeof window !== 'undefined' ? sessionStorage.getItem('projectsReferrer') : null
+    readSessionValue(navigationStateKeys.projectsReferrer)
   );
   const isArchive = referrer === 'archive';
   // ホームまたはアーカイブから来た場合はrouter.back()でrouter cacheを使い即座に復元
@@ -27,8 +29,12 @@ export default function BackToProjectsLink({ homeHref, archiveHref, className, h
       prefetch
       className={className}
       onClick={(e) => {
-        sessionStorage.removeItem('projectsReferrer');
-        sessionStorage.setItem('returnToProjects', '1');
+        if (!isPlainLeftClick(e)) {
+          return;
+        }
+
+        removeSessionValue(navigationStateKeys.projectsReferrer);
+        writeSessionValue(navigationStateKeys.returnToProjects, '1');
         if ('startViewTransition' in document) {
           e.preventDefault();
           if (canGoBack) {

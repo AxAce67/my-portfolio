@@ -10,6 +10,7 @@ import BackToProjectsLink from '@/components/projects/BackToProjectsLink';
 import MarkdownArticle from '@/components/content/MarkdownArticle';
 import BlockNoteContent from '@/components/content/BlockNoteContent';
 import { buildLocalePath, DEFAULT_OG_IMAGE_PATH, getLocaleSeo } from '@/lib/seo';
+import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
 
 type Props = {
   params: Promise<{ locale: string; id: string }>;
@@ -59,9 +60,7 @@ export default async function ProjectArticlePage({ params }: Props) {
   const project = await getProjectById(id);
 
   if (!project) notFound();
-  const createdDay = project.created_at ? new Date(project.created_at).toDateString() : null;
-  const updatedDay = project.updated_at ? new Date(project.updated_at).toDateString() : null;
-  const showUpdatedAt = updatedDay !== null && createdDay !== null && updatedDay !== createdDay;
+  const showUpdatedAt = !!project.updated_at && !areSameCalendarDate(project.created_at, project.updated_at);
 
   return (
     <article className="max-w-5xl mx-auto px-6 lg:px-8 py-16 sm:py-20">
@@ -83,11 +82,11 @@ export default async function ProjectArticlePage({ params }: Props) {
           )}
           <div className="mt-6 flex flex-wrap gap-4">
             <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
-              {t('createdAt')}: {project.created_at ? new Date(project.created_at).toLocaleDateString(locale === 'ja' ? 'ja-JP' : 'en-US') : '-'}
+              {t('createdAt')}: {formatLocaleDate(project.created_at, locale === 'en' ? 'en' : 'ja')}
             </p>
             {showUpdatedAt && (
               <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
-                {t('updatedAt')}: {new Date(project.updated_at as string).toLocaleDateString(locale === 'ja' ? 'ja-JP' : 'en-US')}
+                {t('updatedAt')}: {formatLocaleDate(project.updated_at, locale === 'en' ? 'en' : 'ja')}
               </p>
             )}
           </div>

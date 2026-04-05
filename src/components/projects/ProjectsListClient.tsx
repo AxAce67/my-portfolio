@@ -7,6 +7,9 @@ import { Search } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import { useTransitionRouter } from 'next-view-transitions';
 import { StaggerContainer, StaggerItem } from '@/components/ui/ScrollReveal';
+import { isPlainLeftClick } from '@/lib/viewTransitions';
+import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
+import { navigationStateKeys, readSessionNumber, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 
 const PAGE_SIZE = 12;
 
@@ -36,16 +39,15 @@ export default function ProjectsListClient({ projects }: Props) {
   const [page, setPage] = useState(1);
   // 戻りナビゲーション時はカードをすぐに visible にする（viewTransitionName 要素を不透明にするため）
   const [forceCardVisible] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return sessionStorage.getItem('projectsScrollY') !== null;
+    return readSessionValue(navigationStateKeys.projectsScrollY) !== null;
   });
 
   // 戻り時にスクロール位置を復元（ViewTransitionsのfinishより先に実行される）
   useLayoutEffect(() => {
-    const y = sessionStorage.getItem('projectsScrollY');
-    if (y) {
-      sessionStorage.removeItem('projectsScrollY');
-      window.scrollTo(0, parseInt(y, 10));
+    const y = readSessionNumber(navigationStateKeys.projectsScrollY);
+    if (y !== null) {
+      removeSessionValue(navigationStateKeys.projectsScrollY);
+      window.scrollTo(0, y);
     }
   }, []);
 
@@ -71,7 +73,11 @@ export default function ProjectsListClient({ projects }: Props) {
           href="/"
           className="text-xs font-mono text-muted-foreground hover:text-foreground"
           onClick={(e) => {
-            sessionStorage.setItem('returnToProjects', '1');
+            if (!isPlainLeftClick(e)) {
+              return;
+            }
+
+            writeSessionValue(navigationStateKeys.returnToProjects, '1');
             if ('startViewTransition' in document) {
               e.preventDefault();
               transitionRouter.push(`/${locale}`);
@@ -90,12 +96,14 @@ export default function ProjectsListClient({ projects }: Props) {
           <Search className="w-4 h-4 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             id="projects-q"
+            name="q"
             value={keyword}
             onChange={(event) => {
               setKeyword(event.target.value);
               setPage(1);
             }}
             placeholder={t('searchPlaceholder')}
+            autoComplete="off"
             className="w-full rounded-xl border border-border bg-card pl-10 pr-4 py-2.5 text-sm outline-none focus:border-border-hover"
           />
         </div>
@@ -108,10 +116,7 @@ export default function ProjectsListClient({ projects }: Props) {
         forceVisible={forceCardVisible}
       >
         {currentItems.map((project) => {
-          const createdDay = project.createdAt ? new Date(project.createdAt).toDateString() : null;
-          const updatedDay = project.updatedAt ? new Date(project.updatedAt).toDateString() : null;
-          const showUpdatedAt = updatedDay !== null && createdDay !== null && updatedDay !== createdDay;
-          const formatDate = (v: string | null) => v ? new Date(v).toLocaleDateString(locale === 'ja' ? 'ja-JP' : 'en-US') : '-';
+          const showUpdatedAt = !!project.updatedAt && !areSameCalendarDate(project.createdAt, project.updatedAt);
           return (
             <StaggerItem key={project.id}>
               <Link
@@ -119,8 +124,12 @@ export default function ProjectsListClient({ projects }: Props) {
                 prefetch
                 className="block project-card group"
                 onClick={(e) => {
-                  sessionStorage.setItem('projectsReferrer', 'archive');
-                  sessionStorage.setItem('projectsScrollY', String(window.scrollY));
+                  if (!isPlainLeftClick(e)) {
+                    return;
+                  }
+
+                  writeSessionValue(navigationStateKeys.projectsReferrer, 'archive');
+                  writeSessionValue(navigationStateKeys.projectsScrollY, String(window.scrollY));
                   if ('startViewTransition' in document) {
                     e.preventDefault();
                     transitionRouter.push(`/${locale}/projects/${project.id}`);
@@ -146,11 +155,11 @@ export default function ProjectsListClient({ projects }: Props) {
                     <h2 className="text-sm sm:text-xl font-semibold tracking-tight mb-1 sm:mb-2 line-clamp-2">{project.title}</h2>
                     <div className="hidden sm:flex mb-2 flex-wrap gap-3">
                       <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wide">
-                        {t('createdAt')}: {formatDate(project.createdAt)}
+                        {t('createdAt')}: {formatLocaleDate(project.createdAt, locale === 'en' ? 'en' : 'ja')}
                       </p>
                       {showUpdatedAt && (
                         <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wide">
-                          {t('updatedAt')}: {formatDate(project.updatedAt)}
+                          {t('updatedAt')}: {formatLocaleDate(project.updatedAt, locale === 'en' ? 'en' : 'ja')}
                         </p>
                       )}
                     </div>

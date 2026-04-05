@@ -135,6 +135,13 @@ function redirectWithToast(path: string, toastCode: string) {
   redirect(`${path}${path.includes('?') ? '&' : '?'}toast=${toastCode}&toastAt=${Date.now()}`);
 }
 
+function revalidateProjectPublicViews(projectId: string) {
+  revalidateTag('home-page-data');
+  revalidateTag(`project-detail:${projectId}`);
+  revalidatePath(`/ja/projects/${projectId}`);
+  revalidatePath(`/en/projects/${projectId}`);
+}
+
 export async function createProjectAction(locale: string, formData: FormData) {
   try {
     const { supabase, userId } = await requireAdminUserId();
@@ -188,7 +195,7 @@ export async function createProjectAction(locale: string, formData: FormData) {
     }
 
     revalidatePath('/', 'layout');
-    revalidateTag('home-page-data');
+    revalidateProjectPublicViews(createdProject.id);
     redirect(`/${locale}/dashboard?tab=projects&toast=project_created&toastAt=${Date.now()}`);
   } catch (error) {
     if (isRedirectError(error)) throw error;
@@ -243,9 +250,7 @@ export async function updateProjectAction(locale: string, projectId: string, for
     }
 
     revalidatePath('/', 'layout');
-    revalidateTag('home-page-data');
-    revalidatePath(`/ja/projects/${projectId}`);
-    revalidatePath(`/en/projects/${projectId}`);
+    revalidateProjectPublicViews(projectId);
     redirect(`/${locale}/dashboard?tab=projects&toast=project_updated&toastAt=${Date.now()}`);
   } catch (error) {
     if (isRedirectError(error)) throw error;
@@ -273,7 +278,7 @@ export async function deleteProjectAction(locale: string, projectId: string) {
     }
 
     revalidatePath('/', 'layout');
-    revalidateTag('home-page-data');
+    revalidateProjectPublicViews(projectId);
     redirect(`/${locale}/dashboard?tab=projects&toast=project_deleted&toastAt=${Date.now()}`);
   } catch (error) {
     if (isRedirectError(error)) throw error;

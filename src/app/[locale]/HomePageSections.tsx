@@ -12,6 +12,9 @@ import { Link } from '@/i18n/routing';
 import { useTransitionRouter } from 'next-view-transitions';
 import TechStackSectionStatic from '@/components/sections/TechStackSection';
 import { TiltCard } from '@/components/ui/TiltCard';
+import { isPlainLeftClick } from '@/lib/viewTransitions';
+import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
+import { navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 import {
   SiTypescript,
   SiJavascript,
@@ -128,6 +131,21 @@ declare global {
       reset: () => void;
     };
   }
+}
+
+const FOCUSABLE_SELECTOR = [
+  'a[href]',
+  'button:not([disabled])',
+  'textarea:not([disabled])',
+  'input:not([disabled])',
+  'select:not([disabled])',
+  '[tabindex]:not([tabindex="-1"])',
+].join(', ');
+
+function getFocusableElements(container: HTMLElement) {
+  return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
+    (element) => !element.hasAttribute('disabled') && element.getAttribute('aria-hidden') !== 'true',
+  );
 }
 
 export default function HomePageSections({
@@ -863,14 +881,12 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
   const transitionRouter = useTransitionRouter();
   const projects = initialProjects;
   const [viewMode, setViewMode] = useState<'list' | 'grid'>(() => {
-    if (typeof window === 'undefined') return 'list';
-    return (sessionStorage.getItem('projectsViewMode') as 'list' | 'grid') ?? 'list';
+    return (readSessionValue(navigationStateKeys.projectsViewMode) as 'list' | 'grid') ?? 'list';
   });
   const [isMobileViewport, setIsMobileViewport] = useState(false);
   // 戻りナビゲーション時はカードをすぐに visible にする（viewTransitionName 要素を不透明にするため）
   const [forceCardVisible] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return sessionStorage.getItem('returnToProjects') === '1';
+    return readSessionValue(navigationStateKeys.returnToProjects) === '1';
   });
   const effectiveViewMode: 'list' | 'grid' = isMobileViewport ? 'grid' : viewMode;
 
@@ -881,15 +897,6 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
     mobileQuery.addEventListener?.('change', syncViewport);
     return () => mobileQuery.removeEventListener?.('change', syncViewport);
   }, []);
-
-  const formatDate = (value: string | null) => {
-    if (!value) return null;
-    return new Intl.DateTimeFormat(locale === 'ja' ? 'ja-JP' : 'en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    }).format(new Date(value));
-  };
 
   return (
     <section id="projects" className="py-20 sm:py-32 lg:py-36">
@@ -939,21 +946,23 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
           forceVisible={forceCardVisible}
         >
           {projects.map((project) => {
-            const createdDay = project.createdAt ? new Date(project.createdAt).toDateString() : null;
-            const updatedDay = project.updatedAt ? new Date(project.updatedAt).toDateString() : null;
-            const showUpdatedAt = updatedDay !== null && createdDay !== null && updatedDay !== createdDay;
+            const showUpdatedAt = !!project.updatedAt && !areSameCalendarDate(project.createdAt, project.updatedAt);
             return (
             <StaggerItem key={project.id} forceVisible={forceCardVisible}>
               <Link
                 href={`/projects/${project.id}`}
                 prefetch
                 onClick={(e) => {
-                  sessionStorage.setItem('returnToProjects', '1');
-                  sessionStorage.setItem('homeScrollY', String(window.scrollY));
-                  sessionStorage.setItem('homeFromProjectId', project.id);
-                  sessionStorage.setItem('projectsViewMode', effectiveViewMode);
-                  sessionStorage.setItem('projectsReferrer', 'home');
-                  sessionStorage.removeItem('projectsScrollY');
+                  if (!isPlainLeftClick(e)) {
+                    return;
+                  }
+
+                  writeSessionValue(navigationStateKeys.returnToProjects, '1');
+                  writeSessionValue(navigationStateKeys.homeScrollY, String(window.scrollY));
+                  writeSessionValue(navigationStateKeys.homeFromProjectId, project.id);
+                  writeSessionValue(navigationStateKeys.projectsViewMode, effectiveViewMode);
+                  writeSessionValue(navigationStateKeys.projectsReferrer, 'home');
+                  removeSessionValue(navigationStateKeys.projectsScrollY);
                   if ('startViewTransition' in document) {
                     e.preventDefault();
                     transitionRouter.push(`/${locale}/projects/${project.id}`);
@@ -1005,14 +1014,14 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                     </h3>
                     {!isMobileViewport && project.createdAt && (
                       <div className="flex flex-wrap gap-3 mb-2">
-                        <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wide">
-                          {t('createdAt')}: {formatDate(project.createdAt)}
-                        </p>
-                        {showUpdatedAt && (
                           <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wide">
-                            {t('updatedAt')}: {formatDate(project.updatedAt)}
+                            {t('createdAt')}: {formatLocaleDate(project.createdAt, locale === 'en' ? 'en' : 'ja')}
                           </p>
-                        )}
+                          {showUpdatedAt && (
+                            <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wide">
+                              {t('updatedAt')}: {formatLocaleDate(project.updatedAt, locale === 'en' ? 'en' : 'ja')}
+                            </p>
+                          )}
                       </div>
                     )}
                     <p
@@ -1284,6 +1293,9 @@ function ContactSection() {
   const formRef = useRef<HTMLFormElement | null>(null);
   const mountedAtRef = useRef(Date.now());
   const sectionRef = useRef<HTMLElement | null>(null);
+  const previewDialogRef = useRef<HTMLDivElement | null>(null);
+  const successDialogRef = useRef<HTMLDivElement | null>(null);
+  const lastFocusedElementRef = useRef<HTMLElement | null>(null);
   const isContactInView = useInView(sectionRef, { margin: '240px 0px', once: true });
   const [shouldLoadTurnstile, setShouldLoadTurnstile] = useState(false);
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
@@ -1331,10 +1343,71 @@ function ContactSection() {
     return () => window.clearTimeout(timerId);
   }, [showSuccessModal, SUCCESS_MODAL_MS]);
 
-  const closeSuccessModal = () => {
+  function closeSuccessModal() {
     setShowSuccessModal(false);
     setSubmitState('idle');
-  };
+  }
+
+  useEffect(() => {
+    const dialog = isPreviewOpen ? previewDialogRef.current : showSuccessModal ? successDialogRef.current : null;
+    if (!dialog) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    const previousFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    lastFocusedElementRef.current = previousFocusedElement;
+    document.body.style.overflow = 'hidden';
+
+    const focusableElements = getFocusableElements(dialog);
+    (focusableElements[0] ?? dialog).focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        if (isPreviewOpen && !isSubmitting) {
+          event.preventDefault();
+          setIsPreviewOpen(false);
+        } else if (showSuccessModal) {
+          event.preventDefault();
+          setShowSuccessModal(false);
+          setSubmitState('idle');
+        }
+        return;
+      }
+
+      if (event.key !== 'Tab') {
+        return;
+      }
+
+      const currentFocusable = getFocusableElements(dialog);
+      if (currentFocusable.length === 0) {
+        event.preventDefault();
+        dialog.focus();
+        return;
+      }
+
+      const first = currentFocusable[0];
+      const last = currentFocusable[currentFocusable.length - 1];
+      const activeElement = document.activeElement;
+
+      if (event.shiftKey && activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      lastFocusedElementRef.current?.focus();
+      lastFocusedElementRef.current = null;
+    };
+  }, [isPreviewOpen, isSubmitting, showSuccessModal]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -1448,6 +1521,7 @@ function ContactSection() {
                     required
                     maxLength={80}
                     placeholder={t('namePlaceholder')}
+                    autoComplete="name"
                     className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-all focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
                   />
                 </div>
@@ -1464,6 +1538,9 @@ function ContactSection() {
                     required
                     maxLength={320}
                     placeholder={t('emailPlaceholder')}
+                    autoComplete="email"
+                    inputMode="email"
+                    spellCheck={false}
                     className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-all focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
                   />
                 </div>
@@ -1481,6 +1558,7 @@ function ContactSection() {
                   required
                   maxLength={160}
                   placeholder={t('subjectPlaceholder')}
+                  autoComplete="off"
                   className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-all focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
                 />
               </div>
@@ -1497,6 +1575,7 @@ function ContactSection() {
                   rows={5}
                   maxLength={5000}
                   placeholder={t('messagePlaceholder')}
+                  autoComplete="off"
                   className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-all focus:border-foreground focus:bg-transparent resize-none placeholder:text-muted-foreground/40"
                 />
               </div>
@@ -1519,16 +1598,33 @@ function ContactSection() {
                 <Send className="w-4 h-4" strokeWidth={1.5} />
                 {isSubmitting ? t('sending') : t('preview')}
               </button>
-              {submitState === 'turnstile' && <p className="text-sm text-amber-500">{t('turnstileRequired')}</p>}
-              {submitState === 'error' && <p className="text-sm text-red-500">{t('error')}</p>}
+              <div aria-live="polite" className="min-h-6">
+                {submitState === 'turnstile' && <p className="text-sm text-amber-500">{t('turnstileRequired')}</p>}
+                {submitState === 'error' && <p className="text-sm text-red-500">{t('error')}</p>}
+              </div>
             </form>
           </div>
         </div>
         {isPreviewOpen && pendingPayload ? (
-          <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center px-4">
-            <div className="w-full max-w-lg rounded-xl border border-border bg-card p-5 sm:p-6 shadow-2xl">
-              <h3 className="text-lg font-semibold tracking-tight mb-4">{t('previewTitle')}</h3>
-              <p className="text-xs font-mono text-muted-foreground mb-4">{t('previewDescription')}</p>
+          <div
+            className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center px-4"
+            onClick={(event) => {
+              if (event.target === event.currentTarget && !isSubmitting) {
+                setIsPreviewOpen(false);
+              }
+            }}
+          >
+            <div
+              ref={previewDialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="contact-preview-title"
+              aria-describedby="contact-preview-description"
+              tabIndex={-1}
+              className="w-full max-w-lg rounded-xl border border-border bg-card p-5 sm:p-6 shadow-2xl"
+            >
+              <h3 id="contact-preview-title" className="text-lg font-semibold tracking-tight mb-4">{t('previewTitle')}</h3>
+              <p id="contact-preview-description" className="text-xs font-mono text-muted-foreground mb-4">{t('previewDescription')}</p>
               <div className="space-y-3 text-sm">
                 <div>
                   <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('name')}</p>
@@ -1573,8 +1669,21 @@ function ContactSection() {
           </div>
         ) : null}
         {showSuccessModal ? (
-          <div className="fixed inset-0 z-[60] bg-background/75 backdrop-blur-sm flex items-center justify-center px-4">
+          <div
+            className="fixed inset-0 z-[60] bg-background/75 backdrop-blur-sm flex items-center justify-center px-4"
+            onClick={(event) => {
+              if (event.target === event.currentTarget) {
+                closeSuccessModal();
+              }
+            }}
+          >
             <motion.div
+              ref={successDialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="contact-success-title"
+              aria-describedby="contact-success-description"
+              tabIndex={-1}
               initial={{ opacity: 0, scale: 0.95, y: 6 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               className="w-full max-w-sm rounded-xl border border-border bg-card p-6 shadow-2xl"
@@ -1587,8 +1696,8 @@ function ContactSection() {
               >
                 <CheckCircle2 className="w-8 h-8 text-emerald-500" strokeWidth={1.6} />
               </motion.div>
-              <h3 className="text-lg font-semibold tracking-tight text-center">{t('successTitle')}</h3>
-              <p className="mt-2 text-sm text-muted-foreground text-center">{t('success')}</p>
+              <h3 id="contact-success-title" className="text-lg font-semibold tracking-tight text-center">{t('successTitle')}</h3>
+              <p id="contact-success-description" className="mt-2 text-sm text-muted-foreground text-center">{t('success')}</p>
               <p className="mt-1 text-[11px] font-mono text-muted-foreground text-center">{t('successAutoClose')}</p>
 
               <div className="mt-4 h-1 w-full overflow-hidden rounded-full bg-muted">

@@ -1,6 +1,7 @@
 import { unstable_cache } from 'next/cache';
-import { createAdminClient } from '@/lib/supabase/admin';
 import { createPublicServerClient } from '@/lib/supabase/public-server';
+
+const PUBLIC_CONTENT_REVALIDATE_SECONDS = 30;
 
 export type HomeProject = {
   id: string;
@@ -19,10 +20,6 @@ export type HomeActiveProject = {
 };
 
 function createContentClient() {
-  if (process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() && process.env.NEXT_PUBLIC_SUPABASE_URL?.trim()) {
-    return createAdminClient();
-  }
-
   return createPublicServerClient();
 }
 
@@ -103,7 +100,7 @@ export const getHomePageData = unstable_cache(
   ['home-page-data-v2'],
   {
     tags: ['home-page-data'],
-    revalidate: 300,
+    revalidate: PUBLIC_CONTENT_REVALIDATE_SECONDS,
   }
 );
 
@@ -112,30 +109,32 @@ export const getProjectsListData = unstable_cache(
   ['projects-list-data-v1'],
   {
     tags: ['home-page-data'],
-    revalidate: 300,
+    revalidate: PUBLIC_CONTENT_REVALIDATE_SECONDS,
   }
 );
 
-export const getProjectById = unstable_cache(
-  async (id: string) => {
-    const supabase = createContentClient();
-    const { data, error } = await supabase
-      .from('portfolio_projects')
-      .select('id, title, description, content_md, content_json, created_at, updated_at, is_published, thumbnail_url')
-      .eq('id', id)
-      .eq('is_published', true)
-      .maybeSingle();
+export async function getProjectById(id: string) {
+  return unstable_cache(
+    async () => {
+      const supabase = createContentClient();
+      const { data, error } = await supabase
+        .from('portfolio_projects')
+        .select('id, title, description, content_md, content_json, created_at, updated_at, is_published, thumbnail_url')
+        .eq('id', id)
+        .eq('is_published', true)
+        .maybeSingle();
 
-    if (error) {
-      // Validation errors (e.g. invalid UUID format) → treat as not found
-      if (error.code === '22P02') return null;
-      throw new Error(`Failed to load project detail: ${error.message}`);
+      if (error) {
+        // Validation errors (e.g. invalid UUID format) → treat as not found
+        if (error.code === '22P02') return null;
+        throw new Error(`Failed to load project detail: ${error.message}`);
+      }
+      return data;
+    },
+    ['project-detail-data-v2', id],
+    {
+      tags: ['home-page-data', `project-detail:${id}`],
+      revalidate: PUBLIC_CONTENT_REVALIDATE_SECONDS,
     }
-    return data;
-  },
-  ['project-detail-data-v1'],
-  {
-    tags: ['home-page-data'],
-    revalidate: 300,
-  }
-);
+  )();
+}

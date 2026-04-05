@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import HomePageSections from './HomePageSections';
+import { navigationStateKeys, readSessionNumber, readSessionValue, removeSessionValue } from '@/lib/navigationState';
 
 export type CompletedProject = {
   id: string;
@@ -35,8 +36,7 @@ export default function HomePageClient({
   // restoreProjectsOnBack starts as false to keep the hero visible in the view-transition
   // new-state screenshot (the useEffect below sets it after paint if needed).
   const [showSections, setShowSections] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return sessionStorage.getItem('returnToProjects') === '1';
+    return readSessionValue(navigationStateKeys.returnToProjects) === '1';
   });
   const [restoreProjectsOnBack, setRestoreProjectsOnBack] = useState(false);
   // Tracks whether useLayoutEffect already scrolled (to prevent double-scroll in useEffect).
@@ -47,17 +47,17 @@ export default function HomePageClient({
   // screenshot, so the project card is in the viewport and the morph animation works.
   // No state changes here to avoid an extra synchronous re-render that could disrupt timing.
   useLayoutEffect(() => {
-    const savedScrollY = sessionStorage.getItem('homeScrollY');
-    if (!savedScrollY) return;
-    window.scrollTo(0, parseInt(savedScrollY, 10));
+    const savedScrollY = readSessionNumber(navigationStateKeys.homeScrollY);
+    if (savedScrollY === null) return;
+    window.scrollTo(0, savedScrollY);
     scrollRestoredRef.current = true;
     // scrollTo(homeScrollY) alone may be incorrect when TechStackSection is in loading state
     // (dynamic import makes the page shorter), so ensure the card is visible by calling
     // scrollIntoView *after* scrollTo. This runs after ProjectsSection.useLayoutEffect
     // (child effects fire first), so it won't be overridden.
-    const projectId = sessionStorage.getItem('homeFromProjectId');
+    const projectId = readSessionValue(navigationStateKeys.homeFromProjectId);
     if (projectId) {
-      sessionStorage.removeItem('homeFromProjectId');
+      removeSessionValue(navigationStateKeys.homeFromProjectId);
       const el = document.querySelector<HTMLElement>(`[data-card-id="${projectId}"]`);
       if (el) el.scrollIntoView({ block: 'nearest' });
     }
@@ -67,7 +67,7 @@ export default function HomePageClient({
     const navigationEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
     const isReload = navigationEntry?.type === 'reload';
     // returnToProjects may have already been consumed by the useLayoutEffect above
-    const shouldRestoreProjects = sessionStorage.getItem('returnToProjects') === '1';
+    const shouldRestoreProjects = readSessionValue(navigationStateKeys.returnToProjects) === '1';
 
     if (shouldRestoreProjects) {
       setRestoreProjectsOnBack(true);
@@ -152,14 +152,14 @@ export default function HomePageClient({
     const hash = window.location.hash?.replace('#', '');
 
     if (restoreProjectsOnBack) {
-      const savedScrollY = sessionStorage.getItem('homeScrollY');
-      if (savedScrollY) {
-        sessionStorage.removeItem('homeScrollY');
-        sessionStorage.removeItem('returnToProjects');
+      const savedScrollY = readSessionNumber(navigationStateKeys.homeScrollY);
+      if (savedScrollY !== null) {
+        removeSessionValue(navigationStateKeys.homeScrollY);
+        removeSessionValue(navigationStateKeys.returnToProjects);
         // useLayoutEffect may have already scrolled synchronously (for morph animation).
         // Only scroll here if it didn't (e.g., SSR or useLayoutEffect was skipped).
         if (!scrollRestoredRef.current) {
-          window.scrollTo(0, parseInt(savedScrollY, 10));
+          window.scrollTo(0, savedScrollY);
         }
         setRestoreProjectsOnBack(false);
         return;
@@ -171,7 +171,7 @@ export default function HomePageClient({
         const target = document.getElementById('projects');
         if (target) {
           target.scrollIntoView({ behavior: 'auto', block: 'start' });
-          sessionStorage.removeItem('returnToProjects');
+          removeSessionValue(navigationStateKeys.returnToProjects);
           setRestoreProjectsOnBack(false);
           return;
         }
@@ -179,7 +179,7 @@ export default function HomePageClient({
         if (attempts < maxAttempts) {
           window.setTimeout(tryRestoreProjects, 80);
         } else {
-          sessionStorage.removeItem('returnToProjects');
+          removeSessionValue(navigationStateKeys.returnToProjects);
           setRestoreProjectsOnBack(false);
         }
       };
@@ -188,7 +188,7 @@ export default function HomePageClient({
     }
 
     if (!hash) {
-      sessionStorage.removeItem('returnToProjects');
+      removeSessionValue(navigationStateKeys.returnToProjects);
       return;
     }
 

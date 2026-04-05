@@ -12,7 +12,6 @@ import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { AppToaster } from '@/components/ui/AppToaster';
-import { PageTransitionIn } from '@/components/ui/PageTransitionIn';
 import { buildLocalePath, buildLocaleUrl, DEFAULT_OG_IMAGE_PATH, getLocaleSeo, getSiteUrl } from '@/lib/seo';
 import '../globals.css';
 
@@ -96,6 +95,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     const messages = await getMessages();
     const isProduction = process.env.NODE_ENV === 'production';
     const isVercelRuntime = process.env.VERCEL === '1' || process.env.VERCEL === 'true';
+    const skipToContentLabel = validLocale === 'ja' ? 'メインコンテンツへ移動' : 'Skip to main content';
 
     return (
         <ViewTransitions>
@@ -106,7 +106,7 @@ export default async function LocaleLayout({ children, params }: Props) {
                     id="theme-init"
                     strategy="beforeInteractive"
                     dangerouslySetInnerHTML={{
-                        __html: "(()=>{let t='light';try{const s=localStorage.getItem('theme');const d=window.matchMedia('(prefers-color-scheme: dark)').matches;t=s==='light'||s==='dark'?s:(d?'dark':'light');const r=document.documentElement;r.classList.remove('light','dark');r.classList.add(t);}catch{const d=window.matchMedia('(prefers-color-scheme: dark)').matches;t=d?'dark':'light';document.documentElement.classList.add(t);}const bg=t==='dark'?'rgba(10,10,10,0.75)':'rgba(255,255,255,0.75)';const o=document.createElement('div');o.id='__page-fade-overlay__';o.style.cssText='position:fixed;inset:0;background:'+bg+';backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:99999;opacity:1;pointer-events:all';document.documentElement.appendChild(o);})();",
+                        __html: "(()=>{let t='light';try{const s=localStorage.getItem('theme');const d=window.matchMedia('(prefers-color-scheme: dark)').matches;t=s==='light'||s==='dark'?s:(d?'dark':'light');const r=document.documentElement;r.classList.remove('light','dark');r.classList.add(t);}catch{const d=window.matchMedia('(prefers-color-scheme: dark)').matches;t=d?'dark':'light';document.documentElement.classList.add(t);}})();",
                     }}
                 />
             </head>
@@ -117,9 +117,11 @@ export default async function LocaleLayout({ children, params }: Props) {
                     <NextIntlClientProvider messages={messages}>
                         <div className="relative z-10 flex flex-col min-h-screen">
                             <AppToaster />
-                            <PageTransitionIn />
+                            <a href="#main-content" className="skip-link">
+                                {skipToContentLabel}
+                            </a>
                             <Header />
-                            <main className="flex-1">{children}</main>
+                            <main id="main-content" className="flex-1">{children}</main>
                             <Footer />
                         </div>
                     </NextIntlClientProvider>

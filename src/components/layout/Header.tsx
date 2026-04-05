@@ -40,43 +40,43 @@ export function Header() {
             };
         }
 
-        const headerOffset = 140;
+        const handleScroll = () => setScrolled(window.scrollY > 20);
+        const sections = Array.from(document.querySelectorAll<HTMLElement>('section[id]'));
+        const visibleSections = new Map<string, number>();
 
-        const handleScroll = () => {
-            const sections = Array.from(document.querySelectorAll<HTMLElement>('section[id]'));
-            const scrollY = window.scrollY;
-            setScrolled(scrollY > 20);
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    const id = (entry.target as HTMLElement).id;
+                    if (entry.isIntersecting) {
+                        visibleSections.set(id, entry.boundingClientRect.top);
+                    } else {
+                        visibleSections.delete(id);
+                    }
+                });
 
-            if (sections.length === 0) {
-                setActiveSection('');
-                return;
-            }
-
-            const firstSectionTop = sections[0]?.offsetTop ?? Number.POSITIVE_INFINITY;
-            const currentY = scrollY + headerOffset;
-
-            if (currentY < firstSectionTop) {
-                setActiveSection('');
-                return;
-            }
-
-            let currentSection = sections[0]?.id ?? '';
-            for (const section of sections) {
-                if (currentY >= section.offsetTop) {
-                    currentSection = section.id;
-                } else {
-                    break;
+                if (window.scrollY < 40) {
+                    setActiveSection('');
+                    return;
                 }
+
+                const nextSection = Array.from(visibleSections.entries())
+                    .sort((left, right) => Math.abs(left[1]) - Math.abs(right[1]))[0]?.[0] ?? '';
+                setActiveSection(nextSection);
+            },
+            {
+                rootMargin: '-20% 0px -55% 0px',
+                threshold: [0, 0.2, 0.5, 1],
             }
-            setActiveSection(currentSection);
-        };
+        );
 
         window.addEventListener('scroll', handleScroll, { passive: true });
-        window.addEventListener('resize', handleScroll);
         handleScroll();
+        sections.forEach((section) => observer.observe(section));
+
         return () => {
             window.removeEventListener('scroll', handleScroll);
-            window.removeEventListener('resize', handleScroll);
+            observer.disconnect();
         };
     }, [isHomePage]);
 
