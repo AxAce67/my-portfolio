@@ -27,51 +27,53 @@ type HomePageClientProps = {
   initialActiveProjects: ActiveProject[];
 };
 
+function resolveHomeProjectsTransition() {
+  window.__resolveHomeProjectsTransition?.();
+  window.__resolveHomeProjectsTransition = undefined;
+}
+
 export default function HomePageClient({
   initialCompletedProjects,
   initialActiveProjects,
 }: HomePageClientProps) {
-  // showSections is initialized synchronously from sessionStorage so that HomePageSections
-  // is in the DOM on the first render during back navigation, enabling the morph animation.
-  // restoreProjectsOnBack starts as false to keep the hero visible in the view-transition
-  // new-state screenshot (the useEffect below sets it after paint if needed).
-  const [showSections, setShowSections] = useState(() => {
-    return readSessionValue(navigationStateKeys.returnToProjects) === '1';
+  const [returningProjectId] = useState(() => {
+    return readSessionValue(navigationStateKeys.returnToProjects) === '1'
+      ? readSessionValue(navigationStateKeys.homeFromProjectId)
+      : null;
   });
-  const [restoreProjectsOnBack, setRestoreProjectsOnBack] = useState(false);
-  // Tracks whether useLayoutEffect already scrolled (to prevent double-scroll in useEffect).
   const scrollRestoredRef = useRef(false);
-  const sectionsTriggerRef = useRef<HTMLDivElement | null>(null);
 
-  // Restore scroll synchronously before the view transition captures the new-state
-  // screenshot, so the project card is in the viewport and the morph animation works.
-  // No state changes here to avoid an extra synchronous re-render that could disrupt timing.
   useLayoutEffect(() => {
     const savedScrollY = readSessionNumber(navigationStateKeys.homeScrollY);
     if (savedScrollY === null) return;
+
     window.scrollTo(0, savedScrollY);
     scrollRestoredRef.current = true;
-    // scrollTo(homeScrollY) alone may be incorrect when TechStackSection is in loading state
-    // (dynamic import makes the page shorter), so ensure the card is visible by calling
-    // scrollIntoView *after* scrollTo. This runs after ProjectsSection.useLayoutEffect
-    // (child effects fire first), so it won't be overridden.
-    const projectId = readSessionValue(navigationStateKeys.homeFromProjectId);
+
+    const projectId = returningProjectId;
     if (projectId) {
-      removeSessionValue(navigationStateKeys.homeFromProjectId);
       const el = document.querySelector<HTMLElement>(`[data-card-id="${projectId}"]`);
       if (el) el.scrollIntoView({ block: 'nearest' });
     }
-  }, []);
+
+    window.requestAnimationFrame(() => {
+      resolveHomeProjectsTransition();
+    });
+  }, [returningProjectId]);
 
   useEffect(() => {
     const navigationEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
     const isReload = navigationEntry?.type === 'reload';
-    // returnToProjects may have already been consumed by the useLayoutEffect above
     const shouldRestoreProjects = readSessionValue(navigationStateKeys.returnToProjects) === '1';
 
     if (shouldRestoreProjects) {
-      setRestoreProjectsOnBack(true);
-      setShowSections(true);
+      const savedScrollY = readSessionNumber(navigationStateKeys.homeScrollY);
+      if (savedScrollY !== null && !scrollRestoredRef.current) {
+        window.scrollTo(0, savedScrollY);
+      }
+      removeSessionValue(navigationStateKeys.homeScrollY);
+      removeSessionValue(navigationStateKeys.homeFromProjectId);
+      removeSessionValue(navigationStateKeys.returnToProjects);
       return;
     }
 
@@ -82,8 +84,6 @@ export default function HomePageClient({
         const cleanUrl = `${window.location.pathname}${window.location.search}`;
         window.history.replaceState(window.history.state, '', cleanUrl);
       }
-      // Ensure sections still mount on reload.
-      setShowSections(true);
       const forceTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
       forceTop();
       const singleRafId = window.requestAnimationFrame(forceTop);
@@ -102,107 +102,20 @@ export default function HomePageClient({
       };
     }
 
-    // If user lands with a hash (e.g. /#projects), mount sections immediately
-    // so the target can be displayed without delayed jump scrolling.
-    if (window.location.hash) {
-      setShowSections(true);
-      return;
-    }
-
-    const onHashChange = () => {
-      if (window.location.hash) {
-        setShowSections(true);
-      }
-    };
-    window.addEventListener('hashchange', onHashChange);
-
-    const triggerEl = sectionsTriggerRef.current;
-    if (!triggerEl) {
-      return () => {
-        window.removeEventListener('hashchange', onHashChange);
-      };
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (entry?.isIntersecting) {
-          setShowSections(true);
-          observer.disconnect();
-        }
-      },
-      {
-        root: null,
-        rootMargin: '220px 0px',
-        threshold: 0,
-      },
-    );
-
-    observer.observe(triggerEl);
-
-    return () => {
-      window.removeEventListener('hashchange', onHashChange);
-      observer.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!showSections) return;
-
     const hash = window.location.hash?.replace('#', '');
-
-    if (restoreProjectsOnBack) {
-      const savedScrollY = readSessionNumber(navigationStateKeys.homeScrollY);
-      if (savedScrollY !== null) {
-        removeSessionValue(navigationStateKeys.homeScrollY);
-        removeSessionValue(navigationStateKeys.returnToProjects);
-        // useLayoutEffect may have already scrolled synchronously (for morph animation).
-        // Only scroll here if it didn't (e.g., SSR or useLayoutEffect was skipped).
-        if (!scrollRestoredRef.current) {
-          window.scrollTo(0, savedScrollY);
-        }
-        setRestoreProjectsOnBack(false);
-        return;
-      }
-
-      let attempts = 0;
-      const maxAttempts = 16;
-      const tryRestoreProjects = () => {
-        const target = document.getElementById('projects');
-        if (target) {
-          target.scrollIntoView({ behavior: 'auto', block: 'start' });
-          removeSessionValue(navigationStateKeys.returnToProjects);
-          setRestoreProjectsOnBack(false);
-          return;
-        }
-        attempts += 1;
-        if (attempts < maxAttempts) {
-          window.setTimeout(tryRestoreProjects, 80);
-        } else {
-          removeSessionValue(navigationStateKeys.returnToProjects);
-          setRestoreProjectsOnBack(false);
-        }
-      };
-      window.setTimeout(tryRestoreProjects, 0);
-      return;
-    }
-
     if (!hash) {
-      removeSessionValue(navigationStateKeys.returnToProjects);
       return;
     }
 
-    const navigationEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
-    // On browser back/forward, let native scroll restoration handle position.
-    if (navigationEntry?.type === 'back_forward') return;
-
-    // Sections are lazy-mounted; retry briefly until the target exists.
     let attempts = 0;
     const maxAttempts = 12;
     const tryScroll = () => {
       const target = document.getElementById(hash);
       if (target) {
         target.scrollIntoView({ behavior: 'auto', block: 'start' });
+        window.requestAnimationFrame(() => {
+          resolveHomeProjectsTransition();
+        });
         return;
       }
       attempts += 1;
@@ -210,20 +123,17 @@ export default function HomePageClient({
         window.setTimeout(tryScroll, 80);
       }
     };
-
     window.setTimeout(tryScroll, 0);
-  }, [showSections, restoreProjectsOnBack]);
+  }, []);
 
   return (
     <>
       <HeroSection />
-      <div ref={sectionsTriggerRef} className="h-px w-full" aria-hidden />
-      {showSections ? (
-        <HomePageSections
-          initialCompletedProjects={initialCompletedProjects}
-          initialActiveProjects={initialActiveProjects}
-        />
-      ) : null}
+      <HomePageSections
+        initialCompletedProjects={initialCompletedProjects}
+        initialActiveProjects={initialActiveProjects}
+        returningProjectId={returningProjectId}
+      />
     </>
   );
 }

@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import HomePageClient, { type ActiveProject, type CompletedProject } from './HomePageClient';
+import { getValidLocale } from '@/i18n/routing';
 import { getHomePageData } from '@/lib/content/publicContent';
-import { buildLocalePath, buildLocaleUrl, DEFAULT_OG_IMAGE_PATH, getLocaleSeo, getSiteUrl } from '@/lib/seo';
+import { buildLocalePath, buildLocaleUrl, buildLocaleUrlAlternates, DEFAULT_OG_IMAGE_PATH, getLocaleSeo, getSiteUrl } from '@/lib/seo';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -9,7 +10,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale: rawLocale } = await params;
-  const locale = (rawLocale === 'en' ? 'en' : 'ja') as 'ja' | 'en';
+  const locale = getValidLocale(rawLocale);
   const seo = getLocaleSeo(locale);
   const siteUrl = getSiteUrl();
   const canonicalPath = buildLocalePath(locale);
@@ -21,10 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: seo.homeDescription,
     alternates: {
       canonical,
-      languages: {
-        ja: buildLocaleUrl('ja'),
-        en: buildLocaleUrl('en'),
-      },
+      languages: buildLocaleUrlAlternates(),
     },
     openGraph: {
       title: seo.homeTitle,

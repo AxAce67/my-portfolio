@@ -1,9 +1,9 @@
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
 import { isAdminUser } from '@/lib/auth/admin';
 import { logoutAction } from '../login/actions';
+import { TransitionLink } from '@/components/ui/TransitionLink';
 import ToastNotice from './ToastNotice';
 import ActiveProjectsManager from '@/components/dashboard/ActiveProjectsManager';
 import DeleteProjectButton from '@/components/dashboard/DeleteProjectButton';
@@ -151,24 +151,24 @@ export default async function DashboardPage({ params, searchParams }: Props) {
           </form>
         </div>
         <div className="mt-5 inline-flex w-full sm:w-auto rounded-xl border border-border p-1 bg-muted">
-          <Link
+          <TransitionLink
             href={`/${locale}/dashboard?tab=projects`}
             className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-center text-xs font-mono transition-colors ${activeTab === 'projects' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
           >
             {t('tabs.projects')}
-          </Link>
-          <Link
+          </TransitionLink>
+          <TransitionLink
             href={`/${locale}/dashboard?tab=active`}
             className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-center text-xs font-mono transition-colors ${activeTab === 'active' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
           >
             {t('tabs.activeProjects')}
-          </Link>
-          <Link
+          </TransitionLink>
+          <TransitionLink
             href={`/${locale}/dashboard?tab=audit`}
             className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-center text-xs font-mono transition-colors ${activeTab === 'audit' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
           >
             {t('tabs.audit')}
-          </Link>
+          </TransitionLink>
         </div>
       </div>
 
@@ -179,7 +179,7 @@ export default async function DashboardPage({ params, searchParams }: Props) {
               <h2 className="text-xl font-semibold">{t('projects.manageTitle')}</h2>
               <p className="text-sm text-muted-foreground mt-1">{t('projects.manageDescription')}</p>
             </div>
-            <Link href={`/${locale}/dashboard/projects/new`} className="btn-primary w-full sm:w-auto">{t('projects.newProject')}</Link>
+            <TransitionLink href={`/${locale}/dashboard/projects/new`} className="btn-primary w-full sm:w-auto">{t('projects.newProject')}</TransitionLink>
           </div>
 
           <div className="rounded-xl border border-border bg-card p-4 sm:p-6 space-y-4">
@@ -199,8 +199,8 @@ export default async function DashboardPage({ params, searchParams }: Props) {
                     </div>
                   </div>
                   <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 w-full sm:w-auto">
-                    <Link href={`/${locale}/projects/${project.id}`} className="btn-outline flex-1 sm:flex-none px-3 py-2 text-xs">{t('actions.read')}</Link>
-                    <Link href={`/${locale}/dashboard/projects/${project.id}`} className="btn-outline flex-1 sm:flex-none px-3 py-2 text-xs">{t('actions.edit')}</Link>
+                    <TransitionLink href={`/${locale}/projects/${project.id}`} className="btn-outline flex-1 sm:flex-none px-3 py-2 text-xs">{t('actions.read')}</TransitionLink>
+                    <TransitionLink href={`/${locale}/dashboard/projects/${project.id}`} className="btn-outline flex-1 sm:flex-none px-3 py-2 text-xs">{t('actions.edit')}</TransitionLink>
                     <DeleteProjectButton locale={locale} projectId={project.id} projectTitle={project.title ?? ''} />
                   </div>
                 </div>
@@ -226,46 +226,46 @@ export default async function DashboardPage({ params, searchParams }: Props) {
           </div>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div className="inline-flex w-full sm:w-auto rounded-xl border border-border p-1 bg-muted">
-              <Link
+              <TransitionLink
                 href={`/${locale}/dashboard?tab=audit&auditType=auth`}
                 className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-center text-xs font-mono transition-colors ${auditType === 'auth' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 {t('audit.authTab')}
-              </Link>
-              <Link
+              </TransitionLink>
+              <TransitionLink
                 href={`/${locale}/dashboard?tab=audit&auditType=csp`}
                 className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-center text-xs font-mono transition-colors ${auditType === 'csp' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 {t('audit.cspTab')}
-              </Link>
+              </TransitionLink>
             </div>
 
             {auditType === 'auth' && !authAuditError && (
               <div className="inline-flex w-full sm:w-auto rounded-xl border border-border p-1 bg-muted">
-                <Link
+                <TransitionLink
                   href={`/${locale}/dashboard?tab=audit&auditType=auth&auditOutcome=all&auditPage=1`}
                   className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-center text-[11px] font-mono transition-colors ${auditOutcome === 'all' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
                 >
                   {t('audit.filterAll')}
-                </Link>
-                <Link
+                </TransitionLink>
+                <TransitionLink
                   href={`/${locale}/dashboard?tab=audit&auditType=auth&auditOutcome=success&auditPage=1`}
                   className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-center text-[11px] font-mono transition-colors ${auditOutcome === 'success' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
                 >
                   {t('audit.filterSuccess')}
-                </Link>
-                <Link
+                </TransitionLink>
+                <TransitionLink
                   href={`/${locale}/dashboard?tab=audit&auditType=auth&auditOutcome=invalid_credentials&auditPage=1`}
                   className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-center text-[11px] font-mono transition-colors ${auditOutcome === 'invalid_credentials' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
                 >
                   {t('audit.filterInvalid')}
-                </Link>
-                <Link
+                </TransitionLink>
+                <TransitionLink
                   href={`/${locale}/dashboard?tab=audit&auditType=auth&auditOutcome=rate_limited&auditPage=1`}
                   className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-center text-[11px] font-mono transition-colors ${auditOutcome === 'rate_limited' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
                 >
                   {t('audit.filterRateLimited')}
-                </Link>
+                </TransitionLink>
               </div>
             )}
           </div>
@@ -330,23 +330,23 @@ export default async function DashboardPage({ params, searchParams }: Props) {
                   </div>
 
                   <div className="flex items-center justify-between gap-3 pt-2">
-                    <Link
+                    <TransitionLink
                       href={`/${locale}/dashboard?tab=audit&auditType=auth&auditOutcome=${auditOutcome}&auditPage=${Math.max(1, auditPage - 1)}`}
                       aria-disabled={!hasPrevAuthAuditPage}
                       className={`btn-outline px-3 py-2 text-xs ${!hasPrevAuthAuditPage ? 'pointer-events-none opacity-50' : ''}`}
                     >
                       {t('audit.prev')}
-                    </Link>
+                    </TransitionLink>
                     <p className="text-xs font-mono text-muted-foreground">
                       {auditPage} / {totalAuthAuditPages}
                     </p>
-                    <Link
+                    <TransitionLink
                       href={`/${locale}/dashboard?tab=audit&auditType=auth&auditOutcome=${auditOutcome}&auditPage=${Math.min(totalAuthAuditPages, auditPage + 1)}`}
                       aria-disabled={!hasNextAuthAuditPage}
                       className={`btn-outline px-3 py-2 text-xs ${!hasNextAuthAuditPage ? 'pointer-events-none opacity-50' : ''}`}
                     >
                       {t('audit.next')}
-                    </Link>
+                    </TransitionLink>
                   </div>
                 </>
               )}
@@ -398,23 +398,23 @@ export default async function DashboardPage({ params, searchParams }: Props) {
                     ))}
                   </div>
                   <div className="flex items-center justify-between gap-3 pt-2">
-                    <Link
+                    <TransitionLink
                       href={`/${locale}/dashboard?tab=audit&auditType=csp&auditPage=${Math.max(1, auditPage - 1)}`}
                       aria-disabled={!hasPrevCspAuditPage}
                       className={`btn-outline px-3 py-2 text-xs ${!hasPrevCspAuditPage ? 'pointer-events-none opacity-50' : ''}`}
                     >
                       {t('audit.prev')}
-                    </Link>
+                    </TransitionLink>
                     <p className="text-xs font-mono text-muted-foreground">
                       {auditPage} / {totalCspAuditPages}
                     </p>
-                    <Link
+                    <TransitionLink
                       href={`/${locale}/dashboard?tab=audit&auditType=csp&auditPage=${Math.min(totalCspAuditPages, auditPage + 1)}`}
                       aria-disabled={!hasNextCspAuditPage}
                       className={`btn-outline px-3 py-2 text-xs ${!hasNextCspAuditPage ? 'pointer-events-none opacity-50' : ''}`}
                     >
                       {t('audit.next')}
-                    </Link>
+                    </TransitionLink>
                   </div>
                 </>
               )}

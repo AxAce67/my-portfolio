@@ -1,31 +1,18 @@
 'use client';
 
-import { Link, useRouter } from '@/i18n/routing';
-import { isPlainLeftClick, runViewTransition } from '@/lib/viewTransitions';
+import { TransitionLink } from '@/components/ui/TransitionLink';
 
 interface Props {
     href: string;
     className?: string;
     children: React.ReactNode;
+    direction?: 'forward' | 'backward';
 }
 
-export function FadeLink({ href, className, children }: Props) {
-    const router = useRouter();
-
-    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        if (!isPlainLeftClick(e)) {
-            return;
-        }
-
-        e.preventDefault();
-        runViewTransition(() => {
-            router.push(href);
-        });
-    };
-
+export function FadeLink({ href, className, children, direction = 'forward' }: Props) {
     return (
-        <Link href={href} onClick={handleClick} className={className}>
+        <TransitionLink href={href} className={className} direction={direction}>
             {children}
-        </Link>
+        </TransitionLink>
     );
 }

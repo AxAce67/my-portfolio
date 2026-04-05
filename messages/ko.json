@@ -1,0 +1,367 @@
+{
+    "Navigation": {
+        "about": "소개",
+        "skills": "기술",
+        "technologies": "기술 스택",
+        "projects": "프로젝트",
+        "timeline": "진행 중",
+        "contact": "문의"
+    },
+    "Hero": {
+        "name": "Aki",
+        "role": "// 인디 개발자 · 학생",
+        "title": "『아이디어를 현실로』",
+        "subtitle": "좋아하는 것을 만든다. 그뿐입니다.",
+        "ctaPrimary": "프로젝트 보기"
+    },
+    "About": {
+        "sectionTitle": "// about/",
+        "heading": "소개",
+        "profileLabel": "프로필",
+        "profileParagraph1": "저는 일본에 사는 고등학교 1학년 학생으로, 웹사이트, Discord 봇, Ubuntu 서버, Minecraft 서버 같은 개인 프로젝트를 만들고 있습니다.",
+        "profileParagraph2": "초등학교 6학년 때 ChatGPT를 알게 된 뒤로 다양한 AI 도구를 활용해 작업 흐름을 개선하고, 아이디어를 실제 제품으로 만드는 속도를 높여 왔습니다.",
+        "profileParagraph3": "제 작업 방식은 아이디어를 요구사항으로 정리하고, 빠르게 MVP를 만든 뒤 테스트와 개선을 반복하는 것입니다.",
+        "profileParagraph4": "강점은 디자인 사고, 지속적인 개선, 그리고 리서치입니다. 트렌드를 따라가면서도 사용성과 유지보수성을 함께 고려합니다.",
+        "statsProjects": "공개된 프로젝트",
+        "statsTechnologies": "사용 기술",
+        "statsYears": "개발 경력",
+        "statsCommits": "자체 운영 서버",
+        "focusLabel": "집중 분야",
+        "momentum": {
+            "label": "개발 동기 미터",
+            "description": "최근 7일간의 커밋을 바탕으로 현재 코딩 에너지를 가볍게 보여줍니다.",
+            "weeklyCommits": "이번 주 커밋",
+            "streak": "연속 일수",
+            "daySuffix": "일",
+            "updated": "업데이트",
+            "unavailable": "지금은 미터를 불러올 수 없습니다. 잠시 후 다시 시도해 주세요.",
+            "note": "수치는 방향성을 보여주는 참고용입니다. 동기 수치도 포함되어 있습니다."
+        },
+        "focus": {
+            "productThinking": "제품 사고",
+            "rapidPrototyping": "빠른 프로토타이핑",
+            "uiUxDesign": "UI/UX 디자인",
+            "problemSolving": "문제 해결",
+            "research": "리서치",
+            "continuousImprovement": "지속적인 개선"
+        },
+        "linksLabel": "링크",
+        "role": "독립 개발자"
+    },
+    "Skills": {
+        "sectionTitle": "// skills/",
+        "heading": "기술",
+        "subtitle": "평소 사용하는 도구와 강점",
+        "categories": {
+            "languages": "언어",
+            "stack": "스택",
+            "ai": "AI 도구",
+            "creative": "크리에이티브"
+        },
+        "descriptions": {
+            "languages": "주로 웹 개발에 사용하는 프로그래밍 언어",
+            "stack": "앱을 만들고 배포하고 운영할 때 사용하는 플랫폼과 라이브러리",
+            "ai": "구현, 디자인, 학습에 매일 사용하는 AI 도구",
+            "creative": "영상 편집과 콘텐츠 제작에 사용하는 도구"
+        },
+        "levels": {
+            "main": "주력",
+            "familiar": "실전",
+            "learning": "학습 중"
+        }
+    },
+    "TechStack": {
+        "sectionTitle": "// tech_stack/",
+        "heading": "기술 스택",
+        "subtitle": "자주 사용하는 기술과 서비스"
+    },
+    "Projects": {
+        "sectionTitle": "// projects/",
+        "heading": "프로젝트",
+        "viewList": "목록",
+        "viewGrid": "그리드",
+        "viewAll": "전체 보기",
+        "createdAt": "작성일",
+        "updatedAt": "수정일",
+        "noPublishedProjects": "곧 공개됩니다. 기다려 주셔서 감사합니다."
+    },
+    "Contact": {
+        "sectionTitle": "> send_message",
+        "heading": "문의",
+        "description": "질문, 의뢰, 피드백이 있다면 편하게 연락해 주세요.",
+        "name": "이름",
+        "namePlaceholder": "이름",
+        "email": "이메일",
+        "emailPlaceholder": "your@email.com",
+        "subject": "제목",
+        "subjectPlaceholder": "어떤 내용인가요?",
+        "message": "메시지",
+        "messagePlaceholder": "메시지를 입력해 주세요...",
+        "preview": "메시지 확인",
+        "verifying": "확인 중...",
+        "sending": "전송 중...",
+        "previewTitle": "메시지 내용을 확인해 주세요",
+        "previewDescription": "전송 전에 내용을 다시 확인해 주세요.",
+        "backToEdit": "수정으로 돌아가기",
+        "confirmSend": "메시지 보내기",
+        "successTitle": "전송 완료",
+        "success": "메시지가 성공적으로 전송되었습니다!",
+        "successAutoClose": "이 대화상자는 몇 초 후 자동으로 닫힙니다",
+        "close": "닫기",
+        "turnstileRequired": "전송 전에 인증을 완료해 주세요.",
+        "error": "전송에 실패했습니다. 다시 시도해 주세요."
+    },
+    "Footer": {
+        "tagline": "좋아하는 것을 만든다. 그뿐입니다.",
+        "copyright": "© {year} All rights reserved.",
+        "terms": "이용 약관",
+        "license": "라이선스"
+    },
+    "Language": {
+        "label": "언어",
+        "switchTo": "{language}(으)로 전환"
+    },
+    "Dashboard": {
+        "title": "Portfolio Dashboard",
+        "subtitle": "공개된 포트폴리오 콘텐츠를 관리합니다.",
+        "signOut": "로그아웃",
+        "noAdmin": "이 계정에는 관리자 권한이 없습니다.",
+        "tabs": {
+            "projects": "프로젝트",
+            "activeProjects": "진행 중 프로젝트",
+            "audit": "감사 로그"
+        },
+        "actions": {
+            "read": "보기",
+            "edit": "편집"
+        },
+        "publish": {
+            "published": "공개",
+            "draft": "초안"
+        },
+        "status": {
+            "idea": "아이디어",
+            "design": "디자인",
+            "development": "개발",
+            "completed": "완료",
+            "on_hold": "보류"
+        },
+        "projects": {
+            "manageTitle": "프로젝트 관리",
+            "manageDescription": "전용 편집 페이지에서 새 프로젝트를 만들어 주세요.",
+            "newProject": "새 프로젝트",
+            "listTitle": "프로젝트",
+            "empty": "아직 프로젝트가 없습니다."
+        },
+        "toast": {
+            "project_created": "프로젝트가 생성되었습니다.",
+            "project_updated": "프로젝트가 업데이트되었습니다.",
+            "project_deleted": "프로젝트가 삭제되었습니다.",
+            "project_create_failed": "프로젝트 생성에 실패했습니다.",
+            "project_update_failed": "프로젝트 업데이트에 실패했습니다.",
+            "project_delete_failed": "프로젝트 삭제에 실패했습니다.",
+            "active_created": "진행 중 프로젝트가 생성되었습니다.",
+            "active_updated": "진행 중 프로젝트가 업데이트되었습니다.",
+            "active_deleted": "진행 중 프로젝트가 삭제되었습니다.",
+            "active_create_failed": "진행 중 프로젝트 생성에 실패했습니다.",
+            "active_update_failed": "진행 중 프로젝트 업데이트에 실패했습니다.",
+            "active_delete_failed": "진행 중 프로젝트 삭제에 실패했습니다."
+        },
+        "deleteProject": {
+            "button": "삭제",
+            "title": "프로젝트를 삭제할까요?",
+            "description": "\"{title}\"를 삭제합니다. 이 작업은 되돌릴 수 없습니다.",
+            "cancel": "취소",
+            "confirm": "삭제"
+        },
+        "active": {
+            "title": "진행 중 프로젝트",
+            "description": "정렬 순서, 단계, 공개 상태를 관리합니다.",
+            "newButton": "새 진행 중 프로젝트",
+            "priority": "우선순위",
+            "published": "공개",
+            "draft": "초안",
+            "empty": "진행 중 프로젝트가 없습니다.",
+            "stage": {
+                "planning": "기획",
+                "design": "디자인",
+                "development": "개발",
+                "testing": "테스트",
+                "completed": "완료"
+            },
+            "fields": {
+                "name": "이름",
+                "namePlaceholder": "이름",
+                "stage": "단계",
+                "priority": "우선순위"
+            },
+            "createModal": {
+                "title": "진행 중 프로젝트 만들기"
+            },
+            "editModal": {
+                "title": "진행 중 프로젝트 편집"
+            },
+            "deleteModal": {
+                "title": "진행 중 프로젝트를 삭제할까요?",
+                "description": "\"{name}\"를 삭제합니다. 이 작업은 되돌릴 수 없습니다."
+            },
+            "actions": {
+                "edit": "편집",
+                "delete": "삭제",
+                "close": "닫기",
+                "create": "생성",
+                "update": "업데이트",
+                "cancel": "취소"
+            }
+        },
+        "audit": {
+            "title": "인증 감사 로그",
+            "description": "로그인 성공/실패 로그를 모두 표시하며 페이지네이션을 지원합니다.",
+            "authTab": "인증 로그",
+            "cspTab": "CSP 로그",
+            "filterAll": "전체",
+            "filterSuccess": "성공",
+            "filterInvalid": "실패",
+            "filterRateLimited": "제한됨",
+            "total": "전체",
+            "empty": "감사 로그가 아직 없습니다.",
+            "notConfigured": "감사 로그 테이블이 설정되지 않았습니다. SQL 설정을 먼저 적용해 주세요.",
+            "prev": "이전",
+            "next": "다음",
+            "cspTitle": "CSP 위반 보고서",
+            "cspDescription": "브라우저가 보고한 CSP 위반 로그입니다.",
+            "cspEmpty": "CSP 위반 로그가 아직 없습니다.",
+            "cspNotConfigured": "CSP 로그 테이블이 설정되지 않았습니다. SQL 설정을 먼저 적용해 주세요.",
+            "labelEmail": "이메일",
+            "labelIp": "ip",
+            "labelIpHash": "ip 해시",
+            "labelUserId": "사용자 ID",
+            "labelLocale": "로캘",
+            "labelUserAgent": "user agent",
+            "labelDirective": "directive",
+            "labelBlocked": "blocked",
+            "labelDocument": "document",
+            "labelDisposition": "disposition"
+        },
+        "editor": {
+            "backToDashboard": "← 대시보드로 돌아가기",
+            "draftLabel": "프로젝트 초안",
+            "createTitle": "프로젝트 만들기",
+            "createDescription": "Notion 스타일 편집기로 제목, 목록, 이미지를 포함한 글을 만듭니다.",
+            "createSubmit": "프로젝트 만들기",
+            "editTitle": "프로젝트 편집기",
+            "saveChanges": "변경 사항 저장"
+        },
+        "editorForm": {
+            "title": "제목",
+            "titlePlaceholder": "프로젝트 이름",
+            "description": "설명",
+            "descriptionPlaceholder": "요약 (2-3문장)",
+            "thumbnail": "썸네일 이미지",
+            "thumbnailHint": "JPG / PNG / WEBP, 최대 5MB",
+            "thumbnailPreview": "16:9 썸네일 미리보기",
+            "thumbnailRecommended": "권장:",
+            "thumbnailSafeArea": "안전 영역 중앙:",
+            "articleContent": "글 내용",
+            "published": "공개됨",
+            "uploadAuthError": "파일을 업로드하기 전에 로그인해 주세요.",
+            "uploadTypeError": "JPG / PNG / WEBP / AVIF 파일만 허용됩니다.",
+            "uploadSizeError": "파일 크기는 5MB 이하로 유지해 주세요.",
+            "editorTipPrefix": "입력창에",
+            "editorTipSuffix": "를 입력하면 블록 옵션이 표시됩니다. 이미지/파일 업로드가 활성화되어 있습니다.",
+            "status": {
+                "idea": "아이디어",
+                "design": "디자인",
+                "development": "개발",
+                "completed": "완료",
+                "on_hold": "보류"
+            }
+        }
+    },
+    "ActiveProjects": {
+        "sectionLabel": "// in_progress",
+        "heading": "진행 중 프로젝트",
+        "projectColumn": "프로젝트",
+        "empty": "진행 중 프로젝트가 없습니다.",
+        "stagePlanning": "기획",
+        "stageDesign": "디자인",
+        "stageDevelopment": "개발",
+        "stageTesting": "테스트",
+        "stageCompleted": "완료"
+    },
+    "ProjectList": {
+        "backToTop": "← 프로젝트로 돌아가기",
+        "heading": "프로젝트 아카이브",
+        "description": "공개된 프로젝트 전체 목록입니다.",
+        "searchLabel": "검색",
+        "searchPlaceholder": "제목, 설명 또는 태그로 검색...",
+        "createdAt": "작성일",
+        "updatedAt": "수정일",
+        "empty": "곧 공개됩니다. 기다려 주셔서 감사합니다.",
+        "noResults": "일치하는 프로젝트를 찾을 수 없습니다.",
+        "prev": "이전",
+        "next": "다음"
+    },
+    "ProjectDetail": {
+        "backToProjects": "← 프로젝트로 돌아가기",
+        "backToArchive": "← 아카이브로 돌아가기",
+        "createdAt": "작성일",
+        "updatedAt": "수정일",
+        "noContent": "아직 내용이 없습니다."
+    },
+    "Login": {
+        "title": "대시보드 로그인",
+        "email": "이메일",
+        "password": "비밀번호",
+        "submit": "로그인",
+        "backToSite": "← 사이트로 돌아가기",
+        "errorInvalid": "이메일 또는 비밀번호가 올바르지 않습니다.",
+        "errorRateLimit": "시도가 너무 많습니다. 약 10분 후 다시 시도해 주세요."
+    },
+    "NotFound": {
+        "code": "404 / Not Found",
+        "title": "페이지를 찾을 수 없습니다",
+        "description": "요청한 페이지가 없거나 이동되었을 수 있습니다.",
+        "backHome": "홈으로 돌아가기",
+        "goProjects": "프로젝트로 이동"
+    },
+    "License": {
+        "title": "라이선스",
+        "description": "이 포트폴리오 사이트의 라이선스 정보",
+        "tableLibrary": "라이브러리",
+        "tableLicense": "라이선스",
+        "tableSource": "소스",
+        "sourceTitle": "소스 코드 라이선스",
+        "sourceDescription": "별도 표기가 없는 한 이 사이트의 소스 코드와 디자인, 구현, 설정은 모두 저작권 보호를 받습니다. 무단 복제, 전용, 수정, 재배포는 금지됩니다.",
+        "contentTitle": "콘텐츠 저작권",
+        "contentDescription": "별도 표기가 없는 한 이 사이트에 게시된 모든 텍스트, 사진, 일러스트, 디자인, 레이아웃, 로고 및 기타 창작물(이하 \"콘텐츠\")의 권리는 작성자(Aki)에게 있습니다. 무단 복제, 재배포, 수정, 2차 이용은 금지됩니다. 개인적 참고나 인용 목적이라면 이 사이트의 URL을 포함해 출처를 명확히 표기해 주세요. 상업적 이용은 사전에 문의 폼을 통해 연락해 주세요.",
+        "brandTitle": "제3자 로고 및 상표",
+        "brandDescription": "이 사이트에서 사용하는 제3자 서비스명, 로고, 아이콘, 상표는 각 권리자의 자산입니다. 식별과 참고 목적에 한해 사용되며, 각 브랜드의 가이드라인과 이용 조건이 적용됩니다.",
+        "thirdPartyTitle": "제3자 라이브러리",
+        "thirdPartyDescription": "이 사이트는 아래 오픈소스 라이브러리와 프레임워크를 사용합니다. 각 라이브러리는 자체 라이선스의 적용을 받으며, 자세한 내용은 각 저장소에서 확인할 수 있습니다. 해당 라이브러리의 저작권은 각각의 개발자 또는 조직에 있습니다.",
+        "backHome": "홈으로 돌아가기"
+    },
+    "Terms": {
+        "title": "이용 약관",
+        "description": "이 포트폴리오 사이트의 이용 약관",
+        "lastUpdated": "최종 업데이트: {date}",
+        "sectionNum": "제 {n}조",
+        "privacyTitle": "개인정보",
+        "privacyDescription": "이 사이트의 문의 폼을 통해 수집되는 이름, 이메일 주소 등의 개인정보는 문의 응답 및 이용자와의 연락 목적에만 사용됩니다. 이용자의 동의 없이 제3자에게 제공되지 않으며, 법령에 따른 경우를 제외하고는 명시된 목적 외로 사용되지 않습니다.",
+        "governingTitle": "준거법 및 관할",
+        "governingDescription": "본 약관은 일본 법률에 따라 해석되고 적용됩니다. 본 약관과 관련하여 발생하는 모든 분쟁은 도쿄지방법원을 제1심 전속 관할 법원으로 합니다.",
+        "acceptanceTitle": "약관 동의",
+        "acceptanceDescription": "이 사이트(이하 \"사이트\")에 접근, 열람 또는 사용함으로써 귀하는 본 이용 약관(이하 \"약관\")의 모든 조항에 동의한 것으로 간주됩니다. 약관에 동의하지 않는 경우 즉시 사이트 이용을 중단해 주세요. 본 약관은 사이트에 접근하거나 사용하는 모든 이용자에게 적용됩니다.",
+        "useTitle": "사이트 이용",
+        "useDescription": "이 사이트는 운영자의 기술, 프로젝트 이력 및 기술 정보를 소개하기 위한 개인 포트폴리오로 공개됩니다. 정보의 정확성과 최신성을 위해 노력하지만, 완전성, 정확성 또는 유용성을 보장하지는 않습니다. 다음 행위는 금지됩니다. (1) 사이트의 정상적인 운영 방해, (2) 무단 접근의 시도 또는 실행, (3) 타인 사칭, (4) 사이트 콘텐츠의 무단 상업적 이용, (5) 기타 관련 법령이나 공공질서에 반하는 행위.",
+        "ipTitle": "지적재산권",
+        "ipDescription": "별도 표기가 없는 한 사이트의 디자인, 텍스트, 이미지, 로고, 아이콘, 코드 및 기타 모든 콘텐츠에 대한 지적재산권(저작권 및 상표권 포함)은 운영자에게 귀속됩니다. 운영자의 사전 서면 동의 없이 복제, 수정, 공중송신, 배포, 양도, 대여, 번역, 2차적 저작물 작성 또는 기타 방식으로 이용하는 행위는 금지됩니다.",
+        "disclaimerTitle": "면책 조항",
+        "disclaimerDescription": "사이트 이용은 이용자 본인의 책임 하에 이루어집니다. 사이트의 이용 또는 이용 불가로 인해 발생한 이용자 또는 제3자의 손해에 대해 운영자는 책임을 지지 않습니다. 사이트에서 링크된 외부 사이트의 내용, 안전성, 정확성에 대해서도 어떠한 보증이나 책임을 지지 않습니다. 사이트는 사전 통지 없이 중단, 변경 또는 종료될 수 있습니다.",
+        "changesTitle": "약관 변경",
+        "changesDescription": "운영자는 필요하다고 판단되는 경우 사전 통지 없이 본 약관을 변경할 수 있습니다. 개정된 약관은 사이트에 게시되는 시점부터 효력이 발생합니다. 중요한 변경 사항은 사이트에서 가능한 한 고지하겠지만, 이용자는 정기적으로 약관을 확인할 책임이 있습니다. 개정 후에도 사이트를 계속 이용하는 경우 개정된 약관에 동의한 것으로 간주됩니다.",
+        "contactTitle": "문의",
+        "contactDescription": "본 약관에 대한 질문이나 의견, 또는 콘텐츠 라이선스 관련 문의는 사이트의 문의 폼을 이용해 주세요. 문의 내용에 따라 답변까지 시간이 걸릴 수 있습니다.",
+        "backHome": "홈으로 돌아가기"
+    }
+}

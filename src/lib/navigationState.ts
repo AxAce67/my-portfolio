@@ -30,3 +30,10 @@ export function removeSessionValue(key: string) {
   if (typeof window === 'undefined') return;
   sessionStorage.removeItem(key);
 }
+
+export function clearProjectReturnState() {
+  removeSessionValue(navigationStateKeys.returnToProjects);
+  removeSessionValue(navigationStateKeys.homeScrollY);
+  removeSessionValue(navigationStateKeys.homeFromProjectId);
+  removeSessionValue(navigationStateKeys.projectsReferrer);
+}

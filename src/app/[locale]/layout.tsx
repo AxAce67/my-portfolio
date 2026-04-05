@@ -7,12 +7,12 @@ import { notFound } from 'next/navigation';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { ViewTransitions } from 'next-view-transitions';
-import { routing } from '@/i18n/routing';
+import { getLocaleMeta, getValidLocale, isAppLocale, routing } from '@/i18n/routing';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { AppToaster } from '@/components/ui/AppToaster';
-import { buildLocalePath, buildLocaleUrl, DEFAULT_OG_IMAGE_PATH, getLocaleSeo, getSiteUrl } from '@/lib/seo';
+import { buildLocalePath, buildLocaleUrl, buildLocaleUrlAlternates, DEFAULT_OG_IMAGE_PATH, getLocaleSeo, getOpenGraphLocale, getSiteUrl } from '@/lib/seo';
 import '../globals.css';
 
 const inter = localFont({
@@ -40,7 +40,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { locale: rawLocale } = await params;
-    const locale = (rawLocale === 'en' ? 'en' : 'ja') as 'ja' | 'en';
+    const locale = getValidLocale(rawLocale);
     const seo = getLocaleSeo(locale);
     const siteUrl = getSiteUrl();
     const canonicalPath = buildLocalePath(locale);
@@ -55,14 +55,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         description: seo.homeDescription,
         alternates: {
             canonical,
-            languages: {
-                ja: buildLocaleUrl('ja'),
-                en: buildLocaleUrl('en'),
-            },
+            languages: buildLocaleUrlAlternates(),
         },
         openGraph: {
             type: 'website',
-            locale: locale === 'ja' ? 'ja_JP' : 'en_US',
+            locale: getOpenGraphLocale(locale),
             url: canonicalPath,
             title: seo.homeTitle,
             description: seo.homeDescription,
@@ -85,17 +82,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function LocaleLayout({ children, params }: Props) {
     const { locale } = await params;
 
-    // Validate locale
-    if (!routing.locales.includes(locale as 'ja' | 'en')) {
+    if (!isAppLocale(locale)) {
         notFound();
     }
 
-    const validLocale = (locale === 'en' ? 'en' : 'ja') as 'ja' | 'en';
+    const validLocale = locale;
     const seo = getLocaleSeo(validLocale);
     const messages = await getMessages();
     const isProduction = process.env.NODE_ENV === 'production';
     const isVercelRuntime = process.env.VERCEL === '1' || process.env.VERCEL === 'true';
-    const skipToContentLabel = validLocale === 'ja' ? 'メインコンテンツへ移動' : 'Skip to main content';
+    const skipToContentLabel = getLocaleMeta(validLocale).skipToContentLabel;
 
     return (
         <ViewTransitions>
@@ -115,7 +111,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             >
                 <ThemeProvider>
                     <NextIntlClientProvider messages={messages}>
-                        <div className="relative z-10 flex flex-col min-h-screen">
+                        <div className="app-shell relative z-10 flex flex-col min-h-screen">
                             <AppToaster />
                             <a href="#main-content" className="skip-link">
                                 {skipToContentLabel}

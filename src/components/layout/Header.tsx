@@ -5,8 +5,11 @@ import { useTranslations } from 'next-intl';
 import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
+import { TransitionLink } from '@/components/ui/TransitionLink';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, usePathname, useRouter } from '@/i18n/routing';
+import { usePathname, useRouter } from '@/i18n/routing';
+import { runRouteTransition } from '@/lib/viewTransitions';
+import { clearProjectReturnState } from '@/lib/navigationState';
 
 const navItems = ['about', 'skills', 'technologies', 'projects', 'timeline', 'contact'] as const;
 
@@ -98,9 +101,13 @@ export function Header() {
                     <button
                         onClick={() => {
                             if (isHomePage) {
+                                clearProjectReturnState();
                                 window.scrollTo({ top: 0, behavior: 'smooth' });
                             } else {
-                                router.push('/');
+                                clearProjectReturnState();
+                                runRouteTransition(() => {
+                                    router.push('/');
+                                }, { direction: 'backward' });
                             }
                         }}
                         className="font-mono text-sm font-medium tracking-wide hover:opacity-60 transition-opacity"
@@ -124,13 +131,17 @@ export function Header() {
                                     {t(item)}
                                 </button>
                             ) : (
-                                <Link
+                                <TransitionLink
                                     key={item}
                                     href={`/#${sectionIds[item]}`}
+                                    direction="backward"
+                                    onClick={() => {
+                                        clearProjectReturnState();
+                                    }}
                                     className="nav-link text-[13px] tracking-wide uppercase transition-colors text-muted-foreground hover:text-foreground"
                                 >
                                     {t(item)}
-                                </Link>
+                                </TransitionLink>
                             )
                         )}
                     </div>
@@ -176,7 +187,10 @@ export function Header() {
                                             if (isHomePage) {
                                                 scrollToSection(sectionIds[item]);
                                             } else {
-                                                router.push(`/#${sectionIds[item]}`);
+                                                clearProjectReturnState();
+                                                runRouteTransition(() => {
+                                                    router.push(`/#${sectionIds[item]}`);
+                                                }, { direction: 'backward' });
                                                 setIsMenuOpen(false);
                                             }
                                         }}

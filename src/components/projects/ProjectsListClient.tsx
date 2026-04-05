@@ -4,18 +4,14 @@ import { useLayoutEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { Search } from 'lucide-react';
-import { Link } from '@/i18n/routing';
+import { Link, useRouter } from '@/i18n/routing';
 import { useTransitionRouter } from 'next-view-transitions';
 import { StaggerContainer, StaggerItem } from '@/components/ui/ScrollReveal';
-import { isPlainLeftClick } from '@/lib/viewTransitions';
+import { isPlainLeftClick, runRouteTransition } from '@/lib/viewTransitions';
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
 import { navigationStateKeys, readSessionNumber, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 
 const PAGE_SIZE = 12;
-
-// リモート画像用の blur placeholder（Supabase URL は自動生成不可のため固定値を使用）
-const BLUR_DATA_URL =
-    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAAFklEQVQI12NgYGBg+P//PwMDAwMDAwMDCAAIBAEBkQBjbwAAAABJRU5ErkJggg==';
 
 export type ProjectListItem = {
   id: string;
@@ -34,6 +30,7 @@ type Props = {
 export default function ProjectsListClient({ projects }: Props) {
   const t = useTranslations('ProjectList');
   const locale = useLocale();
+  const router = useRouter();
   const transitionRouter = useTransitionRouter();
   const [keyword, setKeyword] = useState('');
   const [page, setPage] = useState(1);
@@ -80,7 +77,9 @@ export default function ProjectsListClient({ projects }: Props) {
             writeSessionValue(navigationStateKeys.returnToProjects, '1');
             if ('startViewTransition' in document) {
               e.preventDefault();
-              transitionRouter.push(`/${locale}`);
+              runRouteTransition(() => {
+                router.push(`/${locale}`);
+              }, { direction: 'backward' });
             }
           }}
         >
@@ -137,17 +136,16 @@ export default function ProjectsListClient({ projects }: Props) {
                 }}
               >
                 <div className="flex flex-col sm:flex-row sm:h-44 sm:overflow-hidden">
-                  <div className="aspect-video w-full sm:aspect-auto sm:w-[313px] sm:min-w-[313px] bg-muted overflow-hidden rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none shrink-0 relative" style={{ viewTransitionName: `proj-${project.id}` }}>
+                  <div className="aspect-video w-full sm:aspect-auto sm:w-[313px] sm:min-w-[313px] bg-muted overflow-hidden rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none shrink-0 relative">
                     {project.thumbnailUrl ? (
                       <Image
                         src={project.thumbnailUrl}
                         alt={`${project.title} thumbnail`}
                         fill
                         sizes="(max-width: 640px) 50vw, 313px"
-                        className="absolute inset-0 object-cover"
+                        className="absolute inset-0 object-cover rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none"
                         loading="lazy"
-                        placeholder="blur"
-                        blurDataURL={BLUR_DATA_URL}
+                        style={{ viewTransitionName: `proj-${project.id}`, viewTransitionClass: 'project-media' }}
                       />
                     ) : null}
                   </div>
@@ -155,11 +153,11 @@ export default function ProjectsListClient({ projects }: Props) {
                     <h2 className="text-sm sm:text-xl font-semibold tracking-tight mb-1 sm:mb-2 line-clamp-2">{project.title}</h2>
                     <div className="hidden sm:flex mb-2 flex-wrap gap-3">
                       <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wide">
-                        {t('createdAt')}: {formatLocaleDate(project.createdAt, locale === 'en' ? 'en' : 'ja')}
+                        {t('createdAt')}: {formatLocaleDate(project.createdAt, locale)}
                       </p>
                       {showUpdatedAt && (
                         <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wide">
-                          {t('updatedAt')}: {formatLocaleDate(project.updatedAt, locale === 'en' ? 'en' : 'ja')}
+                          {t('updatedAt')}: {formatLocaleDate(project.updatedAt, locale)}
                         </p>
                       )}
                     </div>

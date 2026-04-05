@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { getLocale, getTranslations } from 'next-intl/server';
+import { TransitionLink } from '@/components/ui/TransitionLink';
 
 export default async function LocaleNotFoundPage() {
   const locale = await getLocale();
@@ -12,12 +12,12 @@ export default async function LocaleNotFoundPage() {
         <h1 className="mt-3 text-3xl sm:text-4xl font-bold tracking-tight">{t('title')}</h1>
         <p className="mt-3 text-sm sm:text-base text-muted-foreground">{t('description')}</p>
         <div className="mt-6 flex flex-col sm:flex-row gap-3">
-          <Link href={`/${locale}`} className="btn-primary">
+          <TransitionLink href={`/${locale}`} className="btn-primary" direction="backward">
             {t('backHome')}
-          </Link>
-          <Link href={`/${locale}/projects`} className="btn-outline">
+          </TransitionLink>
+          <TransitionLink href={`/${locale}/projects`} className="btn-outline">
             {t('goProjects')}
-          </Link>
+          </TransitionLink>
         </div>
       </div>
     </section>

@@ -1,11 +1,11 @@
 import type { MetadataRoute } from 'next';
 import { getProjectsListData } from '@/lib/content/publicContent';
-import { buildLocalePath, getSiteUrl } from '@/lib/seo';
+import { locales } from '@/i18n/routing';
+import { buildLocaleAlternates, buildLocalePath, getSiteUrl } from '@/lib/seo';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getSiteUrl();
   const now = new Date();
-  const locales: Array<'ja' | 'en'> = ['ja', 'en'];
   const rows = await getProjectsListData();
 
   const staticEntries: MetadataRoute.Sitemap = locales.flatMap((locale) => [
@@ -15,10 +15,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 1,
       alternates: {
-        languages: {
-          ja: `${siteUrl}${buildLocalePath('ja')}`,
-          en: `${siteUrl}${buildLocalePath('en')}`,
-        },
+        languages: Object.fromEntries(
+          Object.entries(buildLocaleAlternates()).map(([key, value]) => [key, `${siteUrl}${value}`])
+        ),
       },
     },
     {
@@ -27,10 +26,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.8,
       alternates: {
-        languages: {
-          ja: `${siteUrl}${buildLocalePath('ja', '/projects')}`,
-          en: `${siteUrl}${buildLocalePath('en', '/projects')}`,
-        },
+        languages: Object.fromEntries(
+          Object.entries(buildLocaleAlternates('/projects')).map(([key, value]) => [key, `${siteUrl}${value}`])
+        ),
       },
     },
   ]);
@@ -45,10 +43,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: 'monthly' as const,
         priority: 0.7,
         alternates: {
-          languages: {
-            ja: `${siteUrl}${buildLocalePath('ja', path)}`,
-            en: `${siteUrl}${buildLocalePath('en', path)}`,
-          },
+          languages: Object.fromEntries(
+            Object.entries(buildLocaleAlternates(path)).map(([key, value]) => [key, `${siteUrl}${value}`])
+          ),
         },
       };
     })
@@ -56,4 +53,3 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [...staticEntries, ...projectEntries];
 }
-

@@ -38,7 +38,7 @@ function LicensePageContent() {
     return (
         <div className="legal-page">
             <article className="legal-document">
-                <FadeLink href="/" className="legal-doc-back">
+                <FadeLink href="/" className="legal-doc-back" direction="backward">
                     ← {t('backHome')}
                 </FadeLink>
                 <header className="legal-doc-header">

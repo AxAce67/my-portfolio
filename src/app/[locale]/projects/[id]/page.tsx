@@ -3,13 +3,11 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { getProjectById, getProjectsListData } from '@/lib/content/publicContent';
-
-const BLUR_DATA_URL =
-  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAAFklEQVQI12NgYGBg+P//PwMDAwMDAwMDCAAIBAEBkQBjbwAAAABJRU5ErkJggg==';
 import BackToProjectsLink from '@/components/projects/BackToProjectsLink';
 import MarkdownArticle from '@/components/content/MarkdownArticle';
 import BlockNoteContent from '@/components/content/BlockNoteContent';
-import { buildLocalePath, DEFAULT_OG_IMAGE_PATH, getLocaleSeo } from '@/lib/seo';
+import { getValidLocale } from '@/i18n/routing';
+import { buildLocaleAlternates, buildLocalePath, DEFAULT_OG_IMAGE_PATH, getLocaleSeo } from '@/lib/seo';
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
 
 type Props = {
@@ -23,7 +21,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale: rawLocale, id } = await params;
-  const locale = (rawLocale === 'en' ? 'en' : 'ja') as 'ja' | 'en';
+  const locale = getValidLocale(rawLocale);
   const seo = getLocaleSeo(locale);
   const project = await getProjectById(id);
   const canonical = buildLocalePath(locale, `/projects/${id}`);
@@ -35,10 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     alternates: {
       canonical,
-      languages: {
-        ja: buildLocalePath('ja', `/projects/${id}`),
-        en: buildLocalePath('en', `/projects/${id}`),
-      },
+      languages: buildLocaleAlternates(`/projects/${id}`),
     },
     openGraph: {
       title,
@@ -82,11 +77,11 @@ export default async function ProjectArticlePage({ params }: Props) {
           )}
           <div className="mt-6 flex flex-wrap gap-4">
             <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
-              {t('createdAt')}: {formatLocaleDate(project.created_at, locale === 'en' ? 'en' : 'ja')}
+              {t('createdAt')}: {formatLocaleDate(project.created_at, locale)}
             </p>
             {showUpdatedAt && (
               <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
-                {t('updatedAt')}: {formatLocaleDate(project.updated_at, locale === 'en' ? 'en' : 'ja')}
+                {t('updatedAt')}: {formatLocaleDate(project.updated_at, locale)}
               </p>
             )}
           </div>
@@ -94,17 +89,16 @@ export default async function ProjectArticlePage({ params }: Props) {
       </div>
 
       {project.thumbnail_url ? (
-        <div className="mb-10 overflow-hidden rounded-2xl border border-border max-w-3xl mx-auto" style={{ viewTransitionName: `proj-${project.id}` }}>
+        <div className="mb-10 overflow-hidden rounded-2xl border border-border max-w-3xl mx-auto">
           <Image
             src={project.thumbnail_url}
             alt={`${project.title} thumbnail`}
             width={1600}
             height={900}
             sizes="(max-width: 768px) 100vw, 768px"
-            className="w-full h-auto object-cover"
+            className="w-full h-auto object-cover rounded-2xl"
             priority
-            placeholder="blur"
-            blurDataURL={BLUR_DATA_URL}
+            style={{ viewTransitionName: `proj-${project.id}`, viewTransitionClass: 'project-media' }}
           />
         </div>
       ) : null}

@@ -1,386 +1,367 @@
 {
-  "Navigation": {
-    "about": "About",
-    "skills": "Skills",
-    "technologies": "Tech Stack",
-    "projects": "Projects",
-    "timeline": "Active",
-    "contact": "Contact"
-  },
-  "Hero": {
-    "name": "Aki",
-    "role": "// indie dev · student",
-    "title": "『アイデアを形にする』",
-    "subtitle": "好きなものを作る。それだけ。",
-    "ctaPrimary": "Projects を見る",
-    "scrollDown": "explore"
-  },
-  "About": {
-    "sectionTitle": "// about/",
-    "heading": "About",
-    "profileLabel": "Profile",
-    "profileParagraph1": "日本の中学3年生として、個人開発でWebサイトやDiscord Bot、Ubuntuサーバー、Minecraftサーバーなどを作っています。",
-    "profileParagraph2": "小学6年生のときにChatGPTに出会ってから、さまざまなAIツールを使いながら開発フローを改善し、アイデアを形にするスピードを上げてきました。",
-    "profileParagraph3": "企画案を要件定義に落とし込み、MVPを素早く実装して、テストと改善を回しながら使いやすく育てるのが開発スタイルです。",
-    "profileParagraph4": "強みは、設計力・改善力・調査力。新しいトレンドも追いながら、使いやすさと運用しやすさを両立するプロダクトを目指しています。",
-    "statsProjects": "公開プロジェクト",
-    "statsTechnologies": "使用技術",
-    "statsYears": "開発年数",
-    "statsCommits": "セルフホストサーバー数",
-    "focusLabel": "Focus",
-    "momentum": {
-      "label": "Development Momentum",
-      "description": "直近7日間のコミットから、開発のテンションを可視化しています。",
-      "weeklyCommits": "今週のコミット",
-      "streak": "連続コミット",
-      "daySuffix": "日",
-      "updated": "更新",
-      "unavailable": "メーターの読み取りに失敗しました。少し待って再読み込みしてください。",
-      "note": "数字は目安です"
+    "Navigation": {
+        "about": "About",
+        "skills": "Skills",
+        "technologies": "Tech Stack",
+        "projects": "Projects",
+        "timeline": "Active",
+        "contact": "Contact"
     },
-    "focus": {
-      "productThinking": "Product Thinking",
-      "rapidPrototyping": "Rapid Prototyping",
-      "uiUxDesign": "UI/UX Design",
-      "problemSolving": "Problem Solving",
-      "research": "Research",
-      "continuousImprovement": "Continuous Improvement"
+    "Hero": {
+        "name": "Aki",
+        "role": "// indie dev · student",
+        "title": "『アイデアを形にする』",
+        "subtitle": "好きなものを作る。それだけ。",
+        "ctaPrimary": "Projects を見る"
     },
-    "linksLabel": "Links",
-    "role": "Independent Developer"
-  },
-  "Skills": {
-    "sectionTitle": "// skills/",
-    "heading": "Skills",
-    "subtitle": "日常的に使っているスキルセット",
-    "categories": {
-      "languages": "言語",
-      "stack": "開発基盤",
-      "ai": "AI活用",
-      "creative": "動画制作"
+    "About": {
+        "sectionTitle": "// about/",
+        "heading": "About",
+        "profileLabel": "Profile",
+        "profileParagraph1": "日本の高校1年生として、個人開発でWebサイトやDiscord Bot、Ubuntuサーバー、Minecraftサーバーなどを作っています。",
+        "profileParagraph2": "小学6年生のときにChatGPTに出会ってから、さまざまなAIツールを使いながら開発フローを改善し、アイデアを形にするスピードを上げてきました。",
+        "profileParagraph3": "企画案を要件定義に落とし込み、MVPを素早く実装して、テストと改善を回しながら使いやすく育てるのが開発スタイルです。",
+        "profileParagraph4": "強みは、設計力・改善力・調査力。新しいトレンドも追いながら、使いやすさと運用しやすさを両立するプロダクトを目指しています。",
+        "statsProjects": "公開プロジェクト",
+        "statsTechnologies": "使用技術",
+        "statsYears": "開発年数",
+        "statsCommits": "セルフホストサーバー数",
+        "focusLabel": "Focus",
+        "momentum": {
+            "label": "Development Momentum",
+            "description": "直近7日間のコミットから、開発のテンションを可視化しています。",
+            "weeklyCommits": "今週のコミット",
+            "streak": "連続コミット",
+            "daySuffix": "日",
+            "updated": "更新",
+            "unavailable": "メーターの読み取りに失敗しました。少し待って再読み込みしてください。",
+            "note": "数字は目安です"
+        },
+        "focus": {
+            "productThinking": "Product Thinking",
+            "rapidPrototyping": "Rapid Prototyping",
+            "uiUxDesign": "UI/UX Design",
+            "problemSolving": "Problem Solving",
+            "research": "Research",
+            "continuousImprovement": "Continuous Improvement"
+        },
+        "linksLabel": "Links",
+        "role": "Independent Developer"
     },
-    "descriptions": {
-      "languages": "主にWeb開発で使用するプログラミング言語",
-      "stack": "アプリ構築・デプロイ・運用で使っている基盤とライブラリ",
-      "ai": "実装・設計・学習で日常的に活用するAIツール",
-      "creative": "動画編集・コンテンツ制作ツール"
+    "Skills": {
+        "sectionTitle": "// skills/",
+        "heading": "Skills",
+        "subtitle": "日常的に使っているスキルセット",
+        "categories": {
+            "languages": "言語",
+            "stack": "開発基盤",
+            "ai": "AI活用",
+            "creative": "動画制作"
+        },
+        "descriptions": {
+            "languages": "主にWeb開発で使用するプログラミング言語",
+            "stack": "アプリ構築・デプロイ・運用で使っている基盤とライブラリ",
+            "ai": "実装・設計・学習で日常的に活用するAIツール",
+            "creative": "動画編集・コンテンツ制作ツール"
+        },
+        "levels": {
+            "main": "メイン",
+            "familiar": "実務レベル",
+            "learning": "学習中"
+        }
     },
-    "levels": {
-      "main": "メイン",
-      "familiar": "実務レベル",
-      "learning": "学習中"
-    }
-  },
-  "TechStack": {
-    "sectionTitle": "// tech_stack/",
-    "heading": "Tech Stack",
-    "subtitle": "日常的に利用している技術・サービス一覧"
-  },
-  "Projects": {
-    "sectionTitle": "// projects/",
-    "heading": "Projects",
-    "viewList": "リスト",
-    "viewGrid": "グリッド",
-    "viewAll": "一覧を見る",
-    "createdAt": "作成",
-    "updatedAt": "更新",
-    "noPublishedProjects": "ただいま準備中です。もうしばらくお待ちください。",
-    "filterAll": "すべて",
-    "filterIdea": "構想中",
-    "filterDesign": "設計中",
-    "filterDevelopment": "実装中",
-    "filterCompleted": "完了",
-    "filterOnHold": "保留",
-    "searchPlaceholder": "プロジェクトを検索...",
-    "noProjects": "プロジェクトが見つかりません",
-    "viewDetails": "詳細を見る"
-  },
-  "Contact": {
-    "sectionTitle": "> send_message",
-    "heading": "Contact",
-    "description": "ご質問・ご依頼・フィードバック等、お気軽にどうぞ！",
-    "name": "名前",
-    "namePlaceholder": "お名前",
-    "email": "メールアドレス",
-    "emailPlaceholder": "your@email.com",
-    "subject": "件名",
-    "subjectPlaceholder": "お問い合わせの件名",
-    "message": "メッセージ",
-    "messagePlaceholder": "メッセージを入力してください...",
-    "send": "送信",
-    "preview": "内容を確認",
-    "verifying": "確認中...",
-    "sending": "送信中...",
-    "previewTitle": "送信内容の確認",
-    "previewDescription": "以下の内容で送信してよろしいですか？",
-    "backToEdit": "戻って編集",
-    "confirmSend": "この内容で送信",
-    "successTitle": "送信が完了しました",
-    "success": "メッセージを送信しました！",
-    "successAutoClose": "この画面は数秒で閉じます",
-    "close": "閉じる",
-    "turnstileRequired": "送信前に確認チェックを完了してください。",
-    "error": "送信に失敗しました。もう一度お試しください。"
-  },
-  "Footer": {
-    "tagline": "好きなものを作る。それだけ。",
-    "quickLinks": "ページリンク",
-    "connect": "リンク",
-    "copyright": "© {year} All rights reserved.",
-    "madeWith": "$ echo \"Made with ❤️ and ☕\"",
-    "terms": "利用規約",
-    "license": "ライセンス"
-  },
-  "Theme": {
-    "light": "ライトモード",
-    "dark": "ダークモード"
-  },
-  "Language": {
-    "ja": "日本語",
-    "en": "English"
-  },
-  "Dashboard": {
-    "title": "Portfolio Dashboard",
-    "subtitle": "公開中コンテンツを管理します。",
-    "signOut": "サインアウト",
-    "noAdmin": "このアカウントには管理権限がありません。",
-    "tabs": {
-      "projects": "プロジェクト",
-      "activeProjects": "進行中プロジェクト",
-      "audit": "監査ログ"
+    "TechStack": {
+        "sectionTitle": "// tech_stack/",
+        "heading": "Tech Stack",
+        "subtitle": "日常的に利用している技術・サービス一覧"
     },
-    "actions": {
-      "read": "閲覧",
-      "edit": "編集"
+    "Projects": {
+        "sectionTitle": "// projects/",
+        "heading": "Projects",
+        "viewList": "リスト",
+        "viewGrid": "グリッド",
+        "viewAll": "一覧を見る",
+        "createdAt": "作成",
+        "updatedAt": "更新",
+        "noPublishedProjects": "ただいま準備中です。もうしばらくお待ちください。"
     },
-    "publish": {
-      "published": "公開中",
-      "draft": "下書き"
-    },
-    "status": {
-      "idea": "構想中",
-      "design": "設計中",
-      "development": "実装中",
-      "completed": "完了",
-      "on_hold": "保留"
-    },
-    "projects": {
-      "manageTitle": "プロジェクト管理",
-      "manageDescription": "新規作成は専用エディタページで行います。",
-      "newProject": "新規作成",
-      "listTitle": "プロジェクト一覧",
-      "empty": "プロジェクトがまだありません。"
-    },
-    "toast": {
-      "project_created": "プロジェクトを作成しました。",
-      "project_updated": "プロジェクトを更新しました。",
-      "project_deleted": "プロジェクトを削除しました。",
-      "project_create_failed": "プロジェクトを作成できませんでした。",
-      "project_update_failed": "プロジェクトを更新できませんでした。",
-      "project_delete_failed": "プロジェクトを削除できませんでした。",
-      "active_created": "進行中プロジェクトを作成しました。",
-      "active_updated": "進行中プロジェクトを更新しました。",
-      "active_deleted": "進行中プロジェクトを削除しました。",
-      "active_create_failed": "進行中プロジェクトを作成できませんでした。",
-      "active_update_failed": "進行中プロジェクトを更新できませんでした。",
-      "active_delete_failed": "進行中プロジェクトを削除できませんでした。"
-    },
-    "deleteProject": {
-      "button": "削除",
-      "title": "プロジェクトを削除しますか？",
-      "description": "「{title}」を削除します。この操作は取り消せません。",
-      "cancel": "キャンセル",
-      "confirm": "削除"
-    },
-    "active": {
-      "title": "進行中プロジェクト",
-      "description": "進行中プロジェクトの並び順・ステージ・公開状態を管理します。",
-      "newButton": "進行中プロジェクトを追加",
-      "priority": "優先度",
-      "published": "公開中",
-      "draft": "下書き",
-      "empty": "進行中プロジェクトがまだありません。",
-      "stage": {
-        "planning": "企画",
-        "design": "設計",
-        "development": "実装",
-        "testing": "テスト",
-        "completed": "完了"
-      },
-      "fields": {
+    "Contact": {
+        "sectionTitle": "> send_message",
+        "heading": "Contact",
+        "description": "ご質問・ご依頼・フィードバック等、お気軽にどうぞ！",
         "name": "名前",
-        "namePlaceholder": "プロジェクト名",
-        "stage": "ステージ",
-        "priority": "優先度"
-      },
-      "createModal": {
-        "title": "進行中プロジェクトを作成"
-      },
-      "editModal": {
-        "title": "進行中プロジェクトを編集"
-      },
-      "deleteModal": {
-        "title": "進行中プロジェクトを削除しますか？",
-        "description": "「{name}」を削除します。この操作は取り消せません。"
-      },
-      "actions": {
-        "edit": "編集",
-        "delete": "削除",
+        "namePlaceholder": "お名前",
+        "email": "メールアドレス",
+        "emailPlaceholder": "your@email.com",
+        "subject": "件名",
+        "subjectPlaceholder": "お問い合わせの件名",
+        "message": "メッセージ",
+        "messagePlaceholder": "メッセージを入力してください...",
+        "preview": "内容を確認",
+        "verifying": "確認中...",
+        "sending": "送信中...",
+        "previewTitle": "送信内容の確認",
+        "previewDescription": "以下の内容で送信してよろしいですか？",
+        "backToEdit": "戻って編集",
+        "confirmSend": "この内容で送信",
+        "successTitle": "送信が完了しました",
+        "success": "メッセージを送信しました！",
+        "successAutoClose": "この画面は数秒で閉じます",
         "close": "閉じる",
-        "create": "作成",
-        "update": "更新",
-        "cancel": "キャンセル"
-      }
+        "turnstileRequired": "送信前に確認チェックを完了してください。",
+        "error": "送信に失敗しました。もう一度お試しください。"
     },
-    "audit": {
-      "title": "認証監査ログ",
-      "description": "ログイン成功/失敗の全ログをページング表示します。",
-      "authTab": "認証ログ",
-      "cspTab": "CSPログ",
-      "filterAll": "すべて",
-      "filterSuccess": "成功",
-      "filterInvalid": "失敗",
-      "filterRateLimited": "制限",
-      "total": "総件数",
-      "available": "あり",
-      "empty": "まだ監査ログがありません。",
-      "notConfigured": "監査ログテーブルが未設定です。SQLを適用してください。",
-      "prev": "前へ",
-      "next": "次へ",
-      "cspTitle": "CSP違反レポート",
-      "cspDescription": "ブラウザから送信されたCSP違反ログです。",
-      "cspEmpty": "CSP違反ログはまだありません。",
-      "cspNotConfigured": "CSPログテーブルが未設定です。SQLを適用してください。",
-      "labelEmail": "email",
-      "labelIp": "ip",
-      "labelIpHash": "ip hash",
-      "labelUserId": "user id",
-      "labelLocale": "locale",
-      "labelUserAgent": "user agent",
-      "labelDirective": "directive",
-      "labelBlocked": "blocked",
-      "labelDocument": "document",
-      "labelDisposition": "disposition"
+    "Footer": {
+        "tagline": "好きなものを作る。それだけ。",
+        "copyright": "© {year} All rights reserved.",
+        "terms": "利用規約",
+        "license": "ライセンス"
     },
-    "editor": {
-      "backToDashboard": "← ダッシュボードに戻る",
-      "draftLabel": "プロジェクト下書き",
-      "createTitle": "プロジェクトを作成",
-      "createDescription": "Notion風エディタで、見出し・リスト・画像を含む記事を作成できます。",
-      "createSubmit": "プロジェクトを作成",
-      "editTitle": "プロジェクト編集",
-      "saveChanges": "変更を保存"
+    "Language": {
+        "label": "言語",
+        "switchTo": "{language}に切り替える"
     },
-    "editorForm": {
-      "title": "タイトル",
-      "titlePlaceholder": "プロジェクト名",
-      "description": "説明",
-      "descriptionPlaceholder": "概要（2〜3文）",
-      "thumbnail": "サムネイル画像",
-      "thumbnailHint": "JPG / PNG / WEBP, up to 5MB",
-      "thumbnailPreview": "16:9 Thumbnail Preview",
-      "thumbnailRecommended": "推奨サイズ:",
-      "thumbnailSafeArea": "セーフエリア中央:",
-      "articleContent": "記事本文",
-      "published": "公開する",
-      "uploadAuthError": "ファイルをアップロードするにはログインが必要です。",
-      "uploadTypeError": "JPG / PNG / WEBP / AVIF 形式のみアップロードできます。",
-      "uploadSizeError": "ファイルサイズは 5MB 以下にしてください。",
-      "editorTipPrefix": "ブロックメニューは",
-      "editorTipSuffix": "で開けます。画像/ファイルアップロードに対応しています。",
-      "status": {
-        "idea": "構想中",
-        "design": "設計中",
-        "development": "実装中",
-        "completed": "完了",
-        "on_hold": "保留"
-      }
+    "Dashboard": {
+        "title": "Portfolio Dashboard",
+        "subtitle": "公開中コンテンツを管理します。",
+        "signOut": "サインアウト",
+        "noAdmin": "このアカウントには管理権限がありません。",
+        "tabs": {
+            "projects": "プロジェクト",
+            "activeProjects": "進行中プロジェクト",
+            "audit": "監査ログ"
+        },
+        "actions": {
+            "read": "閲覧",
+            "edit": "編集"
+        },
+        "publish": {
+            "published": "公開中",
+            "draft": "下書き"
+        },
+        "status": {
+            "idea": "構想中",
+            "design": "設計中",
+            "development": "実装中",
+            "completed": "完了",
+            "on_hold": "保留"
+        },
+        "projects": {
+            "manageTitle": "プロジェクト管理",
+            "manageDescription": "新規作成は専用エディタページで行います。",
+            "newProject": "新規作成",
+            "listTitle": "プロジェクト一覧",
+            "empty": "プロジェクトがまだありません。"
+        },
+        "toast": {
+            "project_created": "プロジェクトを作成しました。",
+            "project_updated": "プロジェクトを更新しました。",
+            "project_deleted": "プロジェクトを削除しました。",
+            "project_create_failed": "プロジェクトを作成できませんでした。",
+            "project_update_failed": "プロジェクトを更新できませんでした。",
+            "project_delete_failed": "プロジェクトを削除できませんでした。",
+            "active_created": "進行中プロジェクトを作成しました。",
+            "active_updated": "進行中プロジェクトを更新しました。",
+            "active_deleted": "進行中プロジェクトを削除しました。",
+            "active_create_failed": "進行中プロジェクトを作成できませんでした。",
+            "active_update_failed": "進行中プロジェクトを更新できませんでした。",
+            "active_delete_failed": "進行中プロジェクトを削除できませんでした。"
+        },
+        "deleteProject": {
+            "button": "削除",
+            "title": "プロジェクトを削除しますか？",
+            "description": "「{title}」を削除します。この操作は取り消せません。",
+            "cancel": "キャンセル",
+            "confirm": "削除"
+        },
+        "active": {
+            "title": "進行中プロジェクト",
+            "description": "進行中プロジェクトの並び順・ステージ・公開状態を管理します。",
+            "newButton": "進行中プロジェクトを追加",
+            "priority": "優先度",
+            "published": "公開中",
+            "draft": "下書き",
+            "empty": "進行中プロジェクトがまだありません。",
+            "stage": {
+                "planning": "企画",
+                "design": "設計",
+                "development": "実装",
+                "testing": "テスト",
+                "completed": "完了"
+            },
+            "fields": {
+                "name": "名前",
+                "namePlaceholder": "プロジェクト名",
+                "stage": "ステージ",
+                "priority": "優先度"
+            },
+            "createModal": {
+                "title": "進行中プロジェクトを作成"
+            },
+            "editModal": {
+                "title": "進行中プロジェクトを編集"
+            },
+            "deleteModal": {
+                "title": "進行中プロジェクトを削除しますか？",
+                "description": "「{name}」を削除します。この操作は取り消せません。"
+            },
+            "actions": {
+                "edit": "編集",
+                "delete": "削除",
+                "close": "閉じる",
+                "create": "作成",
+                "update": "更新",
+                "cancel": "キャンセル"
+            }
+        },
+        "audit": {
+            "title": "認証監査ログ",
+            "description": "ログイン成功/失敗の全ログをページング表示します。",
+            "authTab": "認証ログ",
+            "cspTab": "CSPログ",
+            "filterAll": "すべて",
+            "filterSuccess": "成功",
+            "filterInvalid": "失敗",
+            "filterRateLimited": "制限",
+            "total": "総件数",
+            "empty": "まだ監査ログがありません。",
+            "notConfigured": "監査ログテーブルが未設定です。SQLを適用してください。",
+            "prev": "前へ",
+            "next": "次へ",
+            "cspTitle": "CSP違反レポート",
+            "cspDescription": "ブラウザから送信されたCSP違反ログです。",
+            "cspEmpty": "CSP違反ログはまだありません。",
+            "cspNotConfigured": "CSPログテーブルが未設定です。SQLを適用してください。",
+            "labelEmail": "email",
+            "labelIp": "ip",
+            "labelIpHash": "ip hash",
+            "labelUserId": "user id",
+            "labelLocale": "locale",
+            "labelUserAgent": "user agent",
+            "labelDirective": "directive",
+            "labelBlocked": "blocked",
+            "labelDocument": "document",
+            "labelDisposition": "disposition"
+        },
+        "editor": {
+            "backToDashboard": "← ダッシュボードに戻る",
+            "draftLabel": "プロジェクト下書き",
+            "createTitle": "プロジェクトを作成",
+            "createDescription": "Notion風エディタで、見出し・リスト・画像を含む記事を作成できます。",
+            "createSubmit": "プロジェクトを作成",
+            "editTitle": "プロジェクト編集",
+            "saveChanges": "変更を保存"
+        },
+        "editorForm": {
+            "title": "タイトル",
+            "titlePlaceholder": "プロジェクト名",
+            "description": "説明",
+            "descriptionPlaceholder": "概要（2〜3文）",
+            "thumbnail": "サムネイル画像",
+            "thumbnailHint": "JPG / PNG / WEBP, up to 5MB",
+            "thumbnailPreview": "16:9 Thumbnail Preview",
+            "thumbnailRecommended": "推奨サイズ:",
+            "thumbnailSafeArea": "セーフエリア中央:",
+            "articleContent": "記事本文",
+            "published": "公開する",
+            "uploadAuthError": "ファイルをアップロードするにはログインが必要です。",
+            "uploadTypeError": "JPG / PNG / WEBP / AVIF 形式のみアップロードできます。",
+            "uploadSizeError": "ファイルサイズは 5MB 以下にしてください。",
+            "editorTipPrefix": "ブロックメニューは",
+            "editorTipSuffix": "で開けます。画像/ファイルアップロードに対応しています。",
+            "status": {
+                "idea": "構想中",
+                "design": "設計中",
+                "development": "実装中",
+                "completed": "完了",
+                "on_hold": "保留"
+            }
+        }
+    },
+    "ActiveProjects": {
+        "sectionLabel": "// in_progress",
+        "heading": "Active Projects",
+        "projectColumn": "Project",
+        "empty": "進行中プロジェクトがまだありません。",
+        "stagePlanning": "企画",
+        "stageDesign": "設計",
+        "stageDevelopment": "実装",
+        "stageTesting": "テスト",
+        "stageCompleted": "完了"
+    },
+    "ProjectList": {
+        "backToTop": "← Projectsへ戻る",
+        "heading": "Projects Archive",
+        "description": "公開中プロジェクトの一覧です。",
+        "searchLabel": "検索",
+        "searchPlaceholder": "タイトル・説明・タグで検索...",
+        "createdAt": "作成",
+        "updatedAt": "更新",
+        "empty": "ただいま準備中です。もうしばらくお待ちください。",
+        "noResults": "一致するプロジェクトが見つかりませんでした。",
+        "prev": "前へ",
+        "next": "次へ"
+    },
+    "ProjectDetail": {
+        "backToProjects": "← Projectsへ戻る",
+        "backToArchive": "← Archiveへ戻る",
+        "createdAt": "作成",
+        "updatedAt": "更新",
+        "noContent": "本文はまだありません。"
+    },
+    "Login": {
+        "title": "ダッシュボード ログイン",
+        "email": "メールアドレス",
+        "password": "パスワード",
+        "submit": "ログイン",
+        "backToSite": "← サイトに戻る",
+        "errorInvalid": "メールアドレスまたはパスワードが違います。",
+        "errorRateLimit": "試行回数が多すぎます。10分ほど待ってから再試行してください。"
+    },
+    "NotFound": {
+        "code": "404 / Not Found",
+        "title": "ページが見つかりません",
+        "description": "お探しのページは存在しないか、移動された可能性があります。",
+        "backHome": "トップへ戻る",
+        "goProjects": "Projectsを見る"
+    },
+    "License": {
+        "title": "ライセンス",
+        "description": "このポートフォリオサイトのライセンス情報",
+        "tableLibrary": "ライブラリ",
+        "tableLicense": "ライセンス",
+        "tableSource": "ソース",
+        "sourceTitle": "ソースコードのライセンス",
+        "sourceDescription": "本サイトのソースコード（デザイン・実装・構成を含む）は、特に記載がない限り All Rights Reserved です。無断での複製・転用・改変・再配布は禁止されています。",
+        "contentTitle": "コンテンツの著作権",
+        "contentDescription": "本サイトに掲載されているテキスト、写真、イラスト、デザイン、レイアウト、ロゴ、その他の創作物（以下「コンテンツ」）は、特に記載がない限り著作権者（Aki）に帰属します。コンテンツの無断複製・転載・改変・二次利用は禁止されています。個人的な参照・引用の場合は、出典として本サイトの URL を明記してください。商用利用を希望される場合は、事前にお問い合わせフォームよりご連絡ください。",
+        "brandTitle": "第三者ロゴ・商標",
+        "brandDescription": "本サイト内で使用している第三者サービス名、ロゴ、アイコン、商標等は、それぞれの権利者に帰属します。これらは識別・紹介目的でのみ使用しており、各ブランドのガイドラインや利用条件に従います。",
+        "thirdPartyTitle": "サードパーティライブラリ",
+        "thirdPartyDescription": "本サイトは以下のオープンソースライブラリおよびフレームワークを使用しています。各ライブラリはそれぞれ固有のライセンスに従っており、詳細は各リポジトリをご確認ください。これらのライブラリの著作権は、それぞれの開発者または組織に帰属します。",
+        "backHome": "トップへ戻る"
+    },
+    "Terms": {
+        "title": "利用規約",
+        "description": "このポートフォリオサイトの利用規約",
+        "lastUpdated": "最終更新日: {date}",
+        "sectionNum": "第{n}条",
+        "privacyTitle": "個人情報の取扱い",
+        "privacyDescription": "当サイトのお問い合わせフォームを通じて取得した氏名・メールアドレスなどの個人情報は、お問い合わせへの回答および連絡のみを目的として使用します。ご本人の同意なく第三者に提供することはありません。また、法令に基づく場合を除き、目的外での利用は行いません。",
+        "governingTitle": "準拠法・管轄裁判所",
+        "governingDescription": "本規約の解釈および適用は、日本法に準拠するものとします。本規約に関する一切の紛争については、東京地方裁判所を第一審の専属的合意管轄裁判所とします。",
+        "acceptanceTitle": "規約への同意",
+        "acceptanceDescription": "本サイト（以下「当サイト」）にアクセスし、閲覧、利用することにより、利用者は本利用規約（以下「本規約」）のすべての条項に同意したものとみなされます。本規約に同意いただけない場合は、直ちに当サイトの利用を中止してください。本規約は、当サイトを利用するすべてのユーザーに適用されます。",
+        "useTitle": "サイトの利用",
+        "useDescription": "当サイトは個人ポートフォリオとして公開されており、運営者のスキル、プロジェクト実績、技術情報などの情報提供を目的としています。掲載情報の正確性・最新性には努めていますが、その完全性・正確性・有用性を保証するものではありません。当サイトの利用にあたっては、以下の行為を禁止します。（1）当サイトの正常な運営を妨害する行為、（2）不正アクセスまたはそれを試みる行為、（3）他者になりすます行為、（4）当サイトのコンテンツを無断で商用利用する行為、（5）その他、法令または公序良俗に反する行為。",
+        "ipTitle": "知的財産権",
+        "ipDescription": "当サイトのデザイン、テキスト、画像、ロゴ、アイコン、コード、その他すべてのコンテンツに関する知的財産権（著作権、商標権を含む）は、特に記載がない限り運営者に帰属します。これらのコンテンツを運営者の事前の書面による許諾なく、複製、改変、公衆送信、頒布、譲渡、貸与、翻訳、翻案その他の方法で利用することを禁止します。",
+        "disclaimerTitle": "免責事項",
+        "disclaimerDescription": "当サイトの利用は利用者自身の責任において行われるものとし、当サイトの利用（利用不能を含む）により利用者または第三者に生じた損害について、運営者は一切の責任を負いません。当サイトからリンクされた外部サイトの内容・安全性・正確性について、運営者は一切保証せず、責任を負いません。また、当サイトは予告なくサービスの中断、変更、終了を行うことがあります。",
+        "changesTitle": "規約の変更",
+        "changesDescription": "運営者は、必要に応じて本規約を予告なく改定することがあります。改定後の規約は、当サイトに掲載された時点で効力が生じます。重要な変更が行われた場合は、当サイト上で通知するよう努めますが、利用者は定期的に本規約を確認する責任を負います。改定後に当サイトを継続して利用した場合、利用者は改定後の規約に同意したものとみなされます。",
+        "contactTitle": "お問い合わせ",
+        "contactDescription": "本規約に関するご質問・ご意見、またはコンテンツの利用許諾に関するお問い合わせは、当サイト内のお問い合わせフォームよりご連絡ください。お問い合わせ内容によっては、回答までにお時間をいただく場合があります。",
+        "backHome": "トップへ戻る"
     }
-  },
-  "ActiveProjects": {
-    "sectionLabel": "// in_progress",
-    "heading": "Active Projects",
-    "projectColumn": "Project",
-    "empty": "進行中プロジェクトがまだありません。",
-    "stagePlanning": "企画",
-    "stageDesign": "設計",
-    "stageDevelopment": "実装",
-    "stageTesting": "テスト",
-    "stageCompleted": "完了"
-  },
-  "ProjectList": {
-    "backToTop": "← Projectsへ戻る",
-    "heading": "Projects Archive",
-    "description": "公開中プロジェクトの一覧です。",
-    "searchLabel": "検索",
-    "searchPlaceholder": "タイトル・説明・タグで検索...",
-    "createdAt": "作成",
-    "updatedAt": "更新",
-    "empty": "ただいま準備中です。もうしばらくお待ちください。",
-    "noResults": "一致するプロジェクトが見つかりませんでした。",
-    "prev": "前へ",
-    "next": "次へ"
-  },
-  "ProjectDetail": {
-    "backToProjects": "← Projectsへ戻る",
-    "backToArchive": "← Archiveへ戻る",
-    "createdAt": "作成",
-    "updatedAt": "更新",
-    "noContent": "本文はまだありません。"
-  },
-  "Login": {
-    "title": "ダッシュボード ログイン",
-    "email": "メールアドレス",
-    "password": "パスワード",
-    "submit": "ログイン",
-    "backToSite": "← サイトに戻る",
-    "errorInvalid": "メールアドレスまたはパスワードが違います。",
-    "errorRateLimit": "試行回数が多すぎます。10分ほど待ってから再試行してください。"
-  },
-  "NotFound": {
-    "code": "404 / Not Found",
-    "title": "ページが見つかりません",
-    "description": "お探しのページは存在しないか、移動された可能性があります。",
-    "backHome": "トップへ戻る",
-    "goProjects": "Projectsを見る"
-  },
-  "License": {
-    "title": "ライセンス",
-    "description": "このポートフォリオサイトのライセンス情報",
-    "tableLibrary": "ライブラリ",
-    "tableLicense": "ライセンス",
-    "tableSource": "ソース",
-    "sourceTitle": "ソースコードのライセンス",
-    "sourceDescription": "本サイトのソースコード（デザイン・実装・構成を含む）は、特に記載がない限り All Rights Reserved です。無断での複製・転用・改変・再配布は禁止されています。",
-    "contentTitle": "コンテンツの著作権",
-    "contentDescription": "本サイトに掲載されているテキスト、写真、イラスト、デザイン、レイアウト、ロゴ、その他の創作物（以下「コンテンツ」）は、特に記載がない限り著作権者（Aki）に帰属します。コンテンツの無断複製・転載・改変・二次利用は禁止されています。個人的な参照・引用の場合は、出典として本サイトの URL を明記してください。商用利用を希望される場合は、事前にお問い合わせフォームよりご連絡ください。",
-    "brandTitle": "第三者ロゴ・商標",
-    "brandDescription": "本サイト内で使用している第三者サービス名、ロゴ、アイコン、商標等は、それぞれの権利者に帰属します。これらは識別・紹介目的でのみ使用しており、各ブランドのガイドラインや利用条件に従います。",
-    "thirdPartyTitle": "サードパーティライブラリ",
-    "thirdPartyDescription": "本サイトは以下のオープンソースライブラリおよびフレームワークを使用しています。各ライブラリはそれぞれ固有のライセンスに従っており、詳細は各リポジトリをご確認ください。これらのライブラリの著作権は、それぞれの開発者または組織に帰属します。",
-    "backHome": "トップへ戻る"
-  },
-  "Terms": {
-    "title": "利用規約",
-    "description": "このポートフォリオサイトの利用規約",
-    "lastUpdated": "最終更新日: {date}",
-    "sectionNum": "第{n}条",
-    "privacyTitle": "個人情報の取扱い",
-    "privacyDescription": "当サイトのお問い合わせフォームを通じて取得した氏名・メールアドレスなどの個人情報は、お問い合わせへの回答および連絡のみを目的として使用します。ご本人の同意なく第三者に提供することはありません。また、法令に基づく場合を除き、目的外での利用は行いません。",
-    "governingTitle": "準拠法・管轄裁判所",
-    "governingDescription": "本規約の解釈および適用は、日本法に準拠するものとします。本規約に関する一切の紛争については、東京地方裁判所を第一審の専属的合意管轄裁判所とします。",
-    "acceptanceTitle": "規約への同意",
-    "acceptanceDescription": "本サイト（以下「当サイト」）にアクセスし、閲覧、利用することにより、利用者は本利用規約（以下「本規約」）のすべての条項に同意したものとみなされます。本規約に同意いただけない場合は、直ちに当サイトの利用を中止してください。本規約は、当サイトを利用するすべてのユーザーに適用されます。",
-    "useTitle": "サイトの利用",
-    "useDescription": "当サイトは個人ポートフォリオとして公開されており、運営者のスキル、プロジェクト実績、技術情報などの情報提供を目的としています。掲載情報の正確性・最新性には努めていますが、その完全性・正確性・有用性を保証するものではありません。当サイトの利用にあたっては、以下の行為を禁止します。（1）当サイトの正常な運営を妨害する行為、（2）不正アクセスまたはそれを試みる行為、（3）他者になりすます行為、（4）当サイトのコンテンツを無断で商用利用する行為、（5）その他、法令または公序良俗に反する行為。",
-    "ipTitle": "知的財産権",
-    "ipDescription": "当サイトのデザイン、テキスト、画像、ロゴ、アイコン、コード、その他すべてのコンテンツに関する知的財産権（著作権、商標権を含む）は、特に記載がない限り運営者に帰属します。これらのコンテンツを運営者の事前の書面による許諾なく、複製、改変、公衆送信、頒布、譲渡、貸与、翻訳、翻案その他の方法で利用することを禁止します。",
-    "disclaimerTitle": "免責事項",
-    "disclaimerDescription": "当サイトの利用は利用者自身の責任において行われるものとし、当サイトの利用（利用不能を含む）により利用者または第三者に生じた損害について、運営者は一切の責任を負いません。当サイトからリンクされた外部サイトの内容・安全性・正確性について、運営者は一切保証せず、責任を負いません。また、当サイトは予告なくサービスの中断、変更、終了を行うことがあります。",
-    "changesTitle": "規約の変更",
-    "changesDescription": "運営者は、必要に応じて本規約を予告なく改定することがあります。改定後の規約は、当サイトに掲載された時点で効力が生じます。重要な変更が行われた場合は、当サイト上で通知するよう努めますが、利用者は定期的に本規約を確認する責任を負います。改定後に当サイトを継続して利用した場合、利用者は改定後の規約に同意したものとみなされます。",
-    "contactTitle": "お問い合わせ",
-    "contactDescription": "本規約に関するご質問・ご意見、またはコンテンツの利用許諾に関するお問い合わせは、当サイト内のお問い合わせフォームよりご連絡ください。お問い合わせ内容によっては、回答までにお時間をいただく場合があります。",
-    "backHome": "トップへ戻る"
-  }
 }

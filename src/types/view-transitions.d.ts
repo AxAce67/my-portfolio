@@ -8,3 +8,7 @@ interface ViewTransition {
 interface Document {
     startViewTransition?(callback: () => void | Promise<void>): ViewTransition;
 }
+
+interface Window {
+    __resolveHomeProjectsTransition?: (() => void) | undefined;
+}

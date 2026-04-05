@@ -1,11 +1,11 @@
 import { notFound, redirect } from 'next/navigation';
-import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
 import { isAdminUser } from '@/lib/auth/admin';
 import { updateProjectAction } from '../../actions';
 import ToastNotice from '../../ToastNotice';
 import ProjectEditorForm from '@/components/dashboard/ProjectEditorForm';
+import { TransitionLink } from '@/components/ui/TransitionLink';
 
 export const dynamic = 'force-dynamic';
 
@@ -39,9 +39,9 @@ export default async function ProjectEditorPage({ params }: Props) {
     <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-10 sm:pb-20">
       <ToastNotice />
       <div className="mb-4 sm:mb-5">
-        <Link href={`/${locale}/dashboard?tab=projects`} className="text-xs font-mono text-muted-foreground hover:text-foreground">
+        <TransitionLink href={`/${locale}/dashboard?tab=projects`} className="text-xs font-mono text-muted-foreground hover:text-foreground" direction="backward">
           {t('backToDashboard')}
-        </Link>
+        </TransitionLink>
       </div>
       <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4 sm:mb-6">{t('editTitle')}</h1>
       <ProjectEditorForm

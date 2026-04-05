@@ -1,3 +1,5 @@
+import { getLocaleMeta } from '@/i18n/routing';
+
 export function toIsoCalendarDate(value: string | null | undefined) {
   if (!value) return null;
 
@@ -20,7 +22,7 @@ export function areSameCalendarDate(left: string | null | undefined, right: stri
   return leftDate === rightDate;
 }
 
-export function formatLocaleDate(value: string | null | undefined, locale: 'ja' | 'en') {
+export function formatLocaleDate(value: string | null | undefined, locale: string) {
   if (!value) return '-';
 
   const date = new Date(value);
@@ -28,7 +30,7 @@ export function formatLocaleDate(value: string | null | undefined, locale: 'ja' 
     return '-';
   }
 
-  return new Intl.DateTimeFormat(locale === 'ja' ? 'ja-JP' : 'en-US', {
+  return new Intl.DateTimeFormat(getLocaleMeta(locale).dateLocale, {
     year: 'numeric',
     month: 'short',
     day: 'numeric',

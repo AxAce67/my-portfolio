@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { ArrowUpRight, Send, Terminal, Code2, Globe, Box, Github, Twitter, Mail, List, LayoutGrid, CheckCircle2, Film, Sparkles, Wrench } from 'lucide-react';
 import { motion, useInView, useReducedMotion, AnimatePresence } from 'framer-motion';
 import { ScrollReveal, StaggerContainer, StaggerItem } from '@/components/ui/ScrollReveal';
+import { TransitionLink } from '@/components/ui/TransitionLink';
 import { Link } from '@/i18n/routing';
 import { useTransitionRouter } from 'next-view-transitions';
 import TechStackSectionStatic from '@/components/sections/TechStackSection';
@@ -97,6 +98,7 @@ const profileLinks = [
 type HomePageSectionsProps = {
   initialCompletedProjects: CompletedProject[];
   initialActiveProjects: ActiveProject[];
+  returningProjectId?: string | null;
 };
 
 type AboutStatItem = {
@@ -151,13 +153,14 @@ function getFocusableElements(container: HTMLElement) {
 export default function HomePageSections({
   initialCompletedProjects,
   initialActiveProjects,
+  returningProjectId = null,
 }: HomePageSectionsProps) {
   return (
     <>
       <AboutSection />
       <SkillsSection />
       <TechStackSection />
-      <ProjectsSection initialProjects={initialCompletedProjects} />
+      <ProjectsSection initialProjects={initialCompletedProjects} returningProjectId={returningProjectId} />
       <ActiveProjectsSection initialActiveProjects={initialActiveProjects} />
       <ContactSection />
     </>
@@ -875,7 +878,7 @@ function SkillsSection() {
   );
 }
 
-function ProjectsSection({ initialProjects }: { initialProjects: CompletedProject[] }) {
+function ProjectsSection({ initialProjects, returningProjectId }: { initialProjects: CompletedProject[]; returningProjectId?: string | null }) {
   const t = useTranslations('Projects');
   const locale = useLocale();
   const transitionRouter = useTransitionRouter();
@@ -977,7 +980,6 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                       ? 'aspect-video rounded-t-xl'
                       : 'w-[198px] min-w-[198px] sm:w-[313px] sm:min-w-[313px] rounded-l-xl rounded-tr-none shrink-0'
                       }`}
-                    style={{ viewTransitionName: `proj-${project.id}` }}
                   >
                     {project.image ? (
                       <Image
@@ -985,8 +987,13 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                         alt={`${project.title} thumbnail`}
                         fill
                         sizes={effectiveViewMode === 'grid' ? '(max-width: 640px) 50vw, 33vw' : '(max-width: 640px) 128px, 224px'}
-                        className="absolute inset-0 object-cover"
-                        loading="lazy"
+                        className={`absolute inset-0 object-cover ${effectiveViewMode === 'grid'
+                          ? 'rounded-t-xl'
+                          : 'rounded-l-xl rounded-tr-none'
+                          }`}
+                        loading={returningProjectId === project.id ? 'eager' : 'lazy'}
+                        fetchPriority={returningProjectId === project.id ? 'high' : undefined}
+                        style={{ viewTransitionName: `proj-${project.id}`, viewTransitionClass: 'project-media' }}
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
@@ -1015,11 +1022,11 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
                     {!isMobileViewport && project.createdAt && (
                       <div className="flex flex-wrap gap-3 mb-2">
                           <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wide">
-                            {t('createdAt')}: {formatLocaleDate(project.createdAt, locale === 'en' ? 'en' : 'ja')}
+                            {t('createdAt')}: {formatLocaleDate(project.createdAt, locale)}
                           </p>
                           {showUpdatedAt && (
                             <p className="text-[11px] font-mono text-muted-foreground uppercase tracking-wide">
-                              {t('updatedAt')}: {formatLocaleDate(project.updatedAt, locale === 'en' ? 'en' : 'ja')}
+                              {t('updatedAt')}: {formatLocaleDate(project.updatedAt, locale)}
                             </p>
                           )}
                       </div>
@@ -1051,9 +1058,9 @@ function ProjectsSection({ initialProjects }: { initialProjects: CompletedProjec
 
         {projects.length > 0 && (
           <div className="mt-6 flex justify-end">
-            <Link href="/projects" prefetch className="btn-outline px-4 py-2 text-xs">
+            <TransitionLink href="/projects" prefetch className="btn-outline px-4 py-2 text-xs">
               {t('viewAll')}
-            </Link>
+            </TransitionLink>
           </div>
         )}
       </div>

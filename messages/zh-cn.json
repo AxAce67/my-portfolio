@@ -1,0 +1,367 @@
+{
+    "Navigation": {
+        "about": "关于",
+        "skills": "技能",
+        "technologies": "技术栈",
+        "projects": "项目",
+        "timeline": "进行中",
+        "contact": "联系"
+    },
+    "Hero": {
+        "name": "Aki",
+        "role": "// 独立开发者 · 学生",
+        "title": "『把想法变成现实』",
+        "subtitle": "做自己喜欢的东西。仅此而已。",
+        "ctaPrimary": "查看项目"
+    },
+    "About": {
+        "sectionTitle": "// about/",
+        "heading": "关于",
+        "profileLabel": "简介",
+        "profileParagraph1": "我是住在日本的一名高中一年级学生，正在制作网站、Discord 机器人、Ubuntu 服务器和 Minecraft 服务器等个人项目。",
+        "profileParagraph2": "自从六年级接触 ChatGPT 以来，我一直在使用各种 AI 工具来改进工作流程，加快把想法做成可运行产品的速度。",
+        "profileParagraph3": "我的流程是先把想法整理成需求，快速做出 MVP，然后通过测试和改进持续迭代。",
+        "profileParagraph4": "我的优势在于设计思考、持续改进和调研能力。我会跟上趋势，同时兼顾可用性与可维护性。",
+        "statsProjects": "已发布项目",
+        "statsTechnologies": "使用技术",
+        "statsYears": "开发年数",
+        "statsCommits": "自建服务器",
+        "focusLabel": "关注点",
+        "momentum": {
+            "label": "开发动力仪表",
+            "description": "根据最近 7 天的提交记录，轻松读取我当前的开发状态。",
+            "weeklyCommits": "本周提交",
+            "streak": "连续天数",
+            "daySuffix": "天",
+            "updated": "更新时间",
+            "unavailable": "暂时无法读取仪表，请稍后再试。",
+            "note": "这些数字仅供参考。动力值已包含在内。"
+        },
+        "focus": {
+            "productThinking": "产品思维",
+            "rapidPrototyping": "快速原型",
+            "uiUxDesign": "UI/UX 设计",
+            "problemSolving": "问题解决",
+            "research": "调研",
+            "continuousImprovement": "持续改进"
+        },
+        "linksLabel": "链接",
+        "role": "独立开发者"
+    },
+    "Skills": {
+        "sectionTitle": "// skills/",
+        "heading": "技能",
+        "subtitle": "日常使用的工具与优势",
+        "categories": {
+            "languages": "语言",
+            "stack": "技术栈",
+            "ai": "AI 工具",
+            "creative": "创意工具"
+        },
+        "descriptions": {
+            "languages": "主要用于 Web 开发的编程语言",
+            "stack": "用于构建、部署和运维应用的平台与库",
+            "ai": "我每天用于实现、设计和学习的 AI 工具",
+            "creative": "用于视频编辑和内容创作的工具"
+        },
+        "levels": {
+            "main": "主力",
+            "familiar": "实战",
+            "learning": "学习中"
+        }
+    },
+    "TechStack": {
+        "sectionTitle": "// tech_stack/",
+        "heading": "技术栈",
+        "subtitle": "我经常使用的技术与服务"
+    },
+    "Projects": {
+        "sectionTitle": "// projects/",
+        "heading": "项目",
+        "viewList": "列表",
+        "viewGrid": "网格",
+        "viewAll": "查看全部",
+        "createdAt": "创建于",
+        "updatedAt": "更新于",
+        "noPublishedProjects": "即将上线，感谢你的耐心等待。"
+    },
+    "Contact": {
+        "sectionTitle": "> send_message",
+        "heading": "联系",
+        "description": "如有问题、委托或反馈，欢迎随时联系。",
+        "name": "姓名",
+        "namePlaceholder": "你的名字",
+        "email": "邮箱",
+        "emailPlaceholder": "your@email.com",
+        "subject": "主题",
+        "subjectPlaceholder": "这条消息是关于什么？",
+        "message": "内容",
+        "messagePlaceholder": "在这里输入你的消息...",
+        "preview": "确认内容",
+        "verifying": "正在验证...",
+        "sending": "正在发送...",
+        "previewTitle": "确认你的消息",
+        "previewDescription": "发送前请再次确认内容。",
+        "backToEdit": "返回编辑",
+        "confirmSend": "发送消息",
+        "successTitle": "发送成功",
+        "success": "消息已成功发送！",
+        "successAutoClose": "此对话框将在几秒后自动关闭",
+        "close": "关闭",
+        "turnstileRequired": "发送前请完成验证。",
+        "error": "发送失败，请稍后重试。"
+    },
+    "Footer": {
+        "tagline": "做自己喜欢的东西。仅此而已。",
+        "copyright": "© {year} 保留所有权利。",
+        "terms": "使用条款",
+        "license": "许可"
+    },
+    "Language": {
+        "label": "语言",
+        "switchTo": "切换到{language}"
+    },
+    "Dashboard": {
+        "title": "Portfolio Dashboard",
+        "subtitle": "管理你已发布的作品集内容。",
+        "signOut": "退出登录",
+        "noAdmin": "此账号没有管理员权限。",
+        "tabs": {
+            "projects": "项目",
+            "activeProjects": "进行中项目",
+            "audit": "审计日志"
+        },
+        "actions": {
+            "read": "查看",
+            "edit": "编辑"
+        },
+        "publish": {
+            "published": "已发布",
+            "draft": "草稿"
+        },
+        "status": {
+            "idea": "想法",
+            "design": "设计",
+            "development": "开发",
+            "completed": "已完成",
+            "on_hold": "暂停中"
+        },
+        "projects": {
+            "manageTitle": "项目管理",
+            "manageDescription": "请在专用编辑页面创建新项目。",
+            "newProject": "新建项目",
+            "listTitle": "项目",
+            "empty": "还没有项目。"
+        },
+        "toast": {
+            "project_created": "项目已创建。",
+            "project_updated": "项目已更新。",
+            "project_deleted": "项目已删除。",
+            "project_create_failed": "创建项目失败。",
+            "project_update_failed": "更新项目失败。",
+            "project_delete_failed": "删除项目失败。",
+            "active_created": "进行中项目已创建。",
+            "active_updated": "进行中项目已更新。",
+            "active_deleted": "进行中项目已删除。",
+            "active_create_failed": "创建进行中项目失败。",
+            "active_update_failed": "更新进行中项目失败。",
+            "active_delete_failed": "删除进行中项目失败。"
+        },
+        "deleteProject": {
+            "button": "删除",
+            "title": "删除项目？",
+            "description": "删除“{title}”。此操作无法撤销。",
+            "cancel": "取消",
+            "confirm": "删除"
+        },
+        "active": {
+            "title": "进行中项目",
+            "description": "管理排序、阶段和发布状态。",
+            "newButton": "新建进行中项目",
+            "priority": "优先级",
+            "published": "已发布",
+            "draft": "草稿",
+            "empty": "还没有进行中项目。",
+            "stage": {
+                "planning": "规划",
+                "design": "设计",
+                "development": "开发",
+                "testing": "测试",
+                "completed": "已完成"
+            },
+            "fields": {
+                "name": "名称",
+                "namePlaceholder": "名称",
+                "stage": "阶段",
+                "priority": "优先级"
+            },
+            "createModal": {
+                "title": "创建进行中项目"
+            },
+            "editModal": {
+                "title": "编辑进行中项目"
+            },
+            "deleteModal": {
+                "title": "删除进行中项目？",
+                "description": "删除“{name}”。此操作无法撤销。"
+            },
+            "actions": {
+                "edit": "编辑",
+                "delete": "删除",
+                "close": "关闭",
+                "create": "创建",
+                "update": "更新",
+                "cancel": "取消"
+            }
+        },
+        "audit": {
+            "title": "认证审计日志",
+            "description": "显示所有登录成功/失败日志，并支持分页。",
+            "authTab": "认证日志",
+            "cspTab": "CSP 日志",
+            "filterAll": "全部",
+            "filterSuccess": "成功",
+            "filterInvalid": "失败",
+            "filterRateLimited": "受限",
+            "total": "总数",
+            "empty": "还没有审计日志。",
+            "notConfigured": "审计日志表尚未配置，请先应用 SQL 设置。",
+            "prev": "上一页",
+            "next": "下一页",
+            "cspTitle": "CSP 违规报告",
+            "cspDescription": "浏览器上报的 CSP 违规日志。",
+            "cspEmpty": "还没有 CSP 违规日志。",
+            "cspNotConfigured": "CSP 日志表尚未配置，请先应用 SQL 设置。",
+            "labelEmail": "邮箱",
+            "labelIp": "IP",
+            "labelIpHash": "IP 哈希",
+            "labelUserId": "用户 ID",
+            "labelLocale": "语言区域",
+            "labelUserAgent": "User-Agent",
+            "labelDirective": "指令",
+            "labelBlocked": "被阻止资源",
+            "labelDocument": "文档",
+            "labelDisposition": "处置方式"
+        },
+        "editor": {
+            "backToDashboard": "← 返回控制台",
+            "draftLabel": "项目草稿",
+            "createTitle": "创建项目",
+            "createDescription": "使用类似 Notion 的编辑器创建包含标题、列表和图片的文章。",
+            "createSubmit": "创建项目",
+            "editTitle": "项目编辑器",
+            "saveChanges": "保存更改"
+        },
+        "editorForm": {
+            "title": "标题",
+            "titlePlaceholder": "项目名称",
+            "description": "说明",
+            "descriptionPlaceholder": "摘要（2-3 句）",
+            "thumbnail": "缩略图",
+            "thumbnailHint": "JPG / PNG / WEBP，最大 5MB",
+            "thumbnailPreview": "16:9 缩略图预览",
+            "thumbnailRecommended": "推荐：",
+            "thumbnailSafeArea": "安全区域中心：",
+            "articleContent": "文章内容",
+            "published": "已发布",
+            "uploadAuthError": "上传文件前请先登录。",
+            "uploadTypeError": "仅支持 JPG / PNG / WEBP / AVIF 文件。",
+            "uploadSizeError": "文件大小请控制在 5MB 以内。",
+            "editorTipPrefix": "输入",
+            "editorTipSuffix": "以显示区块选项。已启用图片/文件上传。",
+            "status": {
+                "idea": "想法",
+                "design": "设计",
+                "development": "开发",
+                "completed": "已完成",
+                "on_hold": "暂停中"
+            }
+        }
+    },
+    "ActiveProjects": {
+        "sectionLabel": "// in_progress",
+        "heading": "进行中项目",
+        "projectColumn": "项目",
+        "empty": "还没有进行中项目。",
+        "stagePlanning": "规划",
+        "stageDesign": "设计",
+        "stageDevelopment": "开发",
+        "stageTesting": "测试",
+        "stageCompleted": "已完成"
+    },
+    "ProjectList": {
+        "backToTop": "← 返回项目",
+        "heading": "项目档案",
+        "description": "已公开项目的完整列表。",
+        "searchLabel": "搜索",
+        "searchPlaceholder": "按标题、描述或标签搜索...",
+        "createdAt": "创建于",
+        "updatedAt": "更新于",
+        "empty": "即将上线，感谢你的耐心等待。",
+        "noResults": "未找到匹配的项目。",
+        "prev": "上一页",
+        "next": "下一页"
+    },
+    "ProjectDetail": {
+        "backToProjects": "← 返回项目",
+        "backToArchive": "← 返回归档",
+        "createdAt": "创建于",
+        "updatedAt": "更新于",
+        "noContent": "暂时还没有内容。"
+    },
+    "Login": {
+        "title": "控制台登录",
+        "email": "邮箱",
+        "password": "密码",
+        "submit": "登录",
+        "backToSite": "← 返回网站",
+        "errorInvalid": "邮箱或密码不正确。",
+        "errorRateLimit": "尝试次数过多，请等待约 10 分钟后再试。"
+    },
+    "NotFound": {
+        "code": "404 / Not Found",
+        "title": "页面未找到",
+        "description": "你访问的页面不存在，或可能已被移动。",
+        "backHome": "返回首页",
+        "goProjects": "前往项目"
+    },
+    "License": {
+        "title": "许可",
+        "description": "此作品集网站的许可信息",
+        "tableLibrary": "库",
+        "tableLicense": "许可",
+        "tableSource": "来源",
+        "sourceTitle": "源代码许可",
+        "sourceDescription": "除非另有说明，本网站的源代码及其设计、实现和配置均保留所有权利。未经授权，禁止复制、挪用、修改或再分发。",
+        "contentTitle": "内容版权",
+        "contentDescription": "除非另有说明，本网站上发布的所有文字、照片、插图、设计、版式、标志及其他创作内容（以下统称“内容”）均归作者（Aki）所有。未经授权，禁止复制、再分发、修改或二次使用这些内容。若仅作个人参考或引用，请明确标注来源并附上本站 URL。若用于商业用途，请事先通过联系表单取得许可。",
+        "brandTitle": "第三方标志与商标",
+        "brandDescription": "本网站使用的第三方服务名称、标志、图标和商标均归其各自权利人所有。它们仅用于识别和说明目的，并仍受各品牌适用指南和使用条款约束。",
+        "thirdPartyTitle": "第三方库",
+        "thirdPartyDescription": "本网站使用了以下开源库和框架。各库均受其各自许可协议约束，详情请参阅对应仓库。这些库的版权归其开发者或组织所有。",
+        "backHome": "返回首页"
+    },
+    "Terms": {
+        "title": "使用条款",
+        "description": "此作品集网站的使用条款",
+        "lastUpdated": "最后更新：{date}",
+        "sectionNum": "第 {n} 条",
+        "privacyTitle": "个人信息",
+        "privacyDescription": "通过本网站联系表单收集的姓名、电子邮箱等个人信息，仅用于回复咨询及与用户沟通。未经用户同意，不会向第三方提供，也不会用于上述目的之外的用途，但法律法规要求的情况除外。",
+        "governingTitle": "适用法律与管辖",
+        "governingDescription": "本条款受日本法律管辖并依其解释。因本条款引起或与之相关的争议，东京地方法院为第一审专属管辖法院。",
+        "acceptanceTitle": "条款的接受",
+        "acceptanceDescription": "当你访问、浏览或使用本网站（以下简称“本站”）时，即表示你同意遵守本使用条款（以下简称“本条款”）的全部内容。如不同意本条款，请立即停止使用本站。本条款适用于所有访问或使用本站的用户。",
+        "useTitle": "网站的使用",
+        "useDescription": "本站作为个人作品集公开，用于展示运营者的技能、项目经历与技术信息。虽然会尽力确保信息准确且及时，但不保证其完整性、准确性或实用性。禁止以下行为：（1）妨碍本站正常运行；（2）尝试或实施未授权访问；（3）冒充他人；（4）未经许可将本站内容用于商业用途；（5）其他违反适用法律或公共秩序的行为。",
+        "ipTitle": "知识产权",
+        "ipDescription": "除非另有说明，本站的设计、文字、图片、标志、图标、代码及其他所有内容的知识产权（包括著作权和商标权）均归运营者所有。未经运营者事先书面许可，禁止复制、修改、公开传播、分发、转让、出借、翻译、改编或以其他方式使用上述内容。",
+        "disclaimerTitle": "免责声明",
+        "disclaimerDescription": "使用本站所产生的风险由用户自行承担。对于用户或任何第三方因使用（或无法使用）本站而遭受的任何损失，运营者概不负责。对于本站所链接的外部网站的内容、安全性或准确性，运营者不作任何保证，也不承担任何责任。本站可能在不另行通知的情况下中断、修改或终止。",
+        "changesTitle": "条款变更",
+        "changesDescription": "运营者可在认为必要时不经事先通知修改本条款。修订后的条款自公布于本站时起生效。对于重要变更，本站将尽量予以提示，但用户仍有责任定期查看本条款。修订后继续使用本站，即视为接受修订后的条款。",
+        "contactTitle": "联系",
+        "contactDescription": "如对本条款有疑问、意见，或有内容授权相关咨询，请使用本站联系表单。根据咨询内容不同，回复可能需要一些时间。",
+        "backHome": "返回首页"
+    }
+}

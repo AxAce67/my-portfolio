@@ -1,0 +1,367 @@
+{
+    "Navigation": {
+        "about": "À propos",
+        "skills": "Compétences",
+        "technologies": "Stack",
+        "projects": "Projets",
+        "timeline": "En cours",
+        "contact": "Contact"
+    },
+    "Hero": {
+        "name": "Aki",
+        "role": "// développeur indépendant · étudiant",
+        "title": "『Transformer les idées en réalité』",
+        "subtitle": "Je construis ce que j'aime. C'est tout.",
+        "ctaPrimary": "Voir les projets"
+    },
+    "About": {
+        "sectionTitle": "// about/",
+        "heading": "À propos",
+        "profileLabel": "Profil",
+        "profileParagraph1": "Je suis en première année de lycée au Japon et je développe des projets personnels tels que des sites web, des bots Discord, des serveurs Ubuntu et des serveurs Minecraft.",
+        "profileParagraph2": "Depuis que j'ai découvert ChatGPT en sixième, j'utilise différents outils d'IA pour améliorer mon flux de travail et accélérer la transformation des idées en produits fonctionnels.",
+        "profileParagraph3": "Mon processus consiste à transformer des idées en exigences, construire rapidement un MVP, puis itérer grâce aux tests et aux améliorations.",
+        "profileParagraph4": "Mes points forts sont la réflexion design, l'amélioration continue et la recherche. Je suis les tendances tout en gardant l'utilisabilité et la maintenabilité en tête.",
+        "statsProjects": "Projets publiés",
+        "statsTechnologies": "Technologies utilisées",
+        "statsYears": "Années de création",
+        "statsCommits": "Serveurs auto-hébergés",
+        "focusLabel": "Focus",
+        "momentum": {
+            "label": "Baromètre de motivation",
+            "description": "Une lecture légère de mon énergie actuelle de développement à partir des commits des 7 derniers jours.",
+            "weeklyCommits": "Commits cette semaine",
+            "streak": "Série",
+            "daySuffix": "j",
+            "updated": "Mis à jour",
+            "unavailable": "Le baromètre est indisponible pour le moment. Merci de réessayer plus tard.",
+            "note": "Les chiffres sont indicatifs. Motivation incluse."
+        },
+        "focus": {
+            "productThinking": "Pensée produit",
+            "rapidPrototyping": "Prototypage rapide",
+            "uiUxDesign": "Design UI/UX",
+            "problemSolving": "Résolution de problèmes",
+            "research": "Recherche",
+            "continuousImprovement": "Amélioration continue"
+        },
+        "linksLabel": "Liens",
+        "role": "Développeur indépendant"
+    },
+    "Skills": {
+        "sectionTitle": "// skills/",
+        "heading": "Compétences",
+        "subtitle": "Outils et points forts du quotidien",
+        "categories": {
+            "languages": "Langages",
+            "stack": "Stack",
+            "ai": "Outils IA",
+            "creative": "Créatif"
+        },
+        "descriptions": {
+            "languages": "Langages de programmation principalement utilisés pour le développement web",
+            "stack": "Plateformes et bibliothèques utilisées pour créer, déployer et exploiter des applications",
+            "ai": "Outils IA que j'utilise au quotidien pour développer, concevoir et apprendre",
+            "creative": "Outils de montage vidéo et de création de contenu"
+        },
+        "levels": {
+            "main": "Principal",
+            "familiar": "Production",
+            "learning": "En apprentissage"
+        }
+    },
+    "TechStack": {
+        "sectionTitle": "// tech_stack/",
+        "heading": "Stack",
+        "subtitle": "Technologies et services que j'utilise régulièrement"
+    },
+    "Projects": {
+        "sectionTitle": "// projects/",
+        "heading": "Projets",
+        "viewList": "Liste",
+        "viewGrid": "Grille",
+        "viewAll": "Tout voir",
+        "createdAt": "Créé",
+        "updatedAt": "Mis à jour",
+        "noPublishedProjects": "Bientôt disponible. Merci pour votre patience."
+    },
+    "Contact": {
+        "sectionTitle": "> send_message",
+        "heading": "Contact",
+        "description": "Questions, demandes ou retours : n'hésitez pas à me contacter.",
+        "name": "Nom",
+        "namePlaceholder": "Votre nom",
+        "email": "E-mail",
+        "emailPlaceholder": "your@email.com",
+        "subject": "Sujet",
+        "subjectPlaceholder": "De quoi s'agit-il ?",
+        "message": "Message",
+        "messagePlaceholder": "Saisissez votre message ici...",
+        "preview": "Vérifier le message",
+        "verifying": "Vérification...",
+        "sending": "Envoi...",
+        "previewTitle": "Vérifiez votre message",
+        "previewDescription": "Merci de confirmer les informations avant l'envoi.",
+        "backToEdit": "Retour à l'édition",
+        "confirmSend": "Envoyer le message",
+        "successTitle": "Message envoyé",
+        "success": "Message envoyé avec succès !",
+        "successAutoClose": "Cette fenêtre se fermera dans quelques secondes",
+        "close": "Fermer",
+        "turnstileRequired": "Veuillez terminer la vérification avant d'envoyer.",
+        "error": "Échec de l'envoi. Veuillez réessayer."
+    },
+    "Footer": {
+        "tagline": "Je construis ce que j'aime. C'est tout.",
+        "copyright": "© {year} Tous droits réservés.",
+        "terms": "Conditions d'utilisation",
+        "license": "Licence"
+    },
+    "Language": {
+        "label": "Langue",
+        "switchTo": "Passer à {language}"
+    },
+    "Dashboard": {
+        "title": "Portfolio Dashboard",
+        "subtitle": "Gérez le contenu publié de votre portfolio.",
+        "signOut": "Se déconnecter",
+        "noAdmin": "Ce compte n'a pas accès à l'administration.",
+        "tabs": {
+            "projects": "Projets",
+            "activeProjects": "Projets en cours",
+            "audit": "Journaux d'audit"
+        },
+        "actions": {
+            "read": "Lire",
+            "edit": "Modifier"
+        },
+        "publish": {
+            "published": "publié",
+            "draft": "brouillon"
+        },
+        "status": {
+            "idea": "Idée",
+            "design": "Design",
+            "development": "Développement",
+            "completed": "Terminé",
+            "on_hold": "En pause"
+        },
+        "projects": {
+            "manageTitle": "Gestion des projets",
+            "manageDescription": "Créez de nouveaux projets depuis la page d'édition dédiée.",
+            "newProject": "Nouveau projet",
+            "listTitle": "Projets",
+            "empty": "Aucun projet pour le moment."
+        },
+        "toast": {
+            "project_created": "Projet créé.",
+            "project_updated": "Projet mis à jour.",
+            "project_deleted": "Projet supprimé.",
+            "project_create_failed": "Échec de la création du projet.",
+            "project_update_failed": "Échec de la mise à jour du projet.",
+            "project_delete_failed": "Échec de la suppression du projet.",
+            "active_created": "Projet en cours créé.",
+            "active_updated": "Projet en cours mis à jour.",
+            "active_deleted": "Projet en cours supprimé.",
+            "active_create_failed": "Échec de la création du projet en cours.",
+            "active_update_failed": "Échec de la mise à jour du projet en cours.",
+            "active_delete_failed": "Échec de la suppression du projet en cours."
+        },
+        "deleteProject": {
+            "button": "Supprimer",
+            "title": "Supprimer le projet ?",
+            "description": "Supprimer « {title} ». Cette action est irréversible.",
+            "cancel": "Annuler",
+            "confirm": "Supprimer"
+        },
+        "active": {
+            "title": "Projets en cours",
+            "description": "Gérez l'ordre, l'étape et le statut de publication.",
+            "newButton": "Nouveau projet en cours",
+            "priority": "priorité",
+            "published": "publié",
+            "draft": "brouillon",
+            "empty": "Aucun projet en cours pour le moment.",
+            "stage": {
+                "planning": "Planification",
+                "design": "Design",
+                "development": "Développement",
+                "testing": "Tests",
+                "completed": "Terminé"
+            },
+            "fields": {
+                "name": "Nom",
+                "namePlaceholder": "Nom",
+                "stage": "Étape",
+                "priority": "Priorité"
+            },
+            "createModal": {
+                "title": "Créer un projet en cours"
+            },
+            "editModal": {
+                "title": "Modifier le projet en cours"
+            },
+            "deleteModal": {
+                "title": "Supprimer le projet en cours ?",
+                "description": "Supprimer « {name} ». Cette action est irréversible."
+            },
+            "actions": {
+                "edit": "Modifier",
+                "delete": "Supprimer",
+                "close": "Fermer",
+                "create": "Créer",
+                "update": "Mettre à jour",
+                "cancel": "Annuler"
+            }
+        },
+        "audit": {
+            "title": "Journaux d'audit d'authentification",
+            "description": "Affiche tous les journaux de connexion réussie/échouée avec pagination.",
+            "authTab": "Journaux d'authentification",
+            "cspTab": "Journaux CSP",
+            "filterAll": "Tous",
+            "filterSuccess": "Réussite",
+            "filterInvalid": "Échec",
+            "filterRateLimited": "Limité",
+            "total": "Total",
+            "empty": "Aucun journal d'audit pour le moment.",
+            "notConfigured": "La table d'audit n'est pas configurée. Veuillez d'abord appliquer la configuration SQL.",
+            "prev": "Précédent",
+            "next": "Suivant",
+            "cspTitle": "Rapports de violation CSP",
+            "cspDescription": "Journaux de violation CSP signalés par les navigateurs.",
+            "cspEmpty": "Aucun journal de violation CSP pour le moment.",
+            "cspNotConfigured": "La table des journaux CSP n'est pas configurée. Veuillez d'abord appliquer la configuration SQL.",
+            "labelEmail": "e-mail",
+            "labelIp": "ip",
+            "labelIpHash": "hachage ip",
+            "labelUserId": "id utilisateur",
+            "labelLocale": "langue",
+            "labelUserAgent": "user agent",
+            "labelDirective": "directive",
+            "labelBlocked": "bloqué",
+            "labelDocument": "document",
+            "labelDisposition": "disposition"
+        },
+        "editor": {
+            "backToDashboard": "← Retour au tableau de bord",
+            "draftLabel": "Brouillon du projet",
+            "createTitle": "Créer un projet",
+            "createDescription": "Utilisez un éditeur de style Notion pour créer des articles avec titres, listes et images.",
+            "createSubmit": "Créer un projet",
+            "editTitle": "Éditeur de projet",
+            "saveChanges": "Enregistrer les modifications"
+        },
+        "editorForm": {
+            "title": "Titre",
+            "titlePlaceholder": "Nom du projet",
+            "description": "Description",
+            "descriptionPlaceholder": "Résumé (2-3 phrases)",
+            "thumbnail": "Image miniature",
+            "thumbnailHint": "JPG / PNG / WEBP, jusqu'à 5 Mo",
+            "thumbnailPreview": "Aperçu miniature 16:9",
+            "thumbnailRecommended": "Recommandé :",
+            "thumbnailSafeArea": "Centre de la zone sûre :",
+            "articleContent": "Contenu de l'article",
+            "published": "Publié",
+            "uploadAuthError": "Veuillez vous connecter avant de téléverser des fichiers.",
+            "uploadTypeError": "Seuls les fichiers JPG / PNG / WEBP / AVIF sont autorisés.",
+            "uploadSizeError": "Veuillez limiter la taille du fichier à 5 Mo maximum.",
+            "editorTipPrefix": "Tapez",
+            "editorTipSuffix": "pour afficher les options de bloc. Le téléversement d'images/fichiers est activé.",
+            "status": {
+                "idea": "Idée",
+                "design": "Design",
+                "development": "Développement",
+                "completed": "Terminé",
+                "on_hold": "En pause"
+            }
+        }
+    },
+    "ActiveProjects": {
+        "sectionLabel": "// in_progress",
+        "heading": "Projets en cours",
+        "projectColumn": "Projet",
+        "empty": "Aucun projet en cours pour le moment.",
+        "stagePlanning": "Planification",
+        "stageDesign": "Design",
+        "stageDevelopment": "Développement",
+        "stageTesting": "Tests",
+        "stageCompleted": "Terminé"
+    },
+    "ProjectList": {
+        "backToTop": "← Retour aux projets",
+        "heading": "Archives des projets",
+        "description": "Liste complète des projets publiés.",
+        "searchLabel": "Recherche",
+        "searchPlaceholder": "Rechercher par titre, description ou tag...",
+        "createdAt": "Créé",
+        "updatedAt": "Mis à jour",
+        "empty": "Bientôt disponible. Merci pour votre patience.",
+        "noResults": "Aucun projet correspondant trouvé.",
+        "prev": "Précédent",
+        "next": "Suivant"
+    },
+    "ProjectDetail": {
+        "backToProjects": "← Retour aux projets",
+        "backToArchive": "← Retour aux archives",
+        "createdAt": "Créé",
+        "updatedAt": "Mis à jour",
+        "noContent": "Aucun contenu pour le moment."
+    },
+    "Login": {
+        "title": "Connexion au tableau de bord",
+        "email": "E-mail",
+        "password": "Mot de passe",
+        "submit": "Se connecter",
+        "backToSite": "← Retour au site",
+        "errorInvalid": "Adresse e-mail ou mot de passe incorrect.",
+        "errorRateLimit": "Trop de tentatives. Veuillez attendre environ 10 minutes avant de réessayer."
+    },
+    "NotFound": {
+        "code": "404 / Not Found",
+        "title": "Page introuvable",
+        "description": "La page demandée n'existe pas ou a peut-être été déplacée.",
+        "backHome": "Retour à l'accueil",
+        "goProjects": "Aller aux projets"
+    },
+    "License": {
+        "title": "Licence",
+        "description": "Informations de licence pour ce site portfolio",
+        "tableLibrary": "Bibliothèque",
+        "tableLicense": "Licence",
+        "tableSource": "Source",
+        "sourceTitle": "Licence du code source",
+        "sourceDescription": "Sauf indication contraire, le code source de ce site, y compris son design, son implémentation et sa configuration, est protégé par tous droits réservés. Toute reproduction, réutilisation, modification ou redistribution non autorisée est interdite.",
+        "contentTitle": "Droits d'auteur sur le contenu",
+        "contentDescription": "Tous les textes, photographies, illustrations, designs, mises en page, logos et autres créations (collectivement, le « Contenu ») publiés sur ce site sont la propriété de l'auteur (Aki), sauf indication contraire. Toute reproduction, redistribution, modification ou réutilisation secondaire du Contenu sans autorisation est interdite. Pour une référence personnelle ou une citation, merci d'indiquer clairement la source en incluant l'URL de ce site. Pour un usage commercial, merci de nous contacter à l'avance via le formulaire de contact.",
+        "brandTitle": "Logos et marques de tiers",
+        "brandDescription": "Les noms de services, logos, icônes et marques de tiers utilisés sur ce site restent la propriété de leurs détenteurs respectifs. Ils sont utilisés uniquement à des fins d'identification et de référence, et restent soumis aux directives et conditions d'utilisation applicables à chaque marque.",
+        "thirdPartyTitle": "Bibliothèques tierces",
+        "thirdPartyDescription": "Ce site utilise les bibliothèques et frameworks open source suivants. Chaque bibliothèque est régie par sa propre licence, et les détails peuvent être consultés dans les dépôts correspondants. Les droits d'auteur de ces bibliothèques appartiennent à leurs développeurs ou organisations respectifs.",
+        "backHome": "Retour à l'accueil"
+    },
+    "Terms": {
+        "title": "Conditions d'utilisation",
+        "description": "Conditions d'utilisation de ce site portfolio",
+        "lastUpdated": "Dernière mise à jour : {date}",
+        "sectionNum": "Section {n}",
+        "privacyTitle": "Informations personnelles",
+        "privacyDescription": "Les informations personnelles telles que le nom et l'adresse e-mail collectées via le formulaire de contact de ce site sont utilisées uniquement pour répondre aux demandes et communiquer avec l'utilisateur. Elles ne seront pas partagées avec des tiers sans le consentement de l'utilisateur et ne seront pas utilisées à d'autres fins, sauf si la loi applicable l'exige.",
+        "governingTitle": "Droit applicable et juridiction",
+        "governingDescription": "Les présentes Conditions sont régies et interprétées conformément au droit japonais. Tout litige découlant des présentes Conditions ou s'y rapportant relève de la compétence exclusive du tribunal de district de Tokyo en première instance.",
+        "acceptanceTitle": "Acceptation des conditions",
+        "acceptanceDescription": "En accédant à ce site, en le parcourant ou en l'utilisant (ci-après le « Site »), vous acceptez d'être lié par toutes les dispositions des présentes Conditions d'utilisation (ci-après les « Conditions »). Si vous n'acceptez pas ces Conditions, veuillez cesser immédiatement d'utiliser le Site. Ces Conditions s'appliquent à tous les utilisateurs qui accèdent au Site ou l'utilisent.",
+        "useTitle": "Utilisation du site",
+        "useDescription": "Le Site est publié en tant que portfolio personnel afin de présenter les compétences, l'historique des projets et les informations techniques de son exploitant. Bien que tout soit mis en œuvre pour assurer l'exactitude et l'actualité des informations, leur exhaustivité, leur exactitude ou leur utilité ne sont pas garanties. Les activités suivantes sont interdites : (1) perturber le fonctionnement normal du Site, (2) tenter ou réaliser un accès non autorisé, (3) se faire passer pour une autre personne, (4) utiliser le contenu du Site à des fins commerciales sans autorisation, et (5) tout autre acte contraire aux lois applicables ou à l'ordre public.",
+        "ipTitle": "Propriété intellectuelle",
+        "ipDescription": "Tous les droits de propriété intellectuelle (y compris les droits d'auteur et de marque) liés au design, au texte, aux images, aux logos, aux icônes, au code et à tout autre contenu du Site appartiennent à l'exploitant, sauf indication contraire. Toute reproduction, modification, communication publique, distribution, transfert, prêt, traduction, adaptation ou tout autre usage de ce contenu sans l'accord écrit préalable de l'exploitant est interdit.",
+        "disclaimerTitle": "Clause de non-responsabilité",
+        "disclaimerDescription": "L'utilisation du Site se fait aux risques et périls de l'utilisateur. L'exploitant décline toute responsabilité pour les dommages subis par l'utilisateur ou un tiers résultant de l'utilisation du Site ou de l'impossibilité de l'utiliser. L'exploitant ne garantit pas et n'assume aucune responsabilité quant au contenu, à la sécurité ou à l'exactitude des sites externes liés depuis le Site. Le Site peut être interrompu, modifié ou supprimé sans préavis.",
+        "changesTitle": "Modification des conditions",
+        "changesDescription": "L'exploitant peut réviser les présentes Conditions sans préavis lorsque cela est jugé nécessaire. Les Conditions révisées entrent en vigueur dès leur publication sur le Site. Bien que l'exploitant s'efforce d'annoncer les changements importants sur le Site, il appartient aux utilisateurs de consulter régulièrement les présentes Conditions. L'utilisation continue du Site après une révision vaut acceptation des Conditions modifiées.",
+        "contactTitle": "Contact",
+        "contactDescription": "Pour toute question ou remarque concernant les présentes Conditions, ou pour toute demande relative à la licence du contenu, veuillez utiliser le formulaire de contact du Site. Selon la nature de la demande, un certain délai de réponse peut être nécessaire.",
+        "backHome": "Retour à l'accueil"
+    }
+}

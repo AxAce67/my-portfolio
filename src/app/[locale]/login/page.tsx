@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { loginAction } from './actions';
+import { TransitionLink } from '@/components/ui/TransitionLink';
 import { sanitizeInternalPath } from '@/lib/security';
 
 export const dynamic = 'force-dynamic';
@@ -48,9 +48,9 @@ export default async function LoginPage({ params, searchParams }: Props) {
         </form>
 
       </div>
-      <Link href={`/${locale}`} className="mt-4 inline-block text-xs font-mono text-muted-foreground hover:text-foreground">
+      <TransitionLink href={`/${locale}`} className="mt-4 inline-block text-xs font-mono text-muted-foreground hover:text-foreground" direction="backward">
         {t('backToSite')}
-      </Link>
+      </TransitionLink>
     </section>
   );
 }

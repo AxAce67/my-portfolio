@@ -12,14 +12,13 @@
         "role": "// indie dev · student",
         "title": "『Turning Ideas into Reality』",
         "subtitle": "Building what I love. That's it.",
-        "ctaPrimary": "View Projects",
-        "scrollDown": "explore"
+        "ctaPrimary": "View Projects"
     },
     "About": {
         "sectionTitle": "// about/",
         "heading": "About",
         "profileLabel": "Profile",
-        "profileParagraph1": "I am a junior high school student in Japan, building personal projects such as websites, Discord bots, Ubuntu servers, and Minecraft servers.",
+        "profileParagraph1": "I am a first-year high school student in Japan, building personal projects such as websites, Discord bots, Ubuntu servers, and Minecraft servers.",
         "profileParagraph2": "Since discovering ChatGPT in sixth grade, I have used various AI tools to improve my workflow and speed up turning ideas into working products.",
         "profileParagraph3": "My process is to turn ideas into requirements, build an MVP quickly, then iterate through testing and improvements.",
         "profileParagraph4": "My strengths are design thinking, continuous improvement, and research. I keep up with trends while balancing usability and maintainability.",
@@ -84,16 +83,7 @@
         "viewAll": "View all",
         "createdAt": "Created",
         "updatedAt": "Updated",
-        "noPublishedProjects": "Coming soon. Thanks for your patience.",
-        "filterAll": "All",
-        "filterIdea": "Idea",
-        "filterDesign": "Design",
-        "filterDevelopment": "Development",
-        "filterCompleted": "Completed",
-        "filterOnHold": "On Hold",
-        "searchPlaceholder": "Search projects...",
-        "noProjects": "No projects found",
-        "viewDetails": "View Details"
+        "noPublishedProjects": "Coming soon. Thanks for your patience."
     },
     "Contact": {
         "sectionTitle": "> send_message",
@@ -107,7 +97,6 @@
         "subjectPlaceholder": "What is this about?",
         "message": "Message",
         "messagePlaceholder": "Type your message here...",
-        "send": "Send",
         "preview": "Review Message",
         "verifying": "Verifying...",
         "sending": "Sending...",
@@ -124,20 +113,13 @@
     },
     "Footer": {
         "tagline": "Building what I love. That's it.",
-        "quickLinks": "Quick Links",
-        "connect": "Connect",
         "copyright": "© {year} All rights reserved.",
-        "madeWith": "$ echo \"Made with ❤️ and ☕\"",
         "terms": "Terms of Use",
         "license": "License"
     },
-    "Theme": {
-        "light": "Light Mode",
-        "dark": "Dark Mode"
-    },
     "Language": {
-        "ja": "日本語",
-        "en": "English"
+        "label": "Language",
+        "switchTo": "Switch to {language}"
     },
     "Dashboard": {
         "title": "Portfolio Dashboard",
@@ -242,7 +224,6 @@
             "filterInvalid": "Failed",
             "filterRateLimited": "Rate Limited",
             "total": "Total",
-            "available": "Available",
             "empty": "No audit logs yet.",
             "notConfigured": "Audit log table is not configured. Please apply the SQL setup.",
             "prev": "Previous",

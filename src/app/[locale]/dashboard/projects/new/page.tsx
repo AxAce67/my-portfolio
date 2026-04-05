@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
@@ -6,6 +5,7 @@ import { isAdminUser } from '@/lib/auth/admin';
 import { createProjectAction } from '../../actions';
 import ToastNotice from '../../ToastNotice';
 import ProjectEditorForm from '@/components/dashboard/ProjectEditorForm';
+import { TransitionLink } from '@/components/ui/TransitionLink';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,9 +31,9 @@ export default async function NewProjectPage({ params }: Props) {
     <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-10 sm:pb-20">
       <ToastNotice />
       <div className="mb-4 sm:mb-6">
-        <Link href={`/${locale}/dashboard?tab=projects`} className="text-xs font-mono text-muted-foreground hover:text-foreground">
+        <TransitionLink href={`/${locale}/dashboard?tab=projects`} className="text-xs font-mono text-muted-foreground hover:text-foreground" direction="backward">
           {t('backToDashboard')}
-        </Link>
+        </TransitionLink>
       </div>
       <div>
         <div className="rounded-xl border border-border bg-card p-4 sm:p-6 mb-4 sm:mb-5">

@@ -1,0 +1,367 @@
+{
+    "Navigation": {
+        "about": "關於",
+        "skills": "技能",
+        "technologies": "技術棧",
+        "projects": "專案",
+        "timeline": "進行中",
+        "contact": "聯絡"
+    },
+    "Hero": {
+        "name": "Aki",
+        "role": "// 獨立開發者 · 學生",
+        "title": "『把想法變成現實』",
+        "subtitle": "做自己喜歡的東西。就這樣。",
+        "ctaPrimary": "查看專案"
+    },
+    "About": {
+        "sectionTitle": "// about/",
+        "heading": "關於",
+        "profileLabel": "簡介",
+        "profileParagraph1": "我是住在日本的一名高中一年級學生，正在製作網站、Discord 機器人、Ubuntu 伺服器與 Minecraft 伺服器等個人專案。",
+        "profileParagraph2": "自從六年級接觸 ChatGPT 之後，我一直使用各種 AI 工具來改善工作流程，加快把想法做成可運作產品的速度。",
+        "profileParagraph3": "我的流程是先把想法整理成需求，快速做出 MVP，然後透過測試與改進持續迭代。",
+        "profileParagraph4": "我的優勢在於設計思考、持續改進與研究能力。我會跟上趨勢，同時兼顧可用性與可維護性。",
+        "statsProjects": "已發布專案",
+        "statsTechnologies": "使用技術",
+        "statsYears": "開發年數",
+        "statsCommits": "自建伺服器",
+        "focusLabel": "關注重點",
+        "momentum": {
+            "label": "開發動力儀表",
+            "description": "根據最近 7 天的提交記錄，輕鬆讀取我目前的開發狀態。",
+            "weeklyCommits": "本週提交",
+            "streak": "連續天數",
+            "daySuffix": "天",
+            "updated": "更新時間",
+            "unavailable": "暫時無法讀取儀表，請稍後再試。",
+            "note": "這些數字僅供參考，已包含動力值。"
+        },
+        "focus": {
+            "productThinking": "產品思維",
+            "rapidPrototyping": "快速原型",
+            "uiUxDesign": "UI/UX 設計",
+            "problemSolving": "問題解決",
+            "research": "研究",
+            "continuousImprovement": "持續改進"
+        },
+        "linksLabel": "連結",
+        "role": "獨立開發者"
+    },
+    "Skills": {
+        "sectionTitle": "// skills/",
+        "heading": "技能",
+        "subtitle": "日常使用的工具與優勢",
+        "categories": {
+            "languages": "語言",
+            "stack": "技術棧",
+            "ai": "AI 工具",
+            "creative": "創意工具"
+        },
+        "descriptions": {
+            "languages": "主要用於 Web 開發的程式語言",
+            "stack": "用於建構、部署與營運應用的平台與函式庫",
+            "ai": "我每天用於實作、設計與學習的 AI 工具",
+            "creative": "用於影片剪輯與內容創作的工具"
+        },
+        "levels": {
+            "main": "主力",
+            "familiar": "實戰",
+            "learning": "學習中"
+        }
+    },
+    "TechStack": {
+        "sectionTitle": "// tech_stack/",
+        "heading": "技術棧",
+        "subtitle": "我經常使用的技術與服務"
+    },
+    "Projects": {
+        "sectionTitle": "// projects/",
+        "heading": "專案",
+        "viewList": "列表",
+        "viewGrid": "格狀",
+        "viewAll": "查看全部",
+        "createdAt": "建立於",
+        "updatedAt": "更新於",
+        "noPublishedProjects": "即將推出，感謝你的耐心等待。"
+    },
+    "Contact": {
+        "sectionTitle": "> send_message",
+        "heading": "聯絡",
+        "description": "如有問題、委託或回饋，歡迎隨時聯絡。",
+        "name": "姓名",
+        "namePlaceholder": "你的名字",
+        "email": "電子郵件",
+        "emailPlaceholder": "your@email.com",
+        "subject": "主旨",
+        "subjectPlaceholder": "這則訊息是關於什麼？",
+        "message": "內容",
+        "messagePlaceholder": "在這裡輸入你的訊息...",
+        "preview": "確認內容",
+        "verifying": "驗證中...",
+        "sending": "傳送中...",
+        "previewTitle": "確認你的訊息",
+        "previewDescription": "送出前請再次確認內容。",
+        "backToEdit": "返回編輯",
+        "confirmSend": "送出訊息",
+        "successTitle": "傳送成功",
+        "success": "訊息已成功送出！",
+        "successAutoClose": "此對話框將在幾秒後自動關閉",
+        "close": "關閉",
+        "turnstileRequired": "送出前請先完成驗證。",
+        "error": "傳送失敗，請稍後再試。"
+    },
+    "Footer": {
+        "tagline": "做自己喜歡的東西。就這樣。",
+        "copyright": "© {year} 保留所有權利。",
+        "terms": "使用條款",
+        "license": "授權"
+    },
+    "Language": {
+        "label": "語言",
+        "switchTo": "切換到{language}"
+    },
+    "Dashboard": {
+        "title": "Portfolio Dashboard",
+        "subtitle": "管理你已發布的作品集內容。",
+        "signOut": "登出",
+        "noAdmin": "此帳號沒有管理員權限。",
+        "tabs": {
+            "projects": "專案",
+            "activeProjects": "進行中專案",
+            "audit": "稽核日誌"
+        },
+        "actions": {
+            "read": "查看",
+            "edit": "編輯"
+        },
+        "publish": {
+            "published": "已發布",
+            "draft": "草稿"
+        },
+        "status": {
+            "idea": "想法",
+            "design": "設計",
+            "development": "開發",
+            "completed": "已完成",
+            "on_hold": "暫停中"
+        },
+        "projects": {
+            "manageTitle": "專案管理",
+            "manageDescription": "請在專用編輯頁面建立新專案。",
+            "newProject": "新建專案",
+            "listTitle": "專案",
+            "empty": "尚無專案。"
+        },
+        "toast": {
+            "project_created": "專案已建立。",
+            "project_updated": "專案已更新。",
+            "project_deleted": "專案已刪除。",
+            "project_create_failed": "建立專案失敗。",
+            "project_update_failed": "更新專案失敗。",
+            "project_delete_failed": "刪除專案失敗。",
+            "active_created": "進行中專案已建立。",
+            "active_updated": "進行中專案已更新。",
+            "active_deleted": "進行中專案已刪除。",
+            "active_create_failed": "建立進行中專案失敗。",
+            "active_update_failed": "更新進行中專案失敗。",
+            "active_delete_failed": "刪除進行中專案失敗。"
+        },
+        "deleteProject": {
+            "button": "刪除",
+            "title": "刪除專案？",
+            "description": "刪除「{title}」。此操作無法復原。",
+            "cancel": "取消",
+            "confirm": "刪除"
+        },
+        "active": {
+            "title": "進行中專案",
+            "description": "管理排序、階段與發布狀態。",
+            "newButton": "新建進行中專案",
+            "priority": "優先順序",
+            "published": "已發布",
+            "draft": "草稿",
+            "empty": "尚無進行中專案。",
+            "stage": {
+                "planning": "規劃",
+                "design": "設計",
+                "development": "開發",
+                "testing": "測試",
+                "completed": "已完成"
+            },
+            "fields": {
+                "name": "名稱",
+                "namePlaceholder": "名稱",
+                "stage": "階段",
+                "priority": "優先順序"
+            },
+            "createModal": {
+                "title": "建立進行中專案"
+            },
+            "editModal": {
+                "title": "編輯進行中專案"
+            },
+            "deleteModal": {
+                "title": "刪除進行中專案？",
+                "description": "刪除「{name}」。此操作無法復原。"
+            },
+            "actions": {
+                "edit": "編輯",
+                "delete": "刪除",
+                "close": "關閉",
+                "create": "建立",
+                "update": "更新",
+                "cancel": "取消"
+            }
+        },
+        "audit": {
+            "title": "認證稽核日誌",
+            "description": "顯示所有登入成功/失敗日誌，並支援分頁。",
+            "authTab": "認證日誌",
+            "cspTab": "CSP 日誌",
+            "filterAll": "全部",
+            "filterSuccess": "成功",
+            "filterInvalid": "失敗",
+            "filterRateLimited": "受限",
+            "total": "總數",
+            "empty": "尚無稽核日誌。",
+            "notConfigured": "稽核日誌資料表尚未設定，請先套用 SQL 設定。",
+            "prev": "上一頁",
+            "next": "下一頁",
+            "cspTitle": "CSP 違規報告",
+            "cspDescription": "由瀏覽器回報的 CSP 違規日誌。",
+            "cspEmpty": "尚無 CSP 違規日誌。",
+            "cspNotConfigured": "CSP 日誌資料表尚未設定，請先套用 SQL 設定。",
+            "labelEmail": "電子郵件",
+            "labelIp": "IP",
+            "labelIpHash": "IP 雜湊",
+            "labelUserId": "使用者 ID",
+            "labelLocale": "語系",
+            "labelUserAgent": "User-Agent",
+            "labelDirective": "指令",
+            "labelBlocked": "被封鎖資源",
+            "labelDocument": "文件",
+            "labelDisposition": "處置方式"
+        },
+        "editor": {
+            "backToDashboard": "← 返回控制台",
+            "draftLabel": "專案草稿",
+            "createTitle": "建立專案",
+            "createDescription": "使用類似 Notion 的編輯器建立包含標題、列表與圖片的文章。",
+            "createSubmit": "建立專案",
+            "editTitle": "專案編輯器",
+            "saveChanges": "儲存變更"
+        },
+        "editorForm": {
+            "title": "標題",
+            "titlePlaceholder": "專案名稱",
+            "description": "說明",
+            "descriptionPlaceholder": "摘要（2-3 句）",
+            "thumbnail": "縮圖",
+            "thumbnailHint": "JPG / PNG / WEBP，最大 5MB",
+            "thumbnailPreview": "16:9 縮圖預覽",
+            "thumbnailRecommended": "建議：",
+            "thumbnailSafeArea": "安全區域中心：",
+            "articleContent": "文章內容",
+            "published": "已發布",
+            "uploadAuthError": "上傳檔案前請先登入。",
+            "uploadTypeError": "僅支援 JPG / PNG / WEBP / AVIF 檔案。",
+            "uploadSizeError": "檔案大小請控制在 5MB 以內。",
+            "editorTipPrefix": "輸入",
+            "editorTipSuffix": "以顯示區塊選項。已啟用圖片/檔案上傳。",
+            "status": {
+                "idea": "想法",
+                "design": "設計",
+                "development": "開發",
+                "completed": "已完成",
+                "on_hold": "暫停中"
+            }
+        }
+    },
+    "ActiveProjects": {
+        "sectionLabel": "// in_progress",
+        "heading": "進行中專案",
+        "projectColumn": "專案",
+        "empty": "尚無進行中專案。",
+        "stagePlanning": "規劃",
+        "stageDesign": "設計",
+        "stageDevelopment": "開發",
+        "stageTesting": "測試",
+        "stageCompleted": "已完成"
+    },
+    "ProjectList": {
+        "backToTop": "← 返回專案",
+        "heading": "專案檔案",
+        "description": "所有已公開專案的完整列表。",
+        "searchLabel": "搜尋",
+        "searchPlaceholder": "依標題、描述或標籤搜尋...",
+        "createdAt": "建立於",
+        "updatedAt": "更新於",
+        "empty": "即將推出，感謝你的耐心等待。",
+        "noResults": "找不到符合條件的專案。",
+        "prev": "上一頁",
+        "next": "下一頁"
+    },
+    "ProjectDetail": {
+        "backToProjects": "← 返回專案",
+        "backToArchive": "← 返回檔案",
+        "createdAt": "建立於",
+        "updatedAt": "更新於",
+        "noContent": "尚無內容。"
+    },
+    "Login": {
+        "title": "控制台登入",
+        "email": "電子郵件",
+        "password": "密碼",
+        "submit": "登入",
+        "backToSite": "← 返回網站",
+        "errorInvalid": "電子郵件或密碼不正確。",
+        "errorRateLimit": "嘗試次數過多，請等待約 10 分鐘後再試。"
+    },
+    "NotFound": {
+        "code": "404 / Not Found",
+        "title": "找不到頁面",
+        "description": "你要尋找的頁面不存在，或可能已被移動。",
+        "backHome": "返回首頁",
+        "goProjects": "前往專案"
+    },
+    "License": {
+        "title": "授權",
+        "description": "此作品集網站的授權資訊",
+        "tableLibrary": "函式庫",
+        "tableLicense": "授權",
+        "tableSource": "來源",
+        "sourceTitle": "原始碼授權",
+        "sourceDescription": "除非另有說明，本網站的原始碼及其設計、實作與設定均保留所有權利。未經授權，禁止複製、挪用、修改或重新散布。",
+        "contentTitle": "內容著作權",
+        "contentDescription": "除非另有說明，本網站上發布的所有文字、照片、插圖、設計、版面、標誌及其他創作內容（以下統稱「內容」）均屬作者（Aki）所有。未經授權，禁止重製、重新散布、修改或二次使用上述內容。若僅作個人參考或引用，請清楚標示來源並附上本站網址。若用於商業用途，請事先透過聯絡表單取得許可。",
+        "brandTitle": "第三方標誌與商標",
+        "brandDescription": "本網站使用的第三方服務名稱、標誌、圖示與商標均屬其各自權利人所有。它們僅作識別與說明用途，並仍受各品牌適用指引與使用條款約束。",
+        "thirdPartyTitle": "第三方函式庫",
+        "thirdPartyDescription": "本網站使用了以下開源函式庫與框架。各函式庫均受其各自授權條款約束，詳情請參閱對應儲存庫。這些函式庫的著作權屬於其各自開發者或組織。",
+        "backHome": "返回首頁"
+    },
+    "Terms": {
+        "title": "使用條款",
+        "description": "此作品集網站的使用條款",
+        "lastUpdated": "最後更新：{date}",
+        "sectionNum": "第 {n} 條",
+        "privacyTitle": "個人資訊",
+        "privacyDescription": "透過本網站聯絡表單收集的姓名、電子郵件等個人資訊，僅用於回覆詢問以及與使用者聯絡。未經使用者同意，不會向第三方提供，也不會用於上述目的以外的用途，但法律要求者不在此限。",
+        "governingTitle": "準據法與管轄法院",
+        "governingDescription": "本條款受日本法律管轄並依其解釋。因本條款所生或與之相關的爭議，應以東京地方法院為第一審專屬管轄法院。",
+        "acceptanceTitle": "條款的接受",
+        "acceptanceDescription": "當你存取、瀏覽或使用本網站（以下稱「本站」）時，即表示你同意受本使用條款（以下稱「本條款」）全部內容約束。如不同意本條款，請立即停止使用本站。本條款適用於所有存取或使用本站的使用者。",
+        "useTitle": "網站的使用",
+        "useDescription": "本站作為個人作品集公開，用於展示營運者的技能、專案經歷與技術資訊。雖然會盡力確保資訊正確且即時，但不保證其完整性、正確性或實用性。禁止以下行為：（1）妨礙本站正常運作；（2）嘗試或實施未經授權的存取；（3）冒充他人；（4）未經許可將本站內容用於商業用途；（5）其他違反適用法律或公共秩序的行為。",
+        "ipTitle": "智慧財產權",
+        "ipDescription": "除非另有說明，本站的設計、文字、圖片、標誌、圖示、程式碼及其他所有內容的智慧財產權（包括著作權與商標權）均屬營運者所有。未經營運者事先書面同意，禁止重製、修改、公開傳輸、散布、轉讓、出租、翻譯、改作或以其他方式使用上述內容。",
+        "disclaimerTitle": "免責聲明",
+        "disclaimerDescription": "使用本站所產生的風險由使用者自行承擔。對於使用者或任何第三方因使用（或無法使用）本站而遭受的任何損害，營運者概不負責。對於本站連結之外部網站的內容、安全性或正確性，營運者不作任何保證，也不承擔任何責任。本站可能在不另行通知的情況下中斷、修改或終止。",
+        "changesTitle": "條款變更",
+        "changesDescription": "營運者可在認為必要時，不經事先通知修改本條款。修訂後的條款自公布於本站時起生效。對於重大變更，本站將盡量予以通知，但使用者仍有責任定期查閱本條款。修訂後繼續使用本站，即視為接受修訂後的條款。",
+        "contactTitle": "聯絡",
+        "contactDescription": "如對本條款有疑問、意見，或有內容授權相關詢問，請使用本站聯絡表單。依詢問內容不同，回覆可能需要一些時間。",
+        "backHome": "返回首頁"
+    }
+}

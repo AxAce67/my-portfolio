@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import ProjectsListClient, { type ProjectListItem } from '@/components/projects/ProjectsListClient';
+import { getValidLocale } from '@/i18n/routing';
 import { getProjectsListData } from '@/lib/content/publicContent';
-import { buildLocalePath, DEFAULT_OG_IMAGE_PATH, getLocaleSeo } from '@/lib/seo';
+import { buildLocaleAlternates, buildLocalePath, DEFAULT_OG_IMAGE_PATH, getLocaleSeo } from '@/lib/seo';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -9,7 +10,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale: rawLocale } = await params;
-  const locale = (rawLocale === 'en' ? 'en' : 'ja') as 'ja' | 'en';
+  const locale = getValidLocale(rawLocale);
   const seo = getLocaleSeo(locale);
   const canonical = buildLocalePath(locale, '/projects');
 
@@ -18,10 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: seo.projectsDescription,
     alternates: {
       canonical,
-      languages: {
-        ja: buildLocalePath('ja', '/projects'),
-        en: buildLocalePath('en', '/projects'),
-      },
+      languages: buildLocaleAlternates('/projects'),
     },
     openGraph: {
       title: seo.projectsTitle,

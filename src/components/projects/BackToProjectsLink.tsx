@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useTransitionRouter } from 'next-view-transitions';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { isPlainLeftClick } from '@/lib/viewTransitions';
 import { navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 
@@ -15,17 +16,21 @@ type Props = {
 };
 
 export default function BackToProjectsLink({ homeHref, archiveHref, className, homeLabel, archiveLabel }: Props) {
+  const router = useRouter();
   const transitionRouter = useTransitionRouter();
   const [referrer] = useState(() =>
     readSessionValue(navigationStateKeys.projectsReferrer)
   );
   const isArchive = referrer === 'archive';
-  // ホームまたはアーカイブから来た場合はrouter.back()でrouter cacheを使い即座に復元
-  const canGoBack = referrer === 'home' || referrer === 'archive';
+  const targetHref = isArchive ? archiveHref : homeHref;
+
+  useEffect(() => {
+    router.prefetch(targetHref);
+  }, [router, targetHref]);
 
   return (
     <Link
-      href={isArchive ? archiveHref : homeHref}
+      href={targetHref}
       prefetch
       className={className}
       onClick={(e) => {
@@ -37,11 +42,30 @@ export default function BackToProjectsLink({ homeHref, archiveHref, className, h
         writeSessionValue(navigationStateKeys.returnToProjects, '1');
         if ('startViewTransition' in document) {
           e.preventDefault();
-          if (canGoBack) {
-            transitionRouter.back();
-          } else {
-            transitionRouter.push(isArchive ? archiveHref : homeHref, { scroll: false });
+          if (isArchive) {
+            transitionRouter.push(targetHref, { scroll: false });
+            return;
           }
+
+          const clearPendingResolver = () => {
+            window.__resolveHomeProjectsTransition = undefined;
+          };
+
+          const timeoutId = window.setTimeout(() => {
+            window.__resolveHomeProjectsTransition?.();
+            clearPendingResolver();
+          }, 180);
+
+          document.startViewTransition?.(() => new Promise<void>((resolve) => {
+            window.__resolveHomeProjectsTransition = () => {
+              window.clearTimeout(timeoutId);
+              clearPendingResolver();
+              resolve();
+            };
+
+            router.push(targetHref, { scroll: false });
+          }));
+          return;
         }
       }}
     >
