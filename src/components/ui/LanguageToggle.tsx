@@ -212,15 +212,6 @@ export function LanguageToggle() {
         const root = document.documentElement;
         const rootStyles = window.getComputedStyle(root);
 
-        if (compactPointer) {
-            setPendingLocale(nextLocale);
-            setIsOpen(false);
-            router.replace(localizedPath, {
-                scroll: false,
-            });
-            return;
-        }
-
         FROZEN_THEME_VARS.forEach((variableName) => {
             root.style.setProperty(variableName, rootStyles.getPropertyValue(variableName).trim());
         });
@@ -237,13 +228,20 @@ export function LanguageToggle() {
             rootStyles.getPropertyValue('--hero-glow-rgb').trim() || '200 220 255',
         );
         root.style.setProperty('color-scheme', rootStyles.colorScheme || 'dark');
-
         startThemeLock();
         writeSessionValue(navigationStateKeys.languageScrollY, String(window.scrollY));
         setPendingLocale(nextLocale);
         setIsOpen(false);
         root.classList.remove(LOCALE_SWITCH_ENTER_CLASS);
         root.classList.add(LOCALE_SWITCH_PENDING_CLASS);
+
+        if (compactPointer) {
+            root.style.setProperty(LOCALE_DIRECTION_VAR, '0');
+            router.replace(localizedPath, {
+                scroll: false,
+            });
+            return;
+        }
         root.style.setProperty(LOCALE_DIRECTION_VAR, locales.indexOf(nextLocale) > displayLocaleIndex ? '1' : '-1');
         router.replace(localizedPath, {
             scroll: false,

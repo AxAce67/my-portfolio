@@ -100,6 +100,9 @@ export function useHomeNavigationRestoration(returningProjectId: string | null) 
       const savedScrollY = readSessionNumber(navigationStateKeys.homeScrollY);
       if (savedScrollY !== null && !scrollRestoredRef.current) {
         window.scrollTo(0, savedScrollY);
+      } else if (savedScrollY === null) {
+        const projectsSection = document.getElementById('projects');
+        projectsSection?.scrollIntoView({ behavior: 'auto', block: 'start' });
       }
       removeSessionValue(navigationStateKeys.homeScrollY);
       removeSessionValue(navigationStateKeys.homeFromProjectId);

@@ -6,7 +6,6 @@ import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import { TransitionLink } from '@/components/ui/TransitionLink';
-import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname, useRouter } from '@/i18n/routing';
 import { runRouteTransition } from '@/lib/viewTransitions';
 import { clearProjectReturnState } from '@/lib/navigationState';
@@ -31,6 +30,10 @@ export function Header() {
     const [activeSection, setActiveSection] = useState('');
     const [scrolled, setScrolled] = useState(false);
     const shouldShowSolidHeader = scrolled || !isHomePage;
+
+    useEffect(() => {
+        setIsMenuOpen(false);
+    }, [pathname]);
 
     useEffect(() => {
         if (!isMenuOpen) {
@@ -176,48 +179,40 @@ export function Header() {
             </nav>
 
             {/* Mobile Menu */}
-            <AnimatePresence>
-                {isMenuOpen && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="md:hidden fixed inset-0 top-14 sm:top-16 z-40 overflow-y-auto"
-                    >
-                        <div
-                            className="absolute inset-0 bg-background/98 backdrop-blur-xl"
-                            onClick={() => setIsMenuOpen(false)}
-                        />
-                        <nav className="relative z-50 px-5 sm:px-8 pt-8 sm:pt-12 pb-[max(1.5rem,env(safe-area-inset-bottom))] min-h-full">
-                            <div className="w-full max-w-md rounded-2xl border border-border-hover bg-card p-4 sm:p-5 space-y-1 shadow-[0_20px_44px_-20px_rgba(0,0,0,0.55)]">
-                                {navItems.map((item, index) => (
-                                    <motion.button
-                                        key={item}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: index * 0.08, duration: 0.3 }}
-                                        onClick={() => {
-                                            if (isHomePage) {
-                                                scrollToSection(sectionIds[item]);
-                                            } else {
-                                                clearProjectReturnState();
-                                                runRouteTransition(() => {
-                                                    router.push(`/#${sectionIds[item]}`);
-                                                }, { direction: 'backward' });
-                                                setIsMenuOpen(false);
-                                            }
-                                        }}
-                                        className="w-full text-left text-lg sm:text-xl font-light tracking-wide px-2 py-3 text-foreground/90 hover:text-foreground transition-colors"
-                                    >
-                                        {t(item)}
-                                    </motion.button>
-                                ))}
-                            </div>
-                        </nav>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            {isMenuOpen ? (
+                <div className="md:hidden fixed inset-x-0 top-14 bottom-0 z-[80]">
+                    <button
+                        type="button"
+                        className="absolute inset-0 bg-background/94 backdrop-blur-xl"
+                        aria-label="Close menu"
+                        onClick={() => setIsMenuOpen(false)}
+                    />
+                    <nav className="relative z-[81] h-full overflow-y-auto px-4 pt-5 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+                        <div className="mx-auto w-full max-w-md rounded-2xl border border-border-hover bg-card/95 p-4 shadow-[0_24px_54px_-28px_rgba(0,0,0,0.55)] animate-fade-in">
+                            {navItems.map((item) => (
+                                <button
+                                    key={item}
+                                    type="button"
+                                    onClick={() => {
+                                        if (isHomePage) {
+                                            scrollToSection(sectionIds[item]);
+                                        } else {
+                                            clearProjectReturnState();
+                                            runRouteTransition(() => {
+                                                router.push(`/#${sectionIds[item]}`);
+                                            }, { direction: 'backward' });
+                                            setIsMenuOpen(false);
+                                        }
+                                    }}
+                                    className="block w-full rounded-xl px-3 py-3 text-left text-lg font-light tracking-wide text-foreground/90 hover:bg-muted/70 hover:text-foreground transition-colors"
+                                >
+                                    {t(item)}
+                                </button>
+                            ))}
+                        </div>
+                    </nav>
+                </div>
+            ) : null}
         </header>
     );
 }

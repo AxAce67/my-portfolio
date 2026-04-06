@@ -238,11 +238,27 @@ html.locale-switch-enter body::after {
   html.locale-switch-enter .app-shell,
   html.locale-switch-pending body::after,
   html.locale-switch-enter body::after {
-    animation: none;
     transform: none;
-    opacity: 0;
     filter: none;
-    transition: none;
+  }
+
+  html.locale-switch-pending .app-shell {
+    opacity: 0.92;
+    transition: opacity 140ms ease;
+  }
+
+  html.locale-switch-pending body::after {
+    opacity: 0.42;
+    transition: opacity 160ms ease;
+  }
+
+  html.locale-switch-enter .app-shell {
+    animation: locale-mobile-enter 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  html.locale-switch-enter body::after {
+    opacity: 0;
+    transition: opacity 180ms ease;
   }
 }
 
@@ -632,6 +648,18 @@ html::view-transition-new(site-header) {
     opacity: 1;
     transform: translateX(0);
     filter: none;
+  }
+}
+
+@keyframes locale-mobile-enter {
+  from {
+    opacity: 0.9;
+    filter: blur(2px);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
   }
 }
 
