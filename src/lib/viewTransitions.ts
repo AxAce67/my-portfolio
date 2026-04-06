@@ -28,7 +28,7 @@ function prefersReducedMotion() {
 }
 
 function prefersCompactMotion() {
-  return window.matchMedia('(max-width: 820px), (hover: none) and (pointer: coarse)').matches;
+  return window.matchMedia('(pointer: coarse), (any-pointer: coarse)').matches;
 }
 
 export function shouldUseMobileRouteTransitions() {
@@ -112,9 +112,9 @@ export function runRouteTransition(
     window.setTimeout(() => {
       action();
       root.classList.add(ROUTE_TRANSITION_MOBILE_EXIT_CLASS);
-    }, 72);
+    }, 110);
 
-    window.setTimeout(cleanup, 260);
+    window.setTimeout(cleanup, 320);
     return;
   }
 

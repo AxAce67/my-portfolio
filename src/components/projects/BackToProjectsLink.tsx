@@ -62,7 +62,7 @@ export default function BackToProjectsLink({ homeHref, archiveHref, className, h
           const timeoutId = window.setTimeout(() => {
             window.__resolveHomeProjectsTransition?.();
             clearPendingResolver();
-          }, 180);
+          }, 320);
 
           document.startViewTransition?.(() => new Promise<void>((resolve) => {
             window.__resolveHomeProjectsTransition = () => {

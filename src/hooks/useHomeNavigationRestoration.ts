@@ -6,6 +6,44 @@ function resolveHomeProjectsTransition() {
   window.__resolveHomeProjectsTransition = undefined;
 }
 
+function waitForNextFrame() {
+  return new Promise<void>((resolve) => {
+    window.requestAnimationFrame(() => resolve());
+  });
+}
+
+function waitForTimeout(ms: number) {
+  return new Promise<void>((resolve) => {
+    window.setTimeout(resolve, ms);
+  });
+}
+
+async function waitForCardImage(card: HTMLElement | null) {
+  if (!card) {
+    await waitForNextFrame();
+    await waitForNextFrame();
+    return;
+  }
+
+  const image = card.querySelector('img');
+  if (!image || image.complete) {
+    await waitForNextFrame();
+    await waitForNextFrame();
+    return;
+  }
+
+  await Promise.race([
+    new Promise<void>((resolve) => {
+      image.addEventListener('load', () => resolve(), { once: true });
+      image.addEventListener('error', () => resolve(), { once: true });
+    }),
+    waitForTimeout(260),
+  ]);
+
+  await waitForNextFrame();
+  await waitForNextFrame();
+}
+
 export function useHomeNavigationRestoration(returningProjectId: string | null) {
   const scrollRestoredRef = useRef(false);
 
@@ -13,17 +51,28 @@ export function useHomeNavigationRestoration(returningProjectId: string | null) 
     const savedScrollY = readSessionNumber(navigationStateKeys.homeScrollY);
     if (savedScrollY === null) return;
 
+    let cancelled = false;
     window.scrollTo(0, savedScrollY);
     scrollRestoredRef.current = true;
 
-    if (returningProjectId) {
-      const card = document.querySelector<HTMLElement>(`[data-card-id="${returningProjectId}"]`);
+    void (async () => {
+      const card = returningProjectId
+        ? document.querySelector<HTMLElement>(`[data-card-id="${returningProjectId}"]`)
+        : null;
+
       if (card) {
         card.scrollIntoView({ block: 'nearest' });
       }
-    }
 
-    window.requestAnimationFrame(resolveHomeProjectsTransition);
+      await waitForCardImage(card);
+      if (!cancelled) {
+        resolveHomeProjectsTransition();
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, [returningProjectId]);
 
   useEffect(() => {
