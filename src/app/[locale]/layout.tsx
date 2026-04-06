@@ -12,6 +12,7 @@ import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { AppToaster } from '@/components/ui/AppToaster';
+import { MobilePageMotion } from '@/components/ui/MobilePageMotion';
 import { buildLocalePath, buildLocaleUrl, buildLocaleUrlAlternates, DEFAULT_OG_IMAGE_PATH, getLocaleSeo, getOpenGraphLocale, getSiteUrl } from '@/lib/seo';
 import '../globals.css';
 
@@ -115,7 +116,9 @@ export default async function LocaleLayout({ children, params }: Props) {
                                 {skipToContentLabel}
                             </a>
                             <Header />
-                            <main id="main-content" className="flex-1">{children}</main>
+                            <main id="main-content" className="flex-1">
+                                <MobilePageMotion>{children}</MobilePageMotion>
+                            </main>
                             <Footer />
                         </div>
                     </NextIntlClientProvider>

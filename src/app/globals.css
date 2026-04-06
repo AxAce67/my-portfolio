@@ -141,6 +141,11 @@ html.route-transition-mobile-active:not(.theme-transition)::view-transition-new(
   position: relative;
 }
 
+.mobile-page-motion {
+  min-height: 100%;
+  will-change: transform, opacity, filter;
+}
+
 html::before {
   content: "";
   position: fixed;

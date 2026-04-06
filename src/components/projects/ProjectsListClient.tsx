@@ -78,7 +78,7 @@ export default function ProjectsListClient({ projects }: Props) {
             if ('startViewTransition' in document) {
               e.preventDefault();
               runRouteTransition(() => {
-                router.push(`/${locale}`);
+                router.push('/');
               }, { direction: 'backward' });
             }
           }}
