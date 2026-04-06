@@ -6,6 +6,7 @@ import { isPlainLeftClick, runRouteTransition } from '@/lib/viewTransitions';
 
 type Props = ComponentProps<typeof Link> & {
     direction?: 'forward' | 'backward';
+    variant?: 'default' | 'document';
 };
 
 export function TransitionLink({
@@ -16,6 +17,7 @@ export function TransitionLink({
     replace,
     scroll,
     direction = 'forward',
+    variant = 'default',
     target,
     ...props
 }: Props) {
@@ -57,7 +59,7 @@ export function TransitionLink({
                 return;
             }
             router.push(href);
-        }, { direction });
+        }, { direction, variant });
     };
 
     const handleMouseEnter = (event: MouseEvent<HTMLAnchorElement>) => {

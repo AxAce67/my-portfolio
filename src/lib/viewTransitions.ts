@@ -7,6 +7,7 @@ type TransitionCapableDocument = Document & {
 };
 
 type RouteTransitionDirection = 'forward' | 'backward';
+type RouteTransitionVariant = 'default' | 'document';
 
 type ClickLikeEvent = {
   button: number;
@@ -18,10 +19,7 @@ type ClickLikeEvent = {
 };
 
 const ROUTE_TRANSITION_CLASS = 'route-transition-active';
-const ROUTE_DIRECTION_VAR = '--route-direction';
-const ROUTE_TRANSITION_COMPACT_CLASS = 'route-transition-compact';
-const ROUTE_TRANSITION_MOBILE_CLASS = 'route-transition-mobile-active';
-const ROUTE_TRANSITION_MOBILE_EXIT_CLASS = 'route-transition-mobile-exit';
+const ROUTE_TRANSITION_DOCUMENT_CLASS = 'route-transition-document';
 
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -69,7 +67,7 @@ export function runViewTransition(action: () => void) {
 
 export function runRouteTransition(
   action: () => void,
-  options?: { direction?: RouteTransitionDirection },
+  options?: { direction?: RouteTransitionDirection; variant?: RouteTransitionVariant },
 ) {
   if (typeof document === 'undefined' || typeof window === 'undefined') {
     action();
@@ -82,10 +80,7 @@ export function runRouteTransition(
   const root = document.documentElement;
   const cleanup = () => {
     root.classList.remove(ROUTE_TRANSITION_CLASS);
-    root.classList.remove(ROUTE_TRANSITION_COMPACT_CLASS);
-    root.classList.remove(ROUTE_TRANSITION_MOBILE_CLASS);
-    root.classList.remove(ROUTE_TRANSITION_MOBILE_EXIT_CLASS);
-    root.style.removeProperty(ROUTE_DIRECTION_VAR);
+    root.classList.remove(ROUTE_TRANSITION_DOCUMENT_CLASS);
   };
 
   if (reduceMotion) {
@@ -100,13 +95,14 @@ export function runRouteTransition(
     return;
   }
 
+  void options;
+
   const scheduleCleanup = () => {
-    window.setTimeout(cleanup, 140);
+    window.setTimeout(cleanup, 180);
   };
 
   root.classList.add(ROUTE_TRANSITION_CLASS);
-  root.classList.toggle(ROUTE_TRANSITION_COMPACT_CLASS, compactMotion);
-  root.style.setProperty(ROUTE_DIRECTION_VAR, options?.direction === 'backward' ? '-1' : '1');
+  root.classList.toggle(ROUTE_TRANSITION_DOCUMENT_CLASS, options?.variant === 'document');
 
   if (!transitionDocument.startViewTransition) {
     action();

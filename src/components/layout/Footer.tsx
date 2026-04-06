@@ -73,12 +73,14 @@ export function Footer() {
                         <FadeLink
                             href="/terms"
                             className="footer-legal-link"
+                            variant="document"
                         >
                             {t('terms')}
                         </FadeLink>
                         <FadeLink
                             href="/license"
                             className="footer-legal-link"
+                            variant="document"
                         >
                             {t('license')}
                         </FadeLink>

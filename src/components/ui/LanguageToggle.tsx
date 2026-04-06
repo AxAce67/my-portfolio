@@ -36,6 +36,9 @@ const FROZEN_THEME_VARS = [
     '--grid-color',
 ] as const;
 
+const LOCALE_SWITCH_NAV_DELAY_MS = 90;
+const LOCALE_SWITCH_NAV_DELAY_COMPACT_MS = 70;
+
 function prefersCompactPointer() {
     return typeof window !== 'undefined'
         && window.matchMedia('(pointer: coarse), (any-pointer: coarse)').matches;
@@ -122,7 +125,7 @@ export function LanguageToggle() {
                 root.style.removeProperty('color-scheme');
                 releaseThemeLock();
                 enterTimerRef.current = null;
-            }, 220);
+            }, 260);
         } else {
             releaseThemeLock();
         }
@@ -234,18 +237,21 @@ export function LanguageToggle() {
         setIsOpen(false);
         root.classList.remove(LOCALE_SWITCH_ENTER_CLASS);
         root.classList.add(LOCALE_SWITCH_PENDING_CLASS);
+        void root.offsetWidth;
 
-        if (compactPointer) {
-            root.style.setProperty(LOCALE_DIRECTION_VAR, '0');
+        const navigate = () => {
             router.replace(localizedPath, {
                 scroll: false,
             });
+        };
+
+        if (compactPointer) {
+            root.style.setProperty(LOCALE_DIRECTION_VAR, '0');
+            window.setTimeout(navigate, LOCALE_SWITCH_NAV_DELAY_COMPACT_MS);
             return;
         }
         root.style.setProperty(LOCALE_DIRECTION_VAR, locales.indexOf(nextLocale) > displayLocaleIndex ? '1' : '-1');
-        router.replace(localizedPath, {
-            scroll: false,
-        });
+        window.setTimeout(navigate, LOCALE_SWITCH_NAV_DELAY_MS);
     };
 
     const currentLocaleMeta = getLocaleMeta(displayLocale);

@@ -21,41 +21,25 @@ function waitForTimeout(ms: number) {
 async function waitForCardImage(card: HTMLElement | null) {
   if (!card) {
     await waitForNextFrame();
-    await waitForNextFrame();
     return;
   }
 
   const image = card.querySelector('img');
-  if (!image || image.complete) {
-    if (image?.decode) {
-      try {
-        await image.decode();
-      } catch {
-        // Ignore decode failures; the image may still be paintable.
-      }
-    }
-    await waitForNextFrame();
+  if (!image) {
     await waitForNextFrame();
     return;
   }
 
-  await Promise.race([
-    new Promise<void>((resolve) => {
-      image.addEventListener('load', () => resolve(), { once: true });
-      image.addEventListener('error', () => resolve(), { once: true });
-    }),
-    waitForTimeout(260),
-  ]);
-
-  if (image.decode) {
-    try {
-      await image.decode();
-    } catch {
-      // Ignore decode failures; the image may still be paintable.
-    }
+  if (!image.complete) {
+    await Promise.race([
+      new Promise<void>((resolve) => {
+        image.addEventListener('load', () => resolve(), { once: true });
+        image.addEventListener('error', () => resolve(), { once: true });
+      }),
+      waitForTimeout(120),
+    ]);
   }
 
-  await waitForNextFrame();
   await waitForNextFrame();
 }
 

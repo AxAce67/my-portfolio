@@ -22,7 +22,7 @@ function TermsPageContent() {
     return (
         <div className="legal-page">
             <article className="legal-document">
-                <FadeLink href="/" className="legal-doc-back" direction="backward">
+                <FadeLink href="/" className="legal-doc-back" direction="backward" variant="document">
                     ← {t('backHome')}
                 </FadeLink>
                 <header className="legal-doc-header">

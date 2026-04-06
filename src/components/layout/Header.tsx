@@ -109,86 +109,87 @@ export function Header() {
     };
 
     return (
-        <header
-            className={`site-header fixed top-0 left-0 right-0 z-50 ${shouldShowSolidHeader ? 'is-scrolled' : ''}`}
-        >
-            <nav className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-14 sm:h-16">
-                    {/* Logo */}
-                    <button
-                        onClick={() => {
-                            if (isHomePage) {
-                                clearProjectReturnState();
-                                window.scrollTo({ top: 0, behavior: 'smooth' });
-                            } else {
-                                clearProjectReturnState();
-                                runRouteTransition(() => {
-                                    router.push('/');
-                                }, { direction: 'backward' });
-                            }
-                        }}
-                        className="font-mono text-sm font-medium tracking-wide hover:opacity-60 transition-opacity"
-                    >
-                        <span>Akiz</span>
-                        <span className="text-[var(--accent-muted)]">.</span>
-                    </button>
-
-                    {/* Desktop Nav */}
-                    <div className="hidden md:flex items-center gap-8">
-                        {navItems.map((item) =>
-                            isHomePage ? (
-                                <button
-                                    key={item}
-                                    onClick={() => scrollToSection(sectionIds[item])}
-                                    className={`nav-link text-[13px] tracking-wide uppercase transition-colors ${activeSection === sectionIds[item]
-                                        ? 'text-foreground active'
-                                        : 'text-muted-foreground hover:text-foreground'
-                                        }`}
-                                >
-                                    {t(item)}
-                                </button>
-                            ) : (
-                                <TransitionLink
-                                    key={item}
-                                    href={`/#${sectionIds[item]}`}
-                                    direction="backward"
-                                    onClick={() => {
-                                        clearProjectReturnState();
-                                    }}
-                                    className="nav-link text-[13px] tracking-wide uppercase transition-colors text-muted-foreground hover:text-foreground"
-                                >
-                                    {t(item)}
-                                </TransitionLink>
-                            )
-                        )}
-                    </div>
-
-                    {/* Right */}
-                    <div className="flex items-center gap-0.5 sm:gap-1">
-                        <LanguageToggle />
-                        <ThemeToggle />
+        <>
+            <header
+                className={`site-header fixed top-0 left-0 right-0 z-50 ${shouldShowSolidHeader ? 'is-scrolled' : ''}`}
+            >
+                <nav className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex items-center justify-between h-14 sm:h-16">
+                        {/* Logo */}
                         <button
-                            onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="md:hidden p-2.5 rounded-lg hover:bg-muted transition-colors"
-                            aria-label="Toggle menu"
+                            onClick={() => {
+                                if (isHomePage) {
+                                    clearProjectReturnState();
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                } else {
+                                    clearProjectReturnState();
+                                    runRouteTransition(() => {
+                                        router.push('/');
+                                    }, { direction: 'backward' });
+                                }
+                            }}
+                            className="font-mono text-sm font-medium tracking-wide hover:opacity-60 transition-opacity"
                         >
-                            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                            <span>Akiz</span>
+                            <span className="text-[var(--accent-muted)]">.</span>
                         </button>
-                    </div>
-                </div>
-            </nav>
 
-            {/* Mobile Menu */}
+                        <div className="hidden md:flex items-center gap-8">
+                            {navItems.map((item) =>
+                                isHomePage ? (
+                                    <button
+                                        key={item}
+                                        onClick={() => scrollToSection(sectionIds[item])}
+                                        className={`nav-link text-[13px] tracking-wide uppercase transition-colors ${activeSection === sectionIds[item]
+                                            ? 'text-foreground active'
+                                            : 'text-muted-foreground hover:text-foreground'
+                                            }`}
+                                    >
+                                        {t(item)}
+                                    </button>
+                                ) : (
+                                    <TransitionLink
+                                        key={item}
+                                        href={`/#${sectionIds[item]}`}
+                                        direction="backward"
+                                        onClick={() => {
+                                            clearProjectReturnState();
+                                        }}
+                                        className="nav-link text-[13px] tracking-wide uppercase transition-colors text-muted-foreground hover:text-foreground"
+                                    >
+                                        {t(item)}
+                                    </TransitionLink>
+                                )
+                            )}
+                        </div>
+
+                        <div className="flex items-center gap-0.5 sm:gap-1">
+                            <LanguageToggle />
+                            <ThemeToggle />
+                            <button
+                                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                className="md:hidden p-2.5 rounded-lg hover:bg-muted transition-colors"
+                                aria-label="Toggle menu"
+                                aria-expanded={isMenuOpen}
+                                aria-controls="mobile-site-menu"
+                            >
+                                {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+
             {isMenuOpen ? (
-                <div className="md:hidden fixed inset-x-0 top-14 bottom-0 z-[80]">
+                <div id="mobile-site-menu" className="mobile-nav-sheet md:hidden">
                     <button
                         type="button"
-                        className="absolute inset-0 bg-background/94 backdrop-blur-xl"
+                        className="mobile-nav-sheet__backdrop"
                         aria-label="Close menu"
                         onClick={() => setIsMenuOpen(false)}
                     />
-                    <nav className="relative z-[81] h-full overflow-y-auto px-4 pt-5 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
-                        <div className="mx-auto w-full max-w-md rounded-2xl border border-border-hover bg-card/95 p-4 shadow-[0_24px_54px_-28px_rgba(0,0,0,0.55)] animate-fade-in">
+                    <nav className="mobile-nav-sheet__scroll" aria-label="Mobile navigation">
+                        <div className="mobile-nav-sheet__panel">
                             {navItems.map((item) => (
                                 <button
                                     key={item}
@@ -213,6 +214,6 @@ export function Header() {
                     </nav>
                 </div>
             ) : null}
-        </header>
+        </>
     );
 }
