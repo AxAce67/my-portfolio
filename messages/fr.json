@@ -307,7 +307,9 @@
         "backToArchive": "← Retour aux archives",
         "createdAt": "Créé",
         "updatedAt": "Mis à jour",
-        "noContent": "Aucun contenu pour le moment."
+        "noContent": "Aucun contenu pour le moment.",
+        "unavailableTitle": "Cet article est temporairement indisponible",
+        "unavailableDescription": "Impossible de charger le contenu publié pour le moment. Veuillez patienter puis recharger la page."
     },
     "Login": {
         "title": "Connexion au tableau de bord",

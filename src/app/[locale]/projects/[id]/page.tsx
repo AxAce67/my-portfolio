@@ -23,7 +23,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale: rawLocale, id } = await params;
   const locale = getValidLocale(rawLocale);
   const seo = getLocaleSeo(locale);
-  const project = await getProjectById(id);
+  const result = await getProjectById(id);
+  const project = result.status === 'ok' ? result.project : null;
+
   const canonical = buildLocalePath(locale, `/projects/${id}`);
   const title = project?.title?.trim() || seo.projectsTitle;
   const description = project?.description?.trim() || seo.projectsDescription;
@@ -52,9 +54,33 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProjectArticlePage({ params }: Props) {
   const { locale, id } = await params;
   const t = await getTranslations('ProjectDetail');
-  const project = await getProjectById(id);
+  const result = await getProjectById(id);
 
-  if (!project) notFound();
+  if (result.status === 'unavailable') {
+    return (
+      <article className="max-w-5xl mx-auto px-6 lg:px-8 py-16 sm:py-20">
+        <div className="max-w-3xl mx-auto">
+          <BackToProjectsLink
+            homeHref={`/${locale}`}
+            archiveHref={`/${locale}/projects`}
+            homeLabel={t('backToProjects')}
+            archiveLabel={t('backToArchive')}
+            className="text-xs font-mono text-muted-foreground hover:text-foreground"
+          />
+
+          <div className="mt-10 rounded-2xl border border-border bg-card/70 p-6 sm:p-8">
+            <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">{t('unavailableTitle')}</h1>
+            <p className="mt-3 text-sm sm:text-base text-muted-foreground leading-relaxed">
+              {t('unavailableDescription')}
+            </p>
+          </div>
+        </div>
+      </article>
+    );
+  }
+
+  if (result.status === 'not_found') notFound();
+  const project = result.project;
   const showUpdatedAt = !!project.updated_at && !areSameCalendarDate(project.created_at, project.updated_at);
 
   return (

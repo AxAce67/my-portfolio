@@ -423,6 +423,11 @@ html.route-transition-active.route-transition-compact:not(.theme-transition)::vi
   view-transition-name: site-header;
 }
 
+.theme-transition .site-header {
+  view-transition-name: none;
+  transition: none;
+}
+
 html::view-transition-group(site-header) {
   z-index: 120;
 }

@@ -3,6 +3,23 @@ import { createPublicServerClient } from '@/lib/supabase/public-server';
 
 const PUBLIC_CONTENT_REVALIDATE_SECONDS = 30;
 
+type ProjectDetailRecord = {
+  id: string;
+  title: string | null;
+  description: string | null;
+  content_md: string | null;
+  content_json: unknown;
+  created_at: string | null;
+  updated_at: string | null;
+  is_published: boolean | null;
+  thumbnail_url: string | null;
+};
+
+export type ProjectDetailResult =
+  | { status: 'ok'; project: ProjectDetailRecord }
+  | { status: 'not_found'; project: null }
+  | { status: 'unavailable'; project: null };
+
 export type HomeProject = {
   id: string;
   title: string;
@@ -132,8 +149,8 @@ export const getProjectsListData = unstable_cache(
   }
 );
 
-export async function getProjectById(id: string) {
-  return unstable_cache(
+const getCachedProjectDetail = (id: string) =>
+  unstable_cache(
     async () => {
       const supabase = createContentClient();
       const { data, error } = await supabase
@@ -148,12 +165,26 @@ export async function getProjectById(id: string) {
         if (error.code === '22P02') return null;
         throw new Error(`Failed to load project detail: ${error.message}`);
       }
+
       return data;
     },
-    ['project-detail-data-v2', id],
+    ['project-detail-data-v3', id],
     {
       tags: ['home-page-data', `project-detail:${id}`],
       revalidate: PUBLIC_CONTENT_REVALIDATE_SECONDS,
     }
   )();
+
+export async function getProjectById(id: string): Promise<ProjectDetailResult> {
+  try {
+    const project = await getCachedProjectDetail(id);
+    if (!project) {
+      return { status: 'not_found', project: null };
+    }
+
+    return { status: 'ok', project };
+  } catch (error) {
+    console.error('[publicContent] Failed to load project detail', error);
+    return { status: 'unavailable', project: null };
+  }
 }

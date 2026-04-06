@@ -307,7 +307,9 @@
         "backToArchive": "← 아카이브로 돌아가기",
         "createdAt": "작성일",
         "updatedAt": "수정일",
-        "noContent": "아직 내용이 없습니다."
+        "noContent": "아직 내용이 없습니다.",
+        "unavailableTitle": "이 글을 일시적으로 불러올 수 없습니다",
+        "unavailableDescription": "공개된 콘텐츠를 불러오지 못했습니다. 잠시 후 페이지를 새로고침해 주세요."
     },
     "Login": {
         "title": "대시보드 로그인",

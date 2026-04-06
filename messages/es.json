@@ -307,7 +307,9 @@
         "backToArchive": "← Volver al archivo",
         "createdAt": "Creado",
         "updatedAt": "Actualizado",
-        "noContent": "Aún no hay contenido."
+        "noContent": "Aún no hay contenido.",
+        "unavailableTitle": "Este artículo no está disponible temporalmente",
+        "unavailableDescription": "No se pudo cargar el contenido publicado. Espera un momento y vuelve a recargar la página."
     },
     "Login": {
         "title": "Inicio de sesión del panel",

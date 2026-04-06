@@ -307,7 +307,9 @@
         "backToArchive": "← Archiveへ戻る",
         "createdAt": "作成",
         "updatedAt": "更新",
-        "noContent": "本文はまだありません。"
+        "noContent": "本文はまだありません。",
+        "unavailableTitle": "記事を一時的に読み込めません",
+        "unavailableDescription": "公開データの取得に失敗しました。少し待ってから再読み込みしてください。"
     },
     "Login": {
         "title": "ダッシュボード ログイン",

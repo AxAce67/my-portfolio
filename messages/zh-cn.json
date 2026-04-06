@@ -307,7 +307,9 @@
         "backToArchive": "← 返回归档",
         "createdAt": "创建于",
         "updatedAt": "更新于",
-        "noContent": "暂时还没有内容。"
+        "noContent": "暂时还没有内容。",
+        "unavailableTitle": "这篇文章暂时无法加载",
+        "unavailableDescription": "已发布内容加载失败。请稍等片刻后刷新页面。"
     },
     "Login": {
         "title": "控制台登录",

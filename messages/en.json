@@ -307,7 +307,9 @@
         "backToArchive": "← Back to Archive",
         "createdAt": "Created",
         "updatedAt": "Updated",
-        "noContent": "No content yet."
+        "noContent": "No content yet.",
+        "unavailableTitle": "This article is temporarily unavailable",
+        "unavailableDescription": "Failed to load the published content. Please wait a moment and reload the page."
     },
     "Login": {
         "title": "Dashboard Login",
