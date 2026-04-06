@@ -985,8 +985,9 @@ function ProjectsSection({ initialProjects, returningProjectId }: { initialProje
                           ? 'rounded-t-xl'
                           : 'rounded-l-xl rounded-tr-none'
                           }`}
-                        loading={returningProjectId === project.id ? 'eager' : 'lazy'}
-                        fetchPriority={returningProjectId === project.id ? 'high' : undefined}
+                        priority={returningProjectId === project.id}
+                        loading={returningProjectId === project.id ? undefined : 'lazy'}
+                        fetchPriority={returningProjectId === project.id ? undefined : 'auto'}
                         style={{ viewTransitionName: `proj-${project.id}`, viewTransitionClass: 'project-media' }}
                       />
                     ) : (

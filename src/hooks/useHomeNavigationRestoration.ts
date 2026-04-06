@@ -27,6 +27,13 @@ async function waitForCardImage(card: HTMLElement | null) {
 
   const image = card.querySelector('img');
   if (!image || image.complete) {
+    if (image?.decode) {
+      try {
+        await image.decode();
+      } catch {
+        // Ignore decode failures; the image may still be paintable.
+      }
+    }
     await waitForNextFrame();
     await waitForNextFrame();
     return;
@@ -39,6 +46,14 @@ async function waitForCardImage(card: HTMLElement | null) {
     }),
     waitForTimeout(260),
   ]);
+
+  if (image.decode) {
+    try {
+      await image.decode();
+    } catch {
+      // Ignore decode failures; the image may still be paintable.
+    }
+  }
 
   await waitForNextFrame();
   await waitForNextFrame();

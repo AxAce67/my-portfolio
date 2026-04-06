@@ -95,26 +95,8 @@ export function runRouteTransition(
   }
 
   if (compactMotion) {
-    root.classList.add(ROUTE_TRANSITION_MOBILE_CLASS);
-    root.style.setProperty(ROUTE_DIRECTION_VAR, options?.direction === 'backward' ? '-1' : '1');
-
-    if (transitionDocument.startViewTransition) {
-      const transition = transitionDocument.startViewTransition(() => {
-        action();
-      });
-
-      transition.finished.finally(() => {
-        window.setTimeout(cleanup, 90);
-      });
-      return;
-    }
-
-    window.setTimeout(() => {
-      action();
-      root.classList.add(ROUTE_TRANSITION_MOBILE_EXIT_CLASS);
-    }, 110);
-
-    window.setTimeout(cleanup, 320);
+    action();
+    cleanup();
     return;
   }
 
