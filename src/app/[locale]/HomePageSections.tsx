@@ -955,7 +955,7 @@ function ProjectsSection({ initialProjects, returningProjectId }: { initialProje
                   if (shouldUseMobileRouteTransitions()) {
                     e.preventDefault();
                     runRouteTransition(() => {
-                      router.push(`/projects/${project.id}`, { scroll: false });
+                      router.push(`/projects/${project.id}`);
                     });
                     return;
                   }

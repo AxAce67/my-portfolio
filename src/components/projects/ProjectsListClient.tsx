@@ -132,7 +132,7 @@ export default function ProjectsListClient({ projects }: Props) {
                   if (shouldUseMobileRouteTransitions()) {
                     e.preventDefault();
                     runRouteTransition(() => {
-                      router.push(`/projects/${project.id}`, { scroll: false });
+                      router.push(`/projects/${project.id}`);
                     });
                     return;
                   }

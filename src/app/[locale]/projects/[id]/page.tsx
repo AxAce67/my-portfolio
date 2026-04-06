@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { getProjectById, getProjectsListData } from '@/lib/content/publicContent';
 import BackToProjectsLink from '@/components/projects/BackToProjectsLink';
+import ScrollToTopOnMount from '@/components/projects/ScrollToTopOnMount';
 import MarkdownArticle from '@/components/content/MarkdownArticle';
 import BlockNoteContent from '@/components/content/BlockNoteContent';
 import { getValidLocale } from '@/i18n/routing';
@@ -59,6 +60,7 @@ export default async function ProjectArticlePage({ params }: Props) {
   if (result.status === 'unavailable') {
     return (
       <article className="max-w-5xl mx-auto px-6 lg:px-8 py-16 sm:py-20">
+        <ScrollToTopOnMount />
         <div className="max-w-3xl mx-auto">
           <BackToProjectsLink
             homeHref={`/${locale}`}
@@ -85,6 +87,7 @@ export default async function ProjectArticlePage({ params }: Props) {
 
   return (
     <article className="max-w-5xl mx-auto px-6 lg:px-8 py-16 sm:py-20">
+      <ScrollToTopOnMount />
       <div className="max-w-3xl mx-auto">
         <BackToProjectsLink
           homeHref={`/${locale}`}

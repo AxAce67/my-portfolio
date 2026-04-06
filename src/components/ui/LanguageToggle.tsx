@@ -36,6 +36,11 @@ const FROZEN_THEME_VARS = [
     '--grid-color',
 ] as const;
 
+function prefersCompactPointer() {
+    return typeof window !== 'undefined'
+        && window.matchMedia('(pointer: coarse), (any-pointer: coarse)').matches;
+}
+
 export function LanguageToggle() {
     const t = useTranslations('Language');
     const locale = getValidLocale(useLocale());
@@ -203,8 +208,18 @@ export function LanguageToggle() {
         }
 
         const localizedPath = `/${nextLocale}${pathname === '/' ? '' : pathname}`;
+        const compactPointer = prefersCompactPointer();
         const root = document.documentElement;
         const rootStyles = window.getComputedStyle(root);
+
+        if (compactPointer) {
+            setPendingLocale(nextLocale);
+            setIsOpen(false);
+            router.replace(localizedPath, {
+                scroll: false,
+            });
+            return;
+        }
 
         FROZEN_THEME_VARS.forEach((variableName) => {
             root.style.setProperty(variableName, rootStyles.getPropertyValue(variableName).trim());

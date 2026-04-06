@@ -228,6 +228,19 @@ html.locale-switch-enter body::after {
   transform: translateX(calc(var(--locale-direction, 1) * -16px));
 }
 
+@media (pointer: coarse), (any-pointer: coarse) {
+  html.locale-switch-pending .app-shell,
+  html.locale-switch-enter .app-shell,
+  html.locale-switch-pending body::after,
+  html.locale-switch-enter body::after {
+    animation: none;
+    transform: none;
+    opacity: 0;
+    filter: none;
+    transition: none;
+  }
+}
+
 html.route-transition-compact:not(.theme-transition)::view-transition-old(root) {
   animation: route-fade-out-compact 120ms cubic-bezier(0.4, 0, 1, 1) both;
 }
