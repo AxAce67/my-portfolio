@@ -2,7 +2,7 @@
 
 import { useCreateBlockNote } from '@blocknote/react';
 import { BlockNoteView } from '@blocknote/mantine';
-import { useTheme } from 'next-themes';
+import { useTheme } from '@/components/providers/ThemeProvider';
 
 type BlockNoteRendererProps = {
   contentJson: unknown;

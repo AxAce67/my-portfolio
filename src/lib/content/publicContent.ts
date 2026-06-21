@@ -1,7 +1,21 @@
-import { unstable_cache } from 'next/cache';
-import { createPublicServerClient } from '@/lib/supabase/public-server';
+import { Query, type Models } from 'appwrite';
+import { tablesDB, DATABASE_ID, PROJECTS_TABLE_ID, ACTIVE_PROJECTS_TABLE_ID, SITE_SETTINGS_TABLE_ID } from '@/lib/appwrite/client';
 
-const PUBLIC_CONTENT_REVALIDATE_SECONDS = 30;
+type ProjectRow = Models.Row & {
+  title: string | null;
+  description: string | null;
+  content_md: string | null;
+  content_json: string | null;
+  thumbnail_url: string | null;
+  is_published: boolean | null;
+  status: string | null;
+  tags: string[] | null;
+};
+
+type ActiveProjectRow = Models.Row & {
+  name: string | null;
+  stage: number | null;
+};
 
 type ProjectDetailRecord = {
   id: string;
@@ -36,155 +50,139 @@ export type HomeActiveProject = {
   stage: number;
 };
 
-function createContentClient() {
-  return createPublicServerClient();
+export function parseContentJson(raw: string | null): unknown {
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
 }
 
 async function fetchPublishedProjectsWithTags(limit?: number): Promise<HomeProject[]> {
-  const supabase = createContentClient();
-  let query = supabase
-    .from('portfolio_projects')
-    .select('id, title, description, thumbnail_url, created_at, updated_at')
-    .eq('status', 'completed')
-    .eq('is_published', true)
-    .order('updated_at', { ascending: false });
-
-  if (typeof limit === 'number') {
-    query = query.limit(limit);
-  }
-
-  const { data: projectRows, error: projectError } = await query;
-  if (projectError) {
-    throw new Error(`Failed to load published projects: ${projectError.message}`);
-  }
-  const projectIds = (projectRows ?? []).map((row) => row.id);
-  const { data: tagRows, error: tagError } = projectIds.length
-    ? await supabase
-        .from('portfolio_project_tags')
-        .select('project_id, tag_name')
-        .in('project_id', projectIds)
-    : { data: [] as { project_id: string; tag_name: string }[], error: null };
-
-  if (tagError) {
-    throw new Error(`Failed to load project tags: ${tagError.message}`);
-  }
-
-  const tagsByProject = new Map<string, string[]>();
-  (tagRows ?? []).forEach((tag) => {
-    const current = tagsByProject.get(tag.project_id) ?? [];
-    tagsByProject.set(tag.project_id, [...current, tag.tag_name]);
+  const rows = await tablesDB.listRows<ProjectRow>({
+    databaseId: DATABASE_ID,
+    tableId: PROJECTS_TABLE_ID,
+    queries: [
+      Query.equal('status', 'completed'),
+      Query.equal('is_published', true),
+      Query.orderDesc('$updatedAt'),
+      Query.limit(limit ?? 100),
+    ],
   });
 
-  return (projectRows ?? []).map((row) => ({
-    id: row.id,
+  return rows.rows.map((row) => ({
+    id: row.$id,
     title: row.title ?? 'Untitled',
     description: row.description ?? '',
     thumbnail_url: row.thumbnail_url ?? null,
-    created_at: row.created_at ?? null,
-    updated_at: row.updated_at ?? null,
-    tags: tagsByProject.get(row.id) ?? [],
+    created_at: row.$createdAt ?? null,
+    updated_at: row.$updatedAt ?? null,
+    tags: row.tags ?? [],
   }));
 }
 
 async function fetchPublishedActiveProjects(): Promise<HomeActiveProject[]> {
-  const supabase = createContentClient();
-  const { data: rows, error } = await supabase
-    .from('portfolio_active_projects')
-    .select('id, name, stage')
-    .eq('is_published', true)
-    .order('display_order', { ascending: true })
-    .order('created_at', { ascending: true });
+  const rows = await tablesDB.listRows<ActiveProjectRow>({
+    databaseId: DATABASE_ID,
+    tableId: ACTIVE_PROJECTS_TABLE_ID,
+    queries: [
+      Query.equal('is_published', true),
+      Query.orderAsc('display_order'),
+      Query.orderAsc('$createdAt'),
+      Query.limit(100),
+    ],
+  });
 
-  if (error) {
-    throw new Error(`Failed to load active projects: ${error.message}`);
-  }
-
-  return (rows ?? []).map((row) => ({
-    id: row.id,
-    name: row.name,
-    stage: row.stage,
+  return rows.rows.map((row) => ({
+    id: row.$id,
+    name: row.name ?? '',
+    stage: row.stage ?? 0,
   }));
 }
 
-export const getHomePageData = unstable_cache(
-  async () => {
-    const [projects, activeProjects] = await Promise.allSettled([
-      fetchPublishedProjectsWithTags(8),
-      fetchPublishedActiveProjects(),
-    ]);
+export async function getHomePageData() {
+  const [projects, activeProjects] = await Promise.allSettled([
+    fetchPublishedProjectsWithTags(8),
+    fetchPublishedActiveProjects(),
+  ]);
 
-    if (projects.status === 'rejected') {
-      console.error('[publicContent] Failed to load home projects', projects.reason);
-    }
-
-    if (activeProjects.status === 'rejected') {
-      console.error('[publicContent] Failed to load active projects', activeProjects.reason);
-    }
-
-    return {
-      projects: projects.status === 'fulfilled' ? projects.value : [],
-      activeProjects: activeProjects.status === 'fulfilled' ? activeProjects.value : [],
-    };
-  },
-  ['home-page-data-v2'],
-  {
-    tags: ['home-page-data'],
-    revalidate: PUBLIC_CONTENT_REVALIDATE_SECONDS,
+  if (projects.status === 'rejected') {
+    console.error('[publicContent] Failed to load home projects', projects.reason);
   }
-);
 
-export const getProjectsListData = unstable_cache(
-  async () => {
-    try {
-      return await fetchPublishedProjectsWithTags();
-    } catch (error) {
-      console.error('[publicContent] Failed to load projects list', error);
-      return [];
-    }
-  },
-  ['projects-list-data-v1'],
-  {
-    tags: ['home-page-data'],
-    revalidate: PUBLIC_CONTENT_REVALIDATE_SECONDS,
+  if (activeProjects.status === 'rejected') {
+    console.error('[publicContent] Failed to load active projects', activeProjects.reason);
   }
-);
 
-const getCachedProjectDetail = (id: string) =>
-  unstable_cache(
-    async () => {
-      const supabase = createContentClient();
-      const { data, error } = await supabase
-        .from('portfolio_projects')
-        .select('id, title, description, content_md, content_json, created_at, updated_at, is_published, thumbnail_url')
-        .eq('id', id)
-        .eq('is_published', true)
-        .maybeSingle();
+  return {
+    projects: projects.status === 'fulfilled' ? projects.value : [],
+    activeProjects: activeProjects.status === 'fulfilled' ? activeProjects.value : [],
+  };
+}
 
-      if (error) {
-        // Validation errors (e.g. invalid UUID format) → treat as not found
-        if (error.code === '22P02') return null;
-        throw new Error(`Failed to load project detail: ${error.message}`);
-      }
+export async function getProjectsListData() {
+  try {
+    return await fetchPublishedProjectsWithTags();
+  } catch (error) {
+    console.error('[publicContent] Failed to load projects list', error);
+    return [];
+  }
+}
 
-      return data;
-    },
-    ['project-detail-data-v3', id],
-    {
-      tags: ['home-page-data', `project-detail:${id}`],
-      revalidate: PUBLIC_CONTENT_REVALIDATE_SECONDS,
-    }
-  )();
+async function getCachedProjectDetail(id: string): Promise<ProjectRow | null> {
+  try {
+    const row = await tablesDB.getRow<ProjectRow>({
+      databaseId: DATABASE_ID,
+      tableId: PROJECTS_TABLE_ID,
+      rowId: id,
+    });
+    return row.is_published ? row : null;
+  } catch (error) {
+    const code = (error as { code?: number })?.code;
+    if (code === 404 || code === 400) return null;
+    throw error;
+  }
+}
 
 export async function getProjectById(id: string): Promise<ProjectDetailResult> {
   try {
-    const project = await getCachedProjectDetail(id);
-    if (!project) {
+    const row = await getCachedProjectDetail(id);
+    if (!row) {
       return { status: 'not_found', project: null };
     }
+
+    const project: ProjectDetailRecord = {
+      id: row.$id,
+      title: row.title ?? null,
+      description: row.description ?? null,
+      content_md: row.content_md ?? null,
+      content_json: parseContentJson(row.content_json),
+      created_at: row.$createdAt ?? null,
+      updated_at: row.$updatedAt ?? null,
+      is_published: row.is_published ?? null,
+      thumbnail_url: row.thumbnail_url ?? null,
+    };
 
     return { status: 'ok', project };
   } catch (error) {
     console.error('[publicContent] Failed to load project detail', error);
     return { status: 'unavailable', project: null };
+  }
+}
+
+export const DEFAULT_AVATAR_URL = '/images/profile/akiz-profile.jpg';
+
+export async function getSiteSettings(): Promise<{ avatarUrl: string | null }> {
+  try {
+    const row = await tablesDB.getRow<Models.Row & { avatar_url: string | null }>({
+      databaseId: DATABASE_ID,
+      tableId: SITE_SETTINGS_TABLE_ID,
+      rowId: 'main',
+    });
+    return { avatarUrl: row.avatar_url || null };
+  } catch (error) {
+    console.error('[publicContent] Failed to load site settings', error);
+    return { avatarUrl: null };
   }
 }

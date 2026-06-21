@@ -1,6 +1,6 @@
 'use client';
 
-import { useTheme } from 'next-themes';
+import { useTheme } from '@/components/providers/ThemeProvider';
 import { useEffect, useRef, useState } from 'react';
 import { Sun, Moon } from 'lucide-react';
 
@@ -46,6 +46,14 @@ export function ThemeToggle() {
 
         document.documentElement.classList.add('theme-transition');
         const transition = document.startViewTransition(() => {
+            // Apply the DOM change synchronously so the browser captures the new frame correctly
+            if (newTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+            } else {
+                document.documentElement.classList.add('light');
+                document.documentElement.classList.remove('dark');
+            }
             setTheme(newTheme);
         });
 

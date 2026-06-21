@@ -59,7 +59,7 @@ export function TiltCard({
         <div
             ref={cardRef}
             className={className}
-            style={{ ...style, willChange: 'transform' }}
+            style={style}
             onPointerMove={handlePointerMove}
             onPointerLeave={handlePointerLeave}
         >

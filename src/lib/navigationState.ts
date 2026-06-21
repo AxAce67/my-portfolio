@@ -2,10 +2,12 @@ export const navigationStateKeys = {
   returnToProjects: 'returnToProjects',
   homeScrollY: 'homeScrollY',
   homeFromProjectId: 'homeFromProjectId',
+  homeReferrerHash: 'homeReferrerHash',
   projectsViewMode: 'projectsViewMode',
   projectsReferrer: 'projectsReferrer',
   projectsScrollY: 'projectsScrollY',
   languageScrollY: '__lang-switch-scroll__',
+  navTargetSection: 'navTargetSection',
 } as const;
 
 export function readSessionValue(key: string) {
@@ -36,4 +38,5 @@ export function clearProjectReturnState() {
   removeSessionValue(navigationStateKeys.homeScrollY);
   removeSessionValue(navigationStateKeys.homeFromProjectId);
   removeSessionValue(navigationStateKeys.projectsReferrer);
+  removeSessionValue(navigationStateKeys.projectsScrollY);
 }

@@ -1,23 +1,23 @@
 {
     "Navigation": {
-        "about": "关于",
-        "skills": "技能",
-        "technologies": "技术栈",
-        "projects": "项目",
-        "timeline": "进行中",
-        "contact": "联系"
+        "about": "About",
+        "skills": "Skills",
+        "technologies": "Tech Stack",
+        "projects": "Projects",
+        "timeline": "Active",
+        "contact": "Contact"
     },
     "Hero": {
         "name": "Aki",
-        "role": "// 独立开发者 · 学生",
+        "role": "// indie dev · student",
         "title": "『把想法变成现实』",
         "subtitle": "做自己喜欢的东西。仅此而已。",
         "ctaPrimary": "查看项目"
     },
     "About": {
         "sectionTitle": "// about/",
-        "heading": "关于",
-        "profileLabel": "简介",
+        "heading": "About",
+        "profileLabel": "Profile",
         "profileParagraph1": "我是住在日本的一名高中一年级学生，正在制作网站、Discord 机器人、Ubuntu 服务器和 Minecraft 服务器等个人项目。",
         "profileParagraph2": "自从六年级接触 ChatGPT 以来，我一直在使用各种 AI 工具来改进工作流程，加快把想法做成可运行产品的速度。",
         "profileParagraph3": "我的流程是先把想法整理成需求，快速做出 MVP，然后通过测试和改进持续迭代。",
@@ -26,7 +26,7 @@
         "statsTechnologies": "使用技术",
         "statsYears": "开发年数",
         "statsCommits": "自建服务器",
-        "focusLabel": "关注点",
+        "focusLabel": "Focus",
         "momentum": {
             "label": "开发动力仪表",
             "description": "根据最近 7 天的提交记录，轻松读取我当前的开发状态。",
@@ -45,12 +45,12 @@
             "research": "调研",
             "continuousImprovement": "持续改进"
         },
-        "linksLabel": "链接",
+        "linksLabel": "Links",
         "role": "独立开发者"
     },
     "Skills": {
         "sectionTitle": "// skills/",
-        "heading": "技能",
+        "heading": "Skills",
         "subtitle": "日常使用的工具与优势",
         "categories": {
             "languages": "语言",
@@ -72,12 +72,12 @@
     },
     "TechStack": {
         "sectionTitle": "// tech_stack/",
-        "heading": "技术栈",
+        "heading": "Tech Stack",
         "subtitle": "我经常使用的技术与服务"
     },
     "Projects": {
         "sectionTitle": "// projects/",
-        "heading": "项目",
+        "heading": "Projects",
         "viewList": "列表",
         "viewGrid": "网格",
         "viewAll": "查看全部",
@@ -87,7 +87,7 @@
     },
     "Contact": {
         "sectionTitle": "> send_message",
-        "heading": "联系",
+        "heading": "Contact",
         "description": "如有问题、委托或反馈，欢迎随时联系。",
         "name": "姓名",
         "namePlaceholder": "你的名字",
@@ -129,7 +129,8 @@
         "tabs": {
             "projects": "项目",
             "activeProjects": "进行中项目",
-            "audit": "审计日志"
+            "audit": "审计日志",
+            "profile": "个人资料"
         },
         "actions": {
             "read": "查看",
@@ -151,7 +152,10 @@
             "manageDescription": "请在专用编辑页面创建新项目。",
             "newProject": "新建项目",
             "listTitle": "项目",
-            "empty": "还没有项目。"
+            "empty": "还没有项目。",
+            "searchPlaceholder": "搜索项目...",
+            "filterAll": "所有状态",
+            "noResults": "没有匹配的项目。"
         },
         "toast": {
             "project_created": "项目已创建。",
@@ -212,7 +216,8 @@
                 "create": "创建",
                 "update": "更新",
                 "cancel": "取消"
-            }
+            },
+            "dragHandle": "拖动以重新排序"
         },
         "audit": {
             "title": "认证审计日志",
@@ -275,13 +280,28 @@
                 "development": "开发",
                 "completed": "已完成",
                 "on_hold": "暂停中"
-            }
+            },
+            "saving": "保存中...",
+            "unsavedWarning": "您有未保存的更改。仍要离开吗？",
+            "draftRestoredTitle": "发现未保存的草稿",
+            "draftRestoredDescription": "我们发现了一份未完成的草稿。要恢复它吗？",
+            "draftRestore": "恢复",
+            "draftDiscard": "放弃",
+            "cropTitle": "裁剪缩略图",
+            "cropConfirm": "应用裁剪",
+            "cropCancel": "取消"
+        },
+        "profile": {
+            "title": "头像",
+            "description": "将鼠标悬停在头像上即可上传新图片。",
+            "updated": "头像已更新。",
+            "updateFailed": "头像更新失败。"
         }
     },
     "ActiveProjects": {
         "sectionLabel": "// in_progress",
-        "heading": "进行中项目",
-        "projectColumn": "项目",
+        "heading": "Active Projects",
+        "projectColumn": "Project",
         "empty": "还没有进行中项目。",
         "stagePlanning": "规划",
         "stageDesign": "设计",
@@ -291,7 +311,7 @@
     },
     "ProjectList": {
         "backToTop": "← 返回项目",
-        "heading": "项目档案",
+        "heading": "Projects Archive",
         "description": "已公开项目的完整列表。",
         "searchLabel": "搜索",
         "searchPlaceholder": "按标题、描述或标签搜索...",
@@ -365,5 +385,23 @@
         "contactTitle": "联系",
         "contactDescription": "如对本条款有疑问、意见，或有内容授权相关咨询，请使用本站联系表单。根据咨询内容不同，回复可能需要一些时间。",
         "backHome": "返回首页"
+    },
+    "Servers": {
+        "backHome": "← 返回首页",
+        "heading": "Servers",
+        "description": "我所运行服务器的实时状态。",
+        "refreshButton": "刷新",
+        "lastUpdatedLabel": "更新于",
+        "statusOnline": "在线",
+        "statusOffline": "离线",
+        "statusMaintenance": "维护中",
+        "categoryWeb": "Web",
+        "categoryGame": "游戏",
+        "categoryBot": "Bot",
+        "categoryInfra": "基础设施",
+        "specsLabel": "配置",
+        "osLabel": "系统",
+        "ipLabel": "IP",
+        "lastSeenLabel": "最后在线"
     }
 }

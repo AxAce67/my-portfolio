@@ -1,11 +1,10 @@
 'use client';
 
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useTransitionRouter } from 'next-view-transitions';
+import { Link, useRouter } from '@/i18n/routing';
 import { useEffect, useState } from 'react';
 import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, shouldUseMobileRouteTransitions } from '@/lib/viewTransitions';
 import { navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
+import { ArrowLeft } from 'lucide-react';
 
 type Props = {
   homeHref: string;
@@ -17,7 +16,6 @@ type Props = {
 
 export default function BackToProjectsLink({ homeHref, archiveHref, className, homeLabel, archiveLabel }: Props) {
   const router = useRouter();
-  const transitionRouter = useTransitionRouter();
   const [referrer] = useState(() =>
     readSessionValue(navigationStateKeys.projectsReferrer)
   );
@@ -33,7 +31,7 @@ export default function BackToProjectsLink({ homeHref, archiveHref, className, h
       href={targetHref}
       prefetch
       className={className}
-      onClick={(e) => {
+      onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
         if (!isPlainLeftClick(e)) {
           return;
         }
@@ -43,7 +41,7 @@ export default function BackToProjectsLink({ homeHref, archiveHref, className, h
         if (shouldUseMobileRouteTransitions()) {
           e.preventDefault();
           runRouteTransition(() => {
-            router.push(targetHref, { scroll: false });
+            router.push(targetHref);
           }, { direction: 'backward' });
           return;
         }
@@ -51,7 +49,7 @@ export default function BackToProjectsLink({ homeHref, archiveHref, className, h
         if (canUseSharedElementTransitions()) {
           e.preventDefault();
           if (isArchive) {
-            transitionRouter.push(targetHref, { scroll: false });
+            router.push(targetHref);
             return;
           }
 
@@ -71,7 +69,7 @@ export default function BackToProjectsLink({ homeHref, archiveHref, className, h
               resolve();
             };
 
-            router.push(targetHref, { scroll: false });
+            router.push(targetHref);
           }));
           return;
         }

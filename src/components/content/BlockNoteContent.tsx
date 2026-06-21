@@ -190,13 +190,10 @@ function BlockNodes({ blocks, prefix = 'b' }: { blocks: Block[]; prefix?: string
         const height = block.props.previewHeight as number | undefined;
         elements.push(
           <figure key={key} className="bn-figure">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={url}
               alt={caption || ''}
-              className="markdown-article-image"
-              loading="lazy"
-              decoding="async"
+              className="markdown-article-image bg-muted"
               width={width ?? 1200}
               height={height ?? Math.round((width ?? 1200) * 9 / 16)}
               style={width ? { width: `${width}px`, maxWidth: '100%' } : undefined}

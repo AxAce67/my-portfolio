@@ -1,11 +1,12 @@
 'use client';
 
 import { useLayoutEffect, useMemo, useState } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
-import Image from 'next/image';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useLocale } from '@/hooks/useLocale';
+import Image from '@/components/ui/Image';
 import { Search } from 'lucide-react';
 import { Link, useRouter } from '@/i18n/routing';
-import { useTransitionRouter } from 'next-view-transitions';
+import { useRouter as useTransitionRouter } from '@/i18n/routing';
 import { StaggerContainer, StaggerItem } from '@/components/ui/ScrollReveal';
 import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, shouldUseMobileRouteTransitions } from '@/lib/viewTransitions';
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
@@ -40,6 +41,9 @@ export default function ProjectsListClient({ projects }: Props) {
   });
 
   // 戻り時にスクロール位置を復元（ViewTransitionsのfinishより先に実行される）
+  // 注意: projectsScrollY はアーカイブ一覧からプロジェクト詳細に移動する際にのみ
+  // 書き込まれる想定。/projects への他の入口（ナビ、About のショートカット等）は
+  // 必ず clearProjectReturnState() を呼んで、古い値が残らないようにすること。
   useLayoutEffect(() => {
     const y = readSessionNumber(navigationStateKeys.projectsScrollY);
     if (y !== null) {
@@ -63,11 +67,23 @@ export default function ProjectsListClient({ projects }: Props) {
   const normalizedPage = Math.min(page, totalPages);
   const currentItems = filtered.slice((normalizedPage - 1) * PAGE_SIZE, normalizedPage * PAGE_SIZE);
 
+  const [[backHref, backLabel]] = useState<[string, string | null]>(() => {
+    if (typeof window === 'undefined') return ['/', null];
+    const hash = sessionStorage.getItem(navigationStateKeys.homeReferrerHash);
+    let label = null;
+    if (hash === 'about') {
+      label = locale === 'ja' ? '← Aboutへ戻る' : '← Back to About';
+    } else if (hash === 'timeline') {
+      label = locale === 'ja' ? '← Active Projectsへ戻る' : '← Back to Active Projects';
+    }
+    return ['/', label];
+  });
+
   return (
     <section className="max-w-5xl mx-auto px-6 lg:px-8 py-16 sm:py-20">
       <div className="mb-8">
         <Link
-          href="/"
+          href={backHref}
           className="text-xs font-mono text-muted-foreground hover:text-foreground"
           onClick={(e) => {
             if (!isPlainLeftClick(e)) {
@@ -78,12 +94,12 @@ export default function ProjectsListClient({ projects }: Props) {
             if ('startViewTransition' in document) {
               e.preventDefault();
               runRouteTransition(() => {
-                router.push('/');
+                router.push(backHref);
               }, { direction: 'backward' });
             }
           }}
         >
-          {t('backToTop')}
+          {backLabel ?? t('backToTop')}
         </Link>
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mt-5">{t('heading')}</h1>
         <p className="text-sm text-muted-foreground mt-2">{t('description')}</p>

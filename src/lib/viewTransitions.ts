@@ -21,6 +21,15 @@ type ClickLikeEvent = {
 const ROUTE_TRANSITION_CLASS = 'route-transition-active';
 const ROUTE_TRANSITION_DOCUMENT_CLASS = 'route-transition-document';
 
+declare global {
+  interface Window {
+    // Lets code on the destination page (e.g. a section-scroll restoration
+    // hook) wait for the route's enter animation to actually finish before
+    // doing its own motion, instead of competing with it for frames.
+    __routeTransitionFinished?: Promise<void>;
+  }
+}
+
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
@@ -84,12 +93,17 @@ export function runRouteTransition(
   };
 
   if (reduceMotion) {
+    window.__routeTransitionFinished = Promise.resolve();
     action();
     cleanup();
     return;
   }
 
   if (compactMotion) {
+    // No view transition here, but the destination page still plays its
+    // own ~180ms CSS enter animation (.mobile-page-motion) — give that a
+    // moment too instead of resolving immediately.
+    window.__routeTransitionFinished = new Promise((resolve) => window.setTimeout(resolve, 200));
     action();
     cleanup();
     return;
@@ -105,6 +119,7 @@ export function runRouteTransition(
   root.classList.toggle(ROUTE_TRANSITION_DOCUMENT_CLASS, options?.variant === 'document');
 
   if (!transitionDocument.startViewTransition) {
+    window.__routeTransitionFinished = Promise.resolve();
     action();
     scheduleCleanup();
     return;
@@ -114,5 +129,6 @@ export function runRouteTransition(
     action();
   });
 
+  window.__routeTransitionFinished = transition.finished.catch(() => undefined);
   transition.finished.finally(scheduleCleanup);
 }

@@ -39,14 +39,11 @@ function renderInline(text: string) {
       if (imageMatch) {
         const [, alt, src] = imageMatch;
         parts.push(
-          // eslint-disable-next-line @next/next/no-img-element
           <img
             key={`inline-${key += 1}`}
             src={src}
             alt={alt}
-            className="markdown-article-image"
-            loading="lazy"
-            decoding="async"
+            className="markdown-article-image bg-muted"
             width={1200}
             height={675}
           />

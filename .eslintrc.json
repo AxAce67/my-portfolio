@@ -1,5 +1,0 @@
-{
-  "root": true,
-  "ignorePatterns": ["next-env.d.ts", ".next/**"],
-  "extends": ["next/core-web-vitals", "next/typescript"]
-}

@@ -43,8 +43,36 @@ async function waitForCardImage(card: HTMLElement | null) {
   await waitForNextFrame();
 }
 
-export function useHomeNavigationRestoration(returningProjectId: string | null) {
+export function useHomeNavigationRestoration(returningProjectId: string | null, dataReady: boolean) {
   const scrollRestoredRef = useRef(false);
+
+  // Nav clicks from another page hand off their target section via
+  // sessionStorage (not a URL hash). Wait for both the project data fetch
+  // and the route's own enter transition to finish before scrolling —
+  // otherwise the smooth scroll competes with the transition animation for
+  // frames (looks janky/rushed) instead of landing the same way a plain
+  // nav click does on an already-settled home page.
+  useEffect(() => {
+    if (!dataReady) return;
+    const navTargetSection = readSessionValue(navigationStateKeys.navTargetSection);
+    if (!navTargetSection) return;
+
+    let cancelled = false;
+    void (async () => {
+      await (window.__routeTransitionFinished ?? Promise.resolve());
+      if (cancelled) return;
+
+      removeSessionValue(navigationStateKeys.navTargetSection);
+      const target = document.getElementById(navTargetSection);
+      if (!target) return;
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.requestAnimationFrame(resolveHomeProjectsTransition);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [dataReady]);
 
   useLayoutEffect(() => {
     const savedScrollY = readSessionNumber(navigationStateKeys.homeScrollY);
@@ -78,23 +106,55 @@ export function useHomeNavigationRestoration(returningProjectId: string | null) 
     const navigationEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
     const isReload = navigationEntry?.type === 'reload';
     const shouldRestoreProjects = readSessionValue(navigationStateKeys.returnToProjects) === '1';
-    const hash = window.location.hash?.replace('#', '');
+
+    let hash = window.location.hash?.replace('#', '') || '';
+    if (!hash && shouldRestoreProjects) {
+      hash = sessionStorage.getItem(navigationStateKeys.homeReferrerHash) || '';
+    }
 
     if (shouldRestoreProjects) {
       const savedScrollY = readSessionNumber(navigationStateKeys.homeScrollY);
       if (savedScrollY !== null && !scrollRestoredRef.current) {
-        window.scrollTo(0, savedScrollY);
-      } else if (savedScrollY === null) {
+        // Try scrolling multiple times as the page content loads
+        let scrollAttempts = 0;
+        const maxScrollAttempts = 12;
+        const tryPixelScroll = () => {
+          // If page is tall enough, we assume pixel scroll will be accurate
+          if (document.documentElement.scrollHeight > savedScrollY + window.innerHeight * 0.8) {
+            window.scrollTo(0, savedScrollY);
+            return;
+          }
+          
+          // Otherwise, try to keep the target element in view while waiting for page to grow
+          if (hash) {
+            const target = document.getElementById(hash);
+            if (target) target.scrollIntoView({ behavior: 'auto', block: 'start' });
+          } else {
+            window.scrollTo(0, savedScrollY);
+          }
+
+          scrollAttempts += 1;
+          if (scrollAttempts < maxScrollAttempts) {
+            window.setTimeout(tryPixelScroll, 80);
+          }
+        };
+        tryPixelScroll();
+      } else if (savedScrollY === null && !hash) {
         const projectsSection = document.getElementById('projects');
         projectsSection?.scrollIntoView({ behavior: 'auto', block: 'start' });
       }
-      removeSessionValue(navigationStateKeys.homeScrollY);
-      removeSessionValue(navigationStateKeys.homeFromProjectId);
-      removeSessionValue(navigationStateKeys.returnToProjects);
+      
+      // Delay clearing the keys slightly to ensure retry loops can read them if needed elsewhere
+      window.setTimeout(() => {
+        removeSessionValue(navigationStateKeys.homeScrollY);
+        removeSessionValue(navigationStateKeys.homeFromProjectId);
+        removeSessionValue(navigationStateKeys.returnToProjects);
+        removeSessionValue(navigationStateKeys.homeReferrerHash);
+      }, 1000);
       return;
     }
 
-    if (isReload && !hash) {
+    if (isReload && !window.location.hash?.replace('#', '')) {
       const previousRestoration = window.history.scrollRestoration;
       window.history.scrollRestoration = 'manual';
 

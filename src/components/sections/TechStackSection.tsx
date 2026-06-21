@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations } from '@/hooks/useTranslations';
 import type { ComponentType } from 'react';
-import Image from 'next/image';
+import Image from '@/components/ui/Image';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import {
   SiApple,
@@ -17,6 +17,7 @@ import {
   SiNextdotjs,
   SiTypescript,
   SiJavascript,
+  SiAppwrite,
   SiSupabase,
   SiVercel,
   SiPython,
@@ -108,6 +109,7 @@ const techStack: TechItem[] = [
   { name: 'CSS', icon: SiCss, brandColor: '#1572B6' },
   { name: 'PHP', icon: SiPhp, brandColor: '#777BB4' },
   { name: 'Tailwind CSS', icon: SiTailwindcss, brandColor: '#06B6D4' },
+  { name: 'Appwrite', icon: SiAppwrite, brandColor: '#FD366E' },
   { name: 'Supabase', icon: SiSupabase, brandColor: '#3FCF8E' },
   { name: 'Vercel', icon: SiVercel, brandColor: '#999999' },
   { name: 'Cloudflare', icon: SiCloudflare, brandColor: '#F38020' },
@@ -165,12 +167,8 @@ export default function TechStackSection() {
   const row2 = techStack.slice(split);
 
   return (
-    <section id="tech-stack" className="py-20 sm:py-32 lg:py-36 overflow-hidden">
+    <section id="tech-stack" className="py-12 sm:py-16 lg:py-20 overflow-hidden">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal>
-          <p className="section-label text-center">{t('sectionTitle')}</p>
-        </ScrollReveal>
-
         <ScrollReveal delay={0.1}>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2 text-center">{t('heading')}</h2>
           <p className="text-xs sm:text-sm text-muted-foreground mb-8 sm:mb-12 text-center">{t('subtitle')}</p>
@@ -179,7 +177,7 @@ export default function TechStackSection() {
 
       <div className="scroll-container mb-4">
         <div className="scroll-track scroll-left">
-          {[...row1, ...row1, ...row1].map((item, idx) => (
+          {[...row1, ...row1].map((item, idx) => (
             <TechCard key={`r1-${idx}`} item={item} idx={idx} prefix="r1" />
           ))}
         </div>
@@ -187,7 +185,7 @@ export default function TechStackSection() {
 
       <div className="scroll-container">
         <div className="scroll-track scroll-right">
-          {[...row2, ...row2, ...row2].map((item, idx) => (
+          {[...row2, ...row2].map((item, idx) => (
             <TechCard key={`r2-${idx}`} item={item} idx={idx} prefix="r2" />
           ))}
         </div>

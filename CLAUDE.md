@@ -5,85 +5,74 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev          # Start development server
-npm run build        # Production build (run to check type errors)
-npm run lint         # ESLint
-npm run perf:lighthouse  # Lighthouse performance test
+npm run dev          # Start Vite dev server
+npm run build        # tsc typecheck + production build
+npm run lint         # ESLint (flat config, eslint.config.js)
+npm run preview      # Preview the production build locally
 ```
 
 There are no automated tests. Verify changes by building (`npm run build`) to catch type errors before pushing.
 
 ## Architecture Overview
 
-**Next.js 15 App Router** with locale-prefixed routing (`/ja/...`, `/en/...`). The root `/` redirects to `/ja` via `next.config.mjs`.
+**Vite + React SPA** (no SSR, no Next.js). Client-side routing via `react-router-dom`, locale-prefixed (`/ja/...`, `/en/...`). The root `/` redirects to `/ja` (see `src/App.tsx`).
 
 ### Routing & i18n
 
-- All pages live under `src/app/[locale]/`
-- `next-intl` handles locale detection and message loading (`messages/ja.json`, `messages/en.json`)
-- Use `next-intl/navigation` exports (`Link`, `redirect`, `useRouter`, `usePathname`) — never Next.js built-ins directly
-- Middleware (`src/middleware.ts`) handles both locale routing and CSP headers
+- All pages live under `src/pages/`, wired up in `src/App.tsx`
+- i18n is `react-i18next` (NOT next-intl, despite some leftover compat-shim naming) — messages live in `messages/*.json` (8 locales), loaded in `src/i18n/config.ts`
+- `useTranslations(namespace)` (`src/hooks/useTranslations.ts`) is a thin wrapper that also supports next-intl-style dotted sub-namespaces (e.g. `useTranslations('Dashboard.active')`) by splitting off the root namespace and prefixing keys — react-i18next's own namespace arg does NOT walk dotted paths, so don't bypass this hook
+- Interpolation uses single-brace `{var}` placeholders (configured in `src/i18n/config.ts`), not i18next's default `{{var}}` — matches the existing message files
+- `src/shims/` contains compat shims for old Next.js imports (`next/image`, `next/link`, etc.) still referenced by ported components — see `vite.config.ts` aliases
 
-### Supabase Clients — Use the Right One
+### Appwrite
 
-Four clients exist for different contexts:
+Single Appwrite project, no SSR — all calls happen directly from the browser.
 
-| Client | File | Use When |
-|--------|------|----------|
-| Browser | `lib/supabase/client.ts` | Client components needing user auth |
-| Server | `lib/supabase/server.ts` | Server components/actions needing user session |
-| Public Server | `lib/supabase/public-server.ts` | Server reads with no auth (public data) |
-| Admin | `lib/supabase/admin.ts` | Service role operations (bypasses RLS) |
+- `src/lib/appwrite/client.ts` exports `tablesDB`, `account`, `storage`, plus hardcoded IDs: `DATABASE_ID` (`portfolio`), `PROJECTS_TABLE_ID`, `ACTIVE_PROJECTS_TABLE_ID`, `ASSETS_BUCKET_ID` (`portfolio-assets`)
+- Public read: `src/lib/content/publicContent.ts` — read-only queries, `is_published`/`status` filtered, no auth required (table permission `read("any")`)
+- Admin read/write: `src/lib/content/adminContent.ts` — full CRUD, requires an authenticated Appwrite session (table permissions `create`/`update`/`delete` scoped to `Role.users()`)
+- Self-hosted Appwrite instance — when adding a new deploy target/domain, it must be registered as a Web Platform in the Appwrite console (Project > Overview > Platforms) or browser requests get a 403 `Invalid Origin`
 
-### Data Fetching & Caching
+### Admin Area (`/admin`)
 
-Public data is fetched in `src/lib/content/publicContent.ts` using `unstable_cache()` with tag `'home-page-data'` and 300s revalidation.
+Single route serves both login and dashboard — `src/pages/AdminPage.tsx` checks the session (`useSession` hook) and renders `LoginForm` or `DashboardPage` accordingly. No separate `/login` route.
 
-After any mutating server action, invalidate with:
-```typescript
-revalidatePath('/', 'layout');   // clears ALL locales
-revalidateTag('home-page-data'); // clears cached public data
-```
-**Do not** use locale-specific `revalidatePath('/ja/...')` — it misses other locales.
-
-### Dashboard (Admin Area)
-
-`src/app/[locale]/dashboard/page.tsx` is the admin hub with 3 tabs: **projects**, **active**, **audit**.
-
-- Tab is read from `searchParams.tab`; only the active tab's data is fetched (tab-conditional queries) to keep load fast
-- Server actions are in `src/app/[locale]/dashboard/actions.ts`
-- Admin access is gated by `requireAdminUserId()` in `src/lib/auth/admin.ts`, which checks `portfolio_user_roles` table (fallback: `PORTFOLIO_ADMIN_USER_ID` env var)
+- Auth: Appwrite Account API (`account.createEmailPasswordSession`), single/few admin users created manually via the Appwrite console — there is no public signup
+- `RequireAuth` (`src/components/auth/RequireAuth.tsx`) gates `/admin/projects/new` and `/admin/projects/:id`, redirecting to `/admin` if unauthenticated
+- `DashboardPage` has 2 tabs (projects, active) — no audit-log tab (that depended on Supabase-only rate-limit/audit infra that no longer exists)
+- `ProjectEditorForm` mirrors the live article page's typography (`.article-content`) so editing looks like the published result. It autosaves a draft to `localStorage` (debounced) and warns on unsaved navigation/tab-close
+- Thumbnails go through a crop step (`react-easy-crop`, locked 16:9) before upload
+- Active Projects use `@dnd-kit` for drag-to-reorder (no manual priority field — `display_order` is set automatically)
+- Admin pages/components are lazy-loaded (`React.lazy` in `App.tsx`) so BlockNote/Mantine/dnd-kit never ship to public visitors
 
 ### Content Storage
 
 Projects store content in two fields:
-- `content_json` — BlockNote JSON (source of truth, rendered by `src/components/content/BlockNoteContent.tsx`)
-- `content_md` — Lossy markdown fallback
+- `content_json` — BlockNote JSON (source of truth, stored as a JSON **string** column in Appwrite; parse with `parseContentJson` from `publicContent.ts`)
+- `content_md` — lossy markdown fallback
 
-Article display in `src/app/[locale]/projects/[id]/page.tsx` prefers `content_json` when present. The `BlockNoteContent` server component handles all block types (headings, lists, tables, checkboxes, images, code blocks) without client-side JS.
+Article display (`src/pages/ProjectDetailPage.tsx`) prefers `content_json` when present, rendered by `src/components/content/BlockNoteContent.tsx`.
+
+**Storage cleanup**: deleting a project (`deleteProject`) walks `content_json` (including nested block `children`) to find every uploaded file URL and deletes them from the `portfolio-assets` bucket, plus the thumbnail. Replacing a thumbnail on update also deletes the old file. This is all best-effort (failures don't block the row delete/update). Known gap: removing an inline image from the article body without deleting the whole project does **not** clean up that file — it becomes an orphan in storage.
 
 ### Styling
 
 - Tailwind CSS with CSS custom properties (`--background`, `--foreground`, `--muted`, `--border`, etc.)
-- Dark mode via `next-themes` (class strategy)
-- **Tailwind Preflight resets heading and list styles** — add explicit CSS to `.article-content` in `globals.css` for rich text display
-- Mantine components used in dashboard forms and modals (requires its CSS imported in `dashboard/layout.tsx`)
+- Dark mode via a local `ThemeProvider` shim (`src/components/providers/ThemeProvider.tsx`), not the `next-themes` package
+- **Tailwind Preflight resets heading and list styles** — `.article-content` in `globals.css` carries the typography for rendered/edited article content (also used directly by the admin editor — see above)
+- Mantine + BlockNote CSS imported directly in the admin pages that need them (`NewProjectPage.tsx`/`EditProjectPage.tsx`), not globally
 
-### Toast Notifications
+### Removed vs. the old Next.js version
 
-`src/components/dashboard/ToastNotice.tsx` reads `?toast=` and `?toastAt=` from the URL. It uses `sessionStorage` to deduplicate toasts across page transitions (prevents double-firing when both edit page and dashboard render the component during redirect).
-
-### Security
-
-- CSP headers set in middleware, with violation reporting to `/api/security/csp-report`
-- Auth actions are rate-limited and audit-logged to `auth_audit_logs` table
-- Admin client bypasses RLS — use only for legitimate admin operations
+No CSP middleware, no CSP violation reporting endpoint, no login rate-limiting, no auth audit log table — all of that was Supabase/Next.js-server-specific and was not rebuilt when this became a static SPA. Don't assume any backend-side request gate exists; Appwrite's own permission rules are the only enforcement.
 
 ## Key Environment Variables
 
 ```
-NEXT_PUBLIC_SUPABASE_URL
-NEXT_PUBLIC_SUPABASE_ANON_KEY
-SUPABASE_SERVICE_ROLE_KEY     # Required for admin client
-PORTFOLIO_ADMIN_USER_ID       # Fallback if roles table not used
+VITE_APPWRITE_ENDPOINT
+VITE_APPWRITE_PROJECT_ID
+NEXT_PUBLIC_SITE_URL          # SEO/OGP base URL fallback (legacy name, read via vite.config.ts define)
 ```
+
+See `.env.example` for the full list (contact form, GitHub activity card, Tailscale status).

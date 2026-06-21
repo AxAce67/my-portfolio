@@ -1,14 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations } from '@/hooks/useTranslations';
 import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
-import { TransitionLink } from '@/components/ui/TransitionLink';
-import { usePathname, useRouter } from '@/i18n/routing';
+import { isAppLocale, usePathname, useRouter } from '@/i18n/routing';
 import { runRouteTransition } from '@/lib/viewTransitions';
-import { clearProjectReturnState } from '@/lib/navigationState';
+import { clearProjectReturnState, navigationStateKeys, writeSessionValue } from '@/lib/navigationState';
 
 const navItems = ['about', 'skills', 'technologies', 'projects', 'timeline', 'contact'] as const;
 
@@ -25,7 +24,11 @@ export function Header() {
     const t = useTranslations('Navigation');
     const pathname = usePathname();
     const router = useRouter();
-    const isHomePage = pathname === '/';
+    // Strip trailing slashes before checking — a malformed nav target like
+    // "/ja/#projects" used to leave the pathname as "/ja/", which silently
+    // broke home-page detection until a hard reload.
+    const normalizedPathname = pathname.replace(/\/+$/, '') || '/';
+    const isHomePage = normalizedPathname === '/' || isAppLocale(normalizedPathname.slice(1));
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('');
     const [scrolled, setScrolled] = useState(false);
@@ -87,8 +90,14 @@ export function Header() {
             };
         }
 
-        const handleScroll = () => setScrolled(window.scrollY > 20);
-        const sections = Array.from(document.querySelectorAll<HTMLElement>('section[id]'));
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 20);
+            
+            if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50) {
+                setActiveSection('contact');
+            }
+        };
+
         const visibleSections = new Map<string, number>();
 
         const observer = new IntersectionObserver(
@@ -107,6 +116,11 @@ export function Header() {
                     return;
                 }
 
+                if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50) {
+                    setActiveSection('contact');
+                    return;
+                }
+
                 const nextSection = Array.from(visibleSections.entries())
                     .sort((left, right) => Math.abs(left[1]) - Math.abs(right[1]))[0]?.[0] ?? '';
                 setActiveSection(nextSection);
@@ -117,13 +131,32 @@ export function Header() {
             }
         );
 
+        const currentSections = new Set<Element>();
+        
+        const updateObservedSections = () => {
+            const sections = Array.from(document.querySelectorAll<HTMLElement>('section[id]'));
+            sections.forEach((section) => {
+                if (!currentSections.has(section)) {
+                    observer.observe(section);
+                    currentSections.add(section);
+                }
+            });
+        };
+
+        const mutationObserver = new MutationObserver(() => {
+            updateObservedSections();
+        });
+
+        mutationObserver.observe(document.body, { childList: true, subtree: true });
+        updateObservedSections();
+
         window.addEventListener('scroll', handleScroll, { passive: true });
         handleScroll();
-        sections.forEach((section) => observer.observe(section));
 
         return () => {
             window.removeEventListener('scroll', handleScroll);
             observer.disconnect();
+            mutationObserver.disconnect();
         };
     }, [isHomePage]);
 
@@ -155,10 +188,10 @@ export function Header() {
                                     }, { direction: 'backward' });
                                 }
                             }}
-                            className="font-mono text-sm font-medium tracking-wide hover:opacity-60 transition-opacity"
+                            className="flex items-center hover:opacity-60 transition-opacity"
+                            aria-label="Aki"
                         >
-                            <span>Akiz</span>
-                            <span className="text-[var(--accent-muted)]">.</span>
+                            <img src="/favicon.svg" alt="" width={28} height={28} className="w-7 h-7" />
                         </button>
 
                         <div className="hidden md:flex items-center gap-8">
@@ -175,17 +208,19 @@ export function Header() {
                                         {t(item)}
                                     </button>
                                 ) : (
-                                    <TransitionLink
+                                    <button
                                         key={item}
-                                        href={`/#${sectionIds[item]}`}
-                                        direction="backward"
                                         onClick={() => {
                                             clearProjectReturnState();
+                                            writeSessionValue(navigationStateKeys.navTargetSection, sectionIds[item]);
+                                            runRouteTransition(() => {
+                                                router.push('/');
+                                            }, { direction: 'backward' });
                                         }}
                                         className="nav-link text-[13px] tracking-wide uppercase transition-colors text-muted-foreground hover:text-foreground"
                                     >
                                         {t(item)}
-                                    </TransitionLink>
+                                    </button>
                                 )
                             )}
                         </div>
@@ -234,8 +269,9 @@ export function Header() {
                                             scrollToSection(sectionIds[item]);
                                         } else {
                                             clearProjectReturnState();
+                                            writeSessionValue(navigationStateKeys.navTargetSection, sectionIds[item]);
                                             runRouteTransition(() => {
-                                                router.push(`/#${sectionIds[item]}`);
+                                                router.push('/');
                                             }, { direction: 'backward' });
                                             setIsMenuOpen(false);
                                         }

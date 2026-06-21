@@ -1,23 +1,23 @@
 {
     "Navigation": {
-        "about": "關於",
-        "skills": "技能",
-        "technologies": "技術棧",
-        "projects": "專案",
-        "timeline": "進行中",
-        "contact": "聯絡"
+        "about": "About",
+        "skills": "Skills",
+        "technologies": "Tech Stack",
+        "projects": "Projects",
+        "timeline": "Active",
+        "contact": "Contact"
     },
     "Hero": {
         "name": "Aki",
-        "role": "// 獨立開發者 · 學生",
+        "role": "// indie dev · student",
         "title": "『把想法變成現實』",
         "subtitle": "做自己喜歡的東西。就這樣。",
         "ctaPrimary": "查看專案"
     },
     "About": {
         "sectionTitle": "// about/",
-        "heading": "關於",
-        "profileLabel": "簡介",
+        "heading": "About",
+        "profileLabel": "Profile",
         "profileParagraph1": "我是住在日本的一名高中一年級學生，正在製作網站、Discord 機器人、Ubuntu 伺服器與 Minecraft 伺服器等個人專案。",
         "profileParagraph2": "自從六年級接觸 ChatGPT 之後，我一直使用各種 AI 工具來改善工作流程，加快把想法做成可運作產品的速度。",
         "profileParagraph3": "我的流程是先把想法整理成需求，快速做出 MVP，然後透過測試與改進持續迭代。",
@@ -26,7 +26,7 @@
         "statsTechnologies": "使用技術",
         "statsYears": "開發年數",
         "statsCommits": "自建伺服器",
-        "focusLabel": "關注重點",
+        "focusLabel": "Focus",
         "momentum": {
             "label": "開發動力儀表",
             "description": "根據最近 7 天的提交記錄，輕鬆讀取我目前的開發狀態。",
@@ -45,12 +45,12 @@
             "research": "研究",
             "continuousImprovement": "持續改進"
         },
-        "linksLabel": "連結",
+        "linksLabel": "Links",
         "role": "獨立開發者"
     },
     "Skills": {
         "sectionTitle": "// skills/",
-        "heading": "技能",
+        "heading": "Skills",
         "subtitle": "日常使用的工具與優勢",
         "categories": {
             "languages": "語言",
@@ -72,12 +72,12 @@
     },
     "TechStack": {
         "sectionTitle": "// tech_stack/",
-        "heading": "技術棧",
+        "heading": "Tech Stack",
         "subtitle": "我經常使用的技術與服務"
     },
     "Projects": {
         "sectionTitle": "// projects/",
-        "heading": "專案",
+        "heading": "Projects",
         "viewList": "列表",
         "viewGrid": "格狀",
         "viewAll": "查看全部",
@@ -87,7 +87,7 @@
     },
     "Contact": {
         "sectionTitle": "> send_message",
-        "heading": "聯絡",
+        "heading": "Contact",
         "description": "如有問題、委託或回饋，歡迎隨時聯絡。",
         "name": "姓名",
         "namePlaceholder": "你的名字",
@@ -129,7 +129,8 @@
         "tabs": {
             "projects": "專案",
             "activeProjects": "進行中專案",
-            "audit": "稽核日誌"
+            "audit": "稽核日誌",
+            "profile": "個人資料"
         },
         "actions": {
             "read": "查看",
@@ -151,7 +152,10 @@
             "manageDescription": "請在專用編輯頁面建立新專案。",
             "newProject": "新建專案",
             "listTitle": "專案",
-            "empty": "尚無專案。"
+            "empty": "尚無專案。",
+            "searchPlaceholder": "搜尋專案...",
+            "filterAll": "所有狀態",
+            "noResults": "沒有符合的專案。"
         },
         "toast": {
             "project_created": "專案已建立。",
@@ -212,7 +216,8 @@
                 "create": "建立",
                 "update": "更新",
                 "cancel": "取消"
-            }
+            },
+            "dragHandle": "拖曳以重新排序"
         },
         "audit": {
             "title": "認證稽核日誌",
@@ -275,13 +280,28 @@
                 "development": "開發",
                 "completed": "已完成",
                 "on_hold": "暫停中"
-            }
+            },
+            "saving": "儲存中...",
+            "unsavedWarning": "您有未儲存的變更。仍要離開嗎？",
+            "draftRestoredTitle": "發現未儲存的草稿",
+            "draftRestoredDescription": "我們發現一份未完成的草稿。要還原嗎？",
+            "draftRestore": "還原",
+            "draftDiscard": "放棄",
+            "cropTitle": "裁剪縮圖",
+            "cropConfirm": "套用裁剪",
+            "cropCancel": "取消"
+        },
+        "profile": {
+            "title": "頭像",
+            "description": "將滑鼠移到頭像上即可上傳新圖片。",
+            "updated": "頭像已更新。",
+            "updateFailed": "頭像更新失敗。"
         }
     },
     "ActiveProjects": {
         "sectionLabel": "// in_progress",
-        "heading": "進行中專案",
-        "projectColumn": "專案",
+        "heading": "Active Projects",
+        "projectColumn": "Project",
         "empty": "尚無進行中專案。",
         "stagePlanning": "規劃",
         "stageDesign": "設計",
@@ -291,7 +311,7 @@
     },
     "ProjectList": {
         "backToTop": "← 返回專案",
-        "heading": "專案檔案",
+        "heading": "Projects Archive",
         "description": "所有已公開專案的完整列表。",
         "searchLabel": "搜尋",
         "searchPlaceholder": "依標題、描述或標籤搜尋...",
@@ -365,5 +385,23 @@
         "contactTitle": "聯絡",
         "contactDescription": "如對本條款有疑問、意見，或有內容授權相關詢問，請使用本站聯絡表單。依詢問內容不同，回覆可能需要一些時間。",
         "backHome": "返回首頁"
+    },
+    "Servers": {
+        "backHome": "← 返回首頁",
+        "heading": "Servers",
+        "description": "我所運行伺服器的即時狀態。",
+        "refreshButton": "重新整理",
+        "lastUpdatedLabel": "更新於",
+        "statusOnline": "線上",
+        "statusOffline": "離線",
+        "statusMaintenance": "維護中",
+        "categoryWeb": "Web",
+        "categoryGame": "遊戲",
+        "categoryBot": "Bot",
+        "categoryInfra": "基礎設施",
+        "specsLabel": "規格",
+        "osLabel": "系統",
+        "ipLabel": "IP",
+        "lastSeenLabel": "最後上線"
     }
 }

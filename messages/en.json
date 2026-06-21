@@ -129,7 +129,8 @@
         "tabs": {
             "projects": "Projects",
             "activeProjects": "Active Projects",
-            "audit": "Audit Logs"
+            "audit": "Audit Logs",
+            "profile": "Profile"
         },
         "actions": {
             "read": "Read",
@@ -151,7 +152,10 @@
             "manageDescription": "Create new projects from the dedicated editor page.",
             "newProject": "New Project",
             "listTitle": "Projects",
-            "empty": "No projects yet."
+            "empty": "No projects yet.",
+            "searchPlaceholder": "Search projects...",
+            "filterAll": "All statuses",
+            "noResults": "No matching projects."
         },
         "toast": {
             "project_created": "Project created.",
@@ -212,7 +216,8 @@
                 "create": "Create",
                 "update": "Update",
                 "cancel": "Cancel"
-            }
+            },
+            "dragHandle": "Drag to reorder"
         },
         "audit": {
             "title": "Auth Audit Logs",
@@ -275,7 +280,22 @@
                 "development": "Development",
                 "completed": "Completed",
                 "on_hold": "On Hold"
-            }
+            },
+            "saving": "Saving...",
+            "unsavedWarning": "You have unsaved changes. Leave anyway?",
+            "draftRestoredTitle": "Unsaved draft found",
+            "draftRestoredDescription": "We found a draft you didn't finish. Restore it?",
+            "draftRestore": "Restore",
+            "draftDiscard": "Discard",
+            "cropTitle": "Crop thumbnail",
+            "cropConfirm": "Apply crop",
+            "cropCancel": "Cancel"
+        },
+        "profile": {
+            "title": "Profile Photo",
+            "description": "Hover the photo to upload a new one.",
+            "updated": "Profile photo updated.",
+            "updateFailed": "Failed to update profile photo."
         }
     },
     "ActiveProjects": {
@@ -365,5 +385,23 @@
         "contactTitle": "Contact",
         "contactDescription": "For questions, comments regarding these Terms, or inquiries about content licensing, please use the contact form on the Site. Depending on the nature of the inquiry, it may take some time to respond.",
         "backHome": "Back to Home"
+    },
+    "Servers": {
+        "backHome": "← Back to Home",
+        "heading": "Servers",
+        "description": "Live status of the servers I run.",
+        "refreshButton": "Refresh",
+        "lastUpdatedLabel": "Updated",
+        "statusOnline": "Online",
+        "statusOffline": "Offline",
+        "statusMaintenance": "Maintenance",
+        "categoryWeb": "Web",
+        "categoryGame": "Game",
+        "categoryBot": "Bot",
+        "categoryInfra": "Infra",
+        "specsLabel": "Specs",
+        "osLabel": "OS",
+        "ipLabel": "IP",
+        "lastSeenLabel": "Last seen"
     }
 }

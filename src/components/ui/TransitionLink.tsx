@@ -15,7 +15,6 @@ export function TransitionLink({
     onFocus,
     onMouseEnter,
     replace,
-    scroll,
     direction = 'forward',
     variant = 'default',
     target,
@@ -44,18 +43,8 @@ export function TransitionLink({
 
         event.preventDefault();
         runRouteTransition(() => {
-            const navigationOptions = scroll === undefined ? undefined : { scroll };
             if (replace) {
-                if (navigationOptions) {
-                    router.replace(href, navigationOptions);
-                    return;
-                }
                 router.replace(href);
-                return;
-            }
-
-            if (navigationOptions) {
-                router.push(href, navigationOptions);
                 return;
             }
             router.push(href);
@@ -79,7 +68,6 @@ export function TransitionLink({
             onMouseEnter={handleMouseEnter}
             onFocus={handleFocus}
             replace={replace}
-            scroll={scroll}
             target={target}
             {...props}
         />

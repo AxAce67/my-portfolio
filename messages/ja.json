@@ -38,15 +38,15 @@
             "note": "数字は目安です"
         },
         "focus": {
-            "productThinking": "Product Thinking",
-            "rapidPrototyping": "Rapid Prototyping",
-            "uiUxDesign": "UI/UX Design",
-            "problemSolving": "Problem Solving",
-            "research": "Research",
-            "continuousImprovement": "Continuous Improvement"
+            "productThinking": "プロダクト思考",
+            "rapidPrototyping": "高速プロトタイピング",
+            "uiUxDesign": "UI/UXデザイン",
+            "problemSolving": "課題解決",
+            "research": "リサーチ",
+            "continuousImprovement": "継続的な改善"
         },
         "linksLabel": "Links",
-        "role": "Independent Developer"
+        "role": "個人開発者"
     },
     "Skills": {
         "sectionTitle": "// skills/",
@@ -129,7 +129,8 @@
         "tabs": {
             "projects": "プロジェクト",
             "activeProjects": "進行中プロジェクト",
-            "audit": "監査ログ"
+            "audit": "監査ログ",
+            "profile": "プロフィール"
         },
         "actions": {
             "read": "閲覧",
@@ -151,7 +152,10 @@
             "manageDescription": "新規作成は専用エディタページで行います。",
             "newProject": "新規作成",
             "listTitle": "プロジェクト一覧",
-            "empty": "プロジェクトがまだありません。"
+            "empty": "プロジェクトがまだありません。",
+            "searchPlaceholder": "プロジェクトを検索...",
+            "filterAll": "すべてのステータス",
+            "noResults": "条件に一致するプロジェクトがありません。"
         },
         "toast": {
             "project_created": "プロジェクトを作成しました。",
@@ -212,7 +216,8 @@
                 "create": "作成",
                 "update": "更新",
                 "cancel": "キャンセル"
-            }
+            },
+            "dragHandle": "ドラッグで並び替え"
         },
         "audit": {
             "title": "認証監査ログ",
@@ -275,7 +280,22 @@
                 "development": "実装中",
                 "completed": "完了",
                 "on_hold": "保留"
-            }
+            },
+            "saving": "保存中...",
+            "unsavedWarning": "未保存の変更があります。このページを離れますか？",
+            "draftRestoredTitle": "未保存のドラフトがあります",
+            "draftRestoredDescription": "保存されていないドラフトが見つかりました。復元しますか？",
+            "draftRestore": "復元する",
+            "draftDiscard": "破棄する",
+            "cropTitle": "サムネイルを切り取り",
+            "cropConfirm": "切り取りを確定",
+            "cropCancel": "キャンセル"
+        },
+        "profile": {
+            "title": "プロフィール画像",
+            "description": "画像にカーソルを合わせると変更できます。",
+            "updated": "プロフィール画像を更新しました。",
+            "updateFailed": "プロフィール画像の更新に失敗しました。"
         }
     },
     "ActiveProjects": {
@@ -365,5 +385,23 @@
         "contactTitle": "お問い合わせ",
         "contactDescription": "本規約に関するご質問・ご意見、またはコンテンツの利用許諾に関するお問い合わせは、当サイト内のお問い合わせフォームよりご連絡ください。お問い合わせ内容によっては、回答までにお時間をいただく場合があります。",
         "backHome": "トップへ戻る"
+    },
+    "Servers": {
+        "backHome": "← ホームへ戻る",
+        "heading": "Servers",
+        "description": "運用しているサーバーの稼働状況です。",
+        "refreshButton": "更新",
+        "lastUpdatedLabel": "更新時刻",
+        "statusOnline": "オンライン",
+        "statusOffline": "オフライン",
+        "statusMaintenance": "メンテナンス中",
+        "categoryWeb": "Web",
+        "categoryGame": "ゲーム",
+        "categoryBot": "Bot",
+        "categoryInfra": "インフラ",
+        "specsLabel": "スペック",
+        "osLabel": "OS",
+        "ipLabel": "IP",
+        "lastSeenLabel": "最終確認"
     }
 }

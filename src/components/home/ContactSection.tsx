@@ -1,11 +1,9 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations } from '@/hooks/useTranslations';
 import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
-import Script from 'next/script';
 import { CheckCircle2, Send } from 'lucide-react';
-import { motion, useInView } from 'framer-motion';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 const SUCCESS_MODAL_MS = 5000;
@@ -27,7 +25,6 @@ function getFocusableElements(container: HTMLElement) {
 export default function ContactSection() {
   const t = useTranslations('Contact');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitPhase, setSubmitPhase] = useState<'idle' | 'verifying' | 'sending'>('idle');
   const [submitState, setSubmitState] = useState<'idle' | 'success' | 'error' | 'turnstile'>('idle');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successRunId, setSuccessRunId] = useState(0);
@@ -48,15 +45,26 @@ export default function ContactSection() {
   const previewDialogRef = useRef<HTMLDivElement | null>(null);
   const successDialogRef = useRef<HTMLDivElement | null>(null);
   const lastFocusedElementRef = useRef<HTMLElement | null>(null);
-  const isContactInView = useInView(sectionRef, { margin: '240px 0px', once: true });
   const [shouldLoadTurnstile, setShouldLoadTurnstile] = useState(false);
-  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  const web3formsAccessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
 
   useEffect(() => {
-    if (isContactInView) {
-      setShouldLoadTurnstile(true);
-    }
-  }, [isContactInView]);
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoadTurnstile(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '240px 0px' },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     window.onTurnstileSuccess = (token: string) => {
@@ -176,7 +184,7 @@ export default function ContactSection() {
     const message = String(formData.get('message') ?? '').trim();
     const token = String(formData.get('cf-turnstile-response') ?? turnstileToken ?? '').trim();
 
-    if (!name || !email || !subject || !message) {
+    if (!name || !subject || !message) {
       setSubmitState('error');
       return;
     }
@@ -192,21 +200,40 @@ export default function ContactSection() {
 
   const confirmSubmit = async () => {
     if (!pendingPayload) return;
+
+    // Honeypot tripped — pretend it worked without actually sending anything.
+    if (pendingPayload.honeypot) {
+      formRef.current?.reset();
+      window.turnstile?.reset();
+      setTurnstileToken('');
+      setSubmitState('success');
+      setIsPreviewOpen(false);
+      setPendingPayload(null);
+      return;
+    }
+
     setIsSubmitting(true);
-    setSubmitPhase('verifying');
     setSubmitState('idle');
 
     try {
-      setSubmitPhase('sending');
-      const response = await fetch('/api/contact', {
+      const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
-        body: JSON.stringify(pendingPayload),
+        body: JSON.stringify({
+          access_key: web3formsAccessKey,
+          name: pendingPayload.name,
+          ...(pendingPayload.email ? { email: pendingPayload.email } : {}),
+          subject: pendingPayload.subject,
+          message: pendingPayload.message,
+        }),
       });
 
-      if (response.ok) {
+      const result = await response.json().catch(() => null);
+
+      if (response.ok && result?.success) {
         formRef.current?.reset();
         window.turnstile?.reset();
         setTurnstileToken('');
@@ -220,20 +247,15 @@ export default function ContactSection() {
       setSubmitState('error');
     } finally {
       setIsSubmitting(false);
-      setSubmitPhase('idle');
     }
   };
 
   return (
-    <section id="contact" ref={sectionRef} className="py-20 sm:py-32 lg:py-36">
+    <section id="contact" ref={sectionRef} className="py-12 sm:py-16 lg:py-20">
       <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
         {turnstileSiteKey && shouldLoadTurnstile ? (
-          <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer strategy="afterInteractive" />
+          <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
         ) : null}
-        <ScrollReveal direction="none">
-          <p className="section-label">{`> send_message`}</p>
-        </ScrollReveal>
-
         <ScrollReveal delay={0.1}>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2 sm:mb-3">{t('heading')}</h2>
           <p className="text-sm text-muted-foreground mb-8 sm:mb-12">{t('description')}</p>
@@ -255,7 +277,7 @@ export default function ContactSection() {
               <div>
                 <label htmlFor="contact-name" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
                   {t('name')}
-                  <span className="ml-1 text-[var(--accent-muted)]" aria-hidden="true">*</span>
+                  <span className="ml-1 text-red-500" aria-hidden="true">*</span>
                 </label>
                 <input
                   id="contact-name"
@@ -272,13 +294,12 @@ export default function ContactSection() {
               <div>
                 <label htmlFor="contact-email" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
                   {t('email')}
-                  <span className="ml-1 text-[var(--accent-muted)]" aria-hidden="true">*</span>
+                  <span className="ml-1 text-muted-foreground/60">({t('optional')})</span>
                 </label>
                 <input
                   id="contact-email"
                   name="email"
                   type="email"
-                  required
                   maxLength={320}
                   placeholder={t('emailPlaceholder')}
                   autoComplete="email"
@@ -292,7 +313,7 @@ export default function ContactSection() {
             <div>
               <label htmlFor="contact-subject" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
                 {t('subject')}
-                <span className="ml-1 text-[var(--accent-muted)]" aria-hidden="true">*</span>
+                <span className="ml-1 text-red-500" aria-hidden="true">*</span>
               </label>
               <input
                 id="contact-subject"
@@ -309,7 +330,7 @@ export default function ContactSection() {
             <div>
               <label htmlFor="contact-message" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
                 {t('message')}
-                <span className="ml-1 text-[var(--accent-muted)]" aria-hidden="true">*</span>
+                <span className="ml-1 text-red-500" aria-hidden="true">*</span>
               </label>
               <textarea
                 id="contact-message"
@@ -373,10 +394,12 @@ export default function ContactSection() {
                   <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('name')}</p>
                   <p>{pendingPayload.name}</p>
                 </div>
-                <div>
-                  <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('email')}</p>
-                  <p>{pendingPayload.email}</p>
-                </div>
+                {pendingPayload.email ? (
+                  <div>
+                    <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('email')}</p>
+                    <p>{pendingPayload.email}</p>
+                  </div>
+                ) : null}
                 <div>
                   <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('subject')}</p>
                   <p>{pendingPayload.subject}</p>
@@ -391,11 +414,7 @@ export default function ContactSection() {
                   {t('backToEdit')}
                 </button>
                 <button type="button" className="btn-primary" onClick={confirmSubmit} disabled={isSubmitting}>
-                  {isSubmitting
-                    ? submitPhase === 'verifying'
-                      ? t('verifying')
-                      : t('sending')
-                    : t('confirmSend')}
+                  {isSubmitting ? t('sending') : t('confirmSend')}
                 </button>
               </div>
             </div>
@@ -411,25 +430,18 @@ export default function ContactSection() {
               }
             }}
           >
-            <motion.div
+            <div
               ref={successDialogRef}
               role="dialog"
               aria-modal="true"
               aria-labelledby="contact-success-title"
               aria-describedby="contact-success-description"
               tabIndex={-1}
-              initial={{ opacity: 0, scale: 0.95, y: 6 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              className="w-full max-w-sm max-h-[calc(100svh-2rem)] overflow-y-auto rounded-xl border border-border bg-card p-6 shadow-2xl"
+              className="w-full max-w-sm max-h-[calc(100svh-2rem)] overflow-y-auto rounded-xl border border-border bg-card p-6 shadow-2xl contact-success-modal"
             >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.05, duration: 0.25 }}
-                className="mx-auto mb-4 h-14 w-14 rounded-full border border-emerald-500/30 bg-emerald-500/10 flex items-center justify-center"
-              >
+              <div className="mx-auto mb-4 h-14 w-14 rounded-full border border-emerald-500/30 bg-emerald-500/10 flex items-center justify-center contact-success-icon">
                 <CheckCircle2 className="w-8 h-8 text-emerald-500" strokeWidth={1.6} />
-              </motion.div>
+              </div>
               <h3 id="contact-success-title" className="text-lg font-semibold tracking-tight text-center">{t('successTitle')}</h3>
               <p id="contact-success-description" className="mt-2 text-sm text-muted-foreground text-center">{t('success')}</p>
               <p className="mt-1 text-[11px] font-mono text-muted-foreground text-center">{t('successAutoClose')}</p>
@@ -445,7 +457,7 @@ export default function ContactSection() {
               <button type="button" className="btn-outline w-full mt-4" onClick={closeSuccessModal}>
                 {t('close')}
               </button>
-            </motion.div>
+            </div>
           </div>
         ) : null}
       </div>

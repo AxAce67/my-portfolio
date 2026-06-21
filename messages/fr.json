@@ -1,23 +1,23 @@
 {
     "Navigation": {
-        "about": "À propos",
-        "skills": "Compétences",
-        "technologies": "Stack",
-        "projects": "Projets",
-        "timeline": "En cours",
+        "about": "About",
+        "skills": "Skills",
+        "technologies": "Tech Stack",
+        "projects": "Projects",
+        "timeline": "Active",
         "contact": "Contact"
     },
     "Hero": {
         "name": "Aki",
-        "role": "// développeur indépendant · étudiant",
+        "role": "// indie dev · student",
         "title": "『Transformer les idées en réalité』",
         "subtitle": "Je construis ce que j'aime. C'est tout.",
         "ctaPrimary": "Voir les projets"
     },
     "About": {
         "sectionTitle": "// about/",
-        "heading": "À propos",
-        "profileLabel": "Profil",
+        "heading": "About",
+        "profileLabel": "Profile",
         "profileParagraph1": "Je suis en première année de lycée au Japon et je développe des projets personnels tels que des sites web, des bots Discord, des serveurs Ubuntu et des serveurs Minecraft.",
         "profileParagraph2": "Depuis que j'ai découvert ChatGPT en sixième, j'utilise différents outils d'IA pour améliorer mon flux de travail et accélérer la transformation des idées en produits fonctionnels.",
         "profileParagraph3": "Mon processus consiste à transformer des idées en exigences, construire rapidement un MVP, puis itérer grâce aux tests et aux améliorations.",
@@ -45,12 +45,12 @@
             "research": "Recherche",
             "continuousImprovement": "Amélioration continue"
         },
-        "linksLabel": "Liens",
+        "linksLabel": "Links",
         "role": "Développeur indépendant"
     },
     "Skills": {
         "sectionTitle": "// skills/",
-        "heading": "Compétences",
+        "heading": "Skills",
         "subtitle": "Outils et points forts du quotidien",
         "categories": {
             "languages": "Langages",
@@ -72,12 +72,12 @@
     },
     "TechStack": {
         "sectionTitle": "// tech_stack/",
-        "heading": "Stack",
+        "heading": "Tech Stack",
         "subtitle": "Technologies et services que j'utilise régulièrement"
     },
     "Projects": {
         "sectionTitle": "// projects/",
-        "heading": "Projets",
+        "heading": "Projects",
         "viewList": "Liste",
         "viewGrid": "Grille",
         "viewAll": "Tout voir",
@@ -129,7 +129,8 @@
         "tabs": {
             "projects": "Projets",
             "activeProjects": "Projets en cours",
-            "audit": "Journaux d'audit"
+            "audit": "Journaux d'audit",
+            "profile": "Profil"
         },
         "actions": {
             "read": "Lire",
@@ -151,7 +152,10 @@
             "manageDescription": "Créez de nouveaux projets depuis la page d'édition dédiée.",
             "newProject": "Nouveau projet",
             "listTitle": "Projets",
-            "empty": "Aucun projet pour le moment."
+            "empty": "Aucun projet pour le moment.",
+            "searchPlaceholder": "Rechercher des projets...",
+            "filterAll": "Tous les statuts",
+            "noResults": "Aucun projet ne correspond."
         },
         "toast": {
             "project_created": "Projet créé.",
@@ -212,7 +216,8 @@
                 "create": "Créer",
                 "update": "Mettre à jour",
                 "cancel": "Annuler"
-            }
+            },
+            "dragHandle": "Glisser pour réorganiser"
         },
         "audit": {
             "title": "Journaux d'audit d'authentification",
@@ -275,13 +280,28 @@
                 "development": "Développement",
                 "completed": "Terminé",
                 "on_hold": "En pause"
-            }
+            },
+            "saving": "Enregistrement...",
+            "unsavedWarning": "Vous avez des modifications non enregistrées. Quitter quand même ?",
+            "draftRestoredTitle": "Brouillon non enregistré trouvé",
+            "draftRestoredDescription": "Nous avons trouvé un brouillon inachevé. Le restaurer ?",
+            "draftRestore": "Restaurer",
+            "draftDiscard": "Ignorer",
+            "cropTitle": "Recadrer la miniature",
+            "cropConfirm": "Appliquer le recadrage",
+            "cropCancel": "Annuler"
+        },
+        "profile": {
+            "title": "Photo de profil",
+            "description": "Survolez la photo pour en télécharger une nouvelle.",
+            "updated": "Photo de profil mise à jour.",
+            "updateFailed": "Échec de la mise à jour de la photo de profil."
         }
     },
     "ActiveProjects": {
         "sectionLabel": "// in_progress",
-        "heading": "Projets en cours",
-        "projectColumn": "Projet",
+        "heading": "Active Projects",
+        "projectColumn": "Project",
         "empty": "Aucun projet en cours pour le moment.",
         "stagePlanning": "Planification",
         "stageDesign": "Design",
@@ -291,7 +311,7 @@
     },
     "ProjectList": {
         "backToTop": "← Retour aux projets",
-        "heading": "Archives des projets",
+        "heading": "Projects Archive",
         "description": "Liste complète des projets publiés.",
         "searchLabel": "Recherche",
         "searchPlaceholder": "Rechercher par titre, description ou tag...",
@@ -365,5 +385,23 @@
         "contactTitle": "Contact",
         "contactDescription": "Pour toute question ou remarque concernant les présentes Conditions, ou pour toute demande relative à la licence du contenu, veuillez utiliser le formulaire de contact du Site. Selon la nature de la demande, un certain délai de réponse peut être nécessaire.",
         "backHome": "Retour à l'accueil"
+    },
+    "Servers": {
+        "backHome": "← Retour à l'accueil",
+        "heading": "Servers",
+        "description": "Statut en direct des serveurs que je gère.",
+        "refreshButton": "Actualiser",
+        "lastUpdatedLabel": "Mis à jour",
+        "statusOnline": "En ligne",
+        "statusOffline": "Hors ligne",
+        "statusMaintenance": "Maintenance",
+        "categoryWeb": "Web",
+        "categoryGame": "Jeu",
+        "categoryBot": "Bot",
+        "categoryInfra": "Infra",
+        "specsLabel": "Caractéristiques",
+        "osLabel": "OS",
+        "ipLabel": "IP",
+        "lastSeenLabel": "Vu pour la dernière fois"
     }
 }

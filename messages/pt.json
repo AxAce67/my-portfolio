@@ -1,23 +1,23 @@
 {
     "Navigation": {
-        "about": "Sobre",
-        "skills": "Habilidades",
-        "technologies": "Stack",
-        "projects": "Projetos",
-        "timeline": "Em andamento",
-        "contact": "Contato"
+        "about": "About",
+        "skills": "Skills",
+        "technologies": "Tech Stack",
+        "projects": "Projects",
+        "timeline": "Active",
+        "contact": "Contact"
     },
     "Hero": {
         "name": "Aki",
-        "role": "// desenvolvedor indie · estudante",
+        "role": "// indie dev · student",
         "title": "『Transformando ideias em realidade』",
         "subtitle": "Construo o que eu gosto. Só isso.",
         "ctaPrimary": "Ver projetos"
     },
     "About": {
         "sectionTitle": "// about/",
-        "heading": "Sobre",
-        "profileLabel": "Perfil",
+        "heading": "About",
+        "profileLabel": "Profile",
         "profileParagraph1": "Sou um estudante do primeiro ano do ensino médio no Japão e desenvolvo projetos pessoais como sites, bots de Discord, servidores Ubuntu e servidores de Minecraft.",
         "profileParagraph2": "Desde que descobri o ChatGPT na sexta série, venho usando várias ferramentas de IA para melhorar meu fluxo de trabalho e acelerar a transformação de ideias em produtos funcionando.",
         "profileParagraph3": "Meu processo é transformar ideias em requisitos, criar um MVP rapidamente e depois iterar com testes e melhorias.",
@@ -26,7 +26,7 @@
         "statsTechnologies": "Tecnologias usadas",
         "statsYears": "Anos construindo",
         "statsCommits": "Servidores próprios",
-        "focusLabel": "Foco",
+        "focusLabel": "Focus",
         "momentum": {
             "label": "Medidor de motivação dev",
             "description": "Uma leitura leve da minha energia atual para programar com base nos commits dos últimos 7 dias.",
@@ -50,7 +50,7 @@
     },
     "Skills": {
         "sectionTitle": "// skills/",
-        "heading": "Habilidades",
+        "heading": "Skills",
         "subtitle": "Ferramentas e pontos fortes do dia a dia",
         "categories": {
             "languages": "Linguagens",
@@ -72,12 +72,12 @@
     },
     "TechStack": {
         "sectionTitle": "// tech_stack/",
-        "heading": "Stack",
+        "heading": "Tech Stack",
         "subtitle": "Tecnologias e serviços que uso com frequência"
     },
     "Projects": {
         "sectionTitle": "// projects/",
-        "heading": "Projetos",
+        "heading": "Projects",
         "viewList": "Lista",
         "viewGrid": "Grade",
         "viewAll": "Ver tudo",
@@ -87,7 +87,7 @@
     },
     "Contact": {
         "sectionTitle": "> send_message",
-        "heading": "Contato",
+        "heading": "Contact",
         "description": "Perguntas, propostas ou feedback: fique à vontade para entrar em contato.",
         "name": "Nome",
         "namePlaceholder": "Seu nome",
@@ -129,7 +129,8 @@
         "tabs": {
             "projects": "Projetos",
             "activeProjects": "Projetos em andamento",
-            "audit": "Logs de auditoria"
+            "audit": "Logs de auditoria",
+            "profile": "Perfil"
         },
         "actions": {
             "read": "Ler",
@@ -151,7 +152,10 @@
             "manageDescription": "Crie novos projetos na página dedicada do editor.",
             "newProject": "Novo projeto",
             "listTitle": "Projetos",
-            "empty": "Ainda não há projetos."
+            "empty": "Ainda não há projetos.",
+            "searchPlaceholder": "Pesquisar projetos...",
+            "filterAll": "Todos os status",
+            "noResults": "Nenhum projeto encontrado."
         },
         "toast": {
             "project_created": "Projeto criado.",
@@ -212,7 +216,8 @@
                 "create": "Criar",
                 "update": "Atualizar",
                 "cancel": "Cancelar"
-            }
+            },
+            "dragHandle": "Arraste para reordenar"
         },
         "audit": {
             "title": "Logs de auditoria de autenticação",
@@ -275,13 +280,28 @@
                 "development": "Desenvolvimento",
                 "completed": "Concluído",
                 "on_hold": "Em pausa"
-            }
+            },
+            "saving": "Salvando...",
+            "unsavedWarning": "Você tem alterações não salvas. Sair assim mesmo?",
+            "draftRestoredTitle": "Rascunho não salvo encontrado",
+            "draftRestoredDescription": "Encontramos um rascunho não finalizado. Deseja restaurá-lo?",
+            "draftRestore": "Restaurar",
+            "draftDiscard": "Descartar",
+            "cropTitle": "Recortar miniatura",
+            "cropConfirm": "Aplicar recorte",
+            "cropCancel": "Cancelar"
+        },
+        "profile": {
+            "title": "Foto de perfil",
+            "description": "Passe o mouse sobre a foto para enviar uma nova.",
+            "updated": "Foto de perfil atualizada.",
+            "updateFailed": "Falha ao atualizar a foto de perfil."
         }
     },
     "ActiveProjects": {
         "sectionLabel": "// in_progress",
-        "heading": "Projetos em andamento",
-        "projectColumn": "Projeto",
+        "heading": "Active Projects",
+        "projectColumn": "Project",
         "empty": "Ainda não há projetos em andamento.",
         "stagePlanning": "Planejamento",
         "stageDesign": "Design",
@@ -291,7 +311,7 @@
     },
     "ProjectList": {
         "backToTop": "← Voltar aos projetos",
-        "heading": "Arquivo de projetos",
+        "heading": "Projects Archive",
         "description": "Lista completa dos projetos publicados.",
         "searchLabel": "Buscar",
         "searchPlaceholder": "Busque por título, descrição ou tag...",
@@ -365,5 +385,23 @@
         "contactTitle": "Contato",
         "contactDescription": "Para perguntas ou comentários sobre estes Termos, ou consultas sobre licenciamento de conteúdo, use o formulário de contato do Site. Dependendo da natureza da solicitação, a resposta pode levar algum tempo.",
         "backHome": "Voltar ao início"
+    },
+    "Servers": {
+        "backHome": "← Voltar para o início",
+        "heading": "Servers",
+        "description": "Status em tempo real dos servidores que opero.",
+        "refreshButton": "Atualizar",
+        "lastUpdatedLabel": "Atualizado",
+        "statusOnline": "Online",
+        "statusOffline": "Offline",
+        "statusMaintenance": "Manutenção",
+        "categoryWeb": "Web",
+        "categoryGame": "Jogo",
+        "categoryBot": "Bot",
+        "categoryInfra": "Infra",
+        "specsLabel": "Specs",
+        "osLabel": "SO",
+        "ipLabel": "IP",
+        "lastSeenLabel": "Visto por último"
     }
 }

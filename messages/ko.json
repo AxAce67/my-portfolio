@@ -1,23 +1,23 @@
 {
     "Navigation": {
-        "about": "소개",
-        "skills": "기술",
-        "technologies": "기술 스택",
-        "projects": "프로젝트",
-        "timeline": "진행 중",
-        "contact": "문의"
+        "about": "About",
+        "skills": "Skills",
+        "technologies": "Tech Stack",
+        "projects": "Projects",
+        "timeline": "Active",
+        "contact": "Contact"
     },
     "Hero": {
         "name": "Aki",
-        "role": "// 인디 개발자 · 학생",
+        "role": "// indie dev · student",
         "title": "『아이디어를 현실로』",
         "subtitle": "좋아하는 것을 만든다. 그뿐입니다.",
         "ctaPrimary": "프로젝트 보기"
     },
     "About": {
         "sectionTitle": "// about/",
-        "heading": "소개",
-        "profileLabel": "프로필",
+        "heading": "About",
+        "profileLabel": "Profile",
         "profileParagraph1": "저는 일본에 사는 고등학교 1학년 학생으로, 웹사이트, Discord 봇, Ubuntu 서버, Minecraft 서버 같은 개인 프로젝트를 만들고 있습니다.",
         "profileParagraph2": "초등학교 6학년 때 ChatGPT를 알게 된 뒤로 다양한 AI 도구를 활용해 작업 흐름을 개선하고, 아이디어를 실제 제품으로 만드는 속도를 높여 왔습니다.",
         "profileParagraph3": "제 작업 방식은 아이디어를 요구사항으로 정리하고, 빠르게 MVP를 만든 뒤 테스트와 개선을 반복하는 것입니다.",
@@ -26,7 +26,7 @@
         "statsTechnologies": "사용 기술",
         "statsYears": "개발 경력",
         "statsCommits": "자체 운영 서버",
-        "focusLabel": "집중 분야",
+        "focusLabel": "Focus",
         "momentum": {
             "label": "개발 동기 미터",
             "description": "최근 7일간의 커밋을 바탕으로 현재 코딩 에너지를 가볍게 보여줍니다.",
@@ -45,12 +45,12 @@
             "research": "리서치",
             "continuousImprovement": "지속적인 개선"
         },
-        "linksLabel": "링크",
+        "linksLabel": "Links",
         "role": "독립 개발자"
     },
     "Skills": {
         "sectionTitle": "// skills/",
-        "heading": "기술",
+        "heading": "Skills",
         "subtitle": "평소 사용하는 도구와 강점",
         "categories": {
             "languages": "언어",
@@ -72,12 +72,12 @@
     },
     "TechStack": {
         "sectionTitle": "// tech_stack/",
-        "heading": "기술 스택",
+        "heading": "Tech Stack",
         "subtitle": "자주 사용하는 기술과 서비스"
     },
     "Projects": {
         "sectionTitle": "// projects/",
-        "heading": "프로젝트",
+        "heading": "Projects",
         "viewList": "목록",
         "viewGrid": "그리드",
         "viewAll": "전체 보기",
@@ -87,7 +87,7 @@
     },
     "Contact": {
         "sectionTitle": "> send_message",
-        "heading": "문의",
+        "heading": "Contact",
         "description": "질문, 의뢰, 피드백이 있다면 편하게 연락해 주세요.",
         "name": "이름",
         "namePlaceholder": "이름",
@@ -129,7 +129,8 @@
         "tabs": {
             "projects": "프로젝트",
             "activeProjects": "진행 중 프로젝트",
-            "audit": "감사 로그"
+            "audit": "감사 로그",
+            "profile": "프로필"
         },
         "actions": {
             "read": "보기",
@@ -151,7 +152,10 @@
             "manageDescription": "전용 편집 페이지에서 새 프로젝트를 만들어 주세요.",
             "newProject": "새 프로젝트",
             "listTitle": "프로젝트",
-            "empty": "아직 프로젝트가 없습니다."
+            "empty": "아직 프로젝트가 없습니다.",
+            "searchPlaceholder": "프로젝트 검색...",
+            "filterAll": "모든 상태",
+            "noResults": "일치하는 프로젝트가 없습니다."
         },
         "toast": {
             "project_created": "프로젝트가 생성되었습니다.",
@@ -212,7 +216,8 @@
                 "create": "생성",
                 "update": "업데이트",
                 "cancel": "취소"
-            }
+            },
+            "dragHandle": "드래그하여 순서 변경"
         },
         "audit": {
             "title": "인증 감사 로그",
@@ -275,13 +280,28 @@
                 "development": "개발",
                 "completed": "완료",
                 "on_hold": "보류"
-            }
+            },
+            "saving": "저장 중...",
+            "unsavedWarning": "저장하지 않은 변경 사항이 있습니다. 그래도 나가시겠습니까?",
+            "draftRestoredTitle": "저장되지 않은 초안을 발견했습니다",
+            "draftRestoredDescription": "완료하지 않은 초안이 있습니다. 복원하시겠습니까?",
+            "draftRestore": "복원",
+            "draftDiscard": "삭제",
+            "cropTitle": "썸네일 자르기",
+            "cropConfirm": "자르기 적용",
+            "cropCancel": "취소"
+        },
+        "profile": {
+            "title": "프로필 사진",
+            "description": "사진에 마우스를 올리면 새로 업로드할 수 있습니다.",
+            "updated": "프로필 사진을 업데이트했습니다.",
+            "updateFailed": "프로필 사진 업데이트에 실패했습니다."
         }
     },
     "ActiveProjects": {
         "sectionLabel": "// in_progress",
-        "heading": "진행 중 프로젝트",
-        "projectColumn": "프로젝트",
+        "heading": "Active Projects",
+        "projectColumn": "Project",
         "empty": "진행 중 프로젝트가 없습니다.",
         "stagePlanning": "기획",
         "stageDesign": "디자인",
@@ -291,7 +311,7 @@
     },
     "ProjectList": {
         "backToTop": "← 프로젝트로 돌아가기",
-        "heading": "프로젝트 아카이브",
+        "heading": "Projects Archive",
         "description": "공개된 프로젝트 전체 목록입니다.",
         "searchLabel": "검색",
         "searchPlaceholder": "제목, 설명 또는 태그로 검색...",
@@ -365,5 +385,23 @@
         "contactTitle": "문의",
         "contactDescription": "본 약관에 대한 질문이나 의견, 또는 콘텐츠 라이선스 관련 문의는 사이트의 문의 폼을 이용해 주세요. 문의 내용에 따라 답변까지 시간이 걸릴 수 있습니다.",
         "backHome": "홈으로 돌아가기"
+    },
+    "Servers": {
+        "backHome": "← 홈으로 돌아가기",
+        "heading": "Servers",
+        "description": "운영 중인 서버의 실시간 상태입니다.",
+        "refreshButton": "새로고침",
+        "lastUpdatedLabel": "업데이트",
+        "statusOnline": "온라인",
+        "statusOffline": "오프라인",
+        "statusMaintenance": "유지보수 중",
+        "categoryWeb": "Web",
+        "categoryGame": "게임",
+        "categoryBot": "Bot",
+        "categoryInfra": "인프라",
+        "specsLabel": "사양",
+        "osLabel": "OS",
+        "ipLabel": "IP",
+        "lastSeenLabel": "마지막 확인"
     }
 }

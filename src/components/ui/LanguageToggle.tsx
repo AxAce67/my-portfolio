@@ -2,9 +2,9 @@
 
 import { useEffect, useId, useRef, useState } from 'react';
 import { Check, ChevronDown, Languages } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useLocale, useTranslations } from 'next-intl';
-import { usePathname } from '@/i18n/routing';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useLocale } from '@/hooks/useLocale';
+import { usePathname, useRouter } from '@/i18n/routing';
 import { getLocaleMeta, getValidLocale, locales, type AppLocale } from '@/i18n/routing';
 import { navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 
@@ -191,12 +191,7 @@ export function LanguageToggle() {
     }, []);
 
     const prefetchLocale = (nextLocale: AppLocale) => {
-        if (nextLocale === displayLocale) {
-            return;
-        }
-
-        const localizedPath = `/${nextLocale}${pathname === '/' ? '' : pathname}`;
-        router.prefetch(localizedPath);
+        // no-op for react-router
     };
 
     const focusOption = (index: number) => {
@@ -210,7 +205,14 @@ export function LanguageToggle() {
             return;
         }
 
-        const localizedPath = `/${nextLocale}${pathname === '/' ? '' : pathname}`;
+        // pathname already includes the current locale segment (e.g.
+        // "/ja/projects/123") — strip it before prefixing the new locale,
+        // otherwise this doubles up into "/en/ja/projects/123".
+        const pathSegments = pathname.split('/').filter(Boolean);
+        if (locales.includes(pathSegments[0] as AppLocale)) {
+            pathSegments.shift();
+        }
+        const localizedPath = `/${nextLocale}${pathSegments.length ? `/${pathSegments.join('/')}` : ''}`;
         const compactPointer = prefersCompactPointer();
         const root = document.documentElement;
         const rootStyles = window.getComputedStyle(root);
@@ -240,9 +242,7 @@ export function LanguageToggle() {
         void root.offsetWidth;
 
         const navigate = () => {
-            router.replace(localizedPath, {
-                scroll: false,
-            });
+            router.replace(localizedPath);
         };
 
         if (compactPointer) {
