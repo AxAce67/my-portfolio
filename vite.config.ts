@@ -14,7 +14,7 @@ function localApiDevMiddleware(): Plugin {
       server.middlewares.use('/api/server-status', async (req, res) => {
         res.setHeader('Content-Type', 'application/json');
         try {
-          const mod = await server.ssrLoadModule('/api/_lib/tailscaleStatus.ts');
+          const mod = await server.ssrLoadModule('/api/server-status.ts');
           const result = await mod.getTailscaleDeviceStatus();
           res.statusCode = 'error' in result ? 502 : 200;
           res.end(JSON.stringify(result));
@@ -27,7 +27,7 @@ function localApiDevMiddleware(): Plugin {
       server.middlewares.use('/api/github/momentum', async (req, res) => {
         res.setHeader('Content-Type', 'application/json');
         try {
-          const mod = await server.ssrLoadModule('/api/_lib/githubMomentum.ts');
+          const mod = await server.ssrLoadModule('/api/github/momentum.ts');
           const result = await mod.getGithubMomentum();
           res.statusCode = result.ok ? 200 : 502;
           res.end(JSON.stringify(result.data));
