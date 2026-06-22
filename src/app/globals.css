@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 :root {
+  --font-sans: 'Geist Sans';
+  --font-mono: 'Geist Mono';
+
   --background: #0f0f0f;
   --background-rgb: 15 15 15;
   --foreground: #fafafa;
