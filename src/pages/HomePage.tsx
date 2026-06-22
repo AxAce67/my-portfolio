@@ -45,7 +45,7 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
 
   return (
     <section
-      className={`relative w-full min-h-[100dvh] px-4 sm:px-6 lg:px-8 pt-[4.5rem] sm:pt-20 pb-8 sm:pb-12 flex items-center justify-center ${hidden ? 'opacity-0 pointer-events-none' : ''}`}
+      className={`relative w-full min-h-[100svh] px-4 sm:px-6 lg:px-8 pt-[4.5rem] sm:pt-20 pb-8 sm:pb-12 flex items-center justify-center ${hidden ? 'opacity-0 pointer-events-none' : ''}`}
       aria-hidden={hidden}
     >
       <div
