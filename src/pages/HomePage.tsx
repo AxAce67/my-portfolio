@@ -6,7 +6,6 @@ import HomePageSections from '@/components/home/HomePageSections';
 import { getHomePageData, type HomeProject, type HomeActiveProject } from '@/lib/content/publicContent';
 import { navigationStateKeys, readSessionValue } from '@/lib/navigationState';
 import { useHomeNavigationRestoration } from '@/hooks/useHomeNavigationRestoration';
-import { triggerHaptic } from '@/lib/haptics';
 
 export default function HomePage() {
   const [projects, setProjects] = useState<HomeProject[]>([]);
@@ -82,7 +81,6 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
 
             <button
               onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-              onPointerDown={() => triggerHaptic()}
               className="group relative flex items-center justify-between gap-4 pl-6 pr-2 py-2 bg-[var(--hero-fg)] text-[var(--hero-bg)] rounded-full hover:scale-105 transition-transform active:scale-95 shadow-xl"
             >
               <span className="font-mono text-sm sm:text-base font-bold tracking-wide uppercase">{t('ctaPrimary')}</span>

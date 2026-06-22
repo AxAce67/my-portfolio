@@ -8,7 +8,6 @@ import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import { isAppLocale, usePathname, useRouter } from '@/i18n/routing';
 import { runRouteTransition } from '@/lib/viewTransitions';
 import { clearProjectReturnState, navigationStateKeys, writeSessionValue } from '@/lib/navigationState';
-import { triggerHaptic } from '@/lib/haptics';
 
 const navItems = ['about', 'skills', 'technologies', 'projects', 'timeline', 'contact'] as const;
 
@@ -231,7 +230,6 @@ export function Header() {
                             <ThemeToggle />
                             <button
                                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                                onPointerDown={() => triggerHaptic()}
                                 className="md:hidden p-2.5 rounded-lg hover:bg-muted transition-colors"
                                 aria-label="Toggle menu"
                                 aria-expanded={isMenuOpen}
