@@ -105,6 +105,7 @@ type HomePageSectionsProps = {
 };
 
 type AboutStatItem = {
+  id: string;
   value: number;
   suffix?: string;
   label: string;
@@ -252,9 +253,9 @@ function AboutStatCard({
         <CountUpNumber end={value} suffix={suffix} durationMs={durationMs} play={isCardInView} />
       </p>
       <p className="text-[12px] text-muted-foreground mt-2 tracking-wider uppercase font-mono text-center inline-flex items-center gap-1">
-        {label}
+        <span className="text-balance">{label}</span>
         {isInteractive && (
-          <ExternalLink className="w-3 h-3 text-muted-foreground group-hover:text-foreground transition-colors" strokeWidth={2} />
+          <ExternalLink className="w-3 h-3 text-muted-foreground group-hover:text-foreground transition-colors flex-shrink-0" strokeWidth={2} />
         )}
       </p>
     </div>
@@ -395,15 +396,16 @@ function AboutSection() {
   const locale = useLocale();
   const focusAreas = ['productThinking', 'rapidPrototyping', 'uiUxDesign', 'problemSolving', 'research', 'continuousImprovement'] as const;
   const stats: AboutStatItem[] = [
-    { value: 7, suffix: '+', label: t('statsProjects'), href: '/projects' },
+    { id: 'projects', value: 7, suffix: '+', label: t('statsProjects'), href: '/projects' },
     {
+      id: 'technologies',
       value: 20,
       suffix: '+',
       label: t('statsTechnologies'),
       onActivate: () => document.getElementById('tech-stack')?.scrollIntoView({ behavior: 'smooth' }),
     },
-    { value: 2, suffix: '+', label: t('statsYears') },
-    { value: 4, label: t('statsCommits'), href: '/servers' },
+    { id: 'years', value: 2, suffix: '+', label: t('statsYears') },
+    { id: 'servers', value: 4, label: t('statsCommits'), href: '/servers' },
   ];
   const [avatarUrl, setAvatarUrl] = useState(DEFAULT_AVATAR_URL);
   useEffect(() => {
@@ -541,8 +543,8 @@ function AboutSection() {
 
           <ScrollReveal delay={0.2}>
             <StaggerContainer className="grid grid-cols-2 gap-2" staggerDelay={0.04}>
-              {stats.map(({ value, suffix, label, href, onActivate }, idx) => (
-                <StaggerItem key={label}>
+              {stats.map(({ id, value, suffix, label, href, onActivate }, idx) => (
+                <StaggerItem key={id}>
                   <AboutStatCard value={value} suffix={suffix} label={label} href={href} onActivate={onActivate} durationMs={900 + idx * 80} className="py-4" />
                 </StaggerItem>
               ))}
