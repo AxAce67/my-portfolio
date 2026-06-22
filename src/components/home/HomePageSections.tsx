@@ -252,10 +252,10 @@ function AboutStatCard({
       <p className="text-2xl sm:text-4xl font-bold tracking-tight tabular-nums">
         <CountUpNumber end={value} suffix={suffix} durationMs={durationMs} play={isCardInView} />
       </p>
-      <p className="text-[12px] text-muted-foreground mt-2 tracking-wider uppercase font-mono text-center inline-flex items-center gap-1">
-        <span className="text-balance">{label}</span>
+      <p className="text-[12px] text-muted-foreground mt-2 tracking-wider uppercase font-mono text-center text-balance">
+        {label}
         {isInteractive && (
-          <ExternalLink className="w-3 h-3 text-muted-foreground group-hover:text-foreground transition-colors flex-shrink-0" strokeWidth={2} />
+          <ExternalLink className="w-3 h-3 inline-block align-middle ml-1 text-muted-foreground group-hover:text-foreground transition-colors" strokeWidth={2} />
         )}
       </p>
     </div>
@@ -544,8 +544,8 @@ function AboutSection() {
           <ScrollReveal delay={0.2}>
             <StaggerContainer className="grid grid-cols-2 gap-2" staggerDelay={0.04}>
               {stats.map(({ id, value, suffix, label, href, onActivate }, idx) => (
-                <StaggerItem key={id}>
-                  <AboutStatCard value={value} suffix={suffix} label={label} href={href} onActivate={onActivate} durationMs={900 + idx * 80} className="py-4" />
+                <StaggerItem key={id} className="h-full">
+                  <AboutStatCard value={value} suffix={suffix} label={label} href={href} onActivate={onActivate} durationMs={900 + idx * 80} className="h-full py-4" />
                 </StaggerItem>
               ))}
             </StaggerContainer>
