@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { CheckCircle2, Send } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
+import { triggerHaptic } from '@/lib/haptics';
 
 const SUCCESS_MODAL_MS = 5000;
 const FOCUSABLE_SELECTOR = [
@@ -356,6 +357,7 @@ export default function ContactSection() {
 
             <button
               type="submit"
+              onPointerDown={() => triggerHaptic()}
               disabled={isSubmitting || !turnstileSiteKey || !shouldLoadTurnstile}
               className="btn-primary w-full mt-2 flex items-center justify-center gap-2 disabled:opacity-60 disabled:pointer-events-none"
             >
@@ -413,7 +415,7 @@ export default function ContactSection() {
                 <button type="button" className="btn-outline" onClick={() => setIsPreviewOpen(false)} disabled={isSubmitting}>
                   {t('backToEdit')}
                 </button>
-                <button type="button" className="btn-primary" onClick={confirmSubmit} disabled={isSubmitting}>
+                <button type="button" className="btn-primary" onClick={confirmSubmit} onPointerDown={() => triggerHaptic()} disabled={isSubmitting}>
                   {isSubmitting ? t('sending') : t('confirmSend')}
                 </button>
               </div>

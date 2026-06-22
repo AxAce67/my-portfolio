@@ -3,6 +3,7 @@
 import { useTheme } from '@/components/providers/ThemeProvider';
 import { useEffect, useRef, useState } from 'react';
 import { Sun, Moon } from 'lucide-react';
+import { triggerHaptic } from '@/lib/haptics';
 
 export function ThemeToggle() {
     const { resolvedTheme, setTheme } = useTheme();
@@ -66,6 +67,7 @@ export function ThemeToggle() {
         <button
             ref={buttonRef}
             onClick={toggleTheme}
+            onPointerDown={() => triggerHaptic()}
             className="inline-flex w-9 h-9 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground transition-colors"
             aria-label="Toggle theme"
             disabled={!mounted}
