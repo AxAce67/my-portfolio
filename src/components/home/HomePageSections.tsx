@@ -1418,7 +1418,7 @@ function MutualLinksSection() {
                       </div>
                     )}
                   </div>
-                  <div className="flex min-h-[88px] items-start gap-3 p-3.5">
+                  <div className="flex min-h-[64px] items-start gap-3 p-3.5">
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-semibold tracking-tight">{link.name}</p>
                       {link.description ? (
@@ -1426,9 +1426,6 @@ function MutualLinksSection() {
                       ) : (
                         <p className="mt-1 text-[11px] font-mono text-muted-foreground">{t('visitSite')}</p>
                       )}
-                      <p className="mt-1.5 truncate font-mono text-[11px] text-muted-foreground/70">
-                        {link.url.replace(/^https?:\/\//, '')}
-                      </p>
                     </div>
                     <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors group-hover:border-border-hover group-hover:text-foreground">
                       <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.7} />
