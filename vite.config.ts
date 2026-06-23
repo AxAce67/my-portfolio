@@ -65,22 +65,6 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
-        'next/image': path.resolve(__dirname, './src/shims/next-image.tsx'),
-        'next/link': path.resolve(__dirname, './src/shims/next-link.tsx'),
-        'next-intl': path.resolve(__dirname, './src/shims/next-intl.tsx'),
-        'next-themes': path.resolve(__dirname, './src/shims/next-themes.tsx'),
-        'next/navigation': path.resolve(__dirname, './src/shims/next-navigation.ts'),
-        'next/dynamic': path.resolve(__dirname, './src/shims/next-dynamic.tsx'),
-        'next/script': path.resolve(__dirname, './src/shims/next-script.tsx'),
-        'next-view-transitions': path.resolve(__dirname, './src/shims/next-link.tsx'),
-      },
-    },
-    server: {
-      proxy: {
-        '/api': {
-          target: 'http://localhost:3000',
-          changeOrigin: true,
-        },
       },
     },
   };

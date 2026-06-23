@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 
 const RUNS = Number(process.env.LH_RUNS ?? '3');
-const BASE_URL = process.env.LH_BASE_URL ?? 'http://127.0.0.1:3000';
+const BASE_URL = process.env.LH_BASE_URL ?? 'http://127.0.0.1:5173';
 const URLS = (process.env.LH_URLS ?? '/ja')
   .split(',')
   .map((segment) => segment.trim())

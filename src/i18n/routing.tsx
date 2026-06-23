@@ -131,7 +131,7 @@ function withLocale(path: string, locale: AppLocale): string {
 }
 
 export type CompatibleLinkProps = Omit<RouterLinkProps, 'to' | 'prefetch'> & { href: string; prefetch?: boolean };
-export const Link = ({ href, prefetch, ...props }: CompatibleLinkProps) => {
+export const Link = ({ href, prefetch: _prefetch, ...props }: CompatibleLinkProps) => {
     const locale = useCurrentLocale();
     const resolved = href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')
         ? href
@@ -152,6 +152,6 @@ export function useRouter() {
         push: (path: string, options?: { state?: unknown }) => navigate(withLocale(path, locale), options),
         replace: (path: string) => navigate(withLocale(path, locale), { replace: true }),
         back: () => navigate(-1),
-        prefetch: (path: string) => {}, // No-op for Vite SPA
+        prefetch: (_path: string) => {}, // No-op for Vite SPA
     };
 }

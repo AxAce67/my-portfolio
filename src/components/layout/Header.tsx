@@ -67,8 +67,13 @@ export function Header() {
         document.body.style.touchAction = 'none';
         document.documentElement.style.overflow = 'hidden';
         document.documentElement.style.touchAction = 'none';
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') setIsMenuOpen(false);
+        };
+        window.addEventListener('keydown', handleKeyDown);
 
         return () => {
+            window.removeEventListener('keydown', handleKeyDown);
             document.body.style.overflow = previousOverflow;
             document.body.style.position = previousBodyPosition;
             document.body.style.top = previousBodyTop;

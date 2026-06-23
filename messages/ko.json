@@ -85,7 +85,7 @@
         "createdAt": "작성일",
         "updatedAt": "수정일",
         "noPublishedProjects": "곧 공개됩니다. 기다려 주셔서 감사합니다.",
-        "loading": "불러오는 중..."
+        "loading": "불러오는 중…"
     },
     "Contact": {
         "sectionTitle": "> send_message",
@@ -103,10 +103,10 @@
         "subject": "제목",
         "subjectPlaceholder": "어떤 내용인가요?",
         "message": "메시지",
-        "messagePlaceholder": "메시지를 입력해 주세요...",
+        "messagePlaceholder": "메시지를 입력해 주세요…",
         "preview": "메시지 확인",
-        "verifying": "확인 중...",
-        "sending": "전송 중...",
+        "verifying": "확인 중…",
+        "sending": "전송 중…",
         "previewTitle": "메시지 내용을 확인해 주세요",
         "previewDescription": "전송 전에 내용을 다시 확인해 주세요.",
         "backToEdit": "수정으로 돌아가기",
@@ -161,7 +161,7 @@
             "newProject": "새 프로젝트",
             "listTitle": "프로젝트",
             "empty": "아직 프로젝트가 없습니다.",
-            "searchPlaceholder": "프로젝트 검색...",
+            "searchPlaceholder": "프로젝트 검색…",
             "filterAll": "모든 상태",
             "noResults": "일치하는 프로젝트가 없습니다."
         },
@@ -295,7 +295,7 @@
                 "completed": "완료",
                 "on_hold": "보류"
             },
-            "saving": "저장 중...",
+            "saving": "저장 중…",
             "unsavedWarning": "저장하지 않은 변경 사항이 있습니다. 그래도 나가시겠습니까?",
             "draftRestoredTitle": "저장되지 않은 초안을 발견했습니다",
             "draftRestoredDescription": "완료하지 않은 초안이 있습니다. 복원하시겠습니까?",
@@ -357,14 +357,14 @@
         "stageDevelopment": "개발",
         "stageTesting": "테스트",
         "stageCompleted": "완료",
-        "loading": "불러오는 중..."
+        "loading": "불러오는 중…"
     },
     "ProjectList": {
         "backToTop": "← 프로젝트로 돌아가기",
         "heading": "Projects Archive",
         "description": "공개된 프로젝트 전체 목록입니다.",
         "searchLabel": "검색",
-        "searchPlaceholder": "제목, 설명 또는 태그로 검색...",
+        "searchPlaceholder": "제목, 설명 또는 태그로 검색…",
         "createdAt": "작성일",
         "updatedAt": "수정일",
         "empty": "곧 공개됩니다. 기다려 주셔서 감사합니다.",
@@ -451,7 +451,7 @@
         "categoryInfra": "인프라",
         "specsLabel": "사양",
         "osLabel": "OS",
-        "ipLabel": "IP",
+        "ipLabel": "TAILNET IP",
         "lastSeenLabel": "마지막 확인"
     },
     "MutualLinks": {

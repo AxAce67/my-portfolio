@@ -290,7 +290,7 @@ export default function ContactSection() {
                   maxLength={80}
                   placeholder={t('namePlaceholder')}
                   autoComplete="name"
-                  className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-all focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
+                  className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm transition-[border-color,background-color] focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
                 />
               </div>
 
@@ -308,7 +308,7 @@ export default function ContactSection() {
                   autoComplete="email"
                   inputMode="email"
                   spellCheck={false}
-                  className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-all focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
+                  className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm transition-[border-color,background-color] focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
                 />
               </div>
             </div>
@@ -326,7 +326,7 @@ export default function ContactSection() {
                 maxLength={160}
                 placeholder={t('subjectPlaceholder')}
                 autoComplete="off"
-                className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-all focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
+                className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm transition-[border-color,background-color] focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
               />
             </div>
 
@@ -343,7 +343,7 @@ export default function ContactSection() {
                 maxLength={5000}
                 placeholder={t('messagePlaceholder')}
                 autoComplete="off"
-                className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-all focus:border-foreground focus:bg-transparent resize-none placeholder:text-muted-foreground/40"
+                className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm transition-[border-color,background-color] focus:border-foreground focus:bg-transparent resize-none placeholder:text-muted-foreground/40"
               />
             </div>
 

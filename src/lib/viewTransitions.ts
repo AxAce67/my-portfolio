@@ -41,7 +41,12 @@ function prefersCompactMotion() {
 }
 
 export function shouldUseMobileRouteTransitions() {
-  return typeof window !== 'undefined' && !prefersReducedMotion() && prefersCompactMotion();
+  if (typeof document === 'undefined' || typeof window === 'undefined') {
+    return false;
+  }
+
+  const transitionDocument = document as TransitionCapableDocument;
+  return !prefersReducedMotion() && prefersCompactMotion() && !transitionDocument.startViewTransition;
 }
 
 export function canUseSharedElementTransitions() {
@@ -50,7 +55,7 @@ export function canUseSharedElementTransitions() {
   }
 
   const transitionDocument = document as TransitionCapableDocument;
-  return !prefersReducedMotion() && !prefersCompactMotion() && Boolean(transitionDocument.startViewTransition);
+  return !prefersReducedMotion() && Boolean(transitionDocument.startViewTransition);
 }
 
 export function isPlainLeftClick(event: ClickLikeEvent) {

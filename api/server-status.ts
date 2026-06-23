@@ -12,20 +12,26 @@ type TailscaleDevice = {
   lastSeen?: string;
   os?: string;
   addresses?: string[];
-  clientVersion?: string;
 };
 
 export type ServerStatusDevice = {
   id: string;
   name: string;
-  hostname: string;
   online: boolean;
   lastSeen: string | null;
   os: string | null;
-  ip: string | null;
+  maskedIp: string | null;
 };
 
 const ONLINE_WINDOW_MS = 3 * 60 * 1000; // Tailscale clients check in roughly every 1-2 min
+
+function maskTailnetIpv4(addresses?: string[]): string | null {
+  const ipv4 = addresses?.find((address) => /^\d{1,3}(?:\.\d{1,3}){3}$/.test(address));
+  if (!ipv4) return null;
+
+  const [first, second] = ipv4.split('.');
+  return `${first}.${second}.xx.xx`;
+}
 
 export async function getTailscaleDeviceStatus(): Promise<{ devices: ServerStatusDevice[] } | { error: string }> {
   const apiKey = process.env.TAILSCALE_API_KEY;
@@ -50,17 +56,15 @@ export async function getTailscaleDeviceStatus(): Promise<{ devices: ServerStatu
 
   const devices: ServerStatusDevice[] = (data.devices ?? []).map((device) => {
     const lastSeenMs = device.lastSeen ? new Date(device.lastSeen).getTime() : 0;
-    // addresses[0] is the IPv4 100.x.x.x tailnet address; addresses[1] (if
-    // present) is the IPv6 one — only the IPv4 is worth showing on the card.
-    const ipv4 = device.addresses?.find((addr) => !addr.includes(':')) ?? null;
     return {
       id: device.id,
-      name: device.name,
-      hostname: device.hostname,
+      // Only expose the short identifier needed by the public status page.
+      // Tailnet FQDNs and private 100.x addresses are intentionally omitted.
+      name: device.name.split('.')[0] || device.hostname,
       online: now - lastSeenMs < ONLINE_WINDOW_MS,
       lastSeen: device.lastSeen ?? null,
       os: device.os ?? null,
-      ip: ipv4,
+      maskedIp: maskTailnetIpv4(device.addresses),
     };
   });
 

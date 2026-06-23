@@ -76,7 +76,7 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
           </div>
 
           <button type="submit" disabled={submitting} className="btn-primary w-full disabled:opacity-60">
-            {submitting ? '...' : t('submit')}
+            {submitting ? '…' : t('submit')}
           </button>
         </form>
       </div>

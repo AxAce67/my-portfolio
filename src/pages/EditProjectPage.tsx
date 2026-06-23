@@ -51,7 +51,7 @@ export default function EditProjectPage() {
   }
 
   if (loading || !project) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return <div className="min-h-screen flex items-center justify-center">Loading…</div>;
   }
 
   return (

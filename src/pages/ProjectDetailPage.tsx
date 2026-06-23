@@ -63,8 +63,18 @@ export default function ProjectDetailPage() {
     });
   }, [id, locale, navigate]);
 
+  const project = result?.status === 'ok' ? result.project : null;
+
+  useEffect(() => {
+    const title = project?.title?.trim();
+    if (title) document.title = `${title} | Aki Portfolio`;
+    if (project?.description) {
+      document.head.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute('content', project.description);
+    }
+  }, [project?.description, project?.title]);
+
   if (!result) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return <div className="min-h-screen flex items-center justify-center">Loading…</div>;
   }
 
   if (result.status === 'unavailable') {
@@ -90,7 +100,6 @@ export default function ProjectDetailPage() {
     );
   }
 
-  const project = result.project;
   if (!project) return null;
 
   const showUpdatedAt = !!project.updated_at && !areSameCalendarDate(project.created_at, project.updated_at);

@@ -85,7 +85,7 @@
         "createdAt": "创建于",
         "updatedAt": "更新于",
         "noPublishedProjects": "即将上线，感谢你的耐心等待。",
-        "loading": "加载中..."
+        "loading": "加载中…"
     },
     "Contact": {
         "sectionTitle": "> send_message",
@@ -103,10 +103,10 @@
         "subject": "主题",
         "subjectPlaceholder": "这条消息是关于什么？",
         "message": "内容",
-        "messagePlaceholder": "在这里输入你的消息...",
+        "messagePlaceholder": "在这里输入你的消息…",
         "preview": "确认内容",
-        "verifying": "正在验证...",
-        "sending": "正在发送...",
+        "verifying": "正在验证…",
+        "sending": "正在发送…",
         "previewTitle": "确认你的消息",
         "previewDescription": "发送前请再次确认内容。",
         "backToEdit": "返回编辑",
@@ -161,7 +161,7 @@
             "newProject": "新建项目",
             "listTitle": "项目",
             "empty": "还没有项目。",
-            "searchPlaceholder": "搜索项目...",
+            "searchPlaceholder": "搜索项目…",
             "filterAll": "所有状态",
             "noResults": "没有匹配的项目。"
         },
@@ -295,7 +295,7 @@
                 "completed": "已完成",
                 "on_hold": "暂停中"
             },
-            "saving": "保存中...",
+            "saving": "保存中…",
             "unsavedWarning": "您有未保存的更改。仍要离开吗？",
             "draftRestoredTitle": "发现未保存的草稿",
             "draftRestoredDescription": "我们发现了一份未完成的草稿。要恢复它吗？",
@@ -357,14 +357,14 @@
         "stageDevelopment": "开发",
         "stageTesting": "测试",
         "stageCompleted": "已完成",
-        "loading": "加载中..."
+        "loading": "加载中…"
     },
     "ProjectList": {
         "backToTop": "← 返回项目",
         "heading": "Projects Archive",
         "description": "已公开项目的完整列表。",
         "searchLabel": "搜索",
-        "searchPlaceholder": "按标题、描述或标签搜索...",
+        "searchPlaceholder": "按标题、描述或标签搜索…",
         "createdAt": "创建于",
         "updatedAt": "更新于",
         "empty": "即将上线，感谢你的耐心等待。",
@@ -451,7 +451,7 @@
         "categoryInfra": "基础设施",
         "specsLabel": "配置",
         "osLabel": "系统",
-        "ipLabel": "IP",
+        "ipLabel": "TAILNET IP",
         "lastSeenLabel": "最后在线"
     },
     "MutualLinks": {

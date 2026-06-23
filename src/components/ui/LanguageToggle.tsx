@@ -190,7 +190,7 @@ export function LanguageToggle() {
         };
     }, []);
 
-    const prefetchLocale = (nextLocale: AppLocale) => {
+    const prefetchLocale = (_nextLocale: AppLocale) => {
         // no-op for react-router
     };
 

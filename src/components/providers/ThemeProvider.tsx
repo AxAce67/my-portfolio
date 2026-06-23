@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-const ThemeContext = createContext({ theme: 'dark', setTheme: (t: string) => {}, resolvedTheme: 'dark' });
+const ThemeContext = createContext({ theme: 'dark', setTheme: (_theme: string) => {}, resolvedTheme: 'dark' });
 
 type ThemeProviderProps = {
   children: React.ReactNode;

@@ -85,7 +85,7 @@
         "createdAt": "建立於",
         "updatedAt": "更新於",
         "noPublishedProjects": "即將推出，感謝你的耐心等待。",
-        "loading": "載入中..."
+        "loading": "載入中…"
     },
     "Contact": {
         "sectionTitle": "> send_message",
@@ -103,10 +103,10 @@
         "subject": "主旨",
         "subjectPlaceholder": "這則訊息是關於什麼？",
         "message": "內容",
-        "messagePlaceholder": "在這裡輸入你的訊息...",
+        "messagePlaceholder": "在這裡輸入你的訊息…",
         "preview": "確認內容",
-        "verifying": "驗證中...",
-        "sending": "傳送中...",
+        "verifying": "驗證中…",
+        "sending": "傳送中…",
         "previewTitle": "確認你的訊息",
         "previewDescription": "送出前請再次確認內容。",
         "backToEdit": "返回編輯",
@@ -161,7 +161,7 @@
             "newProject": "新建專案",
             "listTitle": "專案",
             "empty": "尚無專案。",
-            "searchPlaceholder": "搜尋專案...",
+            "searchPlaceholder": "搜尋專案…",
             "filterAll": "所有狀態",
             "noResults": "沒有符合的專案。"
         },
@@ -295,7 +295,7 @@
                 "completed": "已完成",
                 "on_hold": "暫停中"
             },
-            "saving": "儲存中...",
+            "saving": "儲存中…",
             "unsavedWarning": "您有未儲存的變更。仍要離開嗎？",
             "draftRestoredTitle": "發現未儲存的草稿",
             "draftRestoredDescription": "我們發現一份未完成的草稿。要還原嗎？",
@@ -357,14 +357,14 @@
         "stageDevelopment": "開發",
         "stageTesting": "測試",
         "stageCompleted": "已完成",
-        "loading": "載入中..."
+        "loading": "載入中…"
     },
     "ProjectList": {
         "backToTop": "← 返回專案",
         "heading": "Projects Archive",
         "description": "所有已公開專案的完整列表。",
         "searchLabel": "搜尋",
-        "searchPlaceholder": "依標題、描述或標籤搜尋...",
+        "searchPlaceholder": "依標題、描述或標籤搜尋…",
         "createdAt": "建立於",
         "updatedAt": "更新於",
         "empty": "即將推出，感謝你的耐心等待。",
@@ -451,7 +451,7 @@
         "categoryInfra": "基礎設施",
         "specsLabel": "規格",
         "osLabel": "系統",
-        "ipLabel": "IP",
+        "ipLabel": "TAILNET IP",
         "lastSeenLabel": "最後上線"
     },
     "MutualLinks": {

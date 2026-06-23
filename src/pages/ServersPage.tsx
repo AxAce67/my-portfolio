@@ -5,7 +5,7 @@ import { Link, getLocaleMeta } from '@/i18n/routing';
 import { TiltCard } from '@/components/ui/TiltCard';
 import { selfHostedServers, type ServerStatus } from '@/lib/selfHostedServers';
 import { RefreshCw } from 'lucide-react';
-import { navigationStateKeys, writeSessionValue } from '@/lib/navigationState';
+import { navigationStateKeys } from '@/lib/navigationState';
 
 const STATUS_DOT_CLASS: Record<ServerStatus, string> = {
   online: 'bg-emerald-500',
@@ -23,11 +23,10 @@ const OS_LABEL: Record<string, string> = {
 
 type LiveDevice = {
   name: string;
-  hostname: string;
   online: boolean;
   lastSeen: string | null;
   os: string | null;
-  ip: string | null;
+  maskedIp: string | null;
 };
 
 const REFRESH_INTERVAL_MS = 30_000;
@@ -96,7 +95,7 @@ export default function ServersPage() {
     if (!server.tailscaleHostname || !liveDevices) return null;
     const target = shortName(server.tailscaleHostname);
     return (
-      liveDevices.find((d) => shortName(d.name) === target || shortName(d.hostname) === target) ?? null
+      liveDevices.find((d) => shortName(d.name) === target) ?? null
     );
   };
 
@@ -135,9 +134,6 @@ export default function ServersPage() {
         <Link 
           href={backHref} 
           className="text-xs font-mono text-muted-foreground hover:text-foreground"
-          onClick={() => {
-            writeSessionValue(navigationStateKeys.returnToProjects, '1');
-          }}
         >
           {backLabel ?? t('backHome')}
         </Link>
@@ -179,7 +175,7 @@ export default function ServersPage() {
               <p className="text-base font-semibold tracking-tight">{server.name}</p>
               <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">{server.description}</p>
 
-              {(server.specs || os || live?.ip || live?.lastSeen) && (
+              {(server.specs || os || live?.maskedIp || live?.lastSeen) && (
                 <div className="mt-3 pt-3 border-t border-border grid grid-cols-2 gap-y-1.5 text-[12px] font-mono text-muted-foreground">
                   {server.specs && (
                     <>
@@ -193,10 +189,10 @@ export default function ServersPage() {
                       <span className="text-right">{os}</span>
                     </>
                   )}
-                  {live?.ip && (
+                  {live?.maskedIp && (
                     <>
                       <span>{t('ipLabel')}</span>
-                      <span className="text-right">{live.ip}</span>
+                      <span className="text-right tracking-wide text-foreground/80">{live.maskedIp}</span>
                     </>
                   )}
                   {live?.lastSeen && status === 'offline' && (

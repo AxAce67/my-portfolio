@@ -370,7 +370,7 @@ export default function ActiveProjectsManager() {
                       <input type="checkbox" name="is_published" defaultChecked />
                       {t('published')}
                     </label>
-                    <button type="submit" disabled={isPending} className="btn-primary w-full sm:w-auto disabled:opacity-60">{isPending ? '...' : t('actions.create')}</button>
+                    <button type="submit" disabled={isPending} className="btn-primary w-full sm:w-auto disabled:opacity-60">{isPending ? '…' : t('actions.create')}</button>
                   </div>
                 </form>
               </div>
@@ -407,7 +407,7 @@ export default function ActiveProjectsManager() {
                       <input type="checkbox" name="is_published" defaultChecked={editingProject.is_published} />
                       {t('published')}
                     </label>
-                    <button type="submit" disabled={isPending} className="btn-primary w-full sm:w-auto disabled:opacity-60">{isPending ? '...' : t('actions.update')}</button>
+                    <button type="submit" disabled={isPending} className="btn-primary w-full sm:w-auto disabled:opacity-60">{isPending ? '…' : t('actions.update')}</button>
                   </div>
                 </form>
               </div>
@@ -432,7 +432,7 @@ export default function ActiveProjectsManager() {
                     onClick={handleDelete}
                     className="rounded-lg border border-red-600 bg-red-600 px-3 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60 w-full sm:w-auto"
                   >
-                    {isPending ? '...' : t('actions.delete')}
+                    {isPending ? '…' : t('actions.delete')}
                   </button>
                 </div>
               </div>

@@ -14,7 +14,8 @@ import { Footer } from './components/layout/Footer';
 import { AppToaster } from './components/ui/AppToaster';
 import { ScrollToTop } from './components/ui/ScrollToTop';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
-import { defaultLocale, isAppLocale } from '@/i18n/routing';
+import { SeoManager } from '@/components/seo/SeoManager';
+import { defaultLocale, getLocaleMeta, isAppLocale } from '@/i18n/routing';
 
 // Admin-only pages pull in BlockNote/Mantine — lazy-load so public
 // visitors never download that weight.
@@ -54,10 +55,16 @@ function LocaleGate() {
 }
 
 function Layout() {
+  const { pathname } = useLocation();
+  const locale = pathname.split('/')[1] ?? defaultLocale;
+
   return (
     <div className="flex min-h-screen flex-col">
+      <a href="#main-content" className="skip-link">
+        {getLocaleMeta(locale).skipToContentLabel}
+      </a>
       <Header />
-      <main className="flex-1 relative z-10 w-full bg-[var(--background)]">
+      <main id="main-content" tabIndex={-1} className="flex-1 relative z-10 w-full bg-[var(--background)]">
         <Outlet />
       </main>
       <Footer />
@@ -68,9 +75,14 @@ function Layout() {
 export default function App() {
   return (
     <ThemeProvider>
-      <BrowserRouter>
+      {/* Route view transitions take their before/after snapshots around a
+          synchronous DOM update. React Router otherwise wraps BrowserRouter
+          location updates in startTransition(), which lets the callback
+          finish before the destination shared element is committed. */}
+      <BrowserRouter useTransitions={false}>
         <ScrollToTop />
         <LocaleWrapper>
+          <SeoManager />
           <Routes>
             <Route path="/" element={<Navigate to="/ja" replace />} />
             <Route path="/admin" element={<Navigate to={`/${defaultLocale}/admin`} replace />} />

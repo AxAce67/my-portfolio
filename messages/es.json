@@ -85,7 +85,7 @@
         "createdAt": "Creado",
         "updatedAt": "Actualizado",
         "noPublishedProjects": "Próximamente. Gracias por tu paciencia.",
-        "loading": "Cargando..."
+        "loading": "Cargando…"
     },
     "Contact": {
         "sectionTitle": "> send_message",
@@ -103,10 +103,10 @@
         "subject": "Asunto",
         "subjectPlaceholder": "¿De qué se trata?",
         "message": "Mensaje",
-        "messagePlaceholder": "Escribe tu mensaje aquí...",
+        "messagePlaceholder": "Escribe tu mensaje aquí…",
         "preview": "Revisar mensaje",
-        "verifying": "Verificando...",
-        "sending": "Enviando...",
+        "verifying": "Verificando…",
+        "sending": "Enviando…",
         "previewTitle": "Revisa tu mensaje",
         "previewDescription": "Confirma los datos antes de enviar.",
         "backToEdit": "Volver a editar",
@@ -161,7 +161,7 @@
             "newProject": "Nuevo proyecto",
             "listTitle": "Proyectos",
             "empty": "Aún no hay proyectos.",
-            "searchPlaceholder": "Buscar proyectos...",
+            "searchPlaceholder": "Buscar proyectos…",
             "filterAll": "Todos los estados",
             "noResults": "No hay proyectos que coincidan."
         },
@@ -295,7 +295,7 @@
                 "completed": "Completado",
                 "on_hold": "En pausa"
             },
-            "saving": "Guardando...",
+            "saving": "Guardando…",
             "unsavedWarning": "Tienes cambios sin guardar. ¿Salir de todos modos?",
             "draftRestoredTitle": "Borrador sin guardar encontrado",
             "draftRestoredDescription": "Encontramos un borrador sin terminar. ¿Quieres restaurarlo?",
@@ -357,14 +357,14 @@
         "stageDevelopment": "Desarrollo",
         "stageTesting": "Pruebas",
         "stageCompleted": "Completado",
-        "loading": "Cargando..."
+        "loading": "Cargando…"
     },
     "ProjectList": {
         "backToTop": "← Volver a proyectos",
         "heading": "Projects Archive",
         "description": "Lista completa de proyectos publicados.",
         "searchLabel": "Buscar",
-        "searchPlaceholder": "Buscar por título, descripción o etiqueta...",
+        "searchPlaceholder": "Buscar por título, descripción o etiqueta…",
         "createdAt": "Creado",
         "updatedAt": "Actualizado",
         "empty": "Próximamente. Gracias por tu paciencia.",
@@ -451,7 +451,7 @@
         "categoryInfra": "Infra",
         "specsLabel": "Specs",
         "osLabel": "SO",
-        "ipLabel": "IP",
+        "ipLabel": "TAILNET IP",
         "lastSeenLabel": "Última conexión"
     },
     "MutualLinks": {

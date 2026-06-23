@@ -85,7 +85,7 @@
         "createdAt": "作成",
         "updatedAt": "更新",
         "noPublishedProjects": "ただいま準備中です。もうしばらくお待ちください。",
-        "loading": "読み込み中..."
+        "loading": "読み込み中…"
     },
     "Contact": {
         "sectionTitle": "> send_message",
@@ -103,10 +103,10 @@
         "subject": "件名",
         "subjectPlaceholder": "お問い合わせの件名",
         "message": "メッセージ",
-        "messagePlaceholder": "メッセージを入力してください...",
+        "messagePlaceholder": "メッセージを入力してください…",
         "preview": "内容を確認",
-        "verifying": "確認中...",
-        "sending": "送信中...",
+        "verifying": "確認中…",
+        "sending": "送信中…",
         "previewTitle": "送信内容の確認",
         "previewDescription": "以下の内容で送信してよろしいですか？",
         "backToEdit": "戻って編集",
@@ -161,7 +161,7 @@
             "newProject": "新規作成",
             "listTitle": "プロジェクト一覧",
             "empty": "プロジェクトがまだありません。",
-            "searchPlaceholder": "プロジェクトを検索...",
+            "searchPlaceholder": "プロジェクトを検索…",
             "filterAll": "すべてのステータス",
             "noResults": "条件に一致するプロジェクトがありません。"
         },
@@ -295,7 +295,7 @@
                 "completed": "完了",
                 "on_hold": "保留"
             },
-            "saving": "保存中...",
+            "saving": "保存中…",
             "unsavedWarning": "未保存の変更があります。このページを離れますか？",
             "draftRestoredTitle": "未保存のドラフトがあります",
             "draftRestoredDescription": "保存されていないドラフトが見つかりました。復元しますか？",
@@ -357,14 +357,14 @@
         "stageDevelopment": "実装",
         "stageTesting": "テスト",
         "stageCompleted": "完了",
-        "loading": "読み込み中..."
+        "loading": "読み込み中…"
     },
     "ProjectList": {
         "backToTop": "← Projectsへ戻る",
         "heading": "Projects Archive",
         "description": "公開中プロジェクトの一覧です。",
         "searchLabel": "検索",
-        "searchPlaceholder": "タイトル・説明・タグで検索...",
+        "searchPlaceholder": "タイトル・説明・タグで検索…",
         "createdAt": "作成",
         "updatedAt": "更新",
         "empty": "ただいま準備中です。もうしばらくお待ちください。",
@@ -451,7 +451,7 @@
         "categoryInfra": "インフラ",
         "specsLabel": "スペック",
         "osLabel": "OS",
-        "ipLabel": "IP",
+        "ipLabel": "TAILNET IP",
         "lastSeenLabel": "最終確認"
     },
     "MutualLinks": {

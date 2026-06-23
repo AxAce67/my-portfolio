@@ -4,7 +4,6 @@ import { Link, useRouter } from '@/i18n/routing';
 import { useEffect, useState } from 'react';
 import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, runViewTransition, shouldUseMobileRouteTransitions } from '@/lib/viewTransitions';
 import { navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
-import { ArrowLeft } from 'lucide-react';
 
 type Props = {
   homeHref: string;

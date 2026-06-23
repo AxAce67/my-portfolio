@@ -30,9 +30,6 @@
   ],
   "exclude": [
     "node_modules",
-    "api",
-    "src/app/[locale]/dashboard",
-    "src/app/[locale]/login",
-    "src/app/[locale]/license"
+    "dist"
   ]
 }

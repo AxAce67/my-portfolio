@@ -220,7 +220,7 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
             onChange={(event) => setTitle(event.target.value)}
             required
             placeholder={t('titlePlaceholder')}
-            className="w-full bg-transparent border-none outline-none text-4xl sm:text-5xl font-bold tracking-tight leading-tight placeholder:text-muted-foreground/40"
+            className="w-full bg-transparent border-none text-4xl sm:text-5xl font-bold tracking-tight leading-tight placeholder:text-muted-foreground/40"
           />
           <textarea
             ref={descriptionRef}
@@ -228,7 +228,7 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
             onChange={(event) => setDescription(event.target.value)}
             rows={1}
             placeholder={t('descriptionPlaceholder')}
-            className="w-full bg-transparent border-none outline-none resize-none overflow-hidden text-base sm:text-lg text-muted-foreground leading-relaxed mt-4 placeholder:text-muted-foreground/40"
+            className="w-full bg-transparent border-none resize-none overflow-hidden text-base sm:text-lg text-muted-foreground leading-relaxed mt-4 placeholder:text-muted-foreground/40"
           />
           {initialValues?.created_at && (
             <div className="mt-6 flex flex-wrap gap-4">

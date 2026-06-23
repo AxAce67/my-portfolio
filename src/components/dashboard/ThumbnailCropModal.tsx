@@ -65,7 +65,7 @@ export default function ThumbnailCropModal({ imageSrc, aspect = 16 / 9, fileName
             onClick={handleConfirm}
             className="btn-primary px-3 py-2 text-xs w-full sm:w-auto disabled:opacity-60"
           >
-            {processing ? '...' : t('cropConfirm')}
+            {processing ? '…' : t('cropConfirm')}
           </button>
         </div>
       </div>

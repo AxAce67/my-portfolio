@@ -102,6 +102,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid rgb(var(--foreground-rgb) / 0.85);
+  outline-offset: 3px;
+}
+
 /* Keep Japanese punctuation at its full em width. Chromium's default
    `text-spacing-trim: normal` contextually compresses punctuation such as
    "。"/"！", which makes it look glued to adjacent text at small sizes.
@@ -171,6 +176,23 @@ html.route-transition-document:not(.theme-transition)::view-transition-old(legal
 
 html.route-transition-document:not(.theme-transition)::view-transition-new(legal-page) {
   animation: legal-surface-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Shared project thumbnails use a shorter morph on touch devices. The
+   transition class is attached to both the card and detail-page images. */
+@media (pointer: coarse), (any-pointer: coarse) {
+  html::view-transition-group(.project-media) {
+    animation-duration: 240ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  html:not(.theme-transition)::view-transition-old(root) {
+    animation-duration: 120ms;
+  }
+
+  html:not(.theme-transition)::view-transition-new(root) {
+    animation-duration: 220ms;
+  }
 }
 
 .app-shell {

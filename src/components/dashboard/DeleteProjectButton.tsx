@@ -56,7 +56,7 @@ export default function DeleteProjectButton({ projectId, projectTitle, onDeleted
                     onClick={handleDelete}
                     className="rounded-lg border border-red-600 bg-red-600 px-3 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60 w-full sm:w-auto"
                   >
-                    {isDeleting ? '...' : t('confirm')}
+                    {isDeleting ? '…' : t('confirm')}
                   </button>
                 </div>
               </div>

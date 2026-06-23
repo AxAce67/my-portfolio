@@ -120,7 +120,7 @@ export default function ProjectsListClient({ projects }: Props) {
             }}
             placeholder={t('searchPlaceholder')}
             autoComplete="off"
-            className="w-full rounded-xl border border-border bg-card pl-10 pr-4 py-2.5 text-sm outline-none focus:border-border-hover"
+            className="w-full rounded-xl border border-border bg-card pl-10 pr-4 py-2.5 text-sm focus:border-border-hover"
           />
         </div>
       </div>

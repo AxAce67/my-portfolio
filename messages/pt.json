@@ -85,7 +85,7 @@
         "createdAt": "Criado",
         "updatedAt": "Atualizado",
         "noPublishedProjects": "Em breve. Obrigado pela paciência.",
-        "loading": "Carregando..."
+        "loading": "Carregando…"
     },
     "Contact": {
         "sectionTitle": "> send_message",
@@ -103,10 +103,10 @@
         "subject": "Assunto",
         "subjectPlaceholder": "Sobre o que é a mensagem?",
         "message": "Mensagem",
-        "messagePlaceholder": "Digite sua mensagem aqui...",
+        "messagePlaceholder": "Digite sua mensagem aqui…",
         "preview": "Revisar mensagem",
-        "verifying": "Verificando...",
-        "sending": "Enviando...",
+        "verifying": "Verificando…",
+        "sending": "Enviando…",
         "previewTitle": "Revise sua mensagem",
         "previewDescription": "Confirme os dados antes de enviar.",
         "backToEdit": "Voltar para editar",
@@ -161,7 +161,7 @@
             "newProject": "Novo projeto",
             "listTitle": "Projetos",
             "empty": "Ainda não há projetos.",
-            "searchPlaceholder": "Pesquisar projetos...",
+            "searchPlaceholder": "Pesquisar projetos…",
             "filterAll": "Todos os status",
             "noResults": "Nenhum projeto encontrado."
         },
@@ -295,7 +295,7 @@
                 "completed": "Concluído",
                 "on_hold": "Em pausa"
             },
-            "saving": "Salvando...",
+            "saving": "Salvando…",
             "unsavedWarning": "Você tem alterações não salvas. Sair assim mesmo?",
             "draftRestoredTitle": "Rascunho não salvo encontrado",
             "draftRestoredDescription": "Encontramos um rascunho não finalizado. Deseja restaurá-lo?",
@@ -357,14 +357,14 @@
         "stageDevelopment": "Desenvolvimento",
         "stageTesting": "Teste",
         "stageCompleted": "Concluído",
-        "loading": "Carregando..."
+        "loading": "Carregando…"
     },
     "ProjectList": {
         "backToTop": "← Voltar aos projetos",
         "heading": "Projects Archive",
         "description": "Lista completa dos projetos publicados.",
         "searchLabel": "Buscar",
-        "searchPlaceholder": "Busque por título, descrição ou tag...",
+        "searchPlaceholder": "Busque por título, descrição ou tag…",
         "createdAt": "Criado",
         "updatedAt": "Atualizado",
         "empty": "Em breve. Obrigado pela paciência.",
@@ -451,7 +451,7 @@
         "categoryInfra": "Infra",
         "specsLabel": "Specs",
         "osLabel": "SO",
-        "ipLabel": "IP",
+        "ipLabel": "TAILNET IP",
         "lastSeenLabel": "Visto por último"
     },
     "MutualLinks": {

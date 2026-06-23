@@ -8,7 +8,7 @@ type ImageProps = ImgHTMLAttributes<HTMLImageElement> & {
   unoptimized?: boolean;
 };
 
-export default function Image({ fill, priority, fetchPriority, quality, unoptimized, className = '', style, src, alt, ...props }: ImageProps) {
+export default function Image({ fill, priority, fetchPriority, quality: _quality, unoptimized: _unoptimized, className = '', style, src, alt, ...props }: ImageProps) {
   // Translate Next.js 'fill' layout to absolute positioning
   const combinedClassName = fill 
     ? `absolute inset-0 w-full h-full object-cover ${className}`

@@ -85,7 +85,7 @@
         "createdAt": "Créé",
         "updatedAt": "Mis à jour",
         "noPublishedProjects": "Bientôt disponible. Merci pour votre patience.",
-        "loading": "Chargement..."
+        "loading": "Chargement…"
     },
     "Contact": {
         "sectionTitle": "> send_message",
@@ -103,10 +103,10 @@
         "subject": "Sujet",
         "subjectPlaceholder": "De quoi s'agit-il ?",
         "message": "Message",
-        "messagePlaceholder": "Saisissez votre message ici...",
+        "messagePlaceholder": "Saisissez votre message ici…",
         "preview": "Vérifier le message",
-        "verifying": "Vérification...",
-        "sending": "Envoi...",
+        "verifying": "Vérification…",
+        "sending": "Envoi…",
         "previewTitle": "Vérifiez votre message",
         "previewDescription": "Merci de confirmer les informations avant l'envoi.",
         "backToEdit": "Retour à l'édition",
@@ -161,7 +161,7 @@
             "newProject": "Nouveau projet",
             "listTitle": "Projets",
             "empty": "Aucun projet pour le moment.",
-            "searchPlaceholder": "Rechercher des projets...",
+            "searchPlaceholder": "Rechercher des projets…",
             "filterAll": "Tous les statuts",
             "noResults": "Aucun projet ne correspond."
         },
@@ -295,7 +295,7 @@
                 "completed": "Terminé",
                 "on_hold": "En pause"
             },
-            "saving": "Enregistrement...",
+            "saving": "Enregistrement…",
             "unsavedWarning": "Vous avez des modifications non enregistrées. Quitter quand même ?",
             "draftRestoredTitle": "Brouillon non enregistré trouvé",
             "draftRestoredDescription": "Nous avons trouvé un brouillon inachevé. Le restaurer ?",
@@ -357,14 +357,14 @@
         "stageDevelopment": "Développement",
         "stageTesting": "Tests",
         "stageCompleted": "Terminé",
-        "loading": "Chargement..."
+        "loading": "Chargement…"
     },
     "ProjectList": {
         "backToTop": "← Retour aux projets",
         "heading": "Projects Archive",
         "description": "Liste complète des projets publiés.",
         "searchLabel": "Recherche",
-        "searchPlaceholder": "Rechercher par titre, description ou tag...",
+        "searchPlaceholder": "Rechercher par titre, description ou tag…",
         "createdAt": "Créé",
         "updatedAt": "Mis à jour",
         "empty": "Bientôt disponible. Merci pour votre patience.",
@@ -451,7 +451,7 @@
         "categoryInfra": "Infra",
         "specsLabel": "Caractéristiques",
         "osLabel": "OS",
-        "ipLabel": "IP",
+        "ipLabel": "TAILNET IP",
         "lastSeenLabel": "Vu pour la dernière fois"
     },
     "MutualLinks": {

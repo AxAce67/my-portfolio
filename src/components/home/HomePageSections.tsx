@@ -15,7 +15,7 @@ import TechStackSectionStatic from '@/components/sections/TechStackSection';
 import { TiltCard } from '@/components/ui/TiltCard';
 import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, runViewTransition, shouldUseMobileRouteTransitions } from '@/lib/viewTransitions';
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
-import { clearProjectReturnState, navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
+import { navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 import { toast } from 'sonner';
 import { ContactMethods } from '@/components/home/ContactMethods';
 import {
@@ -514,8 +514,8 @@ function AboutSection() {
     };
   }, [fallbackDays]);
 
-  const weeklyValueLabel = momentumStatus === 'loading' ? '...' : weeklyCommits.toString();
-  const streakValueLabel = momentumStatus === 'loading' ? '...' : `${streakDays}${t('momentum.daySuffix')}`;
+  const weeklyValueLabel = momentumStatus === 'loading' ? '…' : weeklyCommits.toString();
+  const streakValueLabel = momentumStatus === 'loading' ? '…' : `${streakDays}${t('momentum.daySuffix')}`;
   const updatedDateLabel = lastUpdatedAt
     ? new Intl.DateTimeFormat(locale, { month: '2-digit', day: '2-digit' }).format(new Date(lastUpdatedAt))
     : '--';
@@ -1233,7 +1233,7 @@ function ActiveProjectsSection({
         <div className="md:hidden space-y-3">
           {activeProjects.length === 0 ? (
             <div className="bento-card">
-              <p className="text-sm text-muted-foreground">{isLoading ? text('loading', 'Loading...') : text('empty', 'No active projects yet.')}</p>
+              <p className="text-sm text-muted-foreground">{isLoading ? text('loading', 'Loading…') : text('empty', 'No active projects yet.')}</p>
             </div>
           ) : (
             <>
@@ -1396,7 +1396,7 @@ function ActiveProjectsSection({
 
           {activeProjects.length === 0 && (
             <div className="px-6 py-6">
-              <p className="text-sm text-muted-foreground">{isLoading ? text('loading', 'Loading...') : text('empty', 'No active projects yet.')}</p>
+              <p className="text-sm text-muted-foreground">{isLoading ? text('loading', 'Loading…') : text('empty', 'No active projects yet.')}</p>
             </div>
           )}
         </div>

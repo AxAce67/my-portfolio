@@ -85,7 +85,7 @@
         "createdAt": "Created",
         "updatedAt": "Updated",
         "noPublishedProjects": "Coming soon. Thanks for your patience.",
-        "loading": "Loading..."
+        "loading": "Loading…"
     },
     "Contact": {
         "sectionTitle": "> send_message",
@@ -103,10 +103,10 @@
         "subject": "Subject",
         "subjectPlaceholder": "What is this about?",
         "message": "Message",
-        "messagePlaceholder": "Type your message here...",
+        "messagePlaceholder": "Type your message here…",
         "preview": "Review Message",
-        "verifying": "Verifying...",
-        "sending": "Sending...",
+        "verifying": "Verifying…",
+        "sending": "Sending…",
         "previewTitle": "Review your message",
         "previewDescription": "Please confirm the details before sending.",
         "backToEdit": "Back to edit",
@@ -161,7 +161,7 @@
             "newProject": "New Project",
             "listTitle": "Projects",
             "empty": "No projects yet.",
-            "searchPlaceholder": "Search projects...",
+            "searchPlaceholder": "Search projects…",
             "filterAll": "All statuses",
             "noResults": "No matching projects."
         },
@@ -295,7 +295,7 @@
                 "completed": "Completed",
                 "on_hold": "On Hold"
             },
-            "saving": "Saving...",
+            "saving": "Saving…",
             "unsavedWarning": "You have unsaved changes. Leave anyway?",
             "draftRestoredTitle": "Unsaved draft found",
             "draftRestoredDescription": "We found a draft you didn't finish. Restore it?",
@@ -357,14 +357,14 @@
         "stageDevelopment": "Development",
         "stageTesting": "Testing",
         "stageCompleted": "Completed",
-        "loading": "Loading..."
+        "loading": "Loading…"
     },
     "ProjectList": {
         "backToTop": "← Back to Projects",
         "heading": "Projects Archive",
         "description": "A full list of published projects.",
         "searchLabel": "Search",
-        "searchPlaceholder": "Search by title, description, or tag...",
+        "searchPlaceholder": "Search by title, description, or tag…",
         "createdAt": "Created",
         "updatedAt": "Updated",
         "empty": "Coming soon. Thanks for your patience.",
@@ -451,7 +451,7 @@
         "categoryInfra": "Infra",
         "specsLabel": "Specs",
         "osLabel": "OS",
-        "ipLabel": "IP",
+        "ipLabel": "TAILNET IP",
         "lastSeenLabel": "Last seen"
     },
     "MutualLinks": {

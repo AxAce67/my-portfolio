@@ -144,6 +144,8 @@ export async function createProject(input: ProjectInput): Promise<string> {
 }
 
 export async function updateProject(id: string, input: ProjectInput): Promise<void> {
+  let orphanedFileIds: string[] = [];
+
   try {
     const existing = await tablesDB.getRow<ProjectRow>({ databaseId: DATABASE_ID, tableId: PROJECTS_TABLE_ID, rowId: id });
 
@@ -164,10 +166,9 @@ export async function updateProject(id: string, input: ProjectInput): Promise<vo
 
     // Anything referenced before the edit but not after — a removed inline
     // image, or the thumbnail being replaced — is now an orphan.
-    const orphanedFileIds = Array.from(oldFileIds).filter((fileId) => !newFileIds.has(fileId));
-    await Promise.all(orphanedFileIds.map((fileId) => storage.deleteFile({ bucketId: ASSETS_BUCKET_ID, fileId }).catch(() => {})));
+    orphanedFileIds = Array.from(oldFileIds).filter((fileId) => !newFileIds.has(fileId));
   } catch {
-    // Best-effort cleanup — a failure here shouldn't block saving the edit.
+    // Saving can continue even when the old row cannot be inspected.
   }
 
   await tablesDB.updateRow({
@@ -176,6 +177,15 @@ export async function updateProject(id: string, input: ProjectInput): Promise<vo
     rowId: id,
     data: projectInputToData(input),
   });
+
+  // Delete files only after the row update succeeds. Deleting them first
+  // could leave the published row pointing at missing assets when saving
+  // fails midway through.
+  await Promise.all(
+    orphanedFileIds.map((fileId) =>
+      storage.deleteFile({ bucketId: ASSETS_BUCKET_ID, fileId }).catch(() => {})
+    )
+  );
 }
 
 function extractFileIdFromUrl(url: string): string | null {
@@ -215,13 +225,14 @@ async function deleteProjectAssets(row: ProjectRow): Promise<void> {
 }
 
 export async function deleteProject(id: string): Promise<void> {
+  let row: ProjectRow | null = null;
   try {
-    const row = await tablesDB.getRow<ProjectRow>({ databaseId: DATABASE_ID, tableId: PROJECTS_TABLE_ID, rowId: id });
-    await deleteProjectAssets(row);
+    row = await tablesDB.getRow<ProjectRow>({ databaseId: DATABASE_ID, tableId: PROJECTS_TABLE_ID, rowId: id });
   } catch {
-    // Best-effort cleanup — still delete the row even if asset cleanup fails.
+    // Still attempt the row deletion when the existing row cannot be read.
   }
   await tablesDB.deleteRow({ databaseId: DATABASE_ID, tableId: PROJECTS_TABLE_ID, rowId: id });
+  if (row) await deleteProjectAssets(row);
 }
 
 function toActiveProject(row: ActiveProjectRow): AdminActiveProject {
@@ -277,18 +288,18 @@ export async function getAdminSiteSettings(): Promise<{ avatarUrl: string | null
 }
 
 export async function updateSiteAvatar(avatarUrl: string): Promise<void> {
+  let oldFileId: string | null = null;
   try {
     const existing = await tablesDB.getRow<Models.Row & { avatar_url: string | null }>({
       databaseId: DATABASE_ID,
       tableId: SITE_SETTINGS_TABLE_ID,
       rowId: 'main',
     });
-    if (existing.avatar_url) {
-      const oldFileId = extractFileIdFromUrl(existing.avatar_url);
-      if (oldFileId) await storage.deleteFile({ bucketId: ASSETS_BUCKET_ID, fileId: oldFileId }).catch(() => {});
+    if (existing.avatar_url && existing.avatar_url !== avatarUrl) {
+      oldFileId = extractFileIdFromUrl(existing.avatar_url);
     }
   } catch {
-    // Best-effort cleanup — a failure here shouldn't block saving the edit.
+    // Saving can continue even when the old setting cannot be inspected.
   }
 
   await tablesDB.updateRow({
@@ -297,6 +308,9 @@ export async function updateSiteAvatar(avatarUrl: string): Promise<void> {
     rowId: 'main',
     data: { avatar_url: avatarUrl },
   });
+  if (oldFileId) {
+    await storage.deleteFile({ bucketId: ASSETS_BUCKET_ID, fileId: oldFileId }).catch(() => {});
+  }
 }
 
 type MutualLinkRow = Models.Row & {
@@ -355,15 +369,15 @@ export async function createMutualLink(input: MutualLinkInput): Promise<string> 
 }
 
 export async function updateMutualLink(id: string, input: MutualLinkInput): Promise<void> {
+  let oldFileId: string | null = null;
   if (input.banner_url !== undefined) {
     try {
       const existing = await tablesDB.getRow<MutualLinkRow>({ databaseId: DATABASE_ID, tableId: MUTUAL_LINKS_TABLE_ID, rowId: id });
       if (existing.banner_url && existing.banner_url !== input.banner_url) {
-        const oldFileId = extractFileIdFromUrl(existing.banner_url);
-        if (oldFileId) await storage.deleteFile({ bucketId: ASSETS_BUCKET_ID, fileId: oldFileId }).catch(() => {});
+        oldFileId = extractFileIdFromUrl(existing.banner_url);
       }
     } catch {
-      // Best-effort cleanup — a failure here shouldn't block saving the edit.
+      // Saving can continue even when the old row cannot be inspected.
     }
   }
 
@@ -373,17 +387,23 @@ export async function updateMutualLink(id: string, input: MutualLinkInput): Prom
     rowId: id,
     data: input,
   });
+  if (oldFileId) {
+    await storage.deleteFile({ bucketId: ASSETS_BUCKET_ID, fileId: oldFileId }).catch(() => {});
+  }
 }
 
 export async function deleteMutualLink(id: string): Promise<void> {
+  let fileId: string | null = null;
   try {
     const row = await tablesDB.getRow<MutualLinkRow>({ databaseId: DATABASE_ID, tableId: MUTUAL_LINKS_TABLE_ID, rowId: id });
     if (row.banner_url) {
-      const fileId = extractFileIdFromUrl(row.banner_url);
-      if (fileId) await storage.deleteFile({ bucketId: ASSETS_BUCKET_ID, fileId }).catch(() => {});
+      fileId = extractFileIdFromUrl(row.banner_url);
     }
   } catch {
-    // Best-effort cleanup — still delete the row even if asset cleanup fails.
+    // Still attempt the row deletion when the existing row cannot be read.
   }
   await tablesDB.deleteRow({ databaseId: DATABASE_ID, tableId: MUTUAL_LINKS_TABLE_ID, rowId: id });
+  if (fileId) {
+    await storage.deleteFile({ bucketId: ASSETS_BUCKET_ID, fileId }).catch(() => {});
+  }
 }

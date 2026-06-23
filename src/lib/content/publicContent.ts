@@ -144,7 +144,7 @@ async function getCachedProjectDetail(id: string): Promise<ProjectRow | null> {
       tableId: PROJECTS_TABLE_ID,
       rowId: id,
     });
-    return row.is_published ? row : null;
+    return row.is_published && row.status === 'completed' ? row : null;
   } catch (error) {
     const code = (error as { code?: number })?.code;
     if (code === 404 || code === 400) return null;
