@@ -90,6 +90,11 @@
         "sectionTitle": "> send_message",
         "heading": "Contact",
         "description": "如有問題、委託或回饋，歡迎隨時聯絡。",
+        "optional": "選填",
+        "formLabel": "Form",
+        "formContact": "透過表單傳送",
+        "emailUnavailable": "準備中",
+        "discordCopied": "已複製 Discord 使用者名稱",
         "name": "姓名",
         "namePlaceholder": "你的名字",
         "email": "電子郵件",
@@ -312,6 +317,7 @@
             "empty": "尚無友情連結。",
             "fields": {
                 "banner": "橫幅圖片",
+                "bannerHint": "3:1 比例（最低300×100px，建議600×200px）",
                 "name": "名稱",
                 "namePlaceholder": "網站名稱",
                 "url": "URL",
@@ -449,7 +455,8 @@
     "MutualLinks": {
         "heading": "Mutual Links",
         "subtitle": "互相交換連結的朋友與網站",
-        "empty": "目前開放友情連結申請，歡迎透過 X (@real_Aki) 或 Discord (@xaki67) 聯繫我！",
+        "ctaTitle": "友情連結申請開放中",
+        "empty": "如希望交換連結，歡迎透過 X、Discord 或聯絡表單與我聯繫！",
         "visitSite": "訪問網站",
         "discordCopied": "已複製 Discord 使用者名稱"
     }

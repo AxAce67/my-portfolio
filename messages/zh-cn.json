@@ -90,6 +90,11 @@
         "sectionTitle": "> send_message",
         "heading": "Contact",
         "description": "如有问题、委托或反馈，欢迎随时联系。",
+        "optional": "选填",
+        "formLabel": "Form",
+        "formContact": "通过表单发送",
+        "emailUnavailable": "准备中",
+        "discordCopied": "已复制 Discord 用户名",
         "name": "姓名",
         "namePlaceholder": "你的名字",
         "email": "邮箱",
@@ -312,6 +317,7 @@
             "empty": "暂无友情链接。",
             "fields": {
                 "banner": "横幅图片",
+                "bannerHint": "3:1 比例（最低300×100px，推荐600×200px）",
                 "name": "名称",
                 "namePlaceholder": "网站名称",
                 "url": "URL",
@@ -449,7 +455,8 @@
     "MutualLinks": {
         "heading": "Mutual Links",
         "subtitle": "互相交换链接的朋友和网站",
-        "empty": "目前开放友情链接申请，欢迎通过 X (@real_Aki) 或 Discord (@xaki67) 联系我！",
+        "ctaTitle": "友情链接申请开放中",
+        "empty": "如希望交换链接，欢迎通过 X、Discord 或联系表单与我联系！",
         "visitSite": "访问网站",
         "discordCopied": "已复制 Discord 用户名"
     }

@@ -90,6 +90,11 @@
         "sectionTitle": "> send_message",
         "heading": "Contact",
         "description": "Perguntas, propostas ou feedback: fique à vontade para entrar em contato.",
+        "optional": "Opcional",
+        "formLabel": "Form",
+        "formContact": "Enviar pelo formulário",
+        "emailUnavailable": "Em breve",
+        "discordCopied": "Nome de usuário do Discord copiado",
         "name": "Nome",
         "namePlaceholder": "Seu nome",
         "email": "E-mail",
@@ -312,6 +317,7 @@
             "empty": "Ainda não há links mútuos.",
             "fields": {
                 "banner": "Banner",
+                "bannerHint": "Proporção 3:1 (mínimo 300×100px, recomendado 600×200px)",
                 "name": "Nome",
                 "namePlaceholder": "Nome do site",
                 "url": "URL",
@@ -449,7 +455,8 @@
     "MutualLinks": {
         "heading": "Mutual Links",
         "subtitle": "Amigos e sites com quem troco links",
-        "empty": "Atualmente aberto a trocas de link — entre em contato pelo X (@real_Aki) ou Discord (@xaki67)!",
+        "ctaTitle": "Troca de links aberta",
+        "empty": "Quer trocar links? Entre em contato pelo X, Discord ou formulário.",
         "visitSite": "Visitar site",
         "discordCopied": "Nome de usuário do Discord copiado"
     }

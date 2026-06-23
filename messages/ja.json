@@ -90,6 +90,11 @@
         "sectionTitle": "> send_message",
         "heading": "Contact",
         "description": "ご質問・ご依頼・フィードバック等、お気軽にどうぞ！",
+        "optional": "任意",
+        "formLabel": "Form",
+        "formContact": "フォームで送る",
+        "emailUnavailable": "準備中",
+        "discordCopied": "Discordユーザー名をコピーしました",
         "name": "名前",
         "namePlaceholder": "お名前",
         "email": "メールアドレス",
@@ -312,6 +317,7 @@
             "empty": "まだ相互リンクがありません。",
             "fields": {
                 "banner": "バナー画像",
+                "bannerHint": "3:1（最低300×100px・推奨600×200px）",
                 "name": "名前",
                 "namePlaceholder": "サイト名",
                 "url": "URL",
@@ -449,7 +455,8 @@
     "MutualLinks": {
         "heading": "Mutual Links",
         "subtitle": "相互リンクしているサイトの紹介",
-        "empty": "現在、相互リンクを募集中です。 X (@real_Aki) か Discord (@xaki67) まで気軽にご連絡ください！",
+        "ctaTitle": "相互リンクを募集中です",
+        "empty": "掲載をご希望の方は、X・Discord・お問い合わせフォームから気軽にご連絡ください！",
         "visitSite": "サイトを見る",
         "discordCopied": "Discordユーザー名をコピーしました"
     }

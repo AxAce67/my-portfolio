@@ -17,6 +17,7 @@ import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, s
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
 import { clearProjectReturnState, navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 import { toast } from 'sonner';
+import { ContactMethods } from '@/components/home/ContactMethods';
 import {
   SiTypescript,
   SiJavascript,
@@ -85,7 +86,16 @@ const sampleSkills: SkillItem[] = [
   { name: 'Canva', category: 'Creative', icon: SiCanva, level: 'familiar' },
 ];
 
-const profileLinks = [
+type ProfileLink = {
+  id: string;
+  label: string;
+  href: string;
+  icon: ReactNode;
+  disabled?: boolean;
+  copyText?: string;
+};
+
+const profileLinks: ProfileLink[] = [
   {
     id: 'github',
     label: 'GitHub',
@@ -97,6 +107,13 @@ const profileLinks = [
     label: 'X',
     href: 'https://x.com/real_Aki',
     icon: <Twitter className="w-4 h-4" strokeWidth={1.5} />,
+  },
+  {
+    id: 'discord',
+    label: 'Discord',
+    href: '',
+    copyText: '@xaki67',
+    icon: <SiDiscord className="w-4 h-4" />,
   },
   {
     id: 'email',
@@ -403,6 +420,7 @@ function MomentumLineChart({
 
 function AboutSection() {
   const t = useTranslations('About');
+  const contactT = useTranslations('Contact');
   const locale = useLocale();
   const focusAreas = ['productThinking', 'rapidPrototyping', 'uiUxDesign', 'problemSolving', 'research', 'continuousImprovement'] as const;
   const stats: AboutStatItem[] = [
@@ -523,7 +541,7 @@ function AboutSection() {
                   <p className="text-[11px] text-muted-foreground font-mono tracking-wide uppercase">{t('role')}</p>
                 </div>
               </div>
-              <div className="grid grid-cols-1 min-[360px]:grid-cols-3 gap-1.5">
+              <div className="grid grid-cols-2 gap-1.5">
                 {profileLinks.map((link) =>
                   link.disabled ? (
                     <span
@@ -534,6 +552,16 @@ function AboutSection() {
                       <span>{link.icon}</span>
                       <span className="text-[12px] font-mono tracking-wide">{link.label}</span>
                     </span>
+                  ) : link.copyText ? (
+                    <button
+                      key={link.id}
+                      type="button"
+                      onClick={() => navigator.clipboard.writeText(link.copyText!).then(() => toast.success(contactT('discordCopied')))}
+                      className="flex items-center justify-center gap-1.5 px-2 py-2 rounded-md border border-border text-foreground/90 hover:text-foreground hover:border-border-hover transition-colors"
+                    >
+                      <span>{link.icon}</span>
+                      <span className="text-[12px] font-mono tracking-wide">{link.label}</span>
+                    </button>
                   ) : (
                     <a
                       key={link.id}
@@ -697,7 +725,7 @@ function AboutSection() {
                   <p className="text-[11px] text-muted-foreground font-mono tracking-wide uppercase">{t('role')}</p>
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-1">
+              <div className="grid grid-cols-2 gap-1">
                 {profileLinks.map((link) =>
                   link.disabled ? (
                     <span
@@ -708,6 +736,16 @@ function AboutSection() {
                       <span>{link.icon}</span>
                       <span className="text-xs font-mono tracking-wide">{link.label}</span>
                     </span>
+                  ) : link.copyText ? (
+                    <button
+                      key={link.id}
+                      type="button"
+                      onClick={() => navigator.clipboard.writeText(link.copyText!).then(() => toast.success(contactT('discordCopied')))}
+                      className="flex items-center gap-2 px-3 py-1 rounded-lg border border-border hover:border-border-hover text-foreground/90 hover:text-foreground transition-colors"
+                    >
+                      <span>{link.icon}</span>
+                      <span className="text-xs font-mono tracking-wide">{link.label}</span>
+                    </button>
                   ) : (
                     <a
                       key={link.id}
@@ -1356,67 +1394,60 @@ function MutualLinksSection() {
           <p className="text-xs sm:text-sm text-muted-foreground mb-8 sm:mb-12">{t('subtitle')}</p>
         </ScrollReveal>
 
-        {links.length === 0 ? (
-          <ScrollReveal delay={0.15}>
-            <div className="bento-card flex flex-col items-center justify-center text-center py-12 px-6 gap-4">
-              <p className="text-sm text-muted-foreground max-w-md">{t('empty')}</p>
-              <div className="flex flex-wrap items-center justify-center gap-2">
-                <a
-                  href="https://x.com/real_Aki"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-outline px-4 py-2 text-xs inline-flex items-center gap-1.5"
-                >
-                  <Twitter className="w-3.5 h-3.5" strokeWidth={1.5} />
-                  @real_Aki
-                </a>
-                <button
-                  type="button"
-                  onClick={() => {
-                    navigator.clipboard.writeText('@xaki67').then(() => toast.success(t('discordCopied')));
-                  }}
-                  className="btn-outline px-4 py-2 text-xs inline-flex items-center gap-1.5"
-                >
-                  <SiDiscord className="w-3.5 h-3.5" />
-                  @xaki67
-                </button>
-              </div>
-            </div>
-          </ScrollReveal>
-        ) : (
-          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6" staggerDelay={0.06}>
+        {links.length > 0 ? (
+          <StaggerContainer className="grid grid-cols-1 min-[520px]:grid-cols-2 lg:grid-cols-3 gap-3" staggerDelay={0.06}>
             {links.map((link) => (
-              <StaggerItem key={link.id}>
+              <StaggerItem key={link.id} className="h-full">
                 <a
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block bento-card group cursor-pointer h-full overflow-hidden"
+                  className="group block h-full overflow-hidden rounded-xl border border-border bg-card/65 transition-[border-color,background-color,transform] duration-300 hover:-translate-y-0.5 hover:border-border-hover hover:bg-card"
                 >
-                  <div className="flex flex-col h-full">
-                    <div className="bg-muted overflow-hidden relative aspect-[2/1] rounded-t-xl -m-px mb-0">
-                      {link.banner_url ? (
-                        <img src={link.banner_url} alt={link.name} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                  <div className="relative aspect-[3/1] w-full overflow-hidden border-b border-border bg-muted">
+                    {link.banner_url ? (
+                      <img
+                        src={link.banner_url}
+                        alt=""
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.015]"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center px-4 text-center font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                        {link.name}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex min-h-[88px] items-start gap-3 p-3.5">
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-semibold tracking-tight">{link.name}</p>
+                      {link.description ? (
+                        <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted-foreground">{link.description}</p>
                       ) : (
-                        <div className="absolute inset-0 flex items-center justify-center text-muted-foreground font-mono text-xs uppercase">
-                          {link.name}
-                        </div>
+                        <p className="mt-1 text-[11px] font-mono text-muted-foreground">{t('visitSite')}</p>
                       )}
                     </div>
-                    <div className="p-4 flex flex-col flex-1">
-                      <p className="text-sm font-semibold truncate">{link.name}</p>
-                      {link.description && <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{link.description}</p>}
-                      <p className="text-xs font-mono text-foreground mt-3 inline-flex items-center gap-1 group-hover:gap-1.5 transition-[gap]">
-                        {t('visitSite')}
-                        <ArrowUpRight className="w-3.5 h-3.5" strokeWidth={2} />
-                      </p>
-                    </div>
+                    <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors group-hover:border-border-hover group-hover:text-foreground">
+                      <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" strokeWidth={1.7} />
+                    </span>
                   </div>
                 </a>
               </StaggerItem>
             ))}
           </StaggerContainer>
-        )}
+        ) : null}
+
+        <ScrollReveal delay={links.length > 0 ? 0.22 : 0.15}>
+          <div className={`bento-card bento-card--static p-4 sm:p-5 ${links.length > 0 ? 'mt-5' : ''}`}>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="max-w-md">
+                <p className="text-sm font-semibold">{t('ctaTitle')}</p>
+                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{t('empty')}</p>
+              </div>
+              <ContactMethods className="w-full sm:w-auto sm:min-w-[460px]" />
+            </div>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

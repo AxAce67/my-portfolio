@@ -3,16 +3,20 @@
 import { useTranslations } from '@/hooks/useTranslations';
 import Image from '@/components/ui/Image';
 import { Github, Twitter, Mail } from 'lucide-react';
+import { SiDiscord } from '@icons-pack/react-simple-icons';
 import { FadeLink } from '@/components/ui/FadeLink';
+import { toast } from 'sonner';
 
 const socialLinks = [
     { icon: Github, href: 'https://github.com/AxAce67', label: 'GitHub' },
     { icon: Twitter, href: 'https://x.com/real_Aki', label: 'X' },
+    { icon: SiDiscord, href: '', label: 'Discord', copyText: '@xaki67' },
     { icon: Mail, href: '', label: 'Email', disabled: true },
 ];
 
 export function Footer() {
     const t = useTranslations('Footer');
+    const contactT = useTranslations('Contact');
     const year = new Date().getFullYear();
 
     return (
@@ -21,7 +25,7 @@ export function Footer() {
                 
                 {/* 1. Social Icons */}
                 <div className="flex items-center gap-8">
-                    {socialLinks.map(({ icon: Icon, href, label, disabled }) =>
+                    {socialLinks.map(({ icon: Icon, href, label, disabled, copyText }) =>
                         disabled ? (
                             <span
                                 key={label}
@@ -31,6 +35,16 @@ export function Footer() {
                             >
                                 <Icon className="w-5 h-5" strokeWidth={1.5} />
                             </span>
+                        ) : copyText ? (
+                            <button
+                                key={label}
+                                type="button"
+                                onClick={() => navigator.clipboard.writeText(copyText).then(() => toast.success(contactT('discordCopied')))}
+                                className="text-muted-foreground/60 hover:text-foreground transition-all duration-300 hover:-translate-y-0.5"
+                                aria-label={`${label} @xaki67`}
+                            >
+                                <Icon className="w-5 h-5" />
+                            </button>
                         ) : (
                             <a
                                 key={label}

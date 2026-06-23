@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { CheckCircle2, Send } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
+import { ContactMethods } from '@/components/home/ContactMethods';
 
 const SUCCESS_MODAL_MS = 5000;
 const FOCUSABLE_SELECTOR = [
@@ -261,7 +262,9 @@ export default function ContactSection() {
           <p className="text-sm text-muted-foreground mb-8 sm:mb-12">{t('description')}</p>
         </ScrollReveal>
 
-        <div className="bento-card bento-card--static p-5 sm:p-8">
+        <ContactMethods className="mb-3" thirdMethod="email" />
+
+        <div id="contact-form" className="bento-card bento-card--static scroll-mt-24 p-5 sm:p-8">
           <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
             <input
               type="text"

@@ -33,7 +33,7 @@ import { uploadImage, UploadValidationError } from '@/lib/appwrite/upload';
 import ThumbnailCropModal from './ThumbnailCropModal';
 
 const modalBaseClass = 'fixed inset-0 z-[2147483647] bg-black/45 backdrop-blur-sm flex items-center justify-center p-4';
-const BANNER_ASPECT = 2 / 1;
+const BANNER_ASPECT = 3 / 1;
 
 type MutualLinkRowContentProps = {
   link: AdminMutualLink;
@@ -59,9 +59,9 @@ function MutualLinkRowContent({ link, dragHandleLabel, editLabel, deleteLabel, d
         <GripVertical className="w-4 h-4" />
       </button>
       {link.banner_url ? (
-        <img src={link.banner_url} alt="" className="w-16 h-8 rounded object-cover border border-border flex-shrink-0" />
+        <img src={link.banner_url} alt="" className="w-[72px] h-6 rounded object-cover border border-border flex-shrink-0" />
       ) : (
-        <div className="w-16 h-8 rounded border border-border bg-muted flex items-center justify-center flex-shrink-0">
+        <div className="w-[72px] h-6 rounded border border-border bg-muted flex items-center justify-center flex-shrink-0">
           <ImageOff className="w-3.5 h-3.5 text-muted-foreground" />
         </div>
       )}
@@ -119,7 +119,7 @@ type BannerPickerProps = {
 
 function BannerPicker({ label, bannerUrl, onPick }: BannerPickerProps) {
   return (
-    <label className="group relative block w-full h-24 cursor-pointer rounded-lg overflow-hidden border border-border bg-muted">
+    <label className="group relative block w-full aspect-[3/1] cursor-pointer rounded-lg overflow-hidden border border-border bg-muted">
       {bannerUrl ? (
         <img src={bannerUrl} alt="" className="w-full h-full object-cover" />
       ) : (
@@ -364,6 +364,7 @@ export default function MutualLinksManager() {
                   <div>
                     <label className="block text-[11px] font-mono text-muted-foreground mb-1 uppercase tracking-wider">{t('fields.banner')}</label>
                     <BannerPicker label={t('fields.banner')} bannerUrl={pendingBannerUrl} onPick={handleBannerPick} />
+                    <p className="mt-1.5 text-[11px] text-muted-foreground">{t('fields.bannerHint')}</p>
                   </div>
                   <div>
                     <label className="block text-[11px] font-mono text-muted-foreground mb-1 uppercase tracking-wider">{t('fields.name')}</label>
@@ -401,6 +402,7 @@ export default function MutualLinksManager() {
                   <div>
                     <label className="block text-[11px] font-mono text-muted-foreground mb-1 uppercase tracking-wider">{t('fields.banner')}</label>
                     <BannerPicker label={t('fields.banner')} bannerUrl={pendingBannerUrl ?? editingLink.banner_url} onPick={handleBannerPick} />
+                    <p className="mt-1.5 text-[11px] text-muted-foreground">{t('fields.bannerHint')}</p>
                   </div>
                   <div>
                     <label className="block text-[11px] font-mono text-muted-foreground mb-1 uppercase tracking-wider">{t('fields.name')}</label>

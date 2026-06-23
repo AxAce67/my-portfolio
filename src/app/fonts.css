@@ -1,0 +1,88 @@
+/*
+ * Fontsource's Geist CSS does not declare a unicode-range. Geist includes a
+ * handful of CJK punctuation glyphs but no Japanese letters, so without this
+ * restriction text such as "です。もう" mixes Noto Sans JP letters with a
+ * narrow Geist full stop. Keep Geist for Latin text while letting every CJK
+ * character, including punctuation, fall through to Noto Sans JP.
+ */
+
+@font-face {
+  font-family: 'Geist Sans Latin';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300;
+  src: url('@fontsource/geist-sans/files/geist-sans-latin-300-normal.woff2') format('woff2');
+  unicode-range: U+0000-024f, U+1e00-1eff, U+2000-206f, U+20ac, U+2122, U+2190-22ff, U+feff, U+fffd;
+}
+
+@font-face {
+  font-family: 'Geist Sans Latin';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('@fontsource/geist-sans/files/geist-sans-latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0000-024f, U+1e00-1eff, U+2000-206f, U+20ac, U+2122, U+2190-22ff, U+feff, U+fffd;
+}
+
+@font-face {
+  font-family: 'Geist Sans Latin';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url('@fontsource/geist-sans/files/geist-sans-latin-500-normal.woff2') format('woff2');
+  unicode-range: U+0000-024f, U+1e00-1eff, U+2000-206f, U+20ac, U+2122, U+2190-22ff, U+feff, U+fffd;
+}
+
+@font-face {
+  font-family: 'Geist Sans Latin';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('@fontsource/geist-sans/files/geist-sans-latin-600-normal.woff2') format('woff2');
+  unicode-range: U+0000-024f, U+1e00-1eff, U+2000-206f, U+20ac, U+2122, U+2190-22ff, U+feff, U+fffd;
+}
+
+@font-face {
+  font-family: 'Geist Sans Latin';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url('@fontsource/geist-sans/files/geist-sans-latin-700-normal.woff2') format('woff2');
+  unicode-range: U+0000-024f, U+1e00-1eff, U+2000-206f, U+20ac, U+2122, U+2190-22ff, U+feff, U+fffd;
+}
+
+@font-face {
+  font-family: 'Geist Sans Latin';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 900;
+  src: url('@fontsource/geist-sans/files/geist-sans-latin-900-normal.woff2') format('woff2');
+  unicode-range: U+0000-024f, U+1e00-1eff, U+2000-206f, U+20ac, U+2122, U+2190-22ff, U+feff, U+fffd;
+}
+
+@font-face {
+  font-family: 'Geist Mono Latin';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('@fontsource/geist-mono/files/geist-mono-latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0000-024f, U+1e00-1eff, U+2000-206f, U+20ac, U+2122, U+2190-22ff, U+feff, U+fffd;
+}
+
+@font-face {
+  font-family: 'Geist Mono Latin';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url('@fontsource/geist-mono/files/geist-mono-latin-500-normal.woff2') format('woff2');
+  unicode-range: U+0000-024f, U+1e00-1eff, U+2000-206f, U+20ac, U+2122, U+2190-22ff, U+feff, U+fffd;
+}
+
+@font-face {
+  font-family: 'Geist Mono Latin';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url('@fontsource/geist-mono/files/geist-mono-latin-700-normal.woff2') format('woff2');
+  unicode-range: U+0000-024f, U+1e00-1eff, U+2000-206f, U+20ac, U+2122, U+2190-22ff, U+feff, U+fffd;
+}

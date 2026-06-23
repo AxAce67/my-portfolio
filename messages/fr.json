@@ -90,6 +90,11 @@
         "sectionTitle": "> send_message",
         "heading": "Contact",
         "description": "Questions, demandes ou retours : n'hésitez pas à me contacter.",
+        "optional": "Facultatif",
+        "formLabel": "Form",
+        "formContact": "Envoyer via le formulaire",
+        "emailUnavailable": "Bientôt disponible",
+        "discordCopied": "Nom d'utilisateur Discord copié",
         "name": "Nom",
         "namePlaceholder": "Votre nom",
         "email": "E-mail",
@@ -312,6 +317,7 @@
             "empty": "Aucun lien mutuel pour le moment.",
             "fields": {
                 "banner": "Bannière",
+                "bannerHint": "Format 3:1 (300×100px minimum, 600×200px recommandé)",
                 "name": "Nom",
                 "namePlaceholder": "Nom du site",
                 "url": "URL",
@@ -449,7 +455,8 @@
     "MutualLinks": {
         "heading": "Mutual Links",
         "subtitle": "Amis et sites avec qui j'échange des liens",
-        "empty": "Actuellement ouvert aux échanges de liens — contactez-moi sur X (@real_Aki) ou Discord (@xaki67) !",
+        "ctaTitle": "Échanges de liens ouverts",
+        "empty": "Vous souhaitez échanger des liens ? Contactez-moi via X, Discord ou le formulaire.",
         "visitSite": "Visiter le site",
         "discordCopied": "Nom d'utilisateur Discord copié"
     }

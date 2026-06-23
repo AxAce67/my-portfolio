@@ -90,6 +90,11 @@
         "sectionTitle": "> send_message",
         "heading": "Contact",
         "description": "질문, 의뢰, 피드백이 있다면 편하게 연락해 주세요.",
+        "optional": "선택",
+        "formLabel": "Form",
+        "formContact": "폼으로 보내기",
+        "emailUnavailable": "준비 중",
+        "discordCopied": "Discord 사용자 이름을 복사했습니다",
         "name": "이름",
         "namePlaceholder": "이름",
         "email": "이메일",
@@ -312,6 +317,7 @@
             "empty": "아직 상호 링크가 없습니다.",
             "fields": {
                 "banner": "배너 이미지",
+                "bannerHint": "3:1 비율 (최소 300×100px, 권장 600×200px)",
                 "name": "이름",
                 "namePlaceholder": "사이트 이름",
                 "url": "URL",
@@ -449,7 +455,8 @@
     "MutualLinks": {
         "heading": "Mutual Links",
         "subtitle": "서로 링크를 주고받는 친구들의 사이트",
-        "empty": "현재 상호 링크를 모집 중입니다. X (@real_Aki) 또는 Discord (@xaki67)로 편하게 연락해 주세요!",
+        "ctaTitle": "상호 링크를 모집 중입니다",
+        "empty": "게재를 원하시면 X, Discord 또는 문의 양식으로 편하게 연락해 주세요!",
         "visitSite": "사이트 방문",
         "discordCopied": "Discord 사용자 이름을 복사했습니다"
     }
