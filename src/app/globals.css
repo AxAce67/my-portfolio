@@ -102,6 +102,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Small uniform letter-spacing for Japanese text — standard practice on JP
+   sites, and it gives punctuation like "。"/"！" visible breathing room
+   against the next character regardless of exactly how tight any given
+   font renders that glyph's own built-in spacing at small sizes. Scoped to
+   `body` (not `:lang(ja)` on every element) so it only sets the inherited
+   baseline — anything with its own explicit tracking-* class still wins
+   outright instead of fighting this on specificity/source-order. */
+html[lang='ja'] body {
+  letter-spacing: 0.04em;
+}
+
 section[id] {
   scroll-margin-top: 5.5rem;
 }

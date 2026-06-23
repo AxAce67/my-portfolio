@@ -32,6 +32,9 @@ function LocaleWrapper({ children }: { children: React.ReactNode }) {
     if (i18n.language !== locale) {
       i18n.changeLanguage(locale);
     }
+    // index.html hardcodes lang="ja" — keep it in sync with the actual
+    // locale so :lang(ja) CSS (and screen readers/SEO) reflect reality.
+    document.documentElement.lang = locale;
   }, [locale, i18n]);
 
   return <>{children}</>;
