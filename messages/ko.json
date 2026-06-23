@@ -447,7 +447,7 @@
         "lastSeenLabel": "마지막 확인"
     },
     "MutualLinks": {
-        "heading": "상호 링크",
+        "heading": "Mutual Links",
         "subtitle": "서로 링크를 주고받는 친구들의 사이트",
         "empty": "현재 상호 링크를 모집 중입니다. 편하게 연락해 주세요.",
         "emptyCta": "연락하기",

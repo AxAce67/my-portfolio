@@ -447,9 +447,9 @@
         "lastSeenLabel": "最終確認"
     },
     "MutualLinks": {
-        "heading": "相互リンク",
-        "subtitle": "仲良くしてくれているサイトの皆さん",
-        "empty": "現在、相互リンクを募集中です。気軽にご連絡ください。",
+        "heading": "Mutual Links",
+        "subtitle": "相互リンクしているサイトの紹介",
+        "empty": "現在、相互リンクを募集中です。 気軽にご連絡ください。",
         "emptyCta": "連絡する",
         "visitSite": "サイトを見る"
     }
