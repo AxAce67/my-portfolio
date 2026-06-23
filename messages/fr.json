@@ -51,7 +51,7 @@
     "Skills": {
         "sectionTitle": "// skills/",
         "heading": "Skills",
-        "subtitle": "Outils et points forts du quotidien",
+        "subtitle": "Points forts et niveau de maîtrise",
         "categories": {
             "languages": "Langages",
             "stack": "Stack",
@@ -73,7 +73,7 @@
     "TechStack": {
         "sectionTitle": "// tech_stack/",
         "heading": "Tech Stack",
-        "subtitle": "Technologies et services que j'utilise régulièrement"
+        "subtitle": "La stack technique que j'utilise pour construire des produits"
     },
     "Projects": {
         "sectionTitle": "// projects/",

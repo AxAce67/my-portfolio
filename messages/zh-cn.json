@@ -51,7 +51,7 @@
     "Skills": {
         "sectionTitle": "// skills/",
         "heading": "Skills",
-        "subtitle": "日常使用的工具与优势",
+        "subtitle": "擅长的技术与熟练度",
         "categories": {
             "languages": "语言",
             "stack": "技术栈",
@@ -73,7 +73,7 @@
     "TechStack": {
         "sectionTitle": "// tech_stack/",
         "heading": "Tech Stack",
-        "subtitle": "我经常使用的技术与服务"
+        "subtitle": "用于构建产品的技术栈"
     },
     "Projects": {
         "sectionTitle": "// projects/",

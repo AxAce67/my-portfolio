@@ -51,7 +51,7 @@
     "Skills": {
         "sectionTitle": "// skills/",
         "heading": "Skills",
-        "subtitle": "日常的に使っているスキルセット",
+        "subtitle": "得意な技術と習熟度",
         "categories": {
             "languages": "言語",
             "stack": "開発基盤",
@@ -73,7 +73,7 @@
     "TechStack": {
         "sectionTitle": "// tech_stack/",
         "heading": "Tech Stack",
-        "subtitle": "日常的に利用している技術・サービス一覧"
+        "subtitle": "プロダクト開発で使用している技術スタック"
     },
     "Projects": {
         "sectionTitle": "// projects/",

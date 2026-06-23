@@ -51,7 +51,7 @@
     "Skills": {
         "sectionTitle": "// skills/",
         "heading": "Skills",
-        "subtitle": "평소 사용하는 도구와 강점",
+        "subtitle": "강점 기술과 숙련도",
         "categories": {
             "languages": "언어",
             "stack": "스택",
@@ -73,7 +73,7 @@
     "TechStack": {
         "sectionTitle": "// tech_stack/",
         "heading": "Tech Stack",
-        "subtitle": "자주 사용하는 기술과 서비스"
+        "subtitle": "제품 개발에 사용하는 기술 스택"
     },
     "Projects": {
         "sectionTitle": "// projects/",

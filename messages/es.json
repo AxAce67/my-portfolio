@@ -51,7 +51,7 @@
     "Skills": {
         "sectionTitle": "// skills/",
         "heading": "Skills",
-        "subtitle": "Herramientas y fortalezas de todos los días",
+        "subtitle": "Fortalezas y nivel de dominio",
         "categories": {
             "languages": "Lenguajes",
             "stack": "Stack",
@@ -73,7 +73,7 @@
     "TechStack": {
         "sectionTitle": "// tech_stack/",
         "heading": "Tech Stack",
-        "subtitle": "Tecnologías y servicios que uso con frecuencia"
+        "subtitle": "El stack tecnológico que uso para construir productos"
     },
     "Projects": {
         "sectionTitle": "// projects/",
