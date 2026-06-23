@@ -1428,7 +1428,7 @@ function MutualLinksSection() {
                       )}
                     </div>
                     <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors group-hover:border-border-hover group-hover:text-foreground">
-                      <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" strokeWidth={1.7} />
+                      <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.7} />
                     </span>
                   </div>
                 </a>
