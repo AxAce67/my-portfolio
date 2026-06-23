@@ -2,7 +2,7 @@
 
 import { Link, useRouter } from '@/i18n/routing';
 import { useEffect, useState } from 'react';
-import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, shouldUseMobileRouteTransitions } from '@/lib/viewTransitions';
+import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, runViewTransition, shouldUseMobileRouteTransitions } from '@/lib/viewTransitions';
 import { navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 import { ArrowLeft } from 'lucide-react';
 
@@ -49,7 +49,9 @@ export default function BackToProjectsLink({ homeHref, archiveHref, className, h
         if (canUseSharedElementTransitions()) {
           e.preventDefault();
           if (isArchive) {
-            router.push(targetHref);
+            runViewTransition(() => {
+              router.push(targetHref);
+            });
             return;
           }
 

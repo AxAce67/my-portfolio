@@ -13,7 +13,7 @@ import { Link, useRouter } from '@/i18n/routing';
 import { useRouter as useTransitionRouter } from '@/i18n/routing';
 import TechStackSectionStatic from '@/components/sections/TechStackSection';
 import { TiltCard } from '@/components/ui/TiltCard';
-import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, shouldUseMobileRouteTransitions } from '@/lib/viewTransitions';
+import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, runViewTransition, shouldUseMobileRouteTransitions } from '@/lib/viewTransitions';
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
 import { clearProjectReturnState, navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 import { toast } from 'sonner';
@@ -1066,7 +1066,9 @@ function ProjectsSection({ initialProjects, returningProjectId }: { initialProje
 
                   if (canUseSharedElementTransitions()) {
                     e.preventDefault();
-                    transitionRouter.push(`/${locale}/projects/${project.id}`);
+                    runViewTransition(() => {
+                      transitionRouter.push(`/${locale}/projects/${project.id}`);
+                    });
                   }
                 }}
                 className={`block project-card group cursor-pointer ${effectiveViewMode === 'grid' ? 'h-full' : ''}`}

@@ -8,7 +8,7 @@ import { Search } from 'lucide-react';
 import { Link, useRouter } from '@/i18n/routing';
 import { useRouter as useTransitionRouter } from '@/i18n/routing';
 import { StaggerContainer, StaggerItem } from '@/components/ui/ScrollReveal';
-import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, shouldUseMobileRouteTransitions } from '@/lib/viewTransitions';
+import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, runViewTransition, shouldUseMobileRouteTransitions } from '@/lib/viewTransitions';
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
 import { navigationStateKeys, readSessionNumber, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 
@@ -155,7 +155,9 @@ export default function ProjectsListClient({ projects }: Props) {
 
                   if (canUseSharedElementTransitions()) {
                     e.preventDefault();
-                    transitionRouter.push(`/${locale}/projects/${project.id}`);
+                    runViewTransition(() => {
+                      transitionRouter.push(`/${locale}/projects/${project.id}`);
+                    });
                   }
                 }}
               >
