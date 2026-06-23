@@ -154,7 +154,7 @@ export default function ServersPage() {
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} strokeWidth={2} />
             <span>{t('refreshButton')}</span>
-            {lastUpdated && <span className="opacity-70">· {t('lastUpdatedLabel')} {formatClock(lastUpdated)}</span>}
+            <span className="opacity-70">· {t('lastUpdatedLabel')} {lastUpdated ? formatClock(lastUpdated) : '--:--:--'}</span>
           </button>
         </div>
       </div>
