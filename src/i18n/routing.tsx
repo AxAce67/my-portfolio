@@ -149,7 +149,7 @@ export function useRouter() {
     const navigate = useNavigate();
     const locale = useCurrentLocale();
     return {
-        push: (path: string) => navigate(withLocale(path, locale)),
+        push: (path: string, options?: { state?: unknown }) => navigate(withLocale(path, locale), options),
         replace: (path: string) => navigate(withLocale(path, locale), { replace: true }),
         back: () => navigate(-1),
         prefetch: (path: string) => {}, // No-op for Vite SPA

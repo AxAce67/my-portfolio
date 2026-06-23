@@ -42,6 +42,7 @@ import {
   type HomeActiveProject as ActiveProject,
   type MutualLink,
 } from '@/lib/content/publicContent';
+import type { ProjectPreviewState } from '@/pages/ProjectDetailPage';
 
 const TechStackSection = TechStackSectionStatic;
 import { lazy, Suspense } from 'react';
@@ -1056,10 +1057,18 @@ function ProjectsSection({ initialProjects, returningProjectId }: { initialProje
                   writeSessionValue(navigationStateKeys.projectsViewMode, effectiveViewMode);
                   writeSessionValue(navigationStateKeys.projectsReferrer, 'home');
                   removeSessionValue(navigationStateKeys.projectsScrollY);
+                  const previewState: ProjectPreviewState = {
+                    id: project.id,
+                    title: project.title,
+                    description: project.description,
+                    thumbnail_url: project.thumbnail_url,
+                    created_at: project.created_at,
+                    updated_at: project.updated_at,
+                  };
                   if (shouldUseMobileRouteTransitions()) {
                     e.preventDefault();
                     runRouteTransition(() => {
-                      router.push(`/projects/${project.id}`);
+                      router.push(`/projects/${project.id}`, { state: previewState });
                     });
                     return;
                   }
@@ -1067,7 +1076,7 @@ function ProjectsSection({ initialProjects, returningProjectId }: { initialProje
                   if (canUseSharedElementTransitions()) {
                     e.preventDefault();
                     runViewTransition(() => {
-                      transitionRouter.push(`/${locale}/projects/${project.id}`);
+                      transitionRouter.push(`/${locale}/projects/${project.id}`, { state: previewState });
                     });
                   }
                 }}

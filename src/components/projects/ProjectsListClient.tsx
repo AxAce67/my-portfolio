@@ -11,6 +11,7 @@ import { StaggerContainer, StaggerItem } from '@/components/ui/ScrollReveal';
 import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, runViewTransition, shouldUseMobileRouteTransitions } from '@/lib/viewTransitions';
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
 import { navigationStateKeys, readSessionNumber, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
+import type { ProjectPreviewState } from '@/pages/ProjectDetailPage';
 
 const PAGE_SIZE = 12;
 
@@ -145,10 +146,18 @@ export default function ProjectsListClient({ projects }: Props) {
 
                   writeSessionValue(navigationStateKeys.projectsReferrer, 'archive');
                   writeSessionValue(navigationStateKeys.projectsScrollY, String(window.scrollY));
+                  const previewState: ProjectPreviewState = {
+                    id: project.id,
+                    title: project.title,
+                    description: project.description,
+                    thumbnail_url: project.thumbnailUrl,
+                    created_at: project.createdAt,
+                    updated_at: project.updatedAt,
+                  };
                   if (shouldUseMobileRouteTransitions()) {
                     e.preventDefault();
                     runRouteTransition(() => {
-                      router.push(`/projects/${project.id}`);
+                      router.push(`/projects/${project.id}`, { state: previewState });
                     });
                     return;
                   }
@@ -156,7 +165,7 @@ export default function ProjectsListClient({ projects }: Props) {
                   if (canUseSharedElementTransitions()) {
                     e.preventDefault();
                     runViewTransition(() => {
-                      transitionRouter.push(`/${locale}/projects/${project.id}`);
+                      transitionRouter.push(`/${locale}/projects/${project.id}`, { state: previewState });
                     });
                   }
                 }}

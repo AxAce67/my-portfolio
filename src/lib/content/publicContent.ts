@@ -24,7 +24,7 @@ type ActiveProjectRow = Models.Row & {
   stage: number | null;
 };
 
-type ProjectDetailRecord = {
+export type ProjectDetailRecord = {
   id: string;
   title: string | null;
   description: string | null;

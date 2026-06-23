@@ -1,22 +1,55 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Image from '@/components/ui/Image';
-import { getProjectById, type ProjectDetailResult } from '@/lib/content/publicContent';
+import { getProjectById, type ProjectDetailResult, type ProjectDetailRecord } from '@/lib/content/publicContent';
 import BackToProjectsLink from '@/components/projects/BackToProjectsLink';
 import ScrollToTopOnMount from '@/components/projects/ScrollToTopOnMount';
 import MarkdownArticle from '@/components/content/MarkdownArticle';
 import BlockNoteContent from '@/components/content/BlockNoteContent';
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
 
+// Project cards already know title/thumbnail/etc. before navigating here —
+// passed via router state so the view-transition target element (the
+// thumbnail, matched by viewTransitionName) exists on the very first render
+// instead of being replaced by a "Loading..." screen while the real fetch
+// is in flight, which broke the shared-element morph animation entirely.
+export type ProjectPreviewState = Pick<
+  ProjectDetailRecord,
+  'id' | 'title' | 'description' | 'thumbnail_url' | 'created_at' | 'updated_at'
+>;
+
+function previewToResult(preview: ProjectPreviewState): ProjectDetailResult {
+  return {
+    status: 'ok',
+    project: {
+      id: preview.id,
+      title: preview.title,
+      description: preview.description,
+      content_md: null,
+      content_json: null,
+      created_at: preview.created_at,
+      updated_at: preview.updated_at,
+      is_published: null,
+      thumbnail_url: preview.thumbnail_url,
+    },
+  };
+}
+
 export default function ProjectDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { t, i18n } = useTranslation('ProjectDetail');
   const navigate = useNavigate();
+  const location = useLocation();
   const locale = i18n.language;
 
-  const [result, setResult] = useState<ProjectDetailResult | null>(null);
-  const [loading, setLoading] = useState(true);
+  const preview = location.state as ProjectPreviewState | null;
+  const hasMatchingPreview = Boolean(preview && preview.id === id);
+
+  const [result, setResult] = useState<ProjectDetailResult | null>(() =>
+    hasMatchingPreview ? previewToResult(preview as ProjectPreviewState) : null
+  );
+  const [loading, setLoading] = useState(!hasMatchingPreview);
 
   useEffect(() => {
     if (!id) return;
@@ -30,7 +63,7 @@ export default function ProjectDetailPage() {
     });
   }, [id, locale, navigate]);
 
-  if (loading || !result) {
+  if (!result) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
 
@@ -114,7 +147,7 @@ export default function ProjectDetailPage() {
           <BlockNoteContent blocks={project.content_json} />
         ) : project.content_md ? (
           <MarkdownArticle content={project.content_md} />
-        ) : (
+        ) : loading ? null : (
           <p className="text-sm text-muted-foreground">{t('noContent')}</p>
         )}
       </div>
