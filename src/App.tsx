@@ -40,6 +40,19 @@ function LocaleWrapper({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+// Gates the nested locale routes — `:locale` matches any single segment, so
+// without this, a bogus path like "/foobar" would silently render the
+// homepage (treating "foobar" as an unrecognized locale that falls back to
+// the default) instead of a 404.
+function LocaleGate() {
+  const { pathname } = useLocation();
+  const segment = pathname.split('/')[1] ?? '';
+  if (!isAppLocale(segment)) {
+    return <NotFoundPage />;
+  }
+  return <Outlet />;
+}
+
 function Layout() {
   return (
     <div className="flex min-h-screen flex-col">
@@ -60,40 +73,43 @@ export default function App() {
         <LocaleWrapper>
           <Routes>
             <Route path="/" element={<Navigate to="/ja" replace />} />
+            <Route path="/admin" element={<Navigate to={`/${defaultLocale}/admin`} replace />} />
             <Route path="/:locale" element={<Layout />}>
-              <Route index element={<HomePage />} />
-              <Route path="projects" element={<ProjectsPage />} />
-              <Route path="projects/:id" element={<ProjectDetailPage />} />
-              <Route path="servers" element={<ServersPage />} />
-              <Route path="terms" element={<TermsPage />} />
-              <Route path="license" element={<LicensePage />} />
-              <Route
-                path="admin"
-                element={
-                  <Suspense fallback={null}>
-                    <AdminPage />
-                  </Suspense>
-                }
-              />
-              <Route element={<RequireAuth />}>
+              <Route element={<LocaleGate />}>
+                <Route index element={<HomePage />} />
+                <Route path="projects" element={<ProjectsPage />} />
+                <Route path="projects/:id" element={<ProjectDetailPage />} />
+                <Route path="servers" element={<ServersPage />} />
+                <Route path="terms" element={<TermsPage />} />
+                <Route path="license" element={<LicensePage />} />
                 <Route
-                  path="admin/projects/new"
+                  path="admin"
                   element={
                     <Suspense fallback={null}>
-                      <NewProjectPage />
+                      <AdminPage />
                     </Suspense>
                   }
                 />
-                <Route
-                  path="admin/projects/:id"
-                  element={
-                    <Suspense fallback={null}>
-                      <EditProjectPage />
-                    </Suspense>
-                  }
-                />
+                <Route element={<RequireAuth />}>
+                  <Route
+                    path="admin/projects/new"
+                    element={
+                      <Suspense fallback={null}>
+                        <NewProjectPage />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="admin/projects/:id"
+                    element={
+                      <Suspense fallback={null}>
+                        <EditProjectPage />
+                      </Suspense>
+                    }
+                  />
+                </Route>
+                <Route path="*" element={<NotFoundPage />} />
               </Route>
-              <Route path="*" element={<NotFoundPage />} />
             </Route>
             <Route path="*" element={<Layout />}>
               <Route path="*" element={<NotFoundPage />} />
