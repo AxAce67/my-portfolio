@@ -91,12 +91,12 @@ body {
   background: var(--background);
   overflow-y: scroll;
   overflow-x: clip;
-  /* Geist Sans only covers Latin glyphs, so CJK characters fall through to
-     whatever comes next — naming proper CJK fonts explicitly (instead of
-     leaving it to system-ui) avoids inconsistent fullwidth-punctuation
-     spacing (e.g. "。") across OSes. */
-  font-family: var(--font-sans), -apple-system, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic',
-    'Meiryo', 'Noto Sans CJK JP', 'Noto Sans JP', system-ui, sans-serif;
+  /* Geist Sans only covers Latin glyphs. Noto Sans JP (self-hosted, see
+     main.tsx) covers Japanese with correctly-designed glyphs (including
+     fullwidth punctuation spacing, e.g. "。") instead of leaving it to
+     whatever the OS substitutes in; the rest are just a safety net. */
+  font-family: var(--font-sans), 'Noto Sans JP Variable', -apple-system, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN',
+    'Yu Gothic', 'Meiryo', system-ui, sans-serif;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

@@ -22,7 +22,7 @@ const config: Config = {
         "accent-muted": "var(--accent-muted)",
       },
       fontFamily: {
-        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        sans: ["var(--font-sans)", "Noto Sans JP Variable", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "monospace"],
       },
       animation: {
