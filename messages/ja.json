@@ -449,8 +449,8 @@
     "MutualLinks": {
         "heading": "Mutual Links",
         "subtitle": "相互リンクしているサイトの紹介",
-        "empty": "現在、相互リンクを募集中です。 気軽にご連絡ください。",
-        "emptyCta": "連絡する",
-        "visitSite": "サイトを見る"
+        "empty": "現在、相互リンクを募集中です。X (@real_Aki) か Discord (@xaki67) まで気軽にご連絡ください！",
+        "visitSite": "サイトを見る",
+        "discordCopied": "Discordユーザー名をコピーしました"
     }
 }

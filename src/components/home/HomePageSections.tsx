@@ -16,6 +16,7 @@ import { TiltCard } from '@/components/ui/TiltCard';
 import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, shouldUseMobileRouteTransitions } from '@/lib/viewTransitions';
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
 import { clearProjectReturnState, navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
+import { toast } from 'sonner';
 import {
   SiTypescript,
   SiJavascript,
@@ -29,6 +30,7 @@ import {
   SiClaude,
   SiGooglegemini,
   SiVercel,
+  SiDiscord,
 } from '@icons-pack/react-simple-icons';
 import { SiOpenai, SiAdobepremierepro, SiCanva } from 'react-icons/si';
 import {
@@ -1358,13 +1360,27 @@ function MutualLinksSection() {
           <ScrollReveal delay={0.15}>
             <div className="bento-card flex flex-col items-center justify-center text-center py-12 px-6 gap-4">
               <p className="text-sm text-muted-foreground max-w-md">{t('empty')}</p>
-              <button
-                type="button"
-                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                className="btn-primary px-4 py-2 text-xs"
-              >
-                {t('emptyCta')}
-              </button>
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                <a
+                  href="https://x.com/real_Aki"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-outline px-4 py-2 text-xs inline-flex items-center gap-1.5"
+                >
+                  <Twitter className="w-3.5 h-3.5" strokeWidth={1.5} />
+                  @real_Aki
+                </a>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText('@xaki67').then(() => toast.success(t('discordCopied')));
+                  }}
+                  className="btn-outline px-4 py-2 text-xs inline-flex items-center gap-1.5"
+                >
+                  <SiDiscord className="w-3.5 h-3.5" />
+                  @xaki67
+                </button>
+              </div>
             </div>
           </ScrollReveal>
         ) : (

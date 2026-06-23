@@ -449,8 +449,8 @@
     "MutualLinks": {
         "heading": "Mutual Links",
         "subtitle": "Amigos e sites com quem troco links",
-        "empty": "Atualmente aberto a trocas de link — entre em contato sem compromisso.",
-        "emptyCta": "Entrar em contato",
-        "visitSite": "Visitar site"
+        "empty": "Atualmente aberto a trocas de link — entre em contato pelo X (@real_Aki) ou Discord (@xaki67)!",
+        "visitSite": "Visitar site",
+        "discordCopied": "Nome de usuário do Discord copiado"
     }
 }
