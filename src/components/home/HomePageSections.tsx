@@ -31,7 +31,14 @@ import {
   SiVercel,
 } from '@icons-pack/react-simple-icons';
 import { SiOpenai, SiAdobepremierepro, SiCanva } from 'react-icons/si';
-import { getSiteSettings, DEFAULT_AVATAR_URL, type HomeProject as CompletedProject, type HomeActiveProject as ActiveProject } from '@/lib/content/publicContent';
+import {
+  getSiteSettings,
+  DEFAULT_AVATAR_URL,
+  getMutualLinks,
+  type HomeProject as CompletedProject,
+  type HomeActiveProject as ActiveProject,
+  type MutualLink,
+} from '@/lib/content/publicContent';
 
 const TechStackSection = TechStackSectionStatic;
 import { lazy, Suspense } from 'react';
@@ -153,6 +160,7 @@ export default function HomePageSections({
       <TechStackSection />
       <ProjectsSection initialProjects={initialCompletedProjects} returningProjectId={returningProjectId} />
       <ActiveProjectsSection initialActiveProjects={initialActiveProjects} />
+      <MutualLinksSection />
       <ContactSection />
     </>
   );
@@ -1325,6 +1333,74 @@ function ActiveProjectsSection({ initialActiveProjects }: { initialActiveProject
             </div>
           )}
         </div>
+      </div>
+    </section>
+  );
+}
+
+function MutualLinksSection() {
+  const t = useTranslations('MutualLinks');
+  const [links, setLinks] = useState<MutualLink[]>([]);
+
+  useEffect(() => {
+    getMutualLinks().then(setLinks);
+  }, []);
+
+  return (
+    <section id="links" className="py-12 sm:py-16 lg:py-20">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <ScrollReveal delay={0.1}>
+          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2">{t('heading')}</h2>
+          <p className="text-xs sm:text-sm text-muted-foreground mb-8 sm:mb-12">{t('subtitle')}</p>
+        </ScrollReveal>
+
+        {links.length === 0 ? (
+          <ScrollReveal delay={0.15}>
+            <div className="bento-card flex flex-col items-center justify-center text-center py-12 px-6 gap-4">
+              <p className="text-sm text-muted-foreground max-w-md">{t('empty')}</p>
+              <button
+                type="button"
+                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                className="btn-primary px-4 py-2 text-xs"
+              >
+                {t('emptyCta')}
+              </button>
+            </div>
+          </ScrollReveal>
+        ) : (
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6" staggerDelay={0.06}>
+            {links.map((link) => (
+              <StaggerItem key={link.id}>
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block bento-card group cursor-pointer h-full overflow-hidden"
+                >
+                  <div className="flex flex-col h-full">
+                    <div className="bg-muted overflow-hidden relative aspect-[2/1] rounded-t-xl -m-px mb-0">
+                      {link.banner_url ? (
+                        <img src={link.banner_url} alt={link.name} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center text-muted-foreground font-mono text-xs uppercase">
+                          {link.name}
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-4 flex flex-col flex-1">
+                      <p className="text-sm font-semibold truncate">{link.name}</p>
+                      {link.description && <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{link.description}</p>}
+                      <p className="text-xs font-mono text-foreground mt-3 inline-flex items-center gap-1 group-hover:gap-1.5 transition-[gap]">
+                        {t('visitSite')}
+                        <ArrowUpRight className="w-3.5 h-3.5" strokeWidth={2} />
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        )}
       </div>
     </section>
   );

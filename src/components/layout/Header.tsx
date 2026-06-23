@@ -9,7 +9,7 @@ import { isAppLocale, usePathname, useRouter } from '@/i18n/routing';
 import { runRouteTransition } from '@/lib/viewTransitions';
 import { clearProjectReturnState, navigationStateKeys, writeSessionValue } from '@/lib/navigationState';
 
-const navItems = ['about', 'skills', 'technologies', 'projects', 'timeline', 'contact'] as const;
+const navItems = ['about', 'skills', 'technologies', 'projects', 'timeline', 'links', 'contact'] as const;
 
 const sectionIds: Record<string, string> = {
     about: 'about',
@@ -17,6 +17,7 @@ const sectionIds: Record<string, string> = {
     technologies: 'tech-stack',
     projects: 'projects',
     timeline: 'timeline',
+    links: 'links',
     contact: 'contact',
 };
 

@@ -5,7 +5,8 @@
         "technologies": "Tech Stack",
         "projects": "Projects",
         "timeline": "Active",
-        "contact": "Contact"
+        "contact": "Contact",
+        "links": "Links"
     },
     "Hero": {
         "name": "Aki",
@@ -130,7 +131,8 @@
             "projects": "Projets",
             "activeProjects": "Projets en cours",
             "audit": "Journaux d'audit",
-            "profile": "Profil"
+            "profile": "Profil",
+            "mutualLinks": "Liens"
         },
         "actions": {
             "read": "Lire",
@@ -169,7 +171,13 @@
             "active_deleted": "Projet en cours supprimé.",
             "active_create_failed": "Échec de la création du projet en cours.",
             "active_update_failed": "Échec de la mise à jour du projet en cours.",
-            "active_delete_failed": "Échec de la suppression du projet en cours."
+            "active_delete_failed": "Échec de la suppression du projet en cours.",
+            "links_created": "Lien mutuel créé.",
+            "links_updated": "Lien mutuel mis à jour.",
+            "links_deleted": "Lien mutuel supprimé.",
+            "links_create_failed": "Échec de la création du lien mutuel.",
+            "links_update_failed": "Échec de la mise à jour du lien mutuel.",
+            "links_delete_failed": "Échec de la suppression du lien mutuel."
         },
         "deleteProject": {
             "button": "Supprimer",
@@ -296,6 +304,40 @@
             "description": "Survolez la photo pour en télécharger une nouvelle.",
             "updated": "Photo de profil mise à jour.",
             "updateFailed": "Échec de la mise à jour de la photo de profil."
+        },
+        "mutualLinks": {
+            "title": "Liens mutuels",
+            "description": "Gérez l'ordre, ajoutez et supprimez des liens mutuels.",
+            "newButton": "Nouveau lien",
+            "empty": "Aucun lien mutuel pour le moment.",
+            "fields": {
+                "banner": "Bannière",
+                "name": "Nom",
+                "namePlaceholder": "Nom du site",
+                "url": "URL",
+                "urlPlaceholder": "https://example.com",
+                "description": "Description",
+                "descriptionPlaceholder": "Courte description"
+            },
+            "createModal": {
+                "title": "Créer un lien mutuel"
+            },
+            "editModal": {
+                "title": "Modifier le lien mutuel"
+            },
+            "deleteModal": {
+                "title": "Supprimer le lien mutuel ?",
+                "description": "Supprimer \"{name}\". Cette action est irréversible."
+            },
+            "actions": {
+                "edit": "Modifier",
+                "delete": "Supprimer",
+                "close": "Fermer",
+                "create": "Créer",
+                "update": "Mettre à jour",
+                "cancel": "Annuler"
+            },
+            "dragHandle": "Glisser pour réorganiser"
         }
     },
     "ActiveProjects": {
@@ -403,5 +445,12 @@
         "osLabel": "OS",
         "ipLabel": "IP",
         "lastSeenLabel": "Vu pour la dernière fois"
+    },
+    "MutualLinks": {
+        "heading": "Liens mutuels",
+        "subtitle": "Amis et sites avec qui j'échange des liens",
+        "empty": "Actuellement ouvert aux échanges de liens — contactez-moi sans hésiter.",
+        "emptyCta": "Me contacter",
+        "visitSite": "Visiter le site"
     }
 }

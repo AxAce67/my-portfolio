@@ -6,6 +6,7 @@ import {
   PROJECTS_TABLE_ID,
   ACTIVE_PROJECTS_TABLE_ID,
   SITE_SETTINGS_TABLE_ID,
+  MUTUAL_LINKS_TABLE_ID,
   ASSETS_BUCKET_ID,
 } from '@/lib/appwrite/client';
 import { parseContentJson } from '@/lib/content/publicContent';
@@ -296,4 +297,93 @@ export async function updateSiteAvatar(avatarUrl: string): Promise<void> {
     rowId: 'main',
     data: { avatar_url: avatarUrl },
   });
+}
+
+type MutualLinkRow = Models.Row & {
+  name: string | null;
+  url: string | null;
+  description: string | null;
+  banner_url: string | null;
+  display_order: number | null;
+};
+
+export type AdminMutualLink = {
+  id: string;
+  name: string;
+  url: string;
+  description: string;
+  banner_url: string | null;
+  display_order: number;
+};
+
+export type MutualLinkInput = {
+  name: string;
+  url: string;
+  description: string;
+  banner_url: string | null;
+  display_order: number;
+};
+
+function toMutualLink(row: MutualLinkRow): AdminMutualLink {
+  return {
+    id: row.$id,
+    name: row.name ?? '',
+    url: row.url ?? '',
+    description: row.description ?? '',
+    banner_url: row.banner_url ?? null,
+    display_order: row.display_order ?? 0,
+  };
+}
+
+export async function listAdminMutualLinks(): Promise<AdminMutualLink[]> {
+  const rows = await tablesDB.listRows<MutualLinkRow>({
+    databaseId: DATABASE_ID,
+    tableId: MUTUAL_LINKS_TABLE_ID,
+    queries: [Query.orderAsc('display_order'), Query.orderDesc('$updatedAt'), Query.limit(100)],
+  });
+  return rows.rows.map(toMutualLink);
+}
+
+export async function createMutualLink(input: MutualLinkInput): Promise<string> {
+  const row = await tablesDB.createRow({
+    databaseId: DATABASE_ID,
+    tableId: MUTUAL_LINKS_TABLE_ID,
+    rowId: ID.unique(),
+    data: input,
+  });
+  return row.$id;
+}
+
+export async function updateMutualLink(id: string, input: MutualLinkInput): Promise<void> {
+  if (input.banner_url !== undefined) {
+    try {
+      const existing = await tablesDB.getRow<MutualLinkRow>({ databaseId: DATABASE_ID, tableId: MUTUAL_LINKS_TABLE_ID, rowId: id });
+      if (existing.banner_url && existing.banner_url !== input.banner_url) {
+        const oldFileId = extractFileIdFromUrl(existing.banner_url);
+        if (oldFileId) await storage.deleteFile({ bucketId: ASSETS_BUCKET_ID, fileId: oldFileId }).catch(() => {});
+      }
+    } catch {
+      // Best-effort cleanup — a failure here shouldn't block saving the edit.
+    }
+  }
+
+  await tablesDB.updateRow({
+    databaseId: DATABASE_ID,
+    tableId: MUTUAL_LINKS_TABLE_ID,
+    rowId: id,
+    data: input,
+  });
+}
+
+export async function deleteMutualLink(id: string): Promise<void> {
+  try {
+    const row = await tablesDB.getRow<MutualLinkRow>({ databaseId: DATABASE_ID, tableId: MUTUAL_LINKS_TABLE_ID, rowId: id });
+    if (row.banner_url) {
+      const fileId = extractFileIdFromUrl(row.banner_url);
+      if (fileId) await storage.deleteFile({ bucketId: ASSETS_BUCKET_ID, fileId }).catch(() => {});
+    }
+  } catch {
+    // Best-effort cleanup — still delete the row even if asset cleanup fails.
+  }
+  await tablesDB.deleteRow({ databaseId: DATABASE_ID, tableId: MUTUAL_LINKS_TABLE_ID, rowId: id });
 }

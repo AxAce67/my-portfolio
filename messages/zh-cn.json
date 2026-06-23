@@ -5,7 +5,8 @@
         "technologies": "Tech Stack",
         "projects": "Projects",
         "timeline": "Active",
-        "contact": "Contact"
+        "contact": "Contact",
+        "links": "Links"
     },
     "Hero": {
         "name": "Aki",
@@ -130,7 +131,8 @@
             "projects": "项目",
             "activeProjects": "进行中项目",
             "audit": "审计日志",
-            "profile": "个人资料"
+            "profile": "个人资料",
+            "mutualLinks": "友链"
         },
         "actions": {
             "read": "查看",
@@ -169,7 +171,13 @@
             "active_deleted": "进行中项目已删除。",
             "active_create_failed": "创建进行中项目失败。",
             "active_update_failed": "更新进行中项目失败。",
-            "active_delete_failed": "删除进行中项目失败。"
+            "active_delete_failed": "删除进行中项目失败。",
+            "links_created": "已添加友情链接。",
+            "links_updated": "已更新友情链接。",
+            "links_deleted": "已删除友情链接。",
+            "links_create_failed": "添加友情链接失败。",
+            "links_update_failed": "更新友情链接失败。",
+            "links_delete_failed": "删除友情链接失败。"
         },
         "deleteProject": {
             "button": "删除",
@@ -296,6 +304,40 @@
             "description": "将鼠标悬停在头像上即可上传新图片。",
             "updated": "头像已更新。",
             "updateFailed": "头像更新失败。"
+        },
+        "mutualLinks": {
+            "title": "友情链接",
+            "description": "管理友情链接的排序、新增与删除。",
+            "newButton": "新增链接",
+            "empty": "暂无友情链接。",
+            "fields": {
+                "banner": "横幅图片",
+                "name": "名称",
+                "namePlaceholder": "网站名称",
+                "url": "URL",
+                "urlPlaceholder": "https://example.com",
+                "description": "简介",
+                "descriptionPlaceholder": "简短介绍"
+            },
+            "createModal": {
+                "title": "新增友情链接"
+            },
+            "editModal": {
+                "title": "编辑友情链接"
+            },
+            "deleteModal": {
+                "title": "删除友情链接？",
+                "description": "删除\"{name}\"。此操作无法撤销。"
+            },
+            "actions": {
+                "edit": "编辑",
+                "delete": "删除",
+                "close": "关闭",
+                "create": "创建",
+                "update": "更新",
+                "cancel": "取消"
+            },
+            "dragHandle": "拖动以重新排序"
         }
     },
     "ActiveProjects": {
@@ -403,5 +445,12 @@
         "osLabel": "系统",
         "ipLabel": "IP",
         "lastSeenLabel": "最后在线"
+    },
+    "MutualLinks": {
+        "heading": "友情链接",
+        "subtitle": "互相交换链接的朋友和网站",
+        "empty": "目前开放友情链接申请，欢迎随时联系我。",
+        "emptyCta": "联系我",
+        "visitSite": "访问网站"
     }
 }

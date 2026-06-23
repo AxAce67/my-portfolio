@@ -1,5 +1,12 @@
 import { Query, type Models } from 'appwrite';
-import { tablesDB, DATABASE_ID, PROJECTS_TABLE_ID, ACTIVE_PROJECTS_TABLE_ID, SITE_SETTINGS_TABLE_ID } from '@/lib/appwrite/client';
+import {
+  tablesDB,
+  DATABASE_ID,
+  PROJECTS_TABLE_ID,
+  ACTIVE_PROJECTS_TABLE_ID,
+  SITE_SETTINGS_TABLE_ID,
+  MUTUAL_LINKS_TABLE_ID,
+} from '@/lib/appwrite/client';
 
 type ProjectRow = Models.Row & {
   title: string | null;
@@ -184,5 +191,41 @@ export async function getSiteSettings(): Promise<{ avatarUrl: string | null }> {
   } catch (error) {
     console.error('[publicContent] Failed to load site settings', error);
     return { avatarUrl: null };
+  }
+}
+
+export type MutualLink = {
+  id: string;
+  name: string;
+  url: string;
+  description: string;
+  banner_url: string | null;
+};
+
+type MutualLinkRow = Models.Row & {
+  name: string | null;
+  url: string | null;
+  description: string | null;
+  banner_url: string | null;
+  display_order: number | null;
+};
+
+export async function getMutualLinks(): Promise<MutualLink[]> {
+  try {
+    const rows = await tablesDB.listRows<MutualLinkRow>({
+      databaseId: DATABASE_ID,
+      tableId: MUTUAL_LINKS_TABLE_ID,
+      queries: [Query.orderAsc('display_order'), Query.orderAsc('$createdAt'), Query.limit(100)],
+    });
+    return rows.rows.map((row) => ({
+      id: row.$id,
+      name: row.name ?? '',
+      url: row.url ?? '',
+      description: row.description ?? '',
+      banner_url: row.banner_url ?? null,
+    }));
+  } catch (error) {
+    console.error('[publicContent] Failed to load mutual links', error);
+    return [];
   }
 }

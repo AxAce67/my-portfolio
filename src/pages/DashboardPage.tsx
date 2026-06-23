@@ -9,6 +9,7 @@ import { listAdminProjects, type AdminProjectSummary, type ProjectStatus } from 
 import DeleteProjectButton from '@/components/dashboard/DeleteProjectButton';
 import ActiveProjectsManager from '@/components/dashboard/ActiveProjectsManager';
 import ProfileSettings from '@/components/dashboard/ProfileSettings';
+import MutualLinksManager from '@/components/dashboard/MutualLinksManager';
 
 const statusKeyMap: Record<ProjectStatus, string> = {
   idea: 'status.idea',
@@ -37,7 +38,8 @@ export default function DashboardPage({ onSignOut }: DashboardPageProps) {
   const locale = useLocale();
   const [searchParams, setSearchParams] = useSearchParams();
   const tabParam = searchParams.get('tab');
-  const activeTab = tabParam === 'active' ? 'active' : tabParam === 'profile' ? 'profile' : 'projects';
+  const activeTab =
+    tabParam === 'active' ? 'active' : tabParam === 'profile' ? 'profile' : tabParam === 'links' ? 'links' : 'projects';
 
   const [projects, setProjects] = useState<AdminProjectSummary[]>([]);
   const [loading, setLoading] = useState(true);
@@ -98,6 +100,13 @@ export default function DashboardPage({ onSignOut }: DashboardPageProps) {
             className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-center text-xs font-mono transition-colors ${activeTab === 'profile' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
           >
             {t('tabs.profile')}
+          </button>
+          <button
+            type="button"
+            onClick={() => setSearchParams({ tab: 'links' })}
+            className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-center text-xs font-mono transition-colors ${activeTab === 'links' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+          >
+            {t('tabs.mutualLinks')}
           </button>
         </div>
       </div>
@@ -204,6 +213,7 @@ export default function DashboardPage({ onSignOut }: DashboardPageProps) {
 
       {activeTab === 'active' && <ActiveProjectsManager />}
       {activeTab === 'profile' && <ProfileSettings />}
+      {activeTab === 'links' && <MutualLinksManager />}
     </section>
   );
 }

@@ -5,7 +5,8 @@
         "technologies": "Tech Stack",
         "projects": "Projects",
         "timeline": "Active",
-        "contact": "Contact"
+        "contact": "Contact",
+        "links": "Links"
     },
     "Hero": {
         "name": "Aki",
@@ -130,7 +131,8 @@
             "projects": "プロジェクト",
             "activeProjects": "進行中プロジェクト",
             "audit": "監査ログ",
-            "profile": "プロフィール"
+            "profile": "プロフィール",
+            "mutualLinks": "相互リンク"
         },
         "actions": {
             "read": "閲覧",
@@ -169,7 +171,13 @@
             "active_deleted": "進行中プロジェクトを削除しました。",
             "active_create_failed": "進行中プロジェクトを作成できませんでした。",
             "active_update_failed": "進行中プロジェクトを更新できませんでした。",
-            "active_delete_failed": "進行中プロジェクトを削除できませんでした。"
+            "active_delete_failed": "進行中プロジェクトを削除できませんでした。",
+            "links_created": "相互リンクを追加しました。",
+            "links_updated": "相互リンクを更新しました。",
+            "links_deleted": "相互リンクを削除しました。",
+            "links_create_failed": "相互リンクの追加に失敗しました。",
+            "links_update_failed": "相互リンクの更新に失敗しました。",
+            "links_delete_failed": "相互リンクの削除に失敗しました。"
         },
         "deleteProject": {
             "button": "削除",
@@ -296,6 +304,40 @@
             "description": "画像にカーソルを合わせると変更できます。",
             "updated": "プロフィール画像を更新しました。",
             "updateFailed": "プロフィール画像の更新に失敗しました。"
+        },
+        "mutualLinks": {
+            "title": "相互リンク",
+            "description": "相互リンクの並び順・追加・削除を管理します。",
+            "newButton": "新規追加",
+            "empty": "まだ相互リンクがありません。",
+            "fields": {
+                "banner": "バナー画像",
+                "name": "名前",
+                "namePlaceholder": "サイト名",
+                "url": "URL",
+                "urlPlaceholder": "https://example.com",
+                "description": "一言紹介",
+                "descriptionPlaceholder": "一言紹介"
+            },
+            "createModal": {
+                "title": "相互リンクを追加"
+            },
+            "editModal": {
+                "title": "相互リンクを編集"
+            },
+            "deleteModal": {
+                "title": "相互リンクを削除しますか？",
+                "description": "「{name}」を削除します。この操作は取り消せません。"
+            },
+            "actions": {
+                "edit": "編集",
+                "delete": "削除",
+                "close": "閉じる",
+                "create": "作成",
+                "update": "更新",
+                "cancel": "キャンセル"
+            },
+            "dragHandle": "ドラッグして並び替え"
         }
     },
     "ActiveProjects": {
@@ -403,5 +445,12 @@
         "osLabel": "OS",
         "ipLabel": "IP",
         "lastSeenLabel": "最終確認"
+    },
+    "MutualLinks": {
+        "heading": "相互リンク",
+        "subtitle": "仲良くしてくれているサイトの皆さん",
+        "empty": "現在、相互リンクを募集中です。気軽にご連絡ください。",
+        "emptyCta": "連絡する",
+        "visitSite": "サイトを見る"
     }
 }

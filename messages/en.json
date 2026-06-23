@@ -5,7 +5,8 @@
         "technologies": "Tech Stack",
         "projects": "Projects",
         "timeline": "Active",
-        "contact": "Contact"
+        "contact": "Contact",
+        "links": "Links"
     },
     "Hero": {
         "name": "Aki",
@@ -130,7 +131,8 @@
             "projects": "Projects",
             "activeProjects": "Active Projects",
             "audit": "Audit Logs",
-            "profile": "Profile"
+            "profile": "Profile",
+            "mutualLinks": "Links"
         },
         "actions": {
             "read": "Read",
@@ -169,7 +171,13 @@
             "active_deleted": "Active project deleted.",
             "active_create_failed": "Failed to create active project.",
             "active_update_failed": "Failed to update active project.",
-            "active_delete_failed": "Failed to delete active project."
+            "active_delete_failed": "Failed to delete active project.",
+            "links_created": "Mutual link created.",
+            "links_updated": "Mutual link updated.",
+            "links_deleted": "Mutual link deleted.",
+            "links_create_failed": "Failed to create mutual link.",
+            "links_update_failed": "Failed to update mutual link.",
+            "links_delete_failed": "Failed to delete mutual link."
         },
         "deleteProject": {
             "button": "Delete",
@@ -296,6 +304,40 @@
             "description": "Hover the photo to upload a new one.",
             "updated": "Profile photo updated.",
             "updateFailed": "Failed to update profile photo."
+        },
+        "mutualLinks": {
+            "title": "Mutual Links",
+            "description": "Manage sort order, add, and remove mutual links.",
+            "newButton": "New Link",
+            "empty": "No mutual links yet.",
+            "fields": {
+                "banner": "Banner",
+                "name": "Name",
+                "namePlaceholder": "Site name",
+                "url": "URL",
+                "urlPlaceholder": "https://example.com",
+                "description": "Description",
+                "descriptionPlaceholder": "Short description"
+            },
+            "createModal": {
+                "title": "Create Mutual Link"
+            },
+            "editModal": {
+                "title": "Edit Mutual Link"
+            },
+            "deleteModal": {
+                "title": "Delete Mutual Link?",
+                "description": "Delete \"{name}\". This action cannot be undone."
+            },
+            "actions": {
+                "edit": "Edit",
+                "delete": "Delete",
+                "close": "Close",
+                "create": "Create",
+                "update": "Update",
+                "cancel": "Cancel"
+            },
+            "dragHandle": "Drag to reorder"
         }
     },
     "ActiveProjects": {
@@ -403,5 +445,12 @@
         "osLabel": "OS",
         "ipLabel": "IP",
         "lastSeenLabel": "Last seen"
+    },
+    "MutualLinks": {
+        "heading": "Mutual Links",
+        "subtitle": "Friends and sites I'm linked up with",
+        "empty": "Currently open for mutual links — feel free to reach out.",
+        "emptyCta": "Get in touch",
+        "visitSite": "Visit site"
     }
 }

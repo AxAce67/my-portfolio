@@ -5,7 +5,8 @@
         "technologies": "Tech Stack",
         "projects": "Projects",
         "timeline": "Active",
-        "contact": "Contact"
+        "contact": "Contact",
+        "links": "Links"
     },
     "Hero": {
         "name": "Aki",
@@ -130,7 +131,8 @@
             "projects": "Projetos",
             "activeProjects": "Projetos em andamento",
             "audit": "Logs de auditoria",
-            "profile": "Perfil"
+            "profile": "Perfil",
+            "mutualLinks": "Links"
         },
         "actions": {
             "read": "Ler",
@@ -169,7 +171,13 @@
             "active_deleted": "Projeto em andamento excluído.",
             "active_create_failed": "Falha ao criar o projeto em andamento.",
             "active_update_failed": "Falha ao atualizar o projeto em andamento.",
-            "active_delete_failed": "Falha ao excluir o projeto em andamento."
+            "active_delete_failed": "Falha ao excluir o projeto em andamento.",
+            "links_created": "Link mútuo criado.",
+            "links_updated": "Link mútuo atualizado.",
+            "links_deleted": "Link mútuo excluído.",
+            "links_create_failed": "Falha ao criar link mútuo.",
+            "links_update_failed": "Falha ao atualizar link mútuo.",
+            "links_delete_failed": "Falha ao excluir link mútuo."
         },
         "deleteProject": {
             "button": "Excluir",
@@ -296,6 +304,40 @@
             "description": "Passe o mouse sobre a foto para enviar uma nova.",
             "updated": "Foto de perfil atualizada.",
             "updateFailed": "Falha ao atualizar a foto de perfil."
+        },
+        "mutualLinks": {
+            "title": "Links mútuos",
+            "description": "Gerencie a ordem, adicione e remova links mútuos.",
+            "newButton": "Novo link",
+            "empty": "Ainda não há links mútuos.",
+            "fields": {
+                "banner": "Banner",
+                "name": "Nome",
+                "namePlaceholder": "Nome do site",
+                "url": "URL",
+                "urlPlaceholder": "https://example.com",
+                "description": "Descrição",
+                "descriptionPlaceholder": "Descrição curta"
+            },
+            "createModal": {
+                "title": "Criar link mútuo"
+            },
+            "editModal": {
+                "title": "Editar link mútuo"
+            },
+            "deleteModal": {
+                "title": "Excluir link mútuo?",
+                "description": "Excluir \"{name}\". Esta ação não pode ser desfeita."
+            },
+            "actions": {
+                "edit": "Editar",
+                "delete": "Excluir",
+                "close": "Fechar",
+                "create": "Criar",
+                "update": "Atualizar",
+                "cancel": "Cancelar"
+            },
+            "dragHandle": "Arraste para reordenar"
         }
     },
     "ActiveProjects": {
@@ -403,5 +445,12 @@
         "osLabel": "SO",
         "ipLabel": "IP",
         "lastSeenLabel": "Visto por último"
+    },
+    "MutualLinks": {
+        "heading": "Links mútuos",
+        "subtitle": "Amigos e sites com quem troco links",
+        "empty": "Atualmente aberto a trocas de link — entre em contato sem compromisso.",
+        "emptyCta": "Entrar em contato",
+        "visitSite": "Visitar site"
     }
 }

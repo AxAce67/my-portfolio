@@ -5,7 +5,8 @@
         "technologies": "Tech Stack",
         "projects": "Projects",
         "timeline": "Active",
-        "contact": "Contact"
+        "contact": "Contact",
+        "links": "Links"
     },
     "Hero": {
         "name": "Aki",
@@ -130,7 +131,8 @@
             "projects": "專案",
             "activeProjects": "進行中專案",
             "audit": "稽核日誌",
-            "profile": "個人資料"
+            "profile": "個人資料",
+            "mutualLinks": "友連"
         },
         "actions": {
             "read": "查看",
@@ -169,7 +171,13 @@
             "active_deleted": "進行中專案已刪除。",
             "active_create_failed": "建立進行中專案失敗。",
             "active_update_failed": "更新進行中專案失敗。",
-            "active_delete_failed": "刪除進行中專案失敗。"
+            "active_delete_failed": "刪除進行中專案失敗。",
+            "links_created": "已新增友情連結。",
+            "links_updated": "已更新友情連結。",
+            "links_deleted": "已刪除友情連結。",
+            "links_create_failed": "新增友情連結失敗。",
+            "links_update_failed": "更新友情連結失敗。",
+            "links_delete_failed": "刪除友情連結失敗。"
         },
         "deleteProject": {
             "button": "刪除",
@@ -296,6 +304,40 @@
             "description": "將滑鼠移到頭像上即可上傳新圖片。",
             "updated": "頭像已更新。",
             "updateFailed": "頭像更新失敗。"
+        },
+        "mutualLinks": {
+            "title": "友情連結",
+            "description": "管理友情連結的排序、新增與刪除。",
+            "newButton": "新增連結",
+            "empty": "尚無友情連結。",
+            "fields": {
+                "banner": "橫幅圖片",
+                "name": "名稱",
+                "namePlaceholder": "網站名稱",
+                "url": "URL",
+                "urlPlaceholder": "https://example.com",
+                "description": "簡介",
+                "descriptionPlaceholder": "簡短介紹"
+            },
+            "createModal": {
+                "title": "新增友情連結"
+            },
+            "editModal": {
+                "title": "編輯友情連結"
+            },
+            "deleteModal": {
+                "title": "刪除友情連結？",
+                "description": "刪除「{name}」。此操作無法復原。"
+            },
+            "actions": {
+                "edit": "編輯",
+                "delete": "刪除",
+                "close": "關閉",
+                "create": "建立",
+                "update": "更新",
+                "cancel": "取消"
+            },
+            "dragHandle": "拖曳以重新排序"
         }
     },
     "ActiveProjects": {
@@ -403,5 +445,12 @@
         "osLabel": "系統",
         "ipLabel": "IP",
         "lastSeenLabel": "最後上線"
+    },
+    "MutualLinks": {
+        "heading": "友情連結",
+        "subtitle": "互相交換連結的朋友與網站",
+        "empty": "目前開放友情連結申請，歡迎隨時聯繫我。",
+        "emptyCta": "聯繫我",
+        "visitSite": "訪問網站"
     }
 }
