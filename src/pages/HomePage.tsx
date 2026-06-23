@@ -35,6 +35,7 @@ export default function HomePage() {
         initialCompletedProjects={projects}
         initialActiveProjects={activeProjects}
         returningProjectId={returningProjectId}
+        isLoading={!dataReady}
       />
     </>
   );

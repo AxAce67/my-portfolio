@@ -84,7 +84,8 @@
         "viewAll": "查看全部",
         "createdAt": "建立於",
         "updatedAt": "更新於",
-        "noPublishedProjects": "即將推出，感謝你的耐心等待。"
+        "noPublishedProjects": "即將推出，感謝你的耐心等待。",
+        "loading": "載入中..."
     },
     "Contact": {
         "sectionTitle": "> send_message",
@@ -355,7 +356,8 @@
         "stageDesign": "設計",
         "stageDevelopment": "開發",
         "stageTesting": "測試",
-        "stageCompleted": "已完成"
+        "stageCompleted": "已完成",
+        "loading": "載入中..."
     },
     "ProjectList": {
         "backToTop": "← 返回專案",

@@ -84,7 +84,8 @@
         "viewAll": "Ver tudo",
         "createdAt": "Criado",
         "updatedAt": "Atualizado",
-        "noPublishedProjects": "Em breve. Obrigado pela paciência."
+        "noPublishedProjects": "Em breve. Obrigado pela paciência.",
+        "loading": "Carregando..."
     },
     "Contact": {
         "sectionTitle": "> send_message",
@@ -355,7 +356,8 @@
         "stageDesign": "Design",
         "stageDevelopment": "Desenvolvimento",
         "stageTesting": "Teste",
-        "stageCompleted": "Concluído"
+        "stageCompleted": "Concluído",
+        "loading": "Carregando..."
     },
     "ProjectList": {
         "backToTop": "← Voltar aos projetos",

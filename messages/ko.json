@@ -84,7 +84,8 @@
         "viewAll": "전체 보기",
         "createdAt": "작성일",
         "updatedAt": "수정일",
-        "noPublishedProjects": "곧 공개됩니다. 기다려 주셔서 감사합니다."
+        "noPublishedProjects": "곧 공개됩니다. 기다려 주셔서 감사합니다.",
+        "loading": "불러오는 중..."
     },
     "Contact": {
         "sectionTitle": "> send_message",
@@ -355,7 +356,8 @@
         "stageDesign": "디자인",
         "stageDevelopment": "개발",
         "stageTesting": "테스트",
-        "stageCompleted": "완료"
+        "stageCompleted": "완료",
+        "loading": "불러오는 중..."
     },
     "ProjectList": {
         "backToTop": "← 프로젝트로 돌아가기",

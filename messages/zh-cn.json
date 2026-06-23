@@ -84,7 +84,8 @@
         "viewAll": "查看全部",
         "createdAt": "创建于",
         "updatedAt": "更新于",
-        "noPublishedProjects": "即将上线，感谢你的耐心等待。"
+        "noPublishedProjects": "即将上线，感谢你的耐心等待。",
+        "loading": "加载中..."
     },
     "Contact": {
         "sectionTitle": "> send_message",
@@ -355,7 +356,8 @@
         "stageDesign": "设计",
         "stageDevelopment": "开发",
         "stageTesting": "测试",
-        "stageCompleted": "已完成"
+        "stageCompleted": "已完成",
+        "loading": "加载中..."
     },
     "ProjectList": {
         "backToTop": "← 返回项目",

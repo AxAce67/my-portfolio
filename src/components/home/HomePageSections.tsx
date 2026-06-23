@@ -129,6 +129,7 @@ type HomePageSectionsProps = {
   initialCompletedProjects: CompletedProject[];
   initialActiveProjects: ActiveProject[];
   returningProjectId?: string | null;
+  isLoading?: boolean;
 };
 
 type AboutStatItem = {
@@ -172,14 +173,15 @@ export default function HomePageSections({
   initialCompletedProjects,
   initialActiveProjects,
   returningProjectId = null,
+  isLoading = false,
 }: HomePageSectionsProps) {
   return (
     <>
       <AboutSection />
       <SkillsSection />
       <TechStackSection />
-      <ProjectsSection initialProjects={initialCompletedProjects} returningProjectId={returningProjectId} />
-      <ActiveProjectsSection initialActiveProjects={initialActiveProjects} />
+      <ProjectsSection initialProjects={initialCompletedProjects} returningProjectId={returningProjectId} isLoading={isLoading} />
+      <ActiveProjectsSection initialActiveProjects={initialActiveProjects} isLoading={isLoading} />
       <MutualLinksSection />
       <ContactSection />
     </>
@@ -972,7 +974,15 @@ function SkillsSection() {
   );
 }
 
-function ProjectsSection({ initialProjects, returningProjectId }: { initialProjects: CompletedProject[]; returningProjectId?: string | null }) {
+function ProjectsSection({
+  initialProjects,
+  returningProjectId,
+  isLoading = false,
+}: {
+  initialProjects: CompletedProject[];
+  returningProjectId?: string | null;
+  isLoading?: boolean;
+}) {
   const t = useTranslations('Projects');
   const locale = useLocale();
   const router = useRouter();
@@ -1032,7 +1042,7 @@ function ProjectsSection({ initialProjects, returningProjectId }: { initialProje
         </ScrollReveal>
 
         {projects.length === 0 && (
-          <p className="text-sm text-muted-foreground">{t('noPublishedProjects')}</p>
+          <p className="text-sm text-muted-foreground">{isLoading ? t('loading') : t('noPublishedProjects')}</p>
         )}
         <StaggerContainer
           className={effectiveViewMode === 'grid' ? 'grid grid-cols-1 min-[420px]:grid-cols-2 md:grid-cols-2 gap-3 sm:gap-6' : 'space-y-4'}
@@ -1186,7 +1196,13 @@ function ProjectsSection({ initialProjects, returningProjectId }: { initialProje
   );
 }
 
-function ActiveProjectsSection({ initialActiveProjects }: { initialActiveProjects: ActiveProject[] }) {
+function ActiveProjectsSection({
+  initialActiveProjects,
+  isLoading = false,
+}: {
+  initialActiveProjects: ActiveProject[];
+  isLoading?: boolean;
+}) {
   const t = useTranslations('ActiveProjects');
   const has = (key: string) => {
     const val = t(key);
@@ -1217,7 +1233,7 @@ function ActiveProjectsSection({ initialActiveProjects }: { initialActiveProject
         <div className="md:hidden space-y-3">
           {activeProjects.length === 0 ? (
             <div className="bento-card">
-              <p className="text-sm text-muted-foreground">{text('empty', 'No active projects yet.')}</p>
+              <p className="text-sm text-muted-foreground">{isLoading ? text('loading', 'Loading...') : text('empty', 'No active projects yet.')}</p>
             </div>
           ) : (
             <>
@@ -1380,7 +1396,7 @@ function ActiveProjectsSection({ initialActiveProjects }: { initialActiveProject
 
           {activeProjects.length === 0 && (
             <div className="px-6 py-6">
-              <p className="text-sm text-muted-foreground">{text('empty', 'No active projects yet.')}</p>
+              <p className="text-sm text-muted-foreground">{isLoading ? text('loading', 'Loading...') : text('empty', 'No active projects yet.')}</p>
             </div>
           )}
         </div>

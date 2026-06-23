@@ -84,7 +84,8 @@
         "viewAll": "一覧を見る",
         "createdAt": "作成",
         "updatedAt": "更新",
-        "noPublishedProjects": "ただいま準備中です。もうしばらくお待ちください。"
+        "noPublishedProjects": "ただいま準備中です。もうしばらくお待ちください。",
+        "loading": "読み込み中..."
     },
     "Contact": {
         "sectionTitle": "> send_message",
@@ -355,7 +356,8 @@
         "stageDesign": "設計",
         "stageDevelopment": "実装",
         "stageTesting": "テスト",
-        "stageCompleted": "完了"
+        "stageCompleted": "完了",
+        "loading": "読み込み中..."
     },
     "ProjectList": {
         "backToTop": "← Projectsへ戻る",
