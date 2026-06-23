@@ -1,5 +1,7 @@
 'use client';
 
+import { flushSync } from 'react-dom';
+
 type TransitionCapableDocument = Document & {
   startViewTransition?: (update: () => void) => {
     finished: Promise<void>;
@@ -70,7 +72,13 @@ export function runViewTransition(action: () => void) {
   }
 
   transitionDocument.startViewTransition(() => {
-    action();
+    // React Router's navigate() doesn't commit synchronously on its own —
+    // without flushSync, startViewTransition captures its "after" snapshot
+    // before the new route's DOM (and its viewTransitionName element) has
+    // actually been painted, so there's nothing for it to morph into.
+    flushSync(() => {
+      action();
+    });
   });
 }
 
@@ -126,7 +134,9 @@ export function runRouteTransition(
   }
 
   const transition = transitionDocument.startViewTransition(() => {
-    action();
+    flushSync(() => {
+      action();
+    });
   });
 
   window.__routeTransitionFinished = transition.finished.catch(() => undefined);
