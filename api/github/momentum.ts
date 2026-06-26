@@ -216,7 +216,9 @@ export async function getGithubMomentum(): Promise<{ data: MomentumResponse; ok:
 }
 
 export default async function handler(_req: VercelRequest, res: VercelResponse) {
+  const startedAt = Date.now();
   const result = await getGithubMomentum();
+  res.setHeader('Server-Timing', `github-momentum;dur=${Date.now() - startedAt}`);
 
   if (!result.ok) {
     res.setHeader('Cache-Control', 'no-store');

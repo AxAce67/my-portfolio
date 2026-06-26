@@ -158,6 +158,77 @@ type GitHubMomentumApiResponse = {
   source: 'graphql' | 'events';
 };
 
+type GitHubMomentumState = {
+  status: GitHubMomentumStatus;
+  username: string;
+  weeklyCommits: number;
+  streakDays: number;
+  daily: Array<{ date: string; commits: number }>;
+  updatedAt: string | null;
+  hasLoadedOnce: boolean;
+};
+
+type CachedGitHubMomentum = {
+  cachedAt: number;
+  payload: GitHubMomentumApiResponse;
+};
+
+const GITHUB_MOMENTUM_CACHE_KEY = 'aki:github-momentum:v1';
+const GITHUB_MOMENTUM_STALE_MS = 24 * 60 * 60 * 1000;
+
+function buildFallbackMomentumDays() {
+  const now = new Date();
+
+  return Array.from({ length: 7 }, (_, index) => {
+    const date = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - (6 - index)));
+    return { date: date.toISOString().slice(0, 10), commits: 0 };
+  });
+}
+
+function isValidMomentumPayload(payload: GitHubMomentumApiResponse | null | undefined): payload is GitHubMomentumApiResponse {
+  return Boolean(payload?.ok && payload.username && Array.isArray(payload.daily));
+}
+
+function readCachedMomentum(): GitHubMomentumApiResponse | null {
+  if (typeof window === 'undefined') return null;
+
+  try {
+    const cached = JSON.parse(window.localStorage.getItem(GITHUB_MOMENTUM_CACHE_KEY) ?? 'null') as CachedGitHubMomentum | null;
+    if (!cached || Date.now() - cached.cachedAt > GITHUB_MOMENTUM_STALE_MS) return null;
+    return isValidMomentumPayload(cached.payload) ? cached.payload : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeCachedMomentum(payload: GitHubMomentumApiResponse) {
+  if (typeof window === 'undefined' || !isValidMomentumPayload(payload)) return;
+
+  try {
+    window.localStorage.setItem(
+      GITHUB_MOMENTUM_CACHE_KEY,
+      JSON.stringify({
+        cachedAt: Date.now(),
+        payload,
+      } satisfies CachedGitHubMomentum),
+    );
+  } catch {
+    // Storage can be unavailable in private mode or quota-constrained browsers.
+  }
+}
+
+function createMomentumStateFromPayload(payload: GitHubMomentumApiResponse, fallbackDays: Array<{ date: string; commits: number }>): GitHubMomentumState {
+  return {
+    status: 'ready',
+    username: payload.username || 'AxAce67',
+    weeklyCommits: payload.weeklyCommits ?? 0,
+    streakDays: payload.streakDays ?? 0,
+    daily: Array.isArray(payload.daily) ? payload.daily.slice(-7) : fallbackDays,
+    updatedAt: payload.updatedAt ?? new Date().toISOString(),
+    hasLoadedOnce: true,
+  };
+}
+
 declare global {
   interface Window {
     onTurnstileSuccess?: (token: string) => void;
@@ -444,23 +515,23 @@ function AboutSection() {
       if (settings.avatarUrl) setAvatarUrl(settings.avatarUrl);
     });
   }, []);
-  const [momentumStatus, setMomentumStatus] = useState<GitHubMomentumStatus>('loading');
-  const [githubUsername, setGithubUsername] = useState('AxAce67');
-  const [weeklyCommits, setWeeklyCommits] = useState(0);
-  const [streakDays, setStreakDays] = useState(0);
-  const [dailyData, setDailyData] = useState<Array<{ date: string; commits: number }>>([]);
-  const [lastUpdatedAt, setLastUpdatedAt] = useState<string | null>(null);
+  const fallbackDays = useMemo(() => buildFallbackMomentumDays(), []);
+  const [momentum, setMomentum] = useState<GitHubMomentumState>(() => {
+    const cachedPayload = readCachedMomentum();
+    if (cachedPayload) return createMomentumStateFromPayload(cachedPayload, buildFallbackMomentumDays());
 
-  const fallbackDays = useMemo(
-    () =>
-      Array.from({ length: 7 }, (_, index) => {
-        const now = new Date();
-        const date = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - (6 - index)));
-        return { date: date.toISOString().slice(0, 10), commits: 0 };
-      }),
-    [],
-  );
-  const daysForRender = dailyData.length === 7 ? dailyData : fallbackDays;
+    return {
+      status: 'loading',
+      username: 'AxAce67',
+      weeklyCommits: 0,
+      streakDays: 0,
+      daily: [],
+      updatedAt: null,
+      hasLoadedOnce: false,
+    };
+  });
+
+  const daysForRender = momentum.daily.length === 7 ? momentum.daily : fallbackDays;
   const daySummaries: GitHubDaySummary[] = daysForRender.map((day) => {
     const date = new Date(`${day.date}T00:00:00Z`);
     return {
@@ -471,11 +542,10 @@ function AboutSection() {
   });
 
   useEffect(() => {
-    let hasLoadedOnce = false;
     const controller = new AbortController();
 
     const fetchMomentum = async () => {
-      if (!hasLoadedOnce) setMomentumStatus('loading');
+      setMomentum((current) => (current.hasLoadedOnce ? current : { ...current, status: 'loading' }));
 
       try {
         const response = await fetch('/api/github/momentum', {
@@ -485,24 +555,25 @@ function AboutSection() {
         if (!response.ok || !payload.ok) {
           throw new Error('Failed to fetch momentum from server API');
         }
-        setGithubUsername(payload.username || 'AxAce67');
-        setDailyData(Array.isArray(payload.daily) ? payload.daily.slice(-7) : fallbackDays);
-        setWeeklyCommits(payload.weeklyCommits ?? 0);
-        setStreakDays(payload.streakDays ?? 0);
-        setLastUpdatedAt(payload.updatedAt ?? new Date().toISOString());
-        setMomentumStatus('ready');
-        hasLoadedOnce = true;
+        writeCachedMomentum(payload);
+        setMomentum(createMomentumStateFromPayload(payload, fallbackDays));
       } catch {
         if (controller.signal.aborted) return;
         // Only blow away already-displayed data on the first load — a
         // failed background refresh shouldn't reset good values to zero.
-        if (!hasLoadedOnce) {
-          setDailyData(fallbackDays);
-          setWeeklyCommits(0);
-          setStreakDays(0);
-          setLastUpdatedAt(null);
-          setMomentumStatus('error');
-        }
+        setMomentum((current) =>
+          current.hasLoadedOnce
+            ? current
+            : {
+                ...current,
+                status: 'error',
+                daily: fallbackDays,
+                weeklyCommits: 0,
+                streakDays: 0,
+                updatedAt: null,
+                hasLoadedOnce: true,
+              },
+        );
       }
     };
 
@@ -514,10 +585,10 @@ function AboutSection() {
     };
   }, [fallbackDays]);
 
-  const weeklyValueLabel = momentumStatus === 'loading' ? '…' : weeklyCommits.toString();
-  const streakValueLabel = momentumStatus === 'loading' ? '…' : `${streakDays}${t('momentum.daySuffix')}`;
-  const updatedDateLabel = lastUpdatedAt
-    ? new Intl.DateTimeFormat(locale, { month: '2-digit', day: '2-digit' }).format(new Date(lastUpdatedAt))
+  const weeklyValueLabel = momentum.status === 'loading' ? '…' : momentum.weeklyCommits.toString();
+  const streakValueLabel = momentum.status === 'loading' ? '…' : `${momentum.streakDays}${t('momentum.daySuffix')}`;
+  const updatedDateLabel = momentum.updatedAt
+    ? new Intl.DateTimeFormat(locale, { month: '2-digit', day: '2-digit' }).format(new Date(momentum.updatedAt))
     : '--';
 
   return (
@@ -629,12 +700,12 @@ function AboutSection() {
                   <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('momentum.label')}</span>
                 </div>
                 <a
-                  href={`https://github.com/${githubUsername}`}
+                  href={`https://github.com/${momentum.username}`}
                   target="_blank"
                   rel="noreferrer noopener"
                   className="text-[12px] font-mono text-muted-foreground hover:text-foreground hover:border-border-hover px-2 py-1 rounded-md border border-border transition-colors"
                 >
-                  @{githubUsername}
+                  @{momentum.username}
                 </a>
               </div>
               <p className="text-[13px] text-muted-foreground leading-relaxed">{t('momentum.description')}</p>
@@ -652,7 +723,7 @@ function AboutSection() {
                 <MomentumLineChart days={daySummaries} />
               </div>
               <p className="text-[12px] text-muted-foreground mt-3">
-                {momentumStatus === 'error'
+                {momentum.status === 'error'
                   ? t('momentum.unavailable')
                   : `${t('momentum.updated')}: ${updatedDateLabel} · ${t('momentum.note')}`}
               </p>
@@ -774,12 +845,12 @@ function AboutSection() {
                   <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('momentum.label')}</span>
                 </div>
                 <a
-                  href={`https://github.com/${githubUsername}`}
+                  href={`https://github.com/${momentum.username}`}
                   target="_blank"
                   rel="noreferrer noopener"
                   className="text-[12px] font-mono text-muted-foreground hover:text-foreground hover:border-border-hover px-2 py-1 rounded-md border border-border transition-colors"
                 >
-                  @{githubUsername}
+                  @{momentum.username}
                 </a>
               </div>
 
@@ -802,7 +873,7 @@ function AboutSection() {
               </div>
 
               <p className="text-[12px] text-muted-foreground mt-4">
-                {momentumStatus === 'error'
+                {momentum.status === 'error'
                   ? t('momentum.unavailable')
                   : `${t('momentum.updated')}: ${updatedDateLabel} · ${t('momentum.note')}`}
               </p>
