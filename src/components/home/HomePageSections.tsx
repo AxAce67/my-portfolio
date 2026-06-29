@@ -2,7 +2,7 @@
 
 import { useTranslations } from '@/hooks/useTranslations';
 import { useLocale } from '@/hooks/useLocale';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode, ComponentType } from 'react';
 import Image from '@/components/ui/Image';
 import { ArrowUpRight, ExternalLink, Terminal, Code2, Globe, Box, Github, Twitter, Mail, List, LayoutGrid, Film, Sparkles, Wrench } from 'lucide-react';
@@ -526,6 +526,13 @@ function AboutSection() {
     hasLoadedOnce: false,
   });
 
+  // Read localStorage cache synchronously before the first browser paint so
+  // returning users never see the loading placeholder flash.
+  useLayoutEffect(() => {
+    const cachedPayload = readCachedMomentum();
+    if (cachedPayload) setMomentum(createMomentumStateFromPayload(cachedPayload, fallbackDays));
+  }, [fallbackDays]);
+
   const daysForRender = momentum.daily.length === 7 ? momentum.daily : fallbackDays;
   const daySummaries: GitHubDaySummary[] = daysForRender.map((day) => {
     const date = new Date(`${day.date}T00:00:00Z`);
@@ -571,11 +578,6 @@ function AboutSection() {
         );
       }
     };
-
-    const cachedPayload = readCachedMomentum();
-    if (cachedPayload) {
-      setMomentum(createMomentumStateFromPayload(cachedPayload, fallbackDays));
-    }
 
     void fetchMomentum();
     const intervalId = window.setInterval(fetchMomentum, 5 * 60 * 1000);
@@ -1069,12 +1071,12 @@ function ProjectsSection({
   });
   const effectiveViewMode: 'list' | 'grid' = isMobileViewport ? 'grid' : viewMode;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const mobileQuery = window.matchMedia('(max-width: 639px)');
     const syncViewport = () => setIsMobileViewport(mobileQuery.matches);
     syncViewport();
-    mobileQuery.addEventListener?.('change', syncViewport);
-    return () => mobileQuery.removeEventListener?.('change', syncViewport);
+    mobileQuery.addEventListener('change', syncViewport);
+    return () => mobileQuery.removeEventListener('change', syncViewport);
   }, []);
 
   return (

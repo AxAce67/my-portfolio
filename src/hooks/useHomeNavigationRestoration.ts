@@ -18,6 +18,15 @@ function waitForTimeout(ms: number) {
   });
 }
 
+function scheduleRetries(fn: () => boolean, maxAttempts = 12, intervalMs = 80): void {
+  let attempts = 0;
+  const attempt = () => {
+    if (fn()) return;
+    if (++attempts < maxAttempts) window.setTimeout(attempt, intervalMs);
+  };
+  attempt();
+}
+
 async function waitForCardImage(card: HTMLElement | null) {
   if (!card) {
     await waitForNextFrame();
@@ -127,18 +136,12 @@ export function useHomeNavigationRestoration(returningProjectId: string | null, 
     if (shouldRestoreProjects) {
       const savedScrollY = readSessionNumber(navigationStateKeys.homeScrollY);
       if (savedScrollY !== null && !scrollRestoredRef.current) {
-        // Try scrolling multiple times as the page content loads
-        let scrollAttempts = 0;
-        const maxScrollAttempts = 12;
-        const tryPixelScroll = () => {
-          // If page is tall enough, we assume pixel scroll will be accurate
+        scheduleRetries(() => {
           if (document.documentElement.scrollHeight > savedScrollY + window.innerHeight * 0.8) {
             window.scrollTo(0, savedScrollY);
             window.requestAnimationFrame(resolveHomeProjectsTransition);
-            return;
+            return true;
           }
-
-          // Otherwise, try to keep the target element in view while waiting for page to grow
           if (hash) {
             const target = document.getElementById(hash);
             if (target) {
@@ -148,13 +151,8 @@ export function useHomeNavigationRestoration(returningProjectId: string | null, 
           } else {
             window.scrollTo(0, savedScrollY);
           }
-
-          scrollAttempts += 1;
-          if (scrollAttempts < maxScrollAttempts) {
-            window.setTimeout(tryPixelScroll, 80);
-          }
-        };
-        tryPixelScroll();
+          return false;
+        });
       } else if (savedScrollY === null && !hash) {
         const projectsSection = document.getElementById('projects');
         projectsSection?.scrollIntoView({ behavior: 'auto', block: 'start' });
@@ -197,23 +195,14 @@ export function useHomeNavigationRestoration(returningProjectId: string | null, 
       return;
     }
 
-    let attempts = 0;
-    const maxAttempts = 12;
-
-    const tryScroll = () => {
-      const target = document.getElementById(hash);
-      if (target) {
+    window.setTimeout(() => {
+      scheduleRetries(() => {
+        const target = document.getElementById(hash);
+        if (!target) return false;
         target.scrollIntoView({ behavior: 'auto', block: 'start' });
         window.requestAnimationFrame(resolveHomeProjectsTransition);
-        return;
-      }
-
-      attempts += 1;
-      if (attempts < maxAttempts) {
-        window.setTimeout(tryScroll, 80);
-      }
-    };
-
-    window.setTimeout(tryScroll, 0);
+        return true;
+      });
+    }, 0);
   }, []);
 }

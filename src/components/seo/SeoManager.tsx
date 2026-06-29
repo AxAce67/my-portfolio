@@ -7,7 +7,7 @@ import {
   getSiteUrl,
 } from '@/lib/seo';
 import { useLocale } from '@/hooks/useLocale';
-import { locales } from '@/i18n/locales';
+import { isAppLocale, locales, type AppLocale } from '@/i18n/locales';
 
 function setMeta(selector: string, attributes: Record<string, string>) {
   let element = document.head.querySelector<HTMLMetaElement>(selector);
@@ -30,7 +30,11 @@ function setLink(selector: string, attributes: Record<string, string>) {
 export function SeoManager() {
   const pathname = usePathname() ?? '';
   const segments = pathname.split('/').filter(Boolean);
-  const locale = useLocale();
+  const contextLocale = useLocale();
+  // Derive locale from the pathname directly so canonical/og:locale are always
+  // in sync with the current URL. useLocale() is one render cycle behind
+  // pathname during soft locale navigation (context updates in an effect).
+  const locale: AppLocale = isAppLocale(segments[0] ?? '') ? (segments[0] as AppLocale) : contextLocale;
   const localPath = `/${segments.slice(1).join('/')}`.replace(/\/$/, '') || '/';
   const seo = useMemo(() => getLocaleSeo(locale), [locale]);
   const route = segments[1] ?? '';
