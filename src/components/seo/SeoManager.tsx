@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 import {
   buildLocaleUrl,
   getLocaleSeo,
   getOpenGraphLocale,
   getSiteUrl,
 } from '@/lib/seo';
-import { getValidLocale, locales } from '@/i18n/routing';
+import { useLocale } from '@/hooks/useLocale';
+import { locales } from '@/i18n/locales';
 
 function setMeta(selector: string, attributes: Record<string, string>) {
   let element = document.head.querySelector<HTMLMetaElement>(selector);
@@ -27,9 +28,9 @@ function setLink(selector: string, attributes: Record<string, string>) {
 }
 
 export function SeoManager() {
-  const { pathname } = useLocation();
+  const pathname = usePathname() ?? '';
   const segments = pathname.split('/').filter(Boolean);
-  const locale = getValidLocale(segments[0] ?? '');
+  const locale = useLocale();
   const localPath = `/${segments.slice(1).join('/')}`.replace(/\/$/, '') || '/';
   const seo = getLocaleSeo(locale);
   const route = segments[1] ?? '';
@@ -74,21 +75,25 @@ export function SeoManager() {
     setMeta('meta[name="twitter:description"]', { name: 'twitter:description', content: description });
     setLink('link[rel="canonical"]', { rel: 'canonical', href: canonicalUrl });
 
-    document.head.querySelectorAll('link[data-locale-alternate]').forEach((element) => element.remove());
+    const alternateLinks: HTMLLinkElement[] = [];
     locales.forEach((alternateLocale) => {
       const link = document.createElement('link');
       link.rel = 'alternate';
       link.hreflang = alternateLocale;
       link.href = buildLocaleUrl(alternateLocale, localPath);
-      link.dataset.localeAlternate = 'true';
       document.head.appendChild(link);
+      alternateLinks.push(link);
     });
     const defaultLink = document.createElement('link');
     defaultLink.rel = 'alternate';
     defaultLink.hreflang = 'x-default';
     defaultLink.href = buildLocaleUrl('ja', localPath);
-    defaultLink.dataset.localeAlternate = 'true';
     document.head.appendChild(defaultLink);
+    alternateLinks.push(defaultLink);
+
+    return () => {
+      alternateLinks.forEach((link) => link.remove());
+    };
   }, [isAdmin, isProjectDetail, localPath, locale, route, seo]);
 
   return null;

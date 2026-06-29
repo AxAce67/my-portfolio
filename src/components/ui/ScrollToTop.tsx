@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 import { navigationStateKeys, readSessionValue } from '@/lib/navigationState';
 
 // Pages that intentionally restore a previous scroll position on mount
@@ -7,7 +7,7 @@ import { navigationStateKeys, readSessionValue } from '@/lib/navigationState';
 // keys inside their own useLayoutEffect and clear it immediately after.
 
 export function ScrollToTop() {
-  const { pathname } = useLocation();
+  const pathname = usePathname() ?? '';
   const hasPendingRestoreRef = useRef(false);
 
   // Captured during render — i.e. before any layout effects run.

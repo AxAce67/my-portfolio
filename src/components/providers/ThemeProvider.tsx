@@ -1,3 +1,5 @@
+'use client';
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext({ theme: 'dark', setTheme: (_theme: string) => {}, resolvedTheme: 'dark' });
@@ -9,7 +11,17 @@ type ThemeProviderProps = {
 };
 
 export function ThemeProvider({ children, attribute, defaultTheme }: ThemeProviderProps) {
-  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || defaultTheme || 'dark');
+  const [theme, setTheme] = useState(() => {
+    if (typeof window === 'undefined') return defaultTheme || 'dark';
+    const stored = window.localStorage.getItem('theme');
+    if (stored === 'light' || stored === 'dark') return stored;
+    const rootTheme = document.documentElement.classList.contains('light')
+      ? 'light'
+      : document.documentElement.classList.contains('dark')
+        ? 'dark'
+        : null;
+    return rootTheme || defaultTheme || 'dark';
+  });
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -20,7 +32,8 @@ export function ThemeProvider({ children, attribute, defaultTheme }: ThemeProvid
     } else {
       root.setAttribute(attribute || 'data-theme', theme);
     }
-    localStorage.setItem('theme', theme);
+    window.localStorage.setItem('theme', theme);
+    document.cookie = `theme=${theme}; Path=/; Max-Age=31536000; SameSite=Lax`;
   }, [theme, attribute]);
 
   return (

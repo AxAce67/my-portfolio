@@ -1,11 +1,10 @@
 import js from '@eslint/js';
 import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
-import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['dist'] },
+  { ignores: ['dist', '.next', 'next-env.d.ts'] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['src/**/*.{ts,tsx}'],
@@ -15,18 +14,16 @@ export default tseslint.config(
     },
     plugins: {
       'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
     },
     rules: {
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     },
   },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ['api/**/*.ts', 'vite.config.ts'],
+    files: ['src/app/api/**/*.ts', 'src/lib/server/**/*.ts', 'next.config.ts'],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.node,

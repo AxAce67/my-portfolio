@@ -53,4 +53,12 @@ export const selfHostedServers: SelfHostedServer[] = [
     status: 'online',
     tailscaleHostname: 'sg-server',
   },
+  {
+    id: 'raspberrypi',
+    name: 'Raspberry Pi',
+    description: 'Raspberry Piを転用したサーバー。',
+    category: 'infra',
+    status: 'online',
+    tailscaleHostname: 'raspberrypi',
+  },
 ];

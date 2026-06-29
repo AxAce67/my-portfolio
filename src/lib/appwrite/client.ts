@@ -1,8 +1,8 @@
 import { Account, Client, Storage, TablesDB } from 'appwrite';
 
 const client = new Client()
-  .setEndpoint(import.meta.env.VITE_APPWRITE_ENDPOINT)
-  .setProject(import.meta.env.VITE_APPWRITE_PROJECT_ID);
+  .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT ?? process.env.VITE_APPWRITE_ENDPOINT ?? '')
+  .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID ?? process.env.VITE_APPWRITE_PROJECT_ID ?? '');
 
 export const tablesDB = new TablesDB(client);
 export const account = new Account(client);

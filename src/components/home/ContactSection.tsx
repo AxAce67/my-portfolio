@@ -47,8 +47,8 @@ export default function ContactSection() {
   const successDialogRef = useRef<HTMLDivElement | null>(null);
   const lastFocusedElementRef = useRef<HTMLElement | null>(null);
   const [shouldLoadTurnstile, setShouldLoadTurnstile] = useState(false);
-  const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-  const web3formsAccessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || process.env.VITE_TURNSTILE_SITE_KEY;
+  const web3formsAccessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || process.env.VITE_WEB3FORMS_ACCESS_KEY;
 
   useEffect(() => {
     const el = sectionRef.current;

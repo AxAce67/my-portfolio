@@ -18,6 +18,7 @@ import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
 import { navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 import { toast } from 'sonner';
 import { ContactMethods } from '@/components/home/ContactMethods';
+import { selfHostedServers } from '@/lib/selfHostedServers';
 import {
   SiTypescript,
   SiJavascript,
@@ -42,7 +43,6 @@ import {
   type HomeActiveProject as ActiveProject,
   type MutualLink,
 } from '@/lib/content/publicContent';
-import type { ProjectPreviewState } from '@/pages/ProjectDetailPage';
 
 const TechStackSection = TechStackSectionStatic;
 import { lazy, Suspense } from 'react';
@@ -507,7 +507,7 @@ function AboutSection() {
       onActivate: () => document.getElementById('tech-stack')?.scrollIntoView({ behavior: 'smooth' }),
     },
     { id: 'years', value: 2, suffix: '+', label: t('statsYears') },
-    { id: 'servers', value: 4, label: t('statsCommits'), href: '/servers' },
+    { id: 'servers', value: selfHostedServers.length, label: t('statsCommits'), href: '/servers' },
   ];
   const [avatarUrl, setAvatarUrl] = useState(DEFAULT_AVATAR_URL);
   useEffect(() => {
@@ -516,19 +516,14 @@ function AboutSection() {
     });
   }, []);
   const fallbackDays = useMemo(() => buildFallbackMomentumDays(), []);
-  const [momentum, setMomentum] = useState<GitHubMomentumState>(() => {
-    const cachedPayload = readCachedMomentum();
-    if (cachedPayload) return createMomentumStateFromPayload(cachedPayload, buildFallbackMomentumDays());
-
-    return {
-      status: 'loading',
-      username: 'AxAce67',
-      weeklyCommits: 0,
-      streakDays: 0,
-      daily: [],
-      updatedAt: null,
-      hasLoadedOnce: false,
-    };
+  const [momentum, setMomentum] = useState<GitHubMomentumState>({
+    status: 'loading',
+    username: 'AxAce67',
+    weeklyCommits: 0,
+    streakDays: 0,
+    daily: [],
+    updatedAt: null,
+    hasLoadedOnce: false,
   });
 
   const daysForRender = momentum.daily.length === 7 ? momentum.daily : fallbackDays;
@@ -576,6 +571,11 @@ function AboutSection() {
         );
       }
     };
+
+    const cachedPayload = readCachedMomentum();
+    if (cachedPayload) {
+      setMomentum(createMomentumStateFromPayload(cachedPayload, fallbackDays));
+    }
 
     void fetchMomentum();
     const intervalId = window.setInterval(fetchMomentum, 5 * 60 * 1000);
@@ -1138,18 +1138,10 @@ function ProjectsSection({
                   writeSessionValue(navigationStateKeys.projectsViewMode, effectiveViewMode);
                   writeSessionValue(navigationStateKeys.projectsReferrer, 'home');
                   removeSessionValue(navigationStateKeys.projectsScrollY);
-                  const previewState: ProjectPreviewState = {
-                    id: project.id,
-                    title: project.title,
-                    description: project.description,
-                    thumbnail_url: project.thumbnail_url,
-                    created_at: project.created_at,
-                    updated_at: project.updated_at,
-                  };
                   if (shouldUseMobileRouteTransitions()) {
                     e.preventDefault();
                     runRouteTransition(() => {
-                      router.push(`/projects/${project.id}`, { state: previewState });
+                      router.push(`/projects/${project.id}`);
                     });
                     return;
                   }
@@ -1157,7 +1149,7 @@ function ProjectsSection({
                   if (canUseSharedElementTransitions()) {
                     e.preventDefault();
                     runViewTransition(() => {
-                      transitionRouter.push(`/${locale}/projects/${project.id}`, { state: previewState });
+                      transitionRouter.push(`/${locale}/projects/${project.id}`);
                     });
                   }
                 }}

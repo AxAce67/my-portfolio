@@ -5,8 +5,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev          # Start Vite dev server
-npm run build        # tsc typecheck + production build
+npm run dev          # Start Next.js dev server
+npm run build        # Typecheck + production build
 npm run lint         # ESLint (flat config, eslint.config.js)
 npm run preview      # Preview the production build locally
 ```
@@ -15,15 +15,15 @@ There are no automated tests. Verify changes by building (`npm run build`) to ca
 
 ## Architecture Overview
 
-**Vite + React SPA** (no SSR, no Next.js). Client-side routing via `react-router-dom`, locale-prefixed (`/ja/...`, `/en/...`). The root `/` redirects to `/ja` (see `src/App.tsx`).
+**Next.js App Router + React**. Routes live under `src/app/`, with reusable screen components under `src/views/`. URLs are locale-prefixed (`/ja/...`, `/en/...`). The root `/` redirects to `/ja` in `next.config.ts`.
 
 ### Routing & i18n
 
-- All pages live under `src/pages/`, wired up in `src/App.tsx`
+- App Router route files live under `src/app/`; view components live under `src/views/`
 - i18n is `react-i18next` (NOT next-intl, despite some leftover compat-shim naming) — messages live in `messages/*.json` (8 locales), loaded in `src/i18n/config.ts`
 - `useTranslations(namespace)` (`src/hooks/useTranslations.ts`) is a thin wrapper that also supports next-intl-style dotted sub-namespaces (e.g. `useTranslations('Dashboard.active')`) by splitting off the root namespace and prefixing keys — react-i18next's own namespace arg does NOT walk dotted paths, so don't bypass this hook
 - Interpolation uses single-brace `{var}` placeholders (configured in `src/i18n/config.ts`), not i18next's default `{{var}}` — matches the existing message files
-- `src/shims/` contains compat shims for old Next.js imports (`next/image`, `next/link`, etc.) still referenced by ported components — see `vite.config.ts` aliases
+- `src/i18n/routing.tsx` provides the app's locale-aware wrapper around `next/link` and `next/navigation`
 
 ### Appwrite
 
@@ -36,7 +36,7 @@ Single Appwrite project, no SSR — all calls happen directly from the browser.
 
 ### Admin Area (`/admin`)
 
-Single route serves both login and dashboard — `src/pages/AdminPage.tsx` checks the session (`useSession` hook) and renders `LoginForm` or `DashboardPage` accordingly. No separate `/login` route.
+Single route serves both login and dashboard — `src/views/AdminPage.tsx` checks the session (`useSession` hook) and renders `LoginForm` or `DashboardPage` accordingly. No separate `/login` route.
 
 - Auth: Appwrite Account API (`account.createEmailPasswordSession`), single/few admin users created manually via the Appwrite console — there is no public signup
 - `RequireAuth` (`src/components/auth/RequireAuth.tsx`) gates `/admin/projects/new` and `/admin/projects/:id`, redirecting to `/admin` if unauthenticated
@@ -44,7 +44,7 @@ Single route serves both login and dashboard — `src/pages/AdminPage.tsx` check
 - `ProjectEditorForm` mirrors the live article page's typography (`.article-content`) so editing looks like the published result. It autosaves a draft to `localStorage` (debounced) and warns on unsaved navigation/tab-close
 - Thumbnails go through a crop step (`react-easy-crop`, locked 16:9) before upload
 - Active Projects use `@dnd-kit` for drag-to-reorder (no manual priority field — `display_order` is set automatically)
-- Admin pages/components are lazy-loaded (`React.lazy` in `App.tsx`) so BlockNote/Mantine/dnd-kit never ship to public visitors
+- Admin editor routes import BlockNote/Mantine CSS only on the editor pages that need them
 
 ### Content Storage
 
@@ -52,7 +52,7 @@ Projects store content in two fields:
 - `content_json` — BlockNote JSON (source of truth, stored as a JSON **string** column in Appwrite; parse with `parseContentJson` from `publicContent.ts`)
 - `content_md` — lossy markdown fallback
 
-Article display (`src/pages/ProjectDetailPage.tsx`) prefers `content_json` when present, rendered by `src/components/content/BlockNoteContent.tsx`.
+Article display (`src/views/ProjectDetailPage.tsx`) prefers `content_json` when present, rendered by `src/components/content/BlockNoteContent.tsx`.
 
 **Storage cleanup**: deleting a project (`deleteProject`) walks `content_json` (including nested block `children`) to find every uploaded file URL and deletes them from the `portfolio-assets` bucket, plus the thumbnail. Replacing a thumbnail on update also deletes the old file. This is all best-effort (failures don't block the row delete/update). Known gap: removing an inline image from the article body without deleting the whole project does **not** clean up that file — it becomes an orphan in storage.
 
@@ -72,7 +72,7 @@ No CSP middleware, no CSP violation reporting endpoint, no login rate-limiting, 
 ```
 VITE_APPWRITE_ENDPOINT
 VITE_APPWRITE_PROJECT_ID
-NEXT_PUBLIC_SITE_URL          # SEO/OGP base URL fallback (legacy name, read via vite.config.ts define)
+NEXT_PUBLIC_SITE_URL          # SEO/OGP base URL fallback
 ```
 
 See `.env.example` for the full list (contact form, GitHub activity card, Tailscale status).

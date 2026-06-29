@@ -1,4 +1,4 @@
-import { getLocaleMeta, locales, type AppLocale } from '@/i18n/routing';
+import { getLocaleMeta, locales, type AppLocale } from '@/i18n/locales';
 
 export function getSiteUrl(): string {
   const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();

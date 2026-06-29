@@ -4,147 +4,25 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { Check, ChevronDown, Languages } from 'lucide-react';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useLocale } from '@/hooks/useLocale';
-import { usePathname, useRouter } from '@/i18n/routing';
 import { getLocaleMeta, getValidLocale, locales, type AppLocale } from '@/i18n/routing';
-import { navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
-
-const LOCALE_SWITCH_PENDING_CLASS = 'locale-switch-pending';
-const LOCALE_SWITCH_ENTER_CLASS = 'locale-switch-enter';
-const LOCALE_DIRECTION_VAR = '--locale-direction';
-const LOCALE_OVERLAY_BG_VAR = '--locale-overlay-background-rgb';
-const LOCALE_OVERLAY_ACCENT_VAR = '--locale-overlay-accent-rgb';
-const LOCALE_OVERLAY_GLOW_VAR = '--locale-overlay-glow-rgb';
-const THEME_LOCK_ATTRIBUTE = 'data-locale-theme-lock';
-const FROZEN_THEME_VARS = [
-    '--background',
-    '--background-rgb',
-    '--foreground',
-    '--foreground-rgb',
-    '--muted',
-    '--muted-foreground',
-    '--card',
-    '--card-foreground',
-    '--border',
-    '--border-hover',
-    '--accent',
-    '--accent-muted',
-    '--hero-accent-rgb',
-    '--hero-accent-soft-rgb',
-    '--hero-glow-rgb',
-    '--hero-title-from',
-    '--hero-title-to',
-    '--grid-color',
-] as const;
-
-const LOCALE_SWITCH_NAV_DELAY_MS = 90;
-const LOCALE_SWITCH_NAV_DELAY_COMPACT_MS = 70;
-
-function prefersCompactPointer() {
-    return typeof window !== 'undefined'
-        && window.matchMedia('(pointer: coarse), (any-pointer: coarse)').matches;
-}
+import { useSetAppLocale } from '@/i18n/LocaleProvider';
 
 export function LanguageToggle() {
     const t = useTranslations('Language');
     const locale = getValidLocale(useLocale());
-    const pathname = usePathname();
-    const router = useRouter();
+    const setAppLocale = useSetAppLocale();
     const menuId = useId();
     const containerRef = useRef<HTMLDivElement | null>(null);
     const buttonRef = useRef<HTMLButtonElement | null>(null);
     const optionRefs = useRef<Array<HTMLButtonElement | null>>([]);
-    const enterTimerRef = useRef<number | null>(null);
-    const themeLockObserverRef = useRef<MutationObserver | null>(null);
-    const themeLockClassRef = useRef<'light' | 'dark' | null>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [displayLocale, setDisplayLocale] = useState<AppLocale>(locale);
     const [pendingLocale, setPendingLocale] = useState<AppLocale | null>(null);
-    const displayLocaleIndex = locales.indexOf(displayLocale);
-
-    const releaseThemeLock = () => {
-        themeLockObserverRef.current?.disconnect();
-        themeLockObserverRef.current = null;
-        themeLockClassRef.current = null;
-        document.documentElement.removeAttribute(THEME_LOCK_ATTRIBUTE);
-    };
-
-    const syncLockedThemeClass = () => {
-        const lockedTheme = themeLockClassRef.current;
-        if (!lockedTheme) {
-            return;
-        }
-
-        const root = document.documentElement;
-        const oppositeTheme = lockedTheme === 'light' ? 'dark' : 'light';
-        if (root.classList.contains(oppositeTheme)) {
-            root.classList.remove(oppositeTheme);
-        }
-        if (!root.classList.contains(lockedTheme)) {
-            root.classList.add(lockedTheme);
-        }
-    };
-
-    const startThemeLock = () => {
-        releaseThemeLock();
-        const root = document.documentElement;
-        const lockedTheme = root.classList.contains('light') ? 'light' : 'dark';
-        themeLockClassRef.current = lockedTheme;
-        root.setAttribute(THEME_LOCK_ATTRIBUTE, lockedTheme);
-        syncLockedThemeClass();
-        themeLockObserverRef.current = new MutationObserver(() => {
-            syncLockedThemeClass();
-        });
-        themeLockObserverRef.current.observe(root, {
-            attributes: true,
-            attributeFilter: ['class'],
-        });
-    };
 
     useEffect(() => {
-        const root = document.documentElement;
-        const hadPendingSwitch = root.classList.contains(LOCALE_SWITCH_PENDING_CLASS);
-        root.classList.remove(LOCALE_SWITCH_PENDING_CLASS);
-        root.style.removeProperty(LOCALE_DIRECTION_VAR);
         setDisplayLocale(locale);
         setPendingLocale(null);
         setIsOpen(false);
-
-        if (hadPendingSwitch) {
-            root.classList.add(LOCALE_SWITCH_ENTER_CLASS);
-            if (enterTimerRef.current !== null) {
-                window.clearTimeout(enterTimerRef.current);
-            }
-            enterTimerRef.current = window.setTimeout(() => {
-                root.classList.remove(LOCALE_SWITCH_ENTER_CLASS);
-                root.style.removeProperty(LOCALE_OVERLAY_BG_VAR);
-                root.style.removeProperty(LOCALE_OVERLAY_ACCENT_VAR);
-                root.style.removeProperty(LOCALE_OVERLAY_GLOW_VAR);
-                FROZEN_THEME_VARS.forEach((variableName) => {
-                    root.style.removeProperty(variableName);
-                });
-                root.style.removeProperty('color-scheme');
-                releaseThemeLock();
-                enterTimerRef.current = null;
-            }, 260);
-        } else {
-            releaseThemeLock();
-        }
-
-        const savedScroll = readSessionValue(navigationStateKeys.languageScrollY);
-        if (savedScroll && hadPendingSwitch) {
-            removeSessionValue(navigationStateKeys.languageScrollY);
-            window.requestAnimationFrame(() => {
-                window.scrollTo({ top: Number.parseInt(savedScroll, 10) || 0, behavior: 'auto' });
-            });
-        }
-
-        return () => {
-            if (enterTimerRef.current !== null) {
-                window.clearTimeout(enterTimerRef.current);
-                enterTimerRef.current = null;
-            }
-            root.classList.remove(LOCALE_SWITCH_ENTER_CLASS);
-        };
     }, [locale]);
 
     useEffect(() => {
@@ -179,21 +57,6 @@ export function LanguageToggle() {
         };
     }, [displayLocale, isOpen]);
 
-    useEffect(() => {
-        return () => {
-            if (enterTimerRef.current !== null) {
-                window.clearTimeout(enterTimerRef.current);
-            }
-            if (!document.documentElement.classList.contains(LOCALE_SWITCH_PENDING_CLASS)) {
-                releaseThemeLock();
-            }
-        };
-    }, []);
-
-    const prefetchLocale = (_nextLocale: AppLocale) => {
-        // no-op for react-router
-    };
-
     const focusOption = (index: number) => {
         const total = locales.length;
         const nextIndex = (index + total) % total;
@@ -205,53 +68,21 @@ export function LanguageToggle() {
             return;
         }
 
-        // pathname already includes the current locale segment (e.g.
-        // "/ja/projects/123") — strip it before prefixing the new locale,
-        // otherwise this doubles up into "/en/ja/projects/123".
-        const pathSegments = pathname.split('/').filter(Boolean);
+        const pathSegments = window.location.pathname.split('/').filter(Boolean);
         if (locales.includes(pathSegments[0] as AppLocale)) {
             pathSegments.shift();
         }
-        const localizedPath = `/${nextLocale}${pathSegments.length ? `/${pathSegments.join('/')}` : ''}`;
-        const compactPointer = prefersCompactPointer();
-        const root = document.documentElement;
-        const rootStyles = window.getComputedStyle(root);
+        const localizedPathname = `/${nextLocale}${pathSegments.length ? `/${pathSegments.join('/')}` : ''}`;
+        const localizedPath = `${localizedPathname}${window.location.search}${window.location.hash}`;
 
-        FROZEN_THEME_VARS.forEach((variableName) => {
-            root.style.setProperty(variableName, rootStyles.getPropertyValue(variableName).trim());
-        });
-        root.style.setProperty(
-            LOCALE_OVERLAY_BG_VAR,
-            rootStyles.getPropertyValue('--background-rgb').trim() || '10 10 10',
-        );
-        root.style.setProperty(
-            LOCALE_OVERLAY_ACCENT_VAR,
-            rootStyles.getPropertyValue('--hero-accent-rgb').trim() || '122 188 255',
-        );
-        root.style.setProperty(
-            LOCALE_OVERLAY_GLOW_VAR,
-            rootStyles.getPropertyValue('--hero-glow-rgb').trim() || '200 220 255',
-        );
-        root.style.setProperty('color-scheme', rootStyles.colorScheme || 'dark');
-        startThemeLock();
-        writeSessionValue(navigationStateKeys.languageScrollY, String(window.scrollY));
         setPendingLocale(nextLocale);
         setIsOpen(false);
-        root.classList.remove(LOCALE_SWITCH_ENTER_CLASS);
-        root.classList.add(LOCALE_SWITCH_PENDING_CLASS);
-        void root.offsetWidth;
-
-        const navigate = () => {
-            router.replace(localizedPath);
-        };
-
-        if (compactPointer) {
-            root.style.setProperty(LOCALE_DIRECTION_VAR, '0');
-            window.setTimeout(navigate, LOCALE_SWITCH_NAV_DELAY_COMPACT_MS);
-            return;
-        }
-        root.style.setProperty(LOCALE_DIRECTION_VAR, locales.indexOf(nextLocale) > displayLocaleIndex ? '1' : '-1');
-        window.setTimeout(navigate, LOCALE_SWITCH_NAV_DELAY_MS);
+        setDisplayLocale(nextLocale);
+        setAppLocale(nextLocale);
+        window.history.replaceState(window.history.state, '', localizedPath);
+        window.requestAnimationFrame(() => {
+            setPendingLocale(null);
+        });
     };
 
     const currentLocaleMeta = getLocaleMeta(displayLocale);
@@ -359,8 +190,6 @@ export function LanguageToggle() {
                                         buttonRef.current?.focus();
                                     }
                                 }}
-                                onMouseEnter={() => prefetchLocale(code)}
-                                onFocus={() => prefetchLocale(code)}
                                 onClick={() => {
                                     switchLocale(code);
                                 }}

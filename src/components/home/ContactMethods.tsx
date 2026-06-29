@@ -10,7 +10,7 @@ type ContactMethodsProps = {
 
 export function ContactMethods({ className = '', thirdMethod = 'form' }: ContactMethodsProps) {
   const t = useTranslations('Contact');
-  const contactEmail = import.meta.env.VITE_CONTACT_EMAIL?.trim();
+  const contactEmail = (process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? process.env.VITE_CONTACT_EMAIL)?.trim();
 
   const copyDiscordUsername = () => {
     navigator.clipboard.writeText('@xaki67').then(() => toast.success(t('discordCopied')));

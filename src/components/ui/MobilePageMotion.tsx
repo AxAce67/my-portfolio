@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, type ReactNode } from 'react';
-import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 
 type Props = {
   children: ReactNode;
@@ -14,8 +14,7 @@ function shouldAnimateOnMobile() {
 }
 
 export function MobilePageMotion({ children }: Props) {
-  const location = useLocation();
-  const pathname = location.pathname;
+  const pathname = usePathname() ?? '';
   const [animateOnMobile, setAnimateOnMobile] = useState(false);
 
   useEffect(() => {

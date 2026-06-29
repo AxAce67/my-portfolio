@@ -1,6 +1,5 @@
-import { useTranslation } from 'react-i18next';
+import { useAppLocale } from '@/i18n/LocaleProvider';
 
 export function useLocale() {
-  const { i18n } = useTranslation();
-  return i18n.language || 'en';
+  return useAppLocale();
 }
