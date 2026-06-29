@@ -102,6 +102,10 @@ export function useHomeNavigationRestoration(returningProjectId: string | null, 
       await waitForCardImage(card);
       if (!cancelled) {
         resolveHomeProjectsTransition();
+        // Clear scroll keys that were not cleaned up by the shouldRestoreProjects
+        // branch (e.g. browser-back from /servers where returnToProjects is never set).
+        removeSessionValue(navigationStateKeys.homeScrollY);
+        removeSessionValue(navigationStateKeys.homeReferrerHash);
       }
     })();
 

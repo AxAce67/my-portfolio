@@ -12,7 +12,11 @@ export const navigationStateKeys = {
 
 export function readSessionValue(key: string) {
   if (typeof window === 'undefined') return null;
-  return sessionStorage.getItem(key);
+  try {
+    return sessionStorage.getItem(key);
+  } catch {
+    return null;
+  }
 }
 
 export function readSessionNumber(key: string) {
@@ -25,12 +29,20 @@ export function readSessionNumber(key: string) {
 
 export function writeSessionValue(key: string, value: string) {
   if (typeof window === 'undefined') return;
-  sessionStorage.setItem(key, value);
+  try {
+    sessionStorage.setItem(key, value);
+  } catch {
+    // sessionStorage unavailable (Firefox strict tracking protection, sandboxed iframe)
+  }
 }
 
 export function removeSessionValue(key: string) {
   if (typeof window === 'undefined') return;
-  sessionStorage.removeItem(key);
+  try {
+    sessionStorage.removeItem(key);
+  } catch {
+    // ignore
+  }
 }
 
 export function clearProjectReturnState() {

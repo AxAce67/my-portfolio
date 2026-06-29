@@ -7,7 +7,7 @@ import { Link, getLocaleMeta } from '@/i18n/routing';
 import { TiltCard } from '@/components/ui/TiltCard';
 import { selfHostedServers, type ServerStatus } from '@/lib/selfHostedServers';
 import { RefreshCw } from 'lucide-react';
-import { navigationStateKeys, writeSessionValue } from '@/lib/navigationState';
+import { navigationStateKeys, readSessionValue, writeSessionValue } from '@/lib/navigationState';
 
 const STATUS_DOT_CLASS: Record<ServerStatus, string> = {
   online: 'bg-emerald-500',
@@ -49,17 +49,13 @@ export default function ServersPage() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const cancelledRef = useRef(false);
 
-  const [[backHref, backLabel]] = useState<[string, string | null]>(() => {
-    if (typeof window === 'undefined') return ['/', null];
-    const hash = sessionStorage.getItem(navigationStateKeys.homeReferrerHash);
-    let label = null;
-    if (hash === 'about') {
-      label = locale === 'ja' ? '← Aboutへ戻る' : '← Back to About';
-    } else if (hash === 'timeline') {
-      label = locale === 'ja' ? '← Active Projectsへ戻る' : '← Back to Active Projects';
-    }
-    return ['/', label];
-  });
+  const [backLabel, setBackLabel] = useState<string | null>(null);
+
+  useEffect(() => {
+    const hash = readSessionValue(navigationStateKeys.homeReferrerHash);
+    if (hash === 'about') setBackLabel(t('backAbout'));
+    else if (hash === 'timeline') setBackLabel(t('backTimeline'));
+  }, [t]);
 
   const load = useCallback(() => {
     setIsRefreshing(true);
@@ -133,8 +129,8 @@ export default function ServersPage() {
   return (
     <section className="max-w-5xl mx-auto px-6 lg:px-8 py-16 sm:py-20">
       <div className="mb-10">
-        <Link 
-          href={backHref} 
+        <Link
+          href="/"
           className="text-xs font-mono text-muted-foreground hover:text-foreground"
           onClick={() => {
             writeSessionValue(navigationStateKeys.returnToProjects, '1');

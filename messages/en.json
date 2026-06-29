@@ -1,465 +1,467 @@
 {
-    "Navigation": {
-        "about": "About",
-        "skills": "Skills",
-        "technologies": "Tech Stack",
-        "projects": "Projects",
-        "timeline": "Active",
-        "contact": "Contact",
-        "links": "Links"
+  "Navigation": {
+    "about": "About",
+    "skills": "Skills",
+    "technologies": "Tech Stack",
+    "projects": "Projects",
+    "timeline": "Active",
+    "contact": "Contact",
+    "links": "Links"
+  },
+  "Hero": {
+    "name": "Aki",
+    "role": "// indie dev · student",
+    "title": "『Turning Ideas into Reality』",
+    "subtitle": "Building what I love. That's it.",
+    "ctaPrimary": "View Projects"
+  },
+  "About": {
+    "sectionTitle": "// about/",
+    "heading": "About",
+    "profileLabel": "Profile",
+    "profileParagraph1": "I am a first-year high school student in Japan, building personal projects such as websites, Discord bots, Ubuntu servers, and Minecraft servers.",
+    "profileParagraph2": "Since discovering ChatGPT in sixth grade, I have used various AI tools to improve my workflow and speed up turning ideas into working products.",
+    "profileParagraph3": "My process is to turn ideas into requirements, build an MVP quickly, then iterate through testing and improvements.",
+    "profileParagraph4": "My strengths are design thinking, continuous improvement, and research. I keep up with trends while balancing usability and maintainability.",
+    "statsProjects": "Published Projects",
+    "statsTechnologies": "Technologies Used",
+    "statsYears": "Years Building",
+    "statsCommits": "Self-hosted Servers",
+    "focusLabel": "Focus",
+    "momentum": {
+      "label": "Dev Motivation Meter",
+      "description": "A playful read on my current coding energy based on commits from the last 7 days.",
+      "weeklyCommits": "Commits this week",
+      "streak": "Streak",
+      "daySuffix": "d",
+      "updated": "Updated",
+      "unavailable": "Could not read the meter right now. Please try again in a moment.",
+      "note": "Numbers are directional. Momentum included"
     },
-    "Hero": {
-        "name": "Aki",
-        "role": "// indie dev · student",
-        "title": "『Turning Ideas into Reality』",
-        "subtitle": "Building what I love. That's it.",
-        "ctaPrimary": "View Projects"
+    "focus": {
+      "productThinking": "Product Thinking",
+      "rapidPrototyping": "Rapid Prototyping",
+      "uiUxDesign": "UI/UX Design",
+      "problemSolving": "Problem Solving",
+      "research": "Research",
+      "continuousImprovement": "Continuous Improvement"
     },
-    "About": {
-        "sectionTitle": "// about/",
-        "heading": "About",
-        "profileLabel": "Profile",
-        "profileParagraph1": "I am a first-year high school student in Japan, building personal projects such as websites, Discord bots, Ubuntu servers, and Minecraft servers.",
-        "profileParagraph2": "Since discovering ChatGPT in sixth grade, I have used various AI tools to improve my workflow and speed up turning ideas into working products.",
-        "profileParagraph3": "My process is to turn ideas into requirements, build an MVP quickly, then iterate through testing and improvements.",
-        "profileParagraph4": "My strengths are design thinking, continuous improvement, and research. I keep up with trends while balancing usability and maintainability.",
-        "statsProjects": "Published Projects",
-        "statsTechnologies": "Technologies Used",
-        "statsYears": "Years Building",
-        "statsCommits": "Self-hosted Servers",
-        "focusLabel": "Focus",
-        "momentum": {
-            "label": "Dev Motivation Meter",
-            "description": "A playful read on my current coding energy based on commits from the last 7 days.",
-            "weeklyCommits": "Commits this week",
-            "streak": "Streak",
-            "daySuffix": "d",
-            "updated": "Updated",
-            "unavailable": "Could not read the meter right now. Please try again in a moment.",
-            "note": "Numbers are directional. Momentum included"
-        },
-        "focus": {
-            "productThinking": "Product Thinking",
-            "rapidPrototyping": "Rapid Prototyping",
-            "uiUxDesign": "UI/UX Design",
-            "problemSolving": "Problem Solving",
-            "research": "Research",
-            "continuousImprovement": "Continuous Improvement"
-        },
-        "linksLabel": "Links",
-        "role": "Independent Developer"
+    "linksLabel": "Links",
+    "role": "Independent Developer"
+  },
+  "Skills": {
+    "sectionTitle": "// skills/",
+    "heading": "Skills",
+    "subtitle": "Strengths and proficiency level",
+    "categories": {
+      "languages": "Languages",
+      "stack": "Stack",
+      "ai": "AI Tools",
+      "creative": "Creative"
     },
-    "Skills": {
-        "sectionTitle": "// skills/",
-        "heading": "Skills",
-        "subtitle": "Strengths and proficiency level",
-        "categories": {
-            "languages": "Languages",
-            "stack": "Stack",
-            "ai": "AI Tools",
-            "creative": "Creative"
-        },
-        "descriptions": {
-            "languages": "Programming languages mainly used in web development",
-            "stack": "Platforms and libraries used to build, deploy, and operate apps",
-            "ai": "AI tools I use daily for implementation, design, and learning",
-            "creative": "Video editing and content creation tools"
-        },
-        "levels": {
-            "main": "Main",
-            "familiar": "Production",
-            "learning": "Learning"
-        }
+    "descriptions": {
+      "languages": "Programming languages mainly used in web development",
+      "stack": "Platforms and libraries used to build, deploy, and operate apps",
+      "ai": "AI tools I use daily for implementation, design, and learning",
+      "creative": "Video editing and content creation tools"
     },
-    "TechStack": {
-        "sectionTitle": "// tech_stack/",
-        "heading": "Tech Stack",
-        "subtitle": "The tech stack I use to build products"
-    },
-    "Projects": {
-        "sectionTitle": "// projects/",
-        "heading": "Projects",
-        "viewList": "List",
-        "viewGrid": "Grid",
-        "viewAll": "View all",
-        "createdAt": "Created",
-        "updatedAt": "Updated",
-        "noPublishedProjects": "Coming soon. Thanks for your patience.",
-        "loading": "Loading…"
-    },
-    "Contact": {
-        "sectionTitle": "> send_message",
-        "heading": "Contact",
-        "description": "Questions, requests, or feedback — feel free to reach out.",
-        "optional": "Optional",
-        "formLabel": "Form",
-        "formContact": "Send a message",
-        "emailUnavailable": "Coming soon",
-        "discordCopied": "Copied Discord username",
-        "name": "Name",
-        "namePlaceholder": "Your name",
-        "email": "Email",
-        "emailPlaceholder": "your@email.com",
-        "subject": "Subject",
-        "subjectPlaceholder": "What is this about?",
-        "message": "Message",
-        "messagePlaceholder": "Type your message here…",
-        "preview": "Review Message",
-        "verifying": "Verifying…",
-        "sending": "Sending…",
-        "previewTitle": "Review your message",
-        "previewDescription": "Please confirm the details before sending.",
-        "backToEdit": "Back to edit",
-        "confirmSend": "Send Message",
-        "successTitle": "Message Sent",
-        "success": "Message sent successfully!",
-        "successAutoClose": "This dialog will close in a few seconds",
-        "close": "Close",
-        "turnstileRequired": "Please complete the verification check before sending.",
-        "error": "Failed to send. Please try again."
-    },
-    "Footer": {
-        "tagline": "Building what I love. That's it.",
-        "copyright": "© {year} All rights reserved.",
-        "terms": "Terms of Use",
-        "license": "License"
-    },
-    "Language": {
-        "label": "Language",
-        "switchTo": "Switch to {language}"
-    },
-    "Dashboard": {
-        "title": "Portfolio Dashboard",
-        "subtitle": "Manage your published portfolio content.",
-        "signOut": "Sign Out",
-        "noAdmin": "This account does not have admin access.",
-        "tabs": {
-            "projects": "Projects",
-            "activeProjects": "Active Projects",
-            "audit": "Audit Logs",
-            "profile": "Profile",
-            "mutualLinks": "Links"
-        },
-        "actions": {
-            "read": "Read",
-            "edit": "Edit"
-        },
-        "publish": {
-            "published": "published",
-            "draft": "draft"
-        },
-        "status": {
-            "idea": "Idea",
-            "design": "Design",
-            "development": "Development",
-            "completed": "Completed",
-            "on_hold": "On Hold"
-        },
-        "projects": {
-            "manageTitle": "Project Management",
-            "manageDescription": "Create new projects from the dedicated editor page.",
-            "newProject": "New Project",
-            "listTitle": "Projects",
-            "empty": "No projects yet.",
-            "searchPlaceholder": "Search projects…",
-            "filterAll": "All statuses",
-            "noResults": "No matching projects."
-        },
-        "toast": {
-            "project_created": "Project created.",
-            "project_updated": "Project updated.",
-            "project_deleted": "Project deleted.",
-            "project_create_failed": "Failed to create project.",
-            "project_update_failed": "Failed to update project.",
-            "project_delete_failed": "Failed to delete project.",
-            "active_created": "Active project created.",
-            "active_updated": "Active project updated.",
-            "active_deleted": "Active project deleted.",
-            "active_create_failed": "Failed to create active project.",
-            "active_update_failed": "Failed to update active project.",
-            "active_delete_failed": "Failed to delete active project.",
-            "links_created": "Mutual link created.",
-            "links_updated": "Mutual link updated.",
-            "links_deleted": "Mutual link deleted.",
-            "links_create_failed": "Failed to create mutual link.",
-            "links_update_failed": "Failed to update mutual link.",
-            "links_delete_failed": "Failed to delete mutual link."
-        },
-        "deleteProject": {
-            "button": "Delete",
-            "title": "Delete Project?",
-            "description": "Delete \"{title}\". This action cannot be undone.",
-            "cancel": "Cancel",
-            "confirm": "Delete"
-        },
-        "active": {
-            "title": "Active Projects",
-            "description": "Manage sort order, stage, and publish status for active projects.",
-            "newButton": "New Active Project",
-            "priority": "priority",
-            "published": "published",
-            "draft": "draft",
-            "empty": "No active projects yet.",
-            "stage": {
-                "planning": "Planning",
-                "design": "Design",
-                "development": "Development",
-                "testing": "Testing",
-                "completed": "Completed"
-            },
-            "fields": {
-                "name": "Name",
-                "namePlaceholder": "Name",
-                "stage": "Stage",
-                "priority": "Priority"
-            },
-            "createModal": {
-                "title": "Create Active Project"
-            },
-            "editModal": {
-                "title": "Edit Active Project"
-            },
-            "deleteModal": {
-                "title": "Delete Active Project?",
-                "description": "Delete \"{name}\". This action cannot be undone."
-            },
-            "actions": {
-                "edit": "Edit",
-                "delete": "Delete",
-                "close": "Close",
-                "create": "Create",
-                "update": "Update",
-                "cancel": "Cancel"
-            },
-            "dragHandle": "Drag to reorder"
-        },
-        "audit": {
-            "title": "Auth Audit Logs",
-            "description": "Showing all login success/failure logs with pagination.",
-            "authTab": "Auth Logs",
-            "cspTab": "CSP Logs",
-            "filterAll": "All",
-            "filterSuccess": "Success",
-            "filterInvalid": "Failed",
-            "filterRateLimited": "Rate Limited",
-            "total": "Total",
-            "empty": "No audit logs yet.",
-            "notConfigured": "Audit log table is not configured. Please apply the SQL setup.",
-            "prev": "Previous",
-            "next": "Next",
-            "cspTitle": "CSP Violation Reports",
-            "cspDescription": "CSP violation logs reported by browsers.",
-            "cspEmpty": "No CSP violation logs yet.",
-            "cspNotConfigured": "CSP log table is not configured. Please apply the SQL setup.",
-            "labelEmail": "email",
-            "labelIp": "ip",
-            "labelIpHash": "ip hash",
-            "labelUserId": "user id",
-            "labelLocale": "locale",
-            "labelUserAgent": "user agent",
-            "labelDirective": "directive",
-            "labelBlocked": "blocked",
-            "labelDocument": "document",
-            "labelDisposition": "disposition"
-        },
-        "editor": {
-            "backToDashboard": "← Back to Dashboard",
-            "draftLabel": "Project Draft",
-            "createTitle": "Create Project",
-            "createDescription": "Use a Notion-style editor to create articles with headings, lists, and images.",
-            "createSubmit": "Create Project",
-            "editTitle": "Project Editor",
-            "saveChanges": "Save Changes"
-        },
-        "editorForm": {
-            "title": "Title",
-            "titlePlaceholder": "Project name",
-            "description": "Description",
-            "descriptionPlaceholder": "Summary (2-3 sentences)",
-            "thumbnail": "Thumbnail Image",
-            "thumbnailHint": "JPG / PNG / WEBP, up to 5MB",
-            "thumbnailPreview": "16:9 Thumbnail Preview",
-            "thumbnailRecommended": "Recommended:",
-            "thumbnailSafeArea": "Safe area center:",
-            "articleContent": "Article Content",
-            "published": "Published",
-            "uploadAuthError": "Please sign in before uploading files.",
-            "uploadTypeError": "Only JPG / PNG / WEBP / AVIF files are allowed.",
-            "uploadSizeError": "Please keep file size at 5MB or less.",
-            "editorTipPrefix": "Type",
-            "editorTipSuffix": "for block options. Image/File upload is enabled.",
-            "status": {
-                "idea": "Idea",
-                "design": "Design",
-                "development": "Development",
-                "completed": "Completed",
-                "on_hold": "On Hold"
-            },
-            "saving": "Saving…",
-            "unsavedWarning": "You have unsaved changes. Leave anyway?",
-            "draftRestoredTitle": "Unsaved draft found",
-            "draftRestoredDescription": "We found a draft you didn't finish. Restore it?",
-            "draftRestore": "Restore",
-            "draftDiscard": "Discard",
-            "cropTitle": "Crop thumbnail",
-            "cropConfirm": "Apply crop",
-            "cropCancel": "Cancel"
-        },
-        "profile": {
-            "title": "Profile Photo",
-            "description": "Hover the photo to upload a new one.",
-            "updated": "Profile photo updated.",
-            "updateFailed": "Failed to update profile photo."
-        },
-        "mutualLinks": {
-            "title": "Mutual Links",
-            "description": "Manage sort order, add, and remove mutual links.",
-            "newButton": "New Link",
-            "empty": "No mutual links yet.",
-            "fields": {
-                "banner": "Banner",
-                "bannerHint": "3:1 ratio (300×100px minimum, 600×200px recommended)",
-                "name": "Name",
-                "namePlaceholder": "Site name",
-                "url": "URL",
-                "urlPlaceholder": "https://example.com",
-                "description": "Description",
-                "descriptionPlaceholder": "Short description"
-            },
-            "createModal": {
-                "title": "Create Mutual Link"
-            },
-            "editModal": {
-                "title": "Edit Mutual Link"
-            },
-            "deleteModal": {
-                "title": "Delete Mutual Link?",
-                "description": "Delete \"{name}\". This action cannot be undone."
-            },
-            "actions": {
-                "edit": "Edit",
-                "delete": "Delete",
-                "close": "Close",
-                "create": "Create",
-                "update": "Update",
-                "cancel": "Cancel"
-            },
-            "dragHandle": "Drag to reorder"
-        }
-    },
-    "ActiveProjects": {
-        "sectionLabel": "// in_progress",
-        "heading": "Active Projects",
-        "projectColumn": "Project",
-        "empty": "No active projects yet.",
-        "stagePlanning": "Planning",
-        "stageDesign": "Design",
-        "stageDevelopment": "Development",
-        "stageTesting": "Testing",
-        "stageCompleted": "Completed",
-        "loading": "Loading…"
-    },
-    "ProjectList": {
-        "backToTop": "← Back to Projects",
-        "heading": "Projects Archive",
-        "description": "A full list of published projects.",
-        "searchLabel": "Search",
-        "searchPlaceholder": "Search by title, description, or tag…",
-        "createdAt": "Created",
-        "updatedAt": "Updated",
-        "empty": "Coming soon. Thanks for your patience.",
-        "noResults": "No matching projects found.",
-        "prev": "Previous",
-        "next": "Next"
-    },
-    "ProjectDetail": {
-        "backToProjects": "← Back to Projects",
-        "backToArchive": "← Back to Archive",
-        "createdAt": "Created",
-        "updatedAt": "Updated",
-        "noContent": "No content yet.",
-        "unavailableTitle": "This article is temporarily unavailable",
-        "unavailableDescription": "Failed to load the published content. Please wait a moment and reload the page."
-    },
-    "Login": {
-        "title": "Dashboard Login",
-        "email": "Email",
-        "password": "Password",
-        "submit": "Sign In",
-        "backToSite": "← Back to Site",
-        "errorInvalid": "Incorrect email or password.",
-        "errorRateLimit": "Too many attempts. Please wait about 10 minutes before trying again."
-    },
-    "NotFound": {
-        "code": "404 / Not Found",
-        "title": "Page not found",
-        "description": "The page you requested does not exist or may have been moved.",
-        "backHome": "Back to Home",
-        "goProjects": "Go to Projects"
-    },
-    "License": {
-        "title": "License",
-        "description": "License information for this portfolio site",
-        "tableLibrary": "Library",
-        "tableLicense": "License",
-        "tableSource": "Source",
-        "sourceTitle": "Source Code License",
-        "sourceDescription": "The source code of this site, including its design, implementation, and configuration, is All Rights Reserved unless otherwise stated. Unauthorized reproduction, repurposing, modification, or redistribution is prohibited.",
-        "contentTitle": "Content Copyright",
-        "contentDescription": "All text, photographs, illustrations, designs, layouts, logos, and other creative works (collectively, \"Content\") published on this site are the property of the author (Aki) unless otherwise stated. Unauthorized reproduction, redistribution, modification, or secondary use of Content is prohibited. For personal reference or citation, please clearly attribute the source by including this site's URL. For commercial use, please contact us via the contact form in advance.",
-        "brandTitle": "Third-Party Logos and Trademarks",
-        "brandDescription": "Third-party service names, logos, icons, and trademarks used on this site remain the property of their respective owners. They are used solely for identification and reference purposes and remain subject to each brand's applicable guidelines and usage terms.",
-        "thirdPartyTitle": "Third-Party Libraries",
-        "thirdPartyDescription": "This site utilizes the following open source libraries and frameworks. Each library is governed by its own license, and details can be found in the respective repositories. Copyright for these libraries belongs to their respective developers or organizations.",
-        "backHome": "Back to Home"
-    },
-    "Terms": {
-        "title": "Terms of Use",
-        "description": "Terms of use for this portfolio site",
-        "lastUpdated": "Last updated: {date}",
-        "sectionNum": "Section {n}",
-        "privacyTitle": "Personal Information",
-        "privacyDescription": "Personal information such as name and email address collected through the contact form on this Site is used solely for the purpose of responding to inquiries and communicating with the user. Such information will not be shared with third parties without the user's consent, and will not be used for any purpose beyond that stated, except as required by applicable law.",
-        "governingTitle": "Governing Law and Jurisdiction",
-        "governingDescription": "These Terms shall be governed by and construed in accordance with the laws of Japan. Any dispute arising out of or relating to these Terms shall be subject to the exclusive jurisdiction of the Tokyo District Court as the court of first instance.",
-        "acceptanceTitle": "Acceptance of Terms",
-        "acceptanceDescription": "By accessing, browsing, or using this site (hereinafter \"the Site\"), you agree to be bound by all provisions of these Terms of Use (hereinafter \"the Terms\"). If you do not agree to these Terms, please discontinue use of the Site immediately. These Terms apply to all users who access or use the Site.",
-        "useTitle": "Use of the Site",
-        "useDescription": "The Site is published as a personal portfolio, intended to showcase the operator's skills, project history, and technical information. While every effort is made to ensure accuracy and currency, the completeness, accuracy, or usefulness of the information is not guaranteed. The following activities are prohibited: (1) interfering with the normal operation of the Site, (2) attempting or engaging in unauthorized access, (3) impersonating another person, (4) using the Site's content for commercial purposes without authorization, and (5) any other acts that violate applicable laws or public order.",
-        "ipTitle": "Intellectual Property",
-        "ipDescription": "All intellectual property rights (including copyright and trademark rights) in the Site's design, text, images, logos, icons, code, and all other content belong to the operator unless otherwise stated. Reproduction, modification, public transmission, distribution, transfer, lending, translation, adaptation, or any other use of this content without prior written consent from the operator is prohibited.",
-        "disclaimerTitle": "Disclaimer",
-        "disclaimerDescription": "Use of the Site is at the user's own risk. The operator assumes no liability for any damages incurred by the user or any third party arising from the use of (or inability to use) the Site. The operator does not guarantee and assumes no responsibility for the content, safety, or accuracy of any external sites linked from the Site. The Site may be interrupted, modified, or terminated without prior notice.",
-        "changesTitle": "Changes to Terms",
-        "changesDescription": "The operator may revise these Terms without prior notice as deemed necessary. Revised Terms become effective upon publication on the Site. While efforts will be made to notify users of significant changes on the Site, users are responsible for periodically reviewing these Terms. Continued use of the Site after revisions constitutes acceptance of the revised Terms.",
-        "contactTitle": "Contact",
-        "contactDescription": "For questions, comments regarding these Terms, or inquiries about content licensing, please use the contact form on the Site. Depending on the nature of the inquiry, it may take some time to respond.",
-        "backHome": "Back to Home"
-    },
-    "Servers": {
-        "backHome": "← Back to Home",
-        "heading": "Servers",
-        "description": "Live status of the servers I run.",
-        "refreshButton": "Refresh",
-        "lastUpdatedLabel": "Updated",
-        "statusOnline": "Online",
-        "statusOffline": "Offline",
-        "statusMaintenance": "Maintenance",
-        "categoryWeb": "Web",
-        "categoryGame": "Game",
-        "categoryBot": "Bot",
-        "categoryInfra": "Infra",
-        "specsLabel": "Specs",
-        "osLabel": "OS",
-        "ipLabel": "TAILNET IP",
-        "lastSeenLabel": "Last seen"
-    },
-    "MutualLinks": {
-        "heading": "Mutual Links",
-        "subtitle": "Friends and sites I'm linked up with",
-        "ctaTitle": "Open for mutual links",
-        "empty": "Want to exchange links? Reach out through X, Discord, or the contact form.",
-        "visitSite": "Visit site",
-        "discordCopied": "Copied Discord username"
+    "levels": {
+      "main": "Main",
+      "familiar": "Production",
+      "learning": "Learning"
     }
+  },
+  "TechStack": {
+    "sectionTitle": "// tech_stack/",
+    "heading": "Tech Stack",
+    "subtitle": "The tech stack I use to build products"
+  },
+  "Projects": {
+    "sectionTitle": "// projects/",
+    "heading": "Projects",
+    "viewList": "List",
+    "viewGrid": "Grid",
+    "viewAll": "View all",
+    "createdAt": "Created",
+    "updatedAt": "Updated",
+    "noPublishedProjects": "Coming soon. Thanks for your patience.",
+    "loading": "Loading…"
+  },
+  "Contact": {
+    "sectionTitle": "> send_message",
+    "heading": "Contact",
+    "description": "Questions, requests, or feedback — feel free to reach out.",
+    "optional": "Optional",
+    "formLabel": "Form",
+    "formContact": "Send a message",
+    "emailUnavailable": "Coming soon",
+    "discordCopied": "Copied Discord username",
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "email": "Email",
+    "emailPlaceholder": "your@email.com",
+    "subject": "Subject",
+    "subjectPlaceholder": "What is this about?",
+    "message": "Message",
+    "messagePlaceholder": "Type your message here…",
+    "preview": "Review Message",
+    "verifying": "Verifying…",
+    "sending": "Sending…",
+    "previewTitle": "Review your message",
+    "previewDescription": "Please confirm the details before sending.",
+    "backToEdit": "Back to edit",
+    "confirmSend": "Send Message",
+    "successTitle": "Message Sent",
+    "success": "Message sent successfully!",
+    "successAutoClose": "This dialog will close in a few seconds",
+    "close": "Close",
+    "turnstileRequired": "Please complete the verification check before sending.",
+    "error": "Failed to send. Please try again."
+  },
+  "Footer": {
+    "tagline": "Building what I love. That's it.",
+    "copyright": "© {year} All rights reserved.",
+    "terms": "Terms of Use",
+    "license": "License"
+  },
+  "Language": {
+    "label": "Language",
+    "switchTo": "Switch to {language}"
+  },
+  "Dashboard": {
+    "title": "Portfolio Dashboard",
+    "subtitle": "Manage your published portfolio content.",
+    "signOut": "Sign Out",
+    "noAdmin": "This account does not have admin access.",
+    "tabs": {
+      "projects": "Projects",
+      "activeProjects": "Active Projects",
+      "audit": "Audit Logs",
+      "profile": "Profile",
+      "mutualLinks": "Links"
+    },
+    "actions": {
+      "read": "Read",
+      "edit": "Edit"
+    },
+    "publish": {
+      "published": "published",
+      "draft": "draft"
+    },
+    "status": {
+      "idea": "Idea",
+      "design": "Design",
+      "development": "Development",
+      "completed": "Completed",
+      "on_hold": "On Hold"
+    },
+    "projects": {
+      "manageTitle": "Project Management",
+      "manageDescription": "Create new projects from the dedicated editor page.",
+      "newProject": "New Project",
+      "listTitle": "Projects",
+      "empty": "No projects yet.",
+      "searchPlaceholder": "Search projects…",
+      "filterAll": "All statuses",
+      "noResults": "No matching projects."
+    },
+    "toast": {
+      "project_created": "Project created.",
+      "project_updated": "Project updated.",
+      "project_deleted": "Project deleted.",
+      "project_create_failed": "Failed to create project.",
+      "project_update_failed": "Failed to update project.",
+      "project_delete_failed": "Failed to delete project.",
+      "active_created": "Active project created.",
+      "active_updated": "Active project updated.",
+      "active_deleted": "Active project deleted.",
+      "active_create_failed": "Failed to create active project.",
+      "active_update_failed": "Failed to update active project.",
+      "active_delete_failed": "Failed to delete active project.",
+      "links_created": "Mutual link created.",
+      "links_updated": "Mutual link updated.",
+      "links_deleted": "Mutual link deleted.",
+      "links_create_failed": "Failed to create mutual link.",
+      "links_update_failed": "Failed to update mutual link.",
+      "links_delete_failed": "Failed to delete mutual link."
+    },
+    "deleteProject": {
+      "button": "Delete",
+      "title": "Delete Project?",
+      "description": "Delete \"{title}\". This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Delete"
+    },
+    "active": {
+      "title": "Active Projects",
+      "description": "Manage sort order, stage, and publish status for active projects.",
+      "newButton": "New Active Project",
+      "priority": "priority",
+      "published": "published",
+      "draft": "draft",
+      "empty": "No active projects yet.",
+      "stage": {
+        "planning": "Planning",
+        "design": "Design",
+        "development": "Development",
+        "testing": "Testing",
+        "completed": "Completed"
+      },
+      "fields": {
+        "name": "Name",
+        "namePlaceholder": "Name",
+        "stage": "Stage",
+        "priority": "Priority"
+      },
+      "createModal": {
+        "title": "Create Active Project"
+      },
+      "editModal": {
+        "title": "Edit Active Project"
+      },
+      "deleteModal": {
+        "title": "Delete Active Project?",
+        "description": "Delete \"{name}\". This action cannot be undone."
+      },
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete",
+        "close": "Close",
+        "create": "Create",
+        "update": "Update",
+        "cancel": "Cancel"
+      },
+      "dragHandle": "Drag to reorder"
+    },
+    "audit": {
+      "title": "Auth Audit Logs",
+      "description": "Showing all login success/failure logs with pagination.",
+      "authTab": "Auth Logs",
+      "cspTab": "CSP Logs",
+      "filterAll": "All",
+      "filterSuccess": "Success",
+      "filterInvalid": "Failed",
+      "filterRateLimited": "Rate Limited",
+      "total": "Total",
+      "empty": "No audit logs yet.",
+      "notConfigured": "Audit log table is not configured. Please apply the SQL setup.",
+      "prev": "Previous",
+      "next": "Next",
+      "cspTitle": "CSP Violation Reports",
+      "cspDescription": "CSP violation logs reported by browsers.",
+      "cspEmpty": "No CSP violation logs yet.",
+      "cspNotConfigured": "CSP log table is not configured. Please apply the SQL setup.",
+      "labelEmail": "email",
+      "labelIp": "ip",
+      "labelIpHash": "ip hash",
+      "labelUserId": "user id",
+      "labelLocale": "locale",
+      "labelUserAgent": "user agent",
+      "labelDirective": "directive",
+      "labelBlocked": "blocked",
+      "labelDocument": "document",
+      "labelDisposition": "disposition"
+    },
+    "editor": {
+      "backToDashboard": "← Back to Dashboard",
+      "draftLabel": "Project Draft",
+      "createTitle": "Create Project",
+      "createDescription": "Use a Notion-style editor to create articles with headings, lists, and images.",
+      "createSubmit": "Create Project",
+      "editTitle": "Project Editor",
+      "saveChanges": "Save Changes"
+    },
+    "editorForm": {
+      "title": "Title",
+      "titlePlaceholder": "Project name",
+      "description": "Description",
+      "descriptionPlaceholder": "Summary (2-3 sentences)",
+      "thumbnail": "Thumbnail Image",
+      "thumbnailHint": "JPG / PNG / WEBP, up to 5MB",
+      "thumbnailPreview": "16:9 Thumbnail Preview",
+      "thumbnailRecommended": "Recommended:",
+      "thumbnailSafeArea": "Safe area center:",
+      "articleContent": "Article Content",
+      "published": "Published",
+      "uploadAuthError": "Please sign in before uploading files.",
+      "uploadTypeError": "Only JPG / PNG / WEBP / AVIF files are allowed.",
+      "uploadSizeError": "Please keep file size at 5MB or less.",
+      "editorTipPrefix": "Type",
+      "editorTipSuffix": "for block options. Image/File upload is enabled.",
+      "status": {
+        "idea": "Idea",
+        "design": "Design",
+        "development": "Development",
+        "completed": "Completed",
+        "on_hold": "On Hold"
+      },
+      "saving": "Saving…",
+      "unsavedWarning": "You have unsaved changes. Leave anyway?",
+      "draftRestoredTitle": "Unsaved draft found",
+      "draftRestoredDescription": "We found a draft you didn't finish. Restore it?",
+      "draftRestore": "Restore",
+      "draftDiscard": "Discard",
+      "cropTitle": "Crop thumbnail",
+      "cropConfirm": "Apply crop",
+      "cropCancel": "Cancel"
+    },
+    "profile": {
+      "title": "Profile Photo",
+      "description": "Hover the photo to upload a new one.",
+      "updated": "Profile photo updated.",
+      "updateFailed": "Failed to update profile photo."
+    },
+    "mutualLinks": {
+      "title": "Mutual Links",
+      "description": "Manage sort order, add, and remove mutual links.",
+      "newButton": "New Link",
+      "empty": "No mutual links yet.",
+      "fields": {
+        "banner": "Banner",
+        "bannerHint": "3:1 ratio (300×100px minimum, 600×200px recommended)",
+        "name": "Name",
+        "namePlaceholder": "Site name",
+        "url": "URL",
+        "urlPlaceholder": "https://example.com",
+        "description": "Description",
+        "descriptionPlaceholder": "Short description"
+      },
+      "createModal": {
+        "title": "Create Mutual Link"
+      },
+      "editModal": {
+        "title": "Edit Mutual Link"
+      },
+      "deleteModal": {
+        "title": "Delete Mutual Link?",
+        "description": "Delete \"{name}\". This action cannot be undone."
+      },
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete",
+        "close": "Close",
+        "create": "Create",
+        "update": "Update",
+        "cancel": "Cancel"
+      },
+      "dragHandle": "Drag to reorder"
+    }
+  },
+  "ActiveProjects": {
+    "sectionLabel": "// in_progress",
+    "heading": "Active Projects",
+    "projectColumn": "Project",
+    "empty": "No active projects yet.",
+    "stagePlanning": "Planning",
+    "stageDesign": "Design",
+    "stageDevelopment": "Development",
+    "stageTesting": "Testing",
+    "stageCompleted": "Completed",
+    "loading": "Loading…"
+  },
+  "ProjectList": {
+    "backToTop": "← Back to Projects",
+    "heading": "Projects Archive",
+    "description": "A full list of published projects.",
+    "searchLabel": "Search",
+    "searchPlaceholder": "Search by title, description, or tag…",
+    "createdAt": "Created",
+    "updatedAt": "Updated",
+    "empty": "Coming soon. Thanks for your patience.",
+    "noResults": "No matching projects found.",
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "ProjectDetail": {
+    "backToProjects": "← Back to Projects",
+    "backToArchive": "← Back to Archive",
+    "createdAt": "Created",
+    "updatedAt": "Updated",
+    "noContent": "No content yet.",
+    "unavailableTitle": "This article is temporarily unavailable",
+    "unavailableDescription": "Failed to load the published content. Please wait a moment and reload the page."
+  },
+  "Login": {
+    "title": "Dashboard Login",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign In",
+    "backToSite": "← Back to Site",
+    "errorInvalid": "Incorrect email or password.",
+    "errorRateLimit": "Too many attempts. Please wait about 10 minutes before trying again."
+  },
+  "NotFound": {
+    "code": "404 / Not Found",
+    "title": "Page not found",
+    "description": "The page you requested does not exist or may have been moved.",
+    "backHome": "Back to Home",
+    "goProjects": "Go to Projects"
+  },
+  "License": {
+    "title": "License",
+    "description": "License information for this portfolio site",
+    "tableLibrary": "Library",
+    "tableLicense": "License",
+    "tableSource": "Source",
+    "sourceTitle": "Source Code License",
+    "sourceDescription": "The source code of this site, including its design, implementation, and configuration, is All Rights Reserved unless otherwise stated. Unauthorized reproduction, repurposing, modification, or redistribution is prohibited.",
+    "contentTitle": "Content Copyright",
+    "contentDescription": "All text, photographs, illustrations, designs, layouts, logos, and other creative works (collectively, \"Content\") published on this site are the property of the author (Aki) unless otherwise stated. Unauthorized reproduction, redistribution, modification, or secondary use of Content is prohibited. For personal reference or citation, please clearly attribute the source by including this site's URL. For commercial use, please contact us via the contact form in advance.",
+    "brandTitle": "Third-Party Logos and Trademarks",
+    "brandDescription": "Third-party service names, logos, icons, and trademarks used on this site remain the property of their respective owners. They are used solely for identification and reference purposes and remain subject to each brand's applicable guidelines and usage terms.",
+    "thirdPartyTitle": "Third-Party Libraries",
+    "thirdPartyDescription": "This site utilizes the following open source libraries and frameworks. Each library is governed by its own license, and details can be found in the respective repositories. Copyright for these libraries belongs to their respective developers or organizations.",
+    "backHome": "Back to Home"
+  },
+  "Terms": {
+    "title": "Terms of Use",
+    "description": "Terms of use for this portfolio site",
+    "lastUpdated": "Last updated: {date}",
+    "sectionNum": "Section {n}",
+    "privacyTitle": "Personal Information",
+    "privacyDescription": "Personal information such as name and email address collected through the contact form on this Site is used solely for the purpose of responding to inquiries and communicating with the user. Such information will not be shared with third parties without the user's consent, and will not be used for any purpose beyond that stated, except as required by applicable law.",
+    "governingTitle": "Governing Law and Jurisdiction",
+    "governingDescription": "These Terms shall be governed by and construed in accordance with the laws of Japan. Any dispute arising out of or relating to these Terms shall be subject to the exclusive jurisdiction of the Tokyo District Court as the court of first instance.",
+    "acceptanceTitle": "Acceptance of Terms",
+    "acceptanceDescription": "By accessing, browsing, or using this site (hereinafter \"the Site\"), you agree to be bound by all provisions of these Terms of Use (hereinafter \"the Terms\"). If you do not agree to these Terms, please discontinue use of the Site immediately. These Terms apply to all users who access or use the Site.",
+    "useTitle": "Use of the Site",
+    "useDescription": "The Site is published as a personal portfolio, intended to showcase the operator's skills, project history, and technical information. While every effort is made to ensure accuracy and currency, the completeness, accuracy, or usefulness of the information is not guaranteed. The following activities are prohibited: (1) interfering with the normal operation of the Site, (2) attempting or engaging in unauthorized access, (3) impersonating another person, (4) using the Site's content for commercial purposes without authorization, and (5) any other acts that violate applicable laws or public order.",
+    "ipTitle": "Intellectual Property",
+    "ipDescription": "All intellectual property rights (including copyright and trademark rights) in the Site's design, text, images, logos, icons, code, and all other content belong to the operator unless otherwise stated. Reproduction, modification, public transmission, distribution, transfer, lending, translation, adaptation, or any other use of this content without prior written consent from the operator is prohibited.",
+    "disclaimerTitle": "Disclaimer",
+    "disclaimerDescription": "Use of the Site is at the user's own risk. The operator assumes no liability for any damages incurred by the user or any third party arising from the use of (or inability to use) the Site. The operator does not guarantee and assumes no responsibility for the content, safety, or accuracy of any external sites linked from the Site. The Site may be interrupted, modified, or terminated without prior notice.",
+    "changesTitle": "Changes to Terms",
+    "changesDescription": "The operator may revise these Terms without prior notice as deemed necessary. Revised Terms become effective upon publication on the Site. While efforts will be made to notify users of significant changes on the Site, users are responsible for periodically reviewing these Terms. Continued use of the Site after revisions constitutes acceptance of the revised Terms.",
+    "contactTitle": "Contact",
+    "contactDescription": "For questions, comments regarding these Terms, or inquiries about content licensing, please use the contact form on the Site. Depending on the nature of the inquiry, it may take some time to respond.",
+    "backHome": "Back to Home"
+  },
+  "Servers": {
+    "backHome": "← Back to Home",
+    "heading": "Servers",
+    "description": "Live status of the servers I run.",
+    "refreshButton": "Refresh",
+    "lastUpdatedLabel": "Updated",
+    "statusOnline": "Online",
+    "statusOffline": "Offline",
+    "statusMaintenance": "Maintenance",
+    "categoryWeb": "Web",
+    "categoryGame": "Game",
+    "categoryBot": "Bot",
+    "categoryInfra": "Infra",
+    "specsLabel": "Specs",
+    "osLabel": "OS",
+    "ipLabel": "TAILNET IP",
+    "lastSeenLabel": "Last seen",
+    "backAbout": "← Back to About",
+    "backTimeline": "← Back to Active Projects"
+  },
+  "MutualLinks": {
+    "heading": "Mutual Links",
+    "subtitle": "Friends and sites I'm linked up with",
+    "ctaTitle": "Open for mutual links",
+    "empty": "Want to exchange links? Reach out through X, Discord, or the contact form.",
+    "visitSite": "Visit site",
+    "discordCopied": "Copied Discord username"
+  }
 }
