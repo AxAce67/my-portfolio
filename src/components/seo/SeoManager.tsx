@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import {
   buildLocaleUrl,
@@ -32,7 +32,7 @@ export function SeoManager() {
   const segments = pathname.split('/').filter(Boolean);
   const locale = useLocale();
   const localPath = `/${segments.slice(1).join('/')}`.replace(/\/$/, '') || '/';
-  const seo = getLocaleSeo(locale);
+  const seo = useMemo(() => getLocaleSeo(locale), [locale]);
   const route = segments[1] ?? '';
   const isProjectDetail = route === 'projects' && Boolean(segments[2]);
   const isAdmin = route === 'admin';

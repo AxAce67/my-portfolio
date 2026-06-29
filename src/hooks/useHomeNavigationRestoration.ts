@@ -78,6 +78,14 @@ export function useHomeNavigationRestoration(returningProjectId: string | null, 
     const savedScrollY = readSessionNumber(navigationStateKeys.homeScrollY);
     if (savedScrollY === null) return;
 
+    // If the user clicked an explicit "back" link (returnToProjects='1') while
+    // returning to a named section, let the useEffect scrollIntoView retry
+    // loop handle it — pixel scroll here fires before the page is tall enough
+    // on slower machines (Windows). Browser-back (no returnToProjects) skips
+    // this guard and falls through to the immediate pixel scroll below.
+    const referrerHash = readSessionValue(navigationStateKeys.homeReferrerHash);
+    if (referrerHash && readSessionValue(navigationStateKeys.returnToProjects) === '1') return;
+
     let cancelled = false;
     window.scrollTo(0, savedScrollY);
     scrollRestoredRef.current = true;
@@ -109,7 +117,7 @@ export function useHomeNavigationRestoration(returningProjectId: string | null, 
 
     let hash = window.location.hash?.replace('#', '') || '';
     if (!hash && shouldRestoreProjects) {
-      hash = sessionStorage.getItem(navigationStateKeys.homeReferrerHash) || '';
+      hash = readSessionValue(navigationStateKeys.homeReferrerHash) || '';
     }
 
     if (shouldRestoreProjects) {
@@ -122,13 +130,17 @@ export function useHomeNavigationRestoration(returningProjectId: string | null, 
           // If page is tall enough, we assume pixel scroll will be accurate
           if (document.documentElement.scrollHeight > savedScrollY + window.innerHeight * 0.8) {
             window.scrollTo(0, savedScrollY);
+            window.requestAnimationFrame(resolveHomeProjectsTransition);
             return;
           }
-          
+
           // Otherwise, try to keep the target element in view while waiting for page to grow
           if (hash) {
             const target = document.getElementById(hash);
-            if (target) target.scrollIntoView({ behavior: 'auto', block: 'start' });
+            if (target) {
+              target.scrollIntoView({ behavior: 'auto', block: 'start' });
+              window.requestAnimationFrame(resolveHomeProjectsTransition);
+            }
           } else {
             window.scrollTo(0, savedScrollY);
           }
