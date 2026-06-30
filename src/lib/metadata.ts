@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { defaultLocale, locales, type AppLocale } from '@/i18n/locales';
+import type { ProjectDetailRecord } from '@/lib/content/publicContent';
 import { DEFAULT_OG_IMAGE_PATH, buildLocaleUrl, getLocaleSeo, getOpenGraphLocale, getSiteUrl } from '@/lib/seo';
 
 type PageKind = 'home' | 'projects' | 'projectDetail' | 'servers' | 'terms' | 'license' | 'admin';
@@ -81,6 +82,64 @@ export function createPageMetadata(locale: AppLocale, kind: PageKind, path = rou
           width: 1200,
           height: 630,
           alt: seo.siteName,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [imageUrl],
+    },
+  };
+}
+
+function toAbsoluteUrl(url: string | null | undefined) {
+  if (!url) return `${getSiteUrl()}${DEFAULT_OG_IMAGE_PATH}`;
+
+  try {
+    return new URL(url, getSiteUrl()).toString();
+  } catch {
+    return `${getSiteUrl()}${DEFAULT_OG_IMAGE_PATH}`;
+  }
+}
+
+export function createProjectMetadata(locale: AppLocale, project: ProjectDetailRecord, path: string): Metadata {
+  const seo = getLocaleSeo(locale);
+  const title = project.title?.trim() ? `${project.title.trim()} | ${seo.siteName}` : `Project | ${seo.siteName}`;
+  const description = project.description?.trim() || seo.projectsDescription;
+  const canonical = buildLocaleUrl(locale, path);
+  const imageUrl = toAbsoluteUrl(project.thumbnail_url);
+
+  return {
+    metadataBase: new URL(getSiteUrl()),
+    title,
+    description,
+    alternates: {
+      canonical,
+      languages: getAlternateLanguages(path),
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    keywords: project.tags.length > 0 ? project.tags : undefined,
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      siteName: seo.siteName,
+      locale: getOpenGraphLocale(locale),
+      type: 'article',
+      publishedTime: project.created_at ?? undefined,
+      modifiedTime: project.updated_at ?? undefined,
+      tags: project.tags.length > 0 ? project.tags : undefined,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: project.title?.trim() || seo.siteName,
         },
       ],
     },

@@ -34,6 +34,7 @@ export type ProjectDetailRecord = {
   updated_at: string | null;
   is_published: boolean | null;
   thumbnail_url: string | null;
+  tags: string[];
 };
 
 export type ProjectDetailResult =
@@ -169,6 +170,7 @@ export async function getProjectById(id: string): Promise<ProjectDetailResult> {
       updated_at: row.$updatedAt ?? null,
       is_published: row.is_published ?? null,
       thumbnail_url: row.thumbnail_url ?? null,
+      tags: row.tags ?? [],
     };
 
     return { status: 'ok', project };
