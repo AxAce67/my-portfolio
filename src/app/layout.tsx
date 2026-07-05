@@ -73,6 +73,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <Script
           src="https://analytics.aki.quest/script.js"
           data-website-id="9612c4b4-0548-4e2b-93ba-c85c880d5d08"
+          data-domains="aki.quest"
           strategy="afterInteractive"
         />
         {children}
