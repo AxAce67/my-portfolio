@@ -70,6 +70,11 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     <html lang="ja" className={initialTheme} data-theme={initialTheme} suppressHydrationWarning>
       <body suppressHydrationWarning>
         <Script id="theme-init" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: getThemeInitScript() }} />
+        <Script
+          src="https://analytics.aki.quest/script.js"
+          data-website-id="9612c4b4-0548-4e2b-93ba-c85c880d5d08"
+          strategy="afterInteractive"
+        />
         {children}
       </body>
     </html>
