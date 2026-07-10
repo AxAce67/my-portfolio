@@ -11,7 +11,7 @@ const socialLinks = [
     { icon: Github, href: 'https://github.com/AxAce67', label: 'GitHub' },
     { icon: Twitter, href: 'https://x.com/real_Aki', label: 'X' },
     { icon: SiDiscord, href: '', label: 'Discord', copyText: '@xaki67' },
-    { icon: Mail, href: '', label: 'Email', disabled: true },
+    { icon: Mail, href: 'mailto:hello@aki.quest', label: 'Email' },
 ];
 
 export function Footer() {
@@ -25,17 +25,8 @@ export function Footer() {
                 
                 {/* 1. Social Icons */}
                 <div className="flex items-center gap-8">
-                    {socialLinks.map(({ icon: Icon, href, label, disabled, copyText }) =>
-                        disabled ? (
-                            <span
-                                key={label}
-                                className="text-muted-foreground/40 cursor-not-allowed"
-                                title={label}
-                                aria-hidden="true"
-                            >
-                                <Icon className="w-5 h-5" strokeWidth={1.5} />
-                            </span>
-                        ) : copyText ? (
+                    {socialLinks.map(({ icon: Icon, href, label, copyText }) =>
+                        copyText ? (
                             <button
                                 key={label}
                                 type="button"
@@ -49,8 +40,8 @@ export function Footer() {
                             <a
                                 key={label}
                                 href={href}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                                target={href.startsWith('mailto:') ? undefined : '_blank'}
+                                rel={href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
                                 className="text-muted-foreground/60 hover:text-foreground transition-all duration-300 hover:-translate-y-0.5"
                                 aria-label={label}
                             >

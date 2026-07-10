@@ -119,8 +119,7 @@ const profileLinks: ProfileLink[] = [
   {
     id: 'email',
     label: 'Email',
-    href: '',
-    disabled: true,
+    href: 'mailto:hello@aki.quest',
     icon: <Mail className="w-4 h-4" strokeWidth={1.5} />,
   },
 ];
@@ -643,8 +642,8 @@ function AboutSection() {
                       key={link.id}
                       href={link.href}
                       className="flex items-center justify-center gap-1.5 px-2 py-2 rounded-md border border-border text-foreground/90 hover:text-foreground hover:border-border-hover transition-colors"
-                      target="_blank"
-                      rel="noreferrer noopener"
+                      target={link.href.startsWith('mailto:') ? undefined : '_blank'}
+                      rel={link.href.startsWith('mailto:') ? undefined : 'noreferrer noopener'}
                     >
                       <span>{link.icon}</span>
                       <span className="text-[12px] font-mono tracking-wide">{link.label}</span>
@@ -827,8 +826,8 @@ function AboutSection() {
                       key={link.id}
                       href={link.href}
                       className="flex items-center gap-2 px-3 py-1 rounded-lg border border-border hover:border-border-hover text-foreground/90 hover:text-foreground transition-colors"
-                      target="_blank"
-                      rel="noreferrer noopener"
+                      target={link.href.startsWith('mailto:') ? undefined : '_blank'}
+                      rel={link.href.startsWith('mailto:') ? undefined : 'noreferrer noopener'}
                     >
                       <span>{link.icon}</span>
                       <span className="text-xs font-mono tracking-wide">{link.label}</span>

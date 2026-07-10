@@ -8,9 +8,11 @@ type ContactMethodsProps = {
   thirdMethod?: 'form' | 'email';
 };
 
+const DEFAULT_CONTACT_EMAIL = 'hello@aki.quest';
+
 export function ContactMethods({ className = '', thirdMethod = 'form' }: ContactMethodsProps) {
   const t = useTranslations('Contact');
-  const contactEmail = (process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? process.env.VITE_CONTACT_EMAIL)?.trim();
+  const contactEmail = (process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? process.env.VITE_CONTACT_EMAIL)?.trim() || DEFAULT_CONTACT_EMAIL;
 
   const copyDiscordUsername = () => {
     navigator.clipboard.writeText('@xaki67').then(() => toast.success(t('discordCopied')));
@@ -48,23 +50,13 @@ export function ContactMethods({ className = '', thirdMethod = 'form' }: Contact
       </button>
 
       {thirdMethod === 'email' ? (
-        contactEmail ? (
-          <a href={`mailto:${contactEmail}`} className={itemClass}>
-            <Mail className="h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground" strokeWidth={1.5} />
-            <span className="min-w-0">
-              <span className="block text-[10px] font-mono uppercase tracking-wider text-muted-foreground">Email</span>
-              <span className="block truncate text-xs text-foreground">{contactEmail}</span>
-            </span>
-          </a>
-        ) : (
-          <span className={`${itemClass} cursor-not-allowed opacity-50`} aria-label={t('emailUnavailable')}>
-            <Mail className="h-4 w-4 shrink-0 text-muted-foreground" strokeWidth={1.5} />
-            <span className="min-w-0">
-              <span className="block text-[10px] font-mono uppercase tracking-wider text-muted-foreground">Email</span>
-              <span className="block truncate text-xs text-foreground">{t('emailUnavailable')}</span>
-            </span>
+        <a href={`mailto:${contactEmail}`} className={itemClass}>
+          <Mail className="h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground" strokeWidth={1.5} />
+          <span className="min-w-0">
+            <span className="block text-[10px] font-mono uppercase tracking-wider text-muted-foreground">Email</span>
+            <span className="block truncate text-xs text-foreground">{contactEmail}</span>
           </span>
-        )
+        </a>
       ) : (
         <button type="button" onClick={scrollToContactForm} className={itemClass}>
           <Mail className="h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground" strokeWidth={1.5} />
