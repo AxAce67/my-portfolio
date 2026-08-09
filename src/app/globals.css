@@ -722,10 +722,10 @@ body::before {
     position: absolute;
     left: 0;
     right: 0;
-    top: calc((6rem + env(safe-area-inset-top)) * -1);
-    height: calc(6rem + env(safe-area-inset-top));
+    top: calc((12rem + env(safe-area-inset-top)) * -1);
+    height: calc(12rem + env(safe-area-inset-top));
     pointer-events: none;
-    background: transparent;
+    background: rgb(var(--background-rgb) / 0.01);
     backdrop-filter: blur(0px);
     -webkit-backdrop-filter: blur(0px);
     transition:
