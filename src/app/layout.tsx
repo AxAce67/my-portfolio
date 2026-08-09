@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import { cookies } from 'next/headers';
 import { DEFAULT_OG_IMAGE_PATH, getSiteUrl } from '@/lib/seo';
@@ -38,6 +38,12 @@ export const metadata: Metadata = {
     description: 'Portfolio of indie developer Aki featuring web projects and development work.',
     images: [DEFAULT_OG_IMAGE_PATH],
   },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
 };
 
 function getThemeInitScript() {

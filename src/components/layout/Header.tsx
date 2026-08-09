@@ -36,6 +36,30 @@ export function Header() {
     const shouldShowSolidHeader = scrolled || !isHomePage;
 
     useEffect(() => {
+        const viewport = window.visualViewport;
+        if (!viewport) return;
+
+        let frameId = 0;
+        const updateHeaderOffset = () => {
+            window.cancelAnimationFrame(frameId);
+            frameId = window.requestAnimationFrame(() => {
+                document.documentElement.style.setProperty('--site-header-viewport-offset', `${viewport.offsetTop}px`);
+            });
+        };
+
+        updateHeaderOffset();
+        viewport.addEventListener('resize', updateHeaderOffset);
+        viewport.addEventListener('scroll', updateHeaderOffset);
+
+        return () => {
+            window.cancelAnimationFrame(frameId);
+            viewport.removeEventListener('resize', updateHeaderOffset);
+            viewport.removeEventListener('scroll', updateHeaderOffset);
+            document.documentElement.style.removeProperty('--site-header-viewport-offset');
+        };
+    }, []);
+
+    useEffect(() => {
         setIsMenuOpen(false);
     }, [pathname]);
 
@@ -177,7 +201,7 @@ export function Header() {
     return (
         <>
             <header
-                className={`site-header fixed top-0 left-0 right-0 z-50 ${shouldShowSolidHeader ? 'is-scrolled' : ''}`}
+                className={`site-header fixed left-0 right-0 z-50 ${shouldShowSolidHeader ? 'is-scrolled' : ''}`}
             >
                 <nav className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-14 sm:h-16">
