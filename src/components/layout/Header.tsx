@@ -43,8 +43,7 @@ export function Header() {
         const updateHeaderOffset = () => {
             window.cancelAnimationFrame(frameId);
             frameId = window.requestAnimationFrame(() => {
-                const offset = window.scrollY > 20 ? viewport.offsetTop : 0;
-                document.documentElement.style.setProperty('--site-header-viewport-offset', `${offset}px`);
+                document.documentElement.style.setProperty('--site-header-viewport-offset', `${viewport.offsetTop}px`);
             });
         };
 
