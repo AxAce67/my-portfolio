@@ -43,16 +43,19 @@ export function Header() {
         const updateHeaderOffset = () => {
             window.cancelAnimationFrame(frameId);
             frameId = window.requestAnimationFrame(() => {
-                document.documentElement.style.setProperty('--site-header-viewport-offset', `${viewport.offsetTop}px`);
+                const offset = window.scrollY > 20 ? viewport.offsetTop : 0;
+                document.documentElement.style.setProperty('--site-header-viewport-offset', `${offset}px`);
             });
         };
 
         updateHeaderOffset();
+        window.addEventListener('scroll', updateHeaderOffset, { passive: true });
         viewport.addEventListener('resize', updateHeaderOffset);
         viewport.addEventListener('scroll', updateHeaderOffset);
 
         return () => {
             window.cancelAnimationFrame(frameId);
+            window.removeEventListener('scroll', updateHeaderOffset);
             viewport.removeEventListener('resize', updateHeaderOffset);
             viewport.removeEventListener('scroll', updateHeaderOffset);
             document.documentElement.style.removeProperty('--site-header-viewport-offset');
