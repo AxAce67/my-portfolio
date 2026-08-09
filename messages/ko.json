@@ -118,6 +118,9 @@
     "turnstileRequired": "전송 전에 인증을 완료해 주세요.",
     "error": "전송에 실패했습니다. 다시 시도해 주세요."
   },
+  "Sponsors": {
+    "heading": "Sponsors"
+  },
   "Footer": {
     "tagline": "좋아하는 것을 만든다. 그뿐입니다.",
     "copyright": "© {year} All rights reserved.",
@@ -455,6 +458,14 @@
     "lastSeenLabel": "마지막 확인",
     "backAbout": "← About으로 돌아가기",
     "backTimeline": "← 활성 프로젝트로 돌아가기"
+  },
+  "Radar": {
+    "eyebrow": "Live ADS-B",
+    "heading": "Radar",
+    "description": "내 수신기에서 제공하는 tar1090 항공기 레이더를 실시간으로 표시합니다.",
+    "openExternal": "레이더 열기",
+    "iframeTitle": "실시간 항공기 레이더",
+    "fallback": "레이더가 여기에서 로드되지 않으면 새 탭에서 열어 주세요."
   },
   "MutualLinks": {
     "heading": "Mutual Links",

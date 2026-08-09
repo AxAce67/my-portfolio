@@ -7,6 +7,7 @@ const staticRoutes = [
   { path: '', priority: 1, changeFrequency: 'weekly' },
   { path: '/projects', priority: 0.85, changeFrequency: 'weekly' },
   { path: '/servers', priority: 0.65, changeFrequency: 'weekly' },
+  { path: '/radar', priority: 0.55, changeFrequency: 'daily' },
   { path: '/terms', priority: 0.2, changeFrequency: 'yearly' },
   { path: '/license', priority: 0.2, changeFrequency: 'yearly' },
 ] as const;

@@ -118,6 +118,9 @@
     "turnstileRequired": "Conclua a verificação antes de enviar.",
     "error": "Falha ao enviar. Tente novamente."
   },
+  "Sponsors": {
+    "heading": "Sponsors"
+  },
   "Footer": {
     "tagline": "Construo o que eu gosto. Só isso.",
     "copyright": "© {year} Todos os direitos reservados.",
@@ -455,6 +458,14 @@
     "lastSeenLabel": "Visto por último",
     "backAbout": "← Voltar para Sobre",
     "backTimeline": "← Voltar para Projetos ativos"
+  },
+  "Radar": {
+    "eyebrow": "Live ADS-B",
+    "heading": "Radar",
+    "description": "Visualização ao vivo do radar de aeronaves tar1090 a partir do meu receptor.",
+    "openExternal": "Abrir radar",
+    "iframeTitle": "Radar de aeronaves ao vivo",
+    "fallback": "Se o radar não carregar aqui, abra-o em uma nova aba."
   },
   "MutualLinks": {
     "heading": "Mutual Links",

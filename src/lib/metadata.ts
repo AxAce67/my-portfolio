@@ -3,13 +3,14 @@ import { defaultLocale, locales, type AppLocale } from '@/i18n/locales';
 import type { ProjectDetailRecord } from '@/lib/content/publicContent';
 import { DEFAULT_OG_IMAGE_PATH, buildLocaleUrl, getLocaleSeo, getOpenGraphLocale, getSiteUrl } from '@/lib/seo';
 
-type PageKind = 'home' | 'projects' | 'projectDetail' | 'servers' | 'terms' | 'license' | 'admin';
+type PageKind = 'home' | 'projects' | 'projectDetail' | 'servers' | 'radar' | 'terms' | 'license' | 'admin';
 
 const routePaths: Record<PageKind, string> = {
   home: '/',
   projects: '/projects',
   projectDetail: '/projects',
   servers: '/servers',
+  radar: '/radar',
   terms: '/terms',
   license: '/license',
   admin: '/admin',
@@ -33,6 +34,8 @@ function getRouteCopy(locale: AppLocale, kind: PageKind) {
       return { title: `Project | ${seo.siteName}`, description: seo.projectsDescription };
     case 'servers':
       return { title: `Servers | ${seo.siteName}`, description: seo.homeDescription };
+    case 'radar':
+      return { title: `Radar | ${seo.siteName}`, description: 'Live ADS-B aircraft radar powered by tar1090.' };
     case 'terms':
       return { title: `Terms | ${seo.siteName}`, description: seo.homeDescription };
     case 'license':

@@ -20,6 +20,11 @@ const nextConfig: NextConfig = {
         destination: '/ja/admin',
         permanent: false,
       },
+      {
+        source: '/radar',
+        destination: '/ja/radar',
+        permanent: false,
+      },
     ];
   },
 };

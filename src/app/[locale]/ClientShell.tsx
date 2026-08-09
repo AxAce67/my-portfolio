@@ -6,7 +6,6 @@ import { Footer } from '@/components/layout/Footer';
 import { AppToaster } from '@/components/ui/AppToaster';
 import { ScrollToTop } from '@/components/ui/ScrollToTop';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
-import { SeoManager } from '@/components/seo/SeoManager';
 import { getLocaleMeta, type AppLocale } from '@/i18n/routing';
 import { LocaleProvider, useAppLocale } from '@/i18n/LocaleProvider';
 
@@ -28,7 +27,6 @@ function ClientShellContent({ children }: Pick<Props, 'children'>) {
   return (
     <ThemeProvider>
       <ScrollToTop />
-      <SeoManager />
       <div className="flex min-h-screen flex-col">
         <a href="#main-content" className="skip-link">
           {getLocaleMeta(locale).skipToContentLabel}

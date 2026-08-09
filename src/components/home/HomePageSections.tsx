@@ -18,6 +18,7 @@ import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
 import { navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 import { toast } from 'sonner';
 import { ContactMethods } from '@/components/home/ContactMethods';
+import SponsorsSection from '@/components/home/SponsorsSection';
 import { selfHostedServers } from '@/lib/selfHostedServers';
 import {
   SiTypescript,
@@ -34,7 +35,6 @@ import {
   SiVercel,
   SiDiscord,
 } from '@icons-pack/react-simple-icons';
-import { SiOpenai, SiAdobepremierepro, SiCanva } from 'react-icons/si';
 import {
   getSiteSettings,
   DEFAULT_AVATAR_URL,
@@ -64,6 +64,14 @@ const FilmoraIcon: SkillIconComponent = ({ size = 16, className = '' }) => (
   <Film width={size} height={size} strokeWidth={1.5} className={className} />
 );
 
+const OpenAIIcon: SkillIconComponent = ({ size = 16, className = '' }) => (
+  <Sparkles width={size} height={size} strokeWidth={1.5} className={className} />
+);
+
+const CanvaIcon: SkillIconComponent = ({ size = 16, className = '' }) => (
+  <LayoutGrid width={size} height={size} strokeWidth={1.5} className={className} />
+);
+
 const sampleSkills: SkillItem[] = [
   { name: 'TypeScript', category: 'Languages', featured: true, icon: SiTypescript, level: 'main' },
   { name: 'Python', category: 'Languages', featured: true, icon: SiPython, level: 'main' },
@@ -77,14 +85,14 @@ const sampleSkills: SkillItem[] = [
   { name: 'Appwrite', category: 'Stack', icon: SiAppwrite, level: 'familiar' },
   { name: 'Vercel', category: 'Stack', icon: SiVercel, level: 'familiar' },
 
-  { name: 'ChatGPT / Codex', category: 'AI', featured: true, icon: SiOpenai, level: 'main' },
+  { name: 'ChatGPT / Codex', category: 'AI', featured: true, icon: OpenAIIcon, level: 'main' },
   { name: 'Claude / Claude Code', category: 'AI', featured: true, icon: SiClaude, level: 'main' },
   { name: 'Gemini', category: 'AI', icon: SiGooglegemini, level: 'familiar' },
   { name: 'Manus', category: 'AI', iconSrc: '/brands/manus.svg', level: 'familiar' },
 
-  { name: 'Adobe Premiere Pro', category: 'Creative', featured: true, icon: SiAdobepremierepro, level: 'main' },
+  { name: 'Adobe Premiere Pro', category: 'Creative', featured: true, icon: FilmoraIcon, level: 'main' },
   { name: 'Wondershare Filmora', category: 'Creative', icon: FilmoraIcon, level: 'familiar' },
-  { name: 'Canva', category: 'Creative', icon: SiCanva, level: 'familiar' },
+  { name: 'Canva', category: 'Creative', icon: CanvaIcon, level: 'familiar' },
 ];
 
 type ProfileLink = {
@@ -254,6 +262,7 @@ export default function HomePageSections({
       <ActiveProjectsSection initialActiveProjects={initialActiveProjects} isLoading={isLoading} />
       <MutualLinksSection />
       <ContactSection />
+      <SponsorsSection />
     </>
   );
 }

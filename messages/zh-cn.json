@@ -118,6 +118,9 @@
     "turnstileRequired": "发送前请完成验证。",
     "error": "发送失败，请稍后重试。"
   },
+  "Sponsors": {
+    "heading": "Sponsors"
+  },
   "Footer": {
     "tagline": "做自己喜欢的东西。仅此而已。",
     "copyright": "© {year} 保留所有权利。",
@@ -455,6 +458,14 @@
     "lastSeenLabel": "最后在线",
     "backAbout": "← 返回关于",
     "backTimeline": "← 返回活跃项目"
+  },
+  "Radar": {
+    "eyebrow": "Live ADS-B",
+    "heading": "Radar",
+    "description": "显示来自我的接收器的 tar1090 实时航空器雷达。",
+    "openExternal": "打开雷达",
+    "iframeTitle": "实时航空器雷达",
+    "fallback": "如果雷达未在此处加载，请在新标签页中打开。"
   },
   "MutualLinks": {
     "heading": "Mutual Links",

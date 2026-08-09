@@ -38,7 +38,7 @@ import {
   SiXcode,
   SiAndroidstudio,
 } from '@icons-pack/react-simple-icons';
-import { SiOpenai } from 'react-icons/si';
+import { Sparkles } from 'lucide-react';
 import { FaWindows, FaCube } from 'react-icons/fa';
 type IconComponent = ComponentType<{ size?: number | string; className?: string; style?: React.CSSProperties }>;
 type TechItem =
@@ -121,7 +121,7 @@ const techStack: TechItem[] = [
   { name: 'Raspberry Pi', icon: SiRaspberrypi, brandColor: '#A22846' },
   { name: 'Minecraft', iconSrc: '/brands/minecraft.svg', fallbackIcon: FaCube, brandColor: '#62B47A' },
   { name: 'Figma', icon: SiFigma, brandColor: '#F24E1E' },
-  { name: 'ChatGPT', icon: SiOpenai, brandColor: '#10A37F' },
+  { name: 'ChatGPT', icon: Sparkles, brandColor: '#10A37F' },
   { name: 'Claude Code', icon: SiClaude, brandColor: '#D97757' },
   { name: 'Gemini', icon: SiGooglegemini, brandColor: '#8E75B2' },
   { name: 'VS Code', iconSrc: '/brands/visual-studio-code.svg', fallbackIcon: SiVscodium, brandColor: '#007ACC' },

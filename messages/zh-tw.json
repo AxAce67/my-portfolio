@@ -118,6 +118,9 @@
     "turnstileRequired": "送出前請先完成驗證。",
     "error": "傳送失敗，請稍後再試。"
   },
+  "Sponsors": {
+    "heading": "Sponsors"
+  },
   "Footer": {
     "tagline": "做自己喜歡的東西。就這樣。",
     "copyright": "© {year} 保留所有權利。",
@@ -455,6 +458,14 @@
     "lastSeenLabel": "最後上線",
     "backAbout": "← 返回關於",
     "backTimeline": "← 返回活躍項目"
+  },
+  "Radar": {
+    "eyebrow": "Live ADS-B",
+    "heading": "Radar",
+    "description": "顯示來自我的接收器的 tar1090 即時航空器雷達。",
+    "openExternal": "開啟雷達",
+    "iframeTitle": "即時航空器雷達",
+    "fallback": "如果雷達未在此處載入，請在新分頁中開啟。"
   },
   "MutualLinks": {
     "heading": "Mutual Links",
