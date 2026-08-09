@@ -705,7 +705,9 @@ body::before {
 
   /* Header */
   .site-header {
-    top: var(--site-header-viewport-offset, 0px);
+    top: 0;
+    margin-bottom: calc(-3.5rem - env(safe-area-inset-top));
+    padding-top: env(safe-area-inset-top);
     border-bottom: 1px solid transparent;
     background: transparent;
     backdrop-filter: blur(0px);
@@ -717,32 +719,15 @@ body::before {
       -webkit-backdrop-filter 280ms ease;
   }
 
-  .site-header::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: calc((3rem + env(safe-area-inset-top)) * -1);
-    height: calc(3rem + env(safe-area-inset-top));
-    pointer-events: none;
-    background: transparent;
-    backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px);
-    transition:
-      background-color 280ms ease,
-      backdrop-filter 280ms ease,
-      -webkit-backdrop-filter 280ms ease;
+  @media (min-width: 640px) {
+    .site-header {
+      margin-bottom: calc(-4rem - env(safe-area-inset-top));
+    }
   }
 
   .site-header.is-scrolled {
     background: rgb(var(--background-rgb) / 0.92);
     border-bottom-color: var(--border);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-  }
-
-  .site-header.is-scrolled::before {
-    background: rgb(var(--background-rgb) / 0.92);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
   }
@@ -1220,12 +1205,6 @@ body::before {
     }
 
     .site-header.is-scrolled {
-      background: rgb(var(--background-rgb) / 0.96);
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-    }
-
-    .site-header.is-scrolled::before {
       background: rgb(var(--background-rgb) / 0.96);
       backdrop-filter: none;
       -webkit-backdrop-filter: none;
