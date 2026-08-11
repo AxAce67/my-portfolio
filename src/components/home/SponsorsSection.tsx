@@ -1,15 +1,36 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useTheme } from '@/components/providers/ThemeProvider';
 import { useTranslations } from '@/hooks/useTranslations';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 function AdringWidget() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { resolvedTheme } = useTheme();
+  const widgetThemeRef = useRef<'light' | 'dark'>('dark');
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+
+    const syncTheme = () => {
+      const widgetTheme = widgetThemeRef.current;
+      Array.from(container.children).forEach((child) => {
+        if (!(child instanceof HTMLElement) || !child.dataset.adringWidget) return;
+        const host = child;
+        if (host.dataset.adringTheme !== widgetTheme) {
+          host.dataset.adringTheme = widgetTheme;
+        }
+      });
+    };
+
+    const observer = new MutationObserver(syncTheme);
+    observer.observe(container, {
+      childList: true,
+      attributes: true,
+      attributeFilter: ['data-adring-theme'],
+    });
 
     const script = document.createElement('script');
     script.src = 'https://adring.net/widget/v1.js';
@@ -19,9 +40,20 @@ function AdringWidget() {
     container.append(script);
 
     return () => {
+      observer.disconnect();
       container.replaceChildren();
     };
   }, []);
+
+  useEffect(() => {
+    const widgetTheme = resolvedTheme === 'light' ? 'light' : 'dark';
+    widgetThemeRef.current = widgetTheme;
+    Array.from(containerRef.current?.children ?? []).forEach((child) => {
+      if (!(child instanceof HTMLElement) || !child.dataset.adringWidget) return;
+      const host = child;
+      host.dataset.adringTheme = widgetTheme;
+    });
+  }, [resolvedTheme]);
 
   return <div ref={containerRef} className="flex justify-center" />;
 }
