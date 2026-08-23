@@ -60,6 +60,11 @@ export type ServerMetrics = {
   diskPercent: number | null;
 };
 
+export type ServerStatusSnapshot = {
+  devices: ServerStatusDevice[];
+  metrics: ServerMetrics[];
+};
+
 const ONLINE_WINDOW_MS = 3 * 60 * 1000; // Tailscale clients check in roughly every 1-2 min
 
 function maskTailnetIpv4(addresses?: string[]): string | null {
@@ -83,6 +88,7 @@ export async function getTailscaleDeviceStatus(): Promise<{ devices: ServerStatu
   }
 
   const response = await fetch(`https://api.tailscale.com/api/v2/tailnet/${encodeURIComponent(tailnet)}/devices`, {
+    cache: 'no-store',
     headers: {
       Authorization: `Basic ${btoa(`${apiKey}:`)}`,
     },
@@ -123,6 +129,7 @@ export async function getBeszelServerMetrics(): Promise<{ metrics: ServerMetrics
 
   const authResponse = await fetch(`${baseUrl}/api/collections/users/auth-with-password`, {
     method: 'POST',
+    cache: 'no-store',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ identity: email, password }),
   });
@@ -138,9 +145,11 @@ export async function getBeszelServerMetrics(): Promise<{ metrics: ServerMetrics
 
   const [systemsResponse, statsResponse] = await Promise.all([
     fetch(`${baseUrl}/api/collections/systems/records?perPage=100`, {
+      cache: 'no-store',
       headers: { Authorization: `Bearer ${auth.token}` },
     }),
     fetch(`${baseUrl}/api/collections/system_stats/records?perPage=200&sort=-created&filter=type%3D%221m%22`, {
+      cache: 'no-store',
       headers: { Authorization: `Bearer ${auth.token}` },
     }),
   ]);
@@ -179,4 +188,19 @@ export async function getBeszelServerMetrics(): Promise<{ metrics: ServerMetrics
   });
 
   return { metrics };
+}
+
+export async function getServerStatusSnapshot(): Promise<ServerStatusSnapshot> {
+  const [tailscaleResult, beszelResult] = await Promise.allSettled([
+    getTailscaleDeviceStatus(),
+    getBeszelServerMetrics(),
+  ]);
+
+  const tailscaleValue = tailscaleResult.status === 'fulfilled' ? tailscaleResult.value : { devices: [] };
+  const beszelValue = beszelResult.status === 'fulfilled' ? beszelResult.value : { metrics: [] };
+
+  return {
+    devices: 'devices' in tailscaleValue ? tailscaleValue.devices : [],
+    metrics: 'metrics' in beszelValue ? beszelValue.metrics : [],
+  };
 }

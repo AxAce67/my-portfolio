@@ -63,21 +63,29 @@ function MetricRow({
   secondaryValue,
   percent,
   barClassName,
+  isLoading = false,
 }: {
   label: string;
   primaryValue: string;
   secondaryValue?: string;
   percent: number | null;
   barClassName: string;
+  isLoading?: boolean;
 }) {
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between gap-3">
         <span>{label}</span>
         <span className="text-right text-foreground">
-          <span className="font-semibold">{primaryValue}</span>
-          {secondaryValue && (
-            <span className="ml-2 text-muted-foreground">{secondaryValue}</span>
+          {isLoading ? (
+            <PlaceholderText className="w-24" />
+          ) : (
+            <>
+              <span className="font-semibold">{primaryValue}</span>
+              {secondaryValue && (
+                <span className="ml-2 text-muted-foreground">{secondaryValue}</span>
+              )}
+            </>
           )}
         </span>
       </div>
@@ -89,6 +97,10 @@ function MetricRow({
       </div>
     </div>
   );
+}
+
+function PlaceholderText({ className = 'w-16' }: { className?: string }) {
+  return <span className={`inline-block h-3 rounded-full bg-muted align-middle ${className}`} aria-hidden="true" />;
 }
 
 export default function ServersPage() {
@@ -212,6 +224,8 @@ export default function ServersPage() {
     return percentLabel ? { primaryValue: percentLabel } : null;
   };
 
+  const isInitialLoading = liveDevices === null && liveMetrics === null;
+
   return (
     <section className="max-w-5xl mx-auto px-6 lg:px-8 py-16 sm:py-20">
       <div className="mb-6 sm:mb-8">
@@ -256,8 +270,8 @@ export default function ServersPage() {
             };
           const memoryMetric = metrics ? formatUsage(metrics.memoryUsedGb, metrics.memoryTotalGb, metrics.memoryPercent) : null;
           const diskMetric = metrics ? formatUsage(metrics.diskUsedGb, metrics.diskTotalGb, metrics.diskPercent) : null;
-          const hasSystemDetails = Boolean(server.specs || os || live?.maskedIp || (live?.lastSeen && status === 'offline'));
-          const hasMetricDetails = Boolean(cpuMetric || memoryMetric || diskMetric);
+          const hasSystemDetails = Boolean(isInitialLoading || server.specs || os || live?.maskedIp || (live?.lastSeen && status === 'offline'));
+          const hasMetricDetails = Boolean(isInitialLoading || cpuMetric || memoryMetric || diskMetric);
 
           return (
             <TiltCard key={server.id} className="bento-card p-5">
@@ -283,16 +297,16 @@ export default function ServersPage() {
                           <span className="text-right">{server.specs}</span>
                         </>
                       )}
-                      {os && (
+                      {(os || isInitialLoading) && (
                         <>
                           <span>{t('osLabel')}</span>
-                          <span className="text-right">{os}</span>
+                          <span className="text-right">{os ?? <PlaceholderText className="w-12" />}</span>
                         </>
                       )}
-                      {live?.maskedIp && (
+                      {(live?.maskedIp || isInitialLoading) && (
                         <>
                           <span>{t('ipLabel')}</span>
-                          <span className="text-right tracking-wide text-foreground/80">{live.maskedIp}</span>
+                          <span className="text-right tracking-wide text-foreground/80">{live?.maskedIp ?? <PlaceholderText className="w-24" />}</span>
                         </>
                       )}
                       {live?.lastSeen && status === 'offline' && (
@@ -305,31 +319,34 @@ export default function ServersPage() {
                   )}
                   {hasMetricDetails && (
                     <div className={`${hasSystemDetails ? 'mt-3 pt-3 border-t border-border/35 dark:border-white/10' : ''} space-y-2.5`}>
-                      {cpuMetric && (
+                      {(cpuMetric || isInitialLoading) && (
                         <MetricRow
                           label={t('cpuLabel')}
-                          primaryValue={cpuMetric.primaryValue}
-                          secondaryValue={cpuMetric.secondaryValue}
+                          primaryValue={cpuMetric?.primaryValue ?? '--'}
+                          secondaryValue={cpuMetric?.secondaryValue}
                           percent={metrics?.cpuPercent ?? null}
                           barClassName="bg-sky-500"
+                          isLoading={isInitialLoading}
                         />
                       )}
-                      {memoryMetric && (
+                      {(memoryMetric || isInitialLoading) && (
                         <MetricRow
                           label={t('memoryLabel')}
-                          primaryValue={memoryMetric.primaryValue}
-                          secondaryValue={memoryMetric.secondaryValue}
+                          primaryValue={memoryMetric?.primaryValue ?? '--'}
+                          secondaryValue={memoryMetric?.secondaryValue}
                           percent={metrics?.memoryPercent ?? null}
                           barClassName="bg-emerald-500"
+                          isLoading={isInitialLoading}
                         />
                       )}
-                      {diskMetric && (
+                      {(diskMetric || isInitialLoading) && (
                         <MetricRow
                           label={t('diskLabel')}
-                          primaryValue={diskMetric.primaryValue}
-                          secondaryValue={diskMetric.secondaryValue}
+                          primaryValue={diskMetric?.primaryValue ?? '--'}
+                          secondaryValue={diskMetric?.secondaryValue}
                           percent={metrics?.diskPercent ?? null}
                           barClassName="bg-amber-500"
+                          isLoading={isInitialLoading}
                         />
                       )}
                     </div>
