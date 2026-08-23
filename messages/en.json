@@ -18,6 +18,8 @@
   "About": {
     "sectionTitle": "// about/",
     "heading": "About",
+    "ageLabel": "Age",
+    "locationLabel": "🇯🇵 Tokyo",
     "profileLabel": "Profile",
     "profileParagraph1": "I am a first-year high school student in Japan, building personal projects such as websites, Discord bots, Ubuntu servers, and Minecraft servers.",
     "profileParagraph2": "Since discovering ChatGPT in sixth grade, I have used various AI tools to improve my workflow and speed up turning ideas into working products.",
@@ -455,6 +457,10 @@
     "specsLabel": "Specs",
     "osLabel": "OS",
     "ipLabel": "TAILNET IP",
+    "cpuLabel": "CPU",
+    "memoryLabel": "Memory",
+    "diskLabel": "Disk",
+    "threadsLabel": "threads",
     "lastSeenLabel": "Last seen",
     "backAbout": "← Back to About",
     "backTimeline": "← Back to Active Projects"

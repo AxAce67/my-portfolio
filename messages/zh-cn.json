@@ -18,6 +18,8 @@
   "About": {
     "sectionTitle": "// about/",
     "heading": "About",
+    "ageLabel": "年龄",
+    "locationLabel": "🇯🇵 Tokyo",
     "profileLabel": "Profile",
     "profileParagraph1": "我是住在日本的一名高中一年级学生，正在制作网站、Discord 机器人、Ubuntu 服务器和 Minecraft 服务器等个人项目。",
     "profileParagraph2": "自从六年级接触 ChatGPT 以来，我一直在使用各种 AI 工具来改进工作流程，加快把想法做成可运行产品的速度。",
@@ -455,6 +457,10 @@
     "specsLabel": "配置",
     "osLabel": "系统",
     "ipLabel": "TAILNET IP",
+    "cpuLabel": "CPU",
+    "memoryLabel": "内存",
+    "diskLabel": "磁盘",
+    "threadsLabel": "threads",
     "lastSeenLabel": "最后在线",
     "backAbout": "← 返回关于",
     "backTimeline": "← 返回活跃项目"

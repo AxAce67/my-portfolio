@@ -1,14 +1,24 @@
 import { NextResponse } from 'next/server';
-import { getTailscaleDeviceStatus } from '@/lib/server/serverStatus';
+import { getBeszelServerMetrics, getTailscaleDeviceStatus } from '@/lib/server/serverStatus';
 
 export async function GET() {
   try {
-    const result = await getTailscaleDeviceStatus();
-    if ('error' in result) {
-      return NextResponse.json(result, { status: 502 });
+    const [tailscaleResult, beszelResult] = await Promise.all([
+      getTailscaleDeviceStatus(),
+      getBeszelServerMetrics(),
+    ]);
+
+    const devices = 'devices' in tailscaleResult ? tailscaleResult.devices : [];
+    const metrics = 'metrics' in beszelResult ? beszelResult.metrics : [];
+
+    if ('error' in tailscaleResult && 'error' in beszelResult) {
+      return NextResponse.json({ error: 'Status providers unavailable' }, { status: 502 });
     }
 
-    return NextResponse.json(result, {
+    return NextResponse.json({
+      devices,
+      metrics,
+    }, {
       headers: {
         'Cache-Control': 'no-store',
       },

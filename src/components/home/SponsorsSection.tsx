@@ -8,7 +8,7 @@ import { ScrollReveal } from '@/components/ui/ScrollReveal';
 function AdringWidget() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { resolvedTheme } = useTheme();
-  const widgetThemeRef = useRef<'light' | 'dark'>('dark');
+  const widgetThemeRef = useRef<'light' | 'dark'>(resolvedTheme === 'light' ? 'light' : 'dark');
 
   useEffect(() => {
     const container = containerRef.current;
@@ -29,6 +29,7 @@ function AdringWidget() {
     observer.observe(container, {
       childList: true,
       attributes: true,
+      subtree: true,
       attributeFilter: ['data-adring-theme'],
     });
 
@@ -65,7 +66,7 @@ export default function SponsorsSection() {
     <section id="sponsors" className="py-12 sm:py-16 lg:py-20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
-          <div className="mb-8 text-center sm:mb-12">
+          <div className="mb-5 text-center sm:mb-6">
             <h2 className="text-2xl sm:text-4xl font-bold tracking-tight">{t('heading')}</h2>
           </div>
         </ScrollReveal>

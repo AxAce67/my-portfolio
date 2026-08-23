@@ -49,6 +49,12 @@ import { lazy, Suspense } from 'react';
 const ContactSectionLazy = lazy(() => import('@/components/home/ContactSection'));
 const ContactSection = () => <Suspense fallback={null}><ContactSectionLazy /></Suspense>;
 
+const BIRTH_DATE_JST = {
+  year: 2010,
+  monthIndex: 5,
+  day: 7,
+};
+
 type SkillCategory = 'Languages' | 'Stack' | 'AI' | 'Creative';
 type SkillIconComponent = ComponentType<{ size?: number | string; className?: string }>;
 type SkillItem = {
@@ -261,8 +267,8 @@ export default function HomePageSections({
       <ProjectsSection initialProjects={initialCompletedProjects} returningProjectId={returningProjectId} isLoading={isLoading} />
       <ActiveProjectsSection initialActiveProjects={initialActiveProjects} isLoading={isLoading} />
       <MutualLinksSection />
-      <ContactSection />
       <SponsorsSection />
+      <ContactSection />
     </>
   );
 }
@@ -500,6 +506,59 @@ function MomentumLineChart({
   );
 }
 
+function getJstDateMs(year: number, monthIndex: number, day: number): number {
+  return Date.UTC(year, monthIndex, day, -9, 0, 0, 0);
+}
+
+function getJstYear(date: Date): number {
+  return new Date(date.getTime() + 9 * 60 * 60 * 1000).getUTCFullYear();
+}
+
+function calculateLiveAge(now: Date): number {
+  const currentYear = getJstYear(now);
+  const birthdayThisYear = getJstDateMs(currentYear, BIRTH_DATE_JST.monthIndex, BIRTH_DATE_JST.day);
+  const hasHadBirthday = now.getTime() >= birthdayThisYear;
+  const lastBirthdayYear = hasHadBirthday ? currentYear : currentYear - 1;
+  const nextBirthdayYear = lastBirthdayYear + 1;
+  const wholeYears = lastBirthdayYear - BIRTH_DATE_JST.year;
+  const lastBirthday = getJstDateMs(lastBirthdayYear, BIRTH_DATE_JST.monthIndex, BIRTH_DATE_JST.day);
+  const nextBirthday = getJstDateMs(nextBirthdayYear, BIRTH_DATE_JST.monthIndex, BIRTH_DATE_JST.day);
+  const fractionalYear = (now.getTime() - lastBirthday) / (nextBirthday - lastBirthday);
+
+  return wholeYears + fractionalYear;
+}
+
+function LiveAgeLocation({ ageLabel, locationLabel }: { ageLabel: string; locationLabel: string }) {
+  const [age, setAge] = useState<number | null>(null);
+
+  useEffect(() => {
+    const updateAge = () => setAge(calculateLiveAge(new Date()));
+    updateAge();
+    const intervalId = window.setInterval(updateAge, 50);
+    return () => window.clearInterval(intervalId);
+  }, []);
+
+  return (
+    <p className="text-[11px] font-mono leading-snug tracking-wide text-muted-foreground tabular-nums whitespace-nowrap">
+      {ageLabel} <span className="text-foreground/80">{age === null ? '--.-----------' : age.toFixed(11)}</span>
+      <span className="mx-1.5 text-muted-foreground/60">·</span>
+      <span>{locationLabel}</span>
+    </p>
+  );
+}
+
+function ProfileIdentity({ role, ageLabel, locationLabel }: { role: string; ageLabel: string; locationLabel: string }) {
+  return (
+    <div className="min-w-0">
+      <p className="text-sm font-semibold leading-tight tracking-tight">Aki</p>
+      <div className="mt-1.5 space-y-0.5">
+        <p className="text-[11px] font-mono leading-snug tracking-wide text-muted-foreground uppercase">{role}</p>
+        <LiveAgeLocation ageLabel={ageLabel} locationLabel={locationLabel} />
+      </div>
+    </div>
+  );
+}
+
 function AboutSection() {
   const t = useTranslations('About');
   const contactT = useTranslations('Contact');
@@ -605,7 +664,7 @@ function AboutSection() {
     <section id="about" className="pt-8 sm:pt-12 pb-12 sm:pb-16 lg:pb-20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
-          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-8 sm:mb-12">{t('heading')}</h2>
+          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-5 sm:mb-6">{t('heading')}</h2>
         </ScrollReveal>
 
         <div className="md:hidden space-y-3">
@@ -620,10 +679,7 @@ function AboutSection() {
                   loading="lazy"
                   className="w-12 h-12 rounded-full object-cover border border-border"
                 />
-                <div>
-                  <p className="text-sm font-semibold tracking-tight">Aki</p>
-                  <p className="text-[11px] text-muted-foreground font-mono tracking-wide uppercase">{t('role')}</p>
-                </div>
+                <ProfileIdentity role={t('role')} ageLabel={t('ageLabel')} locationLabel={t('locationLabel')} />
               </div>
               <div className="grid grid-cols-2 gap-1.5">
                 {profileLinks.map((link) =>
@@ -804,10 +860,7 @@ function AboutSection() {
                   loading="lazy"
                   className="w-12 h-12 rounded-full object-cover border border-border"
                 />
-                <div>
-                  <p className="text-sm font-semibold tracking-tight">Aki</p>
-                  <p className="text-[11px] text-muted-foreground font-mono tracking-wide uppercase">{t('role')}</p>
-                </div>
+                <ProfileIdentity role={t('role')} ageLabel={t('ageLabel')} locationLabel={t('locationLabel')} />
               </div>
               <div className="grid grid-cols-2 gap-1">
                 {profileLinks.map((link) =>
@@ -930,7 +983,7 @@ function SkillsSection() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2">{t('heading')}</h2>
-          <p className="text-xs sm:text-sm text-muted-foreground mb-8 sm:mb-12">{t('subtitle')}</p>
+          <p className="text-xs sm:text-sm text-muted-foreground mb-5 sm:mb-6">{t('subtitle')}</p>
         </ScrollReveal>
 
         {/* Mobile: タブ切り替え */}
@@ -1091,7 +1144,7 @@ function ProjectsSection({
     <section id="projects" className="py-12 sm:py-16 lg:py-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
-          <div className="flex flex-wrap items-end justify-between gap-4 mb-8 sm:mb-12">
+          <div className="flex flex-wrap items-end justify-between gap-4 mb-5 sm:mb-6">
             <h2 className="text-2xl sm:text-4xl font-bold tracking-tight">{t('heading')}</h2>
             <div className="hidden sm:inline-flex w-full sm:w-auto rounded-xl border border-border p-1 bg-muted">
               <button
@@ -1296,11 +1349,16 @@ function ActiveProjectsSection({
     text('stageTesting', 'Testing'),
     text('stageCompleted', 'Completed'),
   ];
+  const rowAnimationDelay = (rowIdx: number) => {
+    if (!showAll || rowIdx < VISIBLE_LIMIT) return 0.3 + rowIdx * 0.2;
+    return 0.15 + (rowIdx - VISIBLE_LIMIT) * 0.12;
+  };
+
   return (
     <section id="timeline" className="py-12 sm:py-16 lg:py-20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
-          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-10 sm:mb-16">{text('heading', 'Active Projects')}</h2>
+          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-5 sm:mb-6">{text('heading', 'Active Projects')}</h2>
         </ScrollReveal>
 
         <div className="md:hidden space-y-3">
@@ -1310,11 +1368,13 @@ function ActiveProjectsSection({
             </div>
           ) : (
             <>
-              {visibleProjects.map((project) => {
+              {visibleProjects.map((project, rowIdx) => {
                 const currentStage = Math.max(0, Math.min(stages.length - 1, project.stage));
                 const lineInsetPercent = 50 / stages.length;
                 const lineTrackPercent = 100 - lineInsetPercent * 2;
                 const progressWidthPercent = lineInsetPercent + (currentStage / (stages.length - 1)) * lineTrackPercent;
+                const animationDelay = rowAnimationDelay(rowIdx);
+
                 return (
                   <ScrollReveal key={project.id}>
                     <div className="bento-card p-4">
@@ -1327,9 +1387,15 @@ function ActiveProjectsSection({
                             right: `${lineInsetPercent}%`,
                           }}
                         />
-                        <div
+                        <motion.div
                           className="absolute top-[7px] left-0 h-[2px] bg-foreground transition-all duration-700"
-                          style={{ width: `${progressWidthPercent}%` }}
+                          initial={{ width: 0 }}
+                          animate={{ width: `${progressWidthPercent}%` }}
+                          transition={{
+                            duration: 0.8,
+                            delay: animationDelay,
+                            ease: [0.25, 0.1, 0.25, 1],
+                          }}
                         />
                         <div className="relative flex justify-between">
                           {stages.map((stage, i) => {
@@ -1394,69 +1460,73 @@ function ActiveProjectsSection({
             </div>
           </div>
 
-          {visibleProjects.map((project, rowIdx) => (
-            <div key={project.id} className="gantt-row group">
-              <div className="gantt-label-col">
-                <span className="text-sm font-medium group-hover:text-foreground transition-colors">{project.name}</span>
+          {visibleProjects.map((project, rowIdx) => {
+            const animationDelay = rowAnimationDelay(rowIdx);
+
+            return (
+              <div key={project.id} className="gantt-row group">
+                <div className="gantt-label-col">
+                  <span className="text-sm font-medium group-hover:text-foreground transition-colors">{project.name}</span>
+                </div>
+                <div className="gantt-stages-area">
+                  <div className="gantt-bg-line" />
+
+                  <motion.div
+                    className="gantt-fg-line"
+                    initial={{ width: 0 }}
+                    animate={
+                      isGanttInView ? { width: `${((project.stage + 0.5) / stages.length) * 100}%` } : { width: 0 }
+                    }
+                    transition={{
+                      duration: 1.4,
+                      delay: animationDelay,
+                      ease: [0.25, 0.1, 0.25, 1],
+                    }}
+                  />
+
+                  {stages.map((_, i) => {
+                    const isCompleted = i < project.stage;
+                    const isCurrentArrow = i === project.stage;
+                    return (
+                      <div key={i} className="gantt-stage-cell">
+                        {isCurrentArrow && (
+                          <motion.div
+                            className="gantt-arrow"
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={isGanttInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
+                            transition={{ duration: 0.3, delay: animationDelay + 1.2 }}
+                          >
+                            <svg width="10" height="14" viewBox="0 0 10 14" fill="none">
+                              <path d="M0 0L10 7L0 14Z" fill="currentColor" />
+                            </svg>
+                          </motion.div>
+                        )}
+
+                        {isCompleted && (
+                          <motion.div
+                            className="gantt-check"
+                            initial={{ scale: 0 }}
+                            animate={isGanttInView ? { scale: 1 } : { scale: 0 }}
+                            transition={{ duration: 0.3, delay: animationDelay + (i + 1) * 0.15 }}
+                          >
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                              <path
+                                d="M2 6L5 9L10 3"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </motion.div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-              <div className="gantt-stages-area">
-                <div className="gantt-bg-line" />
-
-                <motion.div
-                  className="gantt-fg-line"
-                  initial={{ width: 0 }}
-                  animate={
-                    isGanttInView ? { width: `${((project.stage + 0.5) / stages.length) * 100}%` } : { width: 0 }
-                  }
-                  transition={{
-                    duration: 1.4,
-                    delay: 0.3 + rowIdx * 0.2,
-                    ease: [0.25, 0.1, 0.25, 1],
-                  }}
-                />
-
-                {stages.map((_, i) => {
-                  const isCompleted = i < project.stage;
-                  const isCurrentArrow = i === project.stage;
-                  return (
-                    <div key={i} className="gantt-stage-cell">
-                      {isCurrentArrow && (
-                        <motion.div
-                          className="gantt-arrow"
-                          initial={{ opacity: 0, scale: 0.5 }}
-                          animate={isGanttInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
-                          transition={{ duration: 0.3, delay: 0.3 + rowIdx * 0.2 + 1.2 }}
-                        >
-                          <svg width="10" height="14" viewBox="0 0 10 14" fill="none">
-                            <path d="M0 0L10 7L0 14Z" fill="currentColor" />
-                          </svg>
-                        </motion.div>
-                      )}
-
-                      {isCompleted && (
-                        <motion.div
-                          className="gantt-check"
-                          initial={{ scale: 0 }}
-                          animate={isGanttInView ? { scale: 1 } : { scale: 0 }}
-                          transition={{ duration: 0.3, delay: 0.3 + rowIdx * 0.2 + (i + 1) * 0.15 }}
-                        >
-                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                            <path
-                              d="M2 6L5 9L10 3"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </motion.div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
+            );
+          })}
 
           {hiddenCount > 0 && (
             <button
@@ -1491,7 +1561,7 @@ function MutualLinksSection() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2">{t('heading')}</h2>
-          <p className="text-xs sm:text-sm text-muted-foreground mb-8 sm:mb-12">{t('subtitle')}</p>
+          <p className="text-xs sm:text-sm text-muted-foreground mb-5 sm:mb-6">{t('subtitle')}</p>
         </ScrollReveal>
 
         {links.length > 0 ? (

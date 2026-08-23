@@ -259,7 +259,7 @@ export default function ContactSection() {
         ) : null}
         <ScrollReveal delay={0.1}>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2 sm:mb-3">{t('heading')}</h2>
-          <p className="text-sm text-muted-foreground mb-8 sm:mb-12">{t('description')}</p>
+          <p className="text-sm text-muted-foreground mb-5 sm:mb-6">{t('description')}</p>
         </ScrollReveal>
 
         <ContactMethods className="mb-3" thirdMethod="email" />

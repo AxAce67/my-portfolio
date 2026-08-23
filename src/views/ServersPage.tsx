@@ -31,6 +31,18 @@ type LiveDevice = {
   maskedIp: string | null;
 };
 
+type LiveMetrics = {
+  name: string;
+  cpuPercent: number | null;
+  cpuThreads: number | null;
+  memoryUsedGb: number | null;
+  memoryTotalGb: number | null;
+  memoryPercent: number | null;
+  diskUsedGb: number | null;
+  diskTotalGb: number | null;
+  diskPercent: number | null;
+};
+
 const REFRESH_INTERVAL_MS = 30_000;
 
 // Tailscale's device `name` is a full FQDN (e.g.
@@ -40,11 +52,51 @@ function shortName(value: string): string {
   return value.split('.')[0]?.toLowerCase() ?? '';
 }
 
+function clampPercent(value: number | null): number {
+  if (value === null) return 0;
+  return Math.min(100, Math.max(0, value));
+}
+
+function MetricRow({
+  label,
+  primaryValue,
+  secondaryValue,
+  percent,
+  barClassName,
+}: {
+  label: string;
+  primaryValue: string;
+  secondaryValue?: string;
+  percent: number | null;
+  barClassName: string;
+}) {
+  return (
+    <div className="space-y-1.5">
+      <div className="flex items-center justify-between gap-3">
+        <span>{label}</span>
+        <span className="text-right text-foreground">
+          <span className="font-semibold">{primaryValue}</span>
+          {secondaryValue && (
+            <span className="ml-2 text-muted-foreground">{secondaryValue}</span>
+          )}
+        </span>
+      </div>
+      <div className="h-2 rounded-full bg-border overflow-hidden" aria-hidden="true">
+        <div
+          className={`h-full rounded-full transition-[width] duration-300 ${barClassName}`}
+          style={{ width: `${clampPercent(percent)}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function ServersPage() {
   const t = useTranslations('Servers');
   const locale = useLocale();
   const dateLocale = getLocaleMeta(locale).dateLocale;
   const [liveDevices, setLiveDevices] = useState<LiveDevice[] | null>(null);
+  const [liveMetrics, setLiveMetrics] = useState<LiveMetrics[] | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const cancelledRef = useRef(false);
@@ -61,9 +113,10 @@ export default function ServersPage() {
     setIsRefreshing(true);
     return fetch('/api/server-status')
       .then((res) => (res.ok ? res.json() : Promise.reject(res)))
-      .then((data: { devices?: LiveDevice[] }) => {
+      .then((data: { devices?: LiveDevice[]; metrics?: LiveMetrics[] }) => {
         if (cancelledRef.current) return;
         setLiveDevices(data.devices ?? []);
+        setLiveMetrics(data.metrics ?? []);
         setLastUpdated(new Date());
       })
       .catch(() => {
@@ -71,6 +124,7 @@ export default function ServersPage() {
         // error, etc.) — fall back to the manual `status` field below.
         if (cancelledRef.current) return;
         setLiveDevices((prev) => prev ?? []);
+        setLiveMetrics((prev) => prev ?? []);
         setLastUpdated(new Date());
       })
       .finally(() => {
@@ -95,6 +149,12 @@ export default function ServersPage() {
     return (
       liveDevices.find((d) => shortName(d.name) === target) ?? null
     );
+  };
+
+  const findLiveMetrics = (server: (typeof selfHostedServers)[number]): LiveMetrics | null => {
+    if (!liveMetrics) return null;
+    const target = shortName(server.beszelName ?? server.tailscaleHostname ?? server.id);
+    return liveMetrics.find((metrics) => shortName(metrics.name) === target) ?? null;
   };
 
   const resolveStatus = (server: (typeof selfHostedServers)[number], live: LiveDevice | null): ServerStatus => {
@@ -126,9 +186,35 @@ export default function ServersPage() {
 
   const formatClock = (date: Date) => new Intl.DateTimeFormat(dateLocale, { timeStyle: 'medium' }).format(date);
 
+  const formatPercent = (value: number | null) => (
+    value === null ? null : `${Math.round(value)}%`
+  );
+
+  const formatGb = (value: number | null) => (
+    value === null ? null : new Intl.NumberFormat(dateLocale, { maximumFractionDigits: 1 }).format(value)
+  );
+
+  const formatUsage = (used: number | null, total: number | null, percent: number | null): {
+    primaryValue: string;
+    secondaryValue?: string;
+  } | null => {
+    const usedLabel = formatGb(used);
+    const totalLabel = formatGb(total);
+    const percentLabel = formatPercent(percent);
+
+    if (usedLabel && totalLabel) {
+      return {
+        primaryValue: percentLabel ?? `${usedLabel} GB`,
+        secondaryValue: `${usedLabel} / ${totalLabel} GB`,
+      };
+    }
+
+    return percentLabel ? { primaryValue: percentLabel } : null;
+  };
+
   return (
     <section className="max-w-5xl mx-auto px-6 lg:px-8 py-16 sm:py-20">
-      <div className="mb-10">
+      <div className="mb-6 sm:mb-8">
         <Link
           href="/"
           className="text-xs font-mono text-muted-foreground hover:text-foreground"
@@ -138,7 +224,7 @@ export default function ServersPage() {
         >
           {backLabel ?? t('backHome')}
         </Link>
-        <div className="flex flex-wrap items-end justify-between gap-3 mt-5">
+        <div className="flex flex-wrap items-end justify-between gap-3 mt-4">
           <div>
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">{t('heading')}</h1>
             <p className="text-sm text-muted-foreground mt-2">{t('description')}</p>
@@ -159,8 +245,19 @@ export default function ServersPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {selfHostedServers.map((server) => {
           const live = findLiveDevice(server);
+          const metrics = findLiveMetrics(server);
           const status = resolveStatus(server, live);
           const os = live?.os ? OS_LABEL[live.os] ?? live.os : null;
+          const cpuMetric = metrics?.cpuPercent === null || metrics?.cpuPercent === undefined
+            ? null
+            : {
+              primaryValue: formatPercent(metrics.cpuPercent) ?? '',
+              secondaryValue: metrics.cpuThreads ? `${metrics.cpuThreads} ${t('threadsLabel')}` : undefined,
+            };
+          const memoryMetric = metrics ? formatUsage(metrics.memoryUsedGb, metrics.memoryTotalGb, metrics.memoryPercent) : null;
+          const diskMetric = metrics ? formatUsage(metrics.diskUsedGb, metrics.diskTotalGb, metrics.diskPercent) : null;
+          const hasSystemDetails = Boolean(server.specs || os || live?.maskedIp || (live?.lastSeen && status === 'offline'));
+          const hasMetricDetails = Boolean(cpuMetric || memoryMetric || diskMetric);
 
           return (
             <TiltCard key={server.id} className="bento-card p-5">
@@ -176,31 +273,66 @@ export default function ServersPage() {
               <p className="text-base font-semibold tracking-tight">{server.name}</p>
               <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">{server.description}</p>
 
-              {(server.specs || os || live?.maskedIp || live?.lastSeen) && (
-                <div className="mt-3 pt-3 border-t border-border grid grid-cols-2 gap-y-1.5 text-[12px] font-mono text-muted-foreground">
-                  {server.specs && (
-                    <>
-                      <span>{t('specsLabel')}</span>
-                      <span className="text-right">{server.specs}</span>
-                    </>
+              {(hasSystemDetails || hasMetricDetails) && (
+                <div className="mt-3 pt-3 border-t border-border text-[12px] font-mono text-muted-foreground">
+                  {hasSystemDetails && (
+                    <div className="grid grid-cols-2 gap-y-1.5">
+                      {server.specs && (
+                        <>
+                          <span>{t('specsLabel')}</span>
+                          <span className="text-right">{server.specs}</span>
+                        </>
+                      )}
+                      {os && (
+                        <>
+                          <span>{t('osLabel')}</span>
+                          <span className="text-right">{os}</span>
+                        </>
+                      )}
+                      {live?.maskedIp && (
+                        <>
+                          <span>{t('ipLabel')}</span>
+                          <span className="text-right tracking-wide text-foreground/80">{live.maskedIp}</span>
+                        </>
+                      )}
+                      {live?.lastSeen && status === 'offline' && (
+                        <>
+                          <span>{t('lastSeenLabel')}</span>
+                          <span className="text-right">{formatLastSeen(live.lastSeen)}</span>
+                        </>
+                      )}
+                    </div>
                   )}
-                  {os && (
-                    <>
-                      <span>{t('osLabel')}</span>
-                      <span className="text-right">{os}</span>
-                    </>
-                  )}
-                  {live?.maskedIp && (
-                    <>
-                      <span>{t('ipLabel')}</span>
-                      <span className="text-right tracking-wide text-foreground/80">{live.maskedIp}</span>
-                    </>
-                  )}
-                  {live?.lastSeen && status === 'offline' && (
-                    <>
-                      <span>{t('lastSeenLabel')}</span>
-                      <span className="text-right">{formatLastSeen(live.lastSeen)}</span>
-                    </>
+                  {hasMetricDetails && (
+                    <div className={`${hasSystemDetails ? 'mt-3 pt-3 border-t border-border/35 dark:border-white/10' : ''} space-y-2.5`}>
+                      {cpuMetric && (
+                        <MetricRow
+                          label={t('cpuLabel')}
+                          primaryValue={cpuMetric.primaryValue}
+                          secondaryValue={cpuMetric.secondaryValue}
+                          percent={metrics?.cpuPercent ?? null}
+                          barClassName="bg-sky-500"
+                        />
+                      )}
+                      {memoryMetric && (
+                        <MetricRow
+                          label={t('memoryLabel')}
+                          primaryValue={memoryMetric.primaryValue}
+                          secondaryValue={memoryMetric.secondaryValue}
+                          percent={metrics?.memoryPercent ?? null}
+                          barClassName="bg-emerald-500"
+                        />
+                      )}
+                      {diskMetric && (
+                        <MetricRow
+                          label={t('diskLabel')}
+                          primaryValue={diskMetric.primaryValue}
+                          secondaryValue={diskMetric.secondaryValue}
+                          percent={metrics?.diskPercent ?? null}
+                          barClassName="bg-amber-500"
+                        />
+                      )}
+                    </div>
                   )}
                 </div>
               )}

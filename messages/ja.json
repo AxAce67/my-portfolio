@@ -18,6 +18,8 @@
   "About": {
     "sectionTitle": "// about/",
     "heading": "About",
+    "ageLabel": "年齢",
+    "locationLabel": "🇯🇵 Tokyo",
     "profileLabel": "Profile",
     "profileParagraph1": "日本の高校1年生として、個人開発でWebサイトやDiscord Bot、Ubuntuサーバー、Minecraftサーバーなどを作っています。",
     "profileParagraph2": "小学6年生のときにChatGPTに出会ってから、さまざまなAIツールを使いながら開発フローを改善し、アイデアを形にするスピードを上げてきました。",
@@ -455,6 +457,10 @@
     "specsLabel": "スペック",
     "osLabel": "OS",
     "ipLabel": "TAILNET IP",
+    "cpuLabel": "CPU",
+    "memoryLabel": "メモリ",
+    "diskLabel": "ディスク",
+    "threadsLabel": "threads",
     "lastSeenLabel": "最終確認",
     "backAbout": "← Aboutへ戻る",
     "backTimeline": "← Active Projectsへ戻る"

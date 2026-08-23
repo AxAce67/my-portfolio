@@ -18,6 +18,8 @@
   "About": {
     "sectionTitle": "// about/",
     "heading": "About",
+    "ageLabel": "나이",
+    "locationLabel": "🇯🇵 Tokyo",
     "profileLabel": "Profile",
     "profileParagraph1": "저는 일본에 사는 고등학교 1학년 학생으로, 웹사이트, Discord 봇, Ubuntu 서버, Minecraft 서버 같은 개인 프로젝트를 만들고 있습니다.",
     "profileParagraph2": "초등학교 6학년 때 ChatGPT를 알게 된 뒤로 다양한 AI 도구를 활용해 작업 흐름을 개선하고, 아이디어를 실제 제품으로 만드는 속도를 높여 왔습니다.",
@@ -455,6 +457,10 @@
     "specsLabel": "사양",
     "osLabel": "OS",
     "ipLabel": "TAILNET IP",
+    "cpuLabel": "CPU",
+    "memoryLabel": "메모리",
+    "diskLabel": "디스크",
+    "threadsLabel": "threads",
     "lastSeenLabel": "마지막 확인",
     "backAbout": "← About으로 돌아가기",
     "backTimeline": "← 활성 프로젝트로 돌아가기"

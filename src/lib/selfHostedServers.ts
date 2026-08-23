@@ -15,6 +15,11 @@ export type SelfHostedServer = {
    * match your actual tailnet device name.
    */
   tailscaleHostname?: string;
+  /**
+   * System name as it appears in Beszel. Defaults to `tailscaleHostname`/`id`
+   * when omitted.
+   */
+  beszelName?: string;
 };
 
 // `status` below is the fallback shown if /api/server-status is
@@ -28,6 +33,16 @@ export const selfHostedServers: SelfHostedServer[] = [
     category: 'infra',
     status: 'online',
     tailscaleHostname: 'jp-server',
+    beszelName: 'jp-server',
+  },
+  {
+    id: 'jp-server-2',
+    name: 'JP Server 2',
+    description: '日本リージョンで運用している2台目のサーバー。',
+    category: 'infra',
+    status: 'online',
+    tailscaleHostname: 'jp-server-2',
+    beszelName: 'jp-server-2',
   },
   {
     id: 'us-server',
@@ -36,14 +51,7 @@ export const selfHostedServers: SelfHostedServer[] = [
     category: 'infra',
     status: 'online',
     tailscaleHostname: 'us-server',
-  },
-  {
-    id: 'aki-hp-envy-laptop',
-    name: 'HP ENVY Laptop',
-    description: 'ノートPCを転用したサーバー。',
-    category: 'infra',
-    status: 'online',
-    tailscaleHostname: 'aki-hp-envy-laptop-13-ba1xxx',
+    beszelName: 'us-server',
   },
   {
     id: 'sg-server',
@@ -52,6 +60,16 @@ export const selfHostedServers: SelfHostedServer[] = [
     category: 'infra',
     status: 'online',
     tailscaleHostname: 'sg-server',
+    beszelName: 'sg-server',
+  },
+  {
+    id: 'aki-hp-envy-laptop',
+    name: 'HP ENVY Laptop',
+    description: 'ノートPCを転用したサーバー。',
+    category: 'infra',
+    status: 'online',
+    tailscaleHostname: 'aki-hp-envy-laptop-13-ba1xxx',
+    beszelName: 'hp-laptop',
   },
   {
     id: 'raspberrypi',
@@ -60,5 +78,6 @@ export const selfHostedServers: SelfHostedServer[] = [
     category: 'infra',
     status: 'online',
     tailscaleHostname: 'raspberrypi',
+    beszelName: 'Raspberry Pi',
   },
 ];
