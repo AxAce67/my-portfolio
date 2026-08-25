@@ -129,9 +129,9 @@ export async function getTailscaleDeviceStatus(): Promise<{ devices: ServerStatu
 }
 
 export async function getBeszelServerMetrics(): Promise<{ metrics: ServerMetrics[] } | { error: string }> {
-  const baseUrl = process.env.BESZEL_URL?.replace(/\/+$/, '');
-  const email = process.env.BESZEL_EMAIL;
-  const password = process.env.BESZEL_PASSWORD;
+  const baseUrl = process.env.BESZEL_URL?.trim().replace(/\/+$/, '');
+  const email = process.env.BESZEL_EMAIL?.trim();
+  const password = process.env.BESZEL_PASSWORD?.trim();
 
   if (!baseUrl || !email || !password) {
     return { metrics: [] };
@@ -221,7 +221,7 @@ export async function getServerStatusSnapshot(): Promise<ServerStatusSnapshot> {
         error: 'error' in tailscaleValue ? tailscaleValue.error : tailscaleResult.status === 'rejected' ? 'Tailscale request failed' : undefined,
       },
       beszel: {
-        configured: Boolean(process.env.BESZEL_URL && process.env.BESZEL_EMAIL && process.env.BESZEL_PASSWORD),
+        configured: Boolean(process.env.BESZEL_URL?.trim() && process.env.BESZEL_EMAIL?.trim() && process.env.BESZEL_PASSWORD?.trim()),
         ok: beszelMetrics.length > 0,
         error: 'error' in beszelValue ? beszelValue.error : beszelResult.status === 'rejected' ? 'Beszel request failed' : undefined,
       },
