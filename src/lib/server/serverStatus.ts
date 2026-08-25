@@ -63,6 +63,16 @@ export type ServerMetrics = {
 export type ServerStatusSnapshot = {
   devices: ServerStatusDevice[];
   metrics: ServerMetrics[];
+  providers?: {
+    tailscale: ProviderStatus;
+    beszel: ProviderStatus;
+  };
+};
+
+type ProviderStatus = {
+  configured: boolean;
+  ok: boolean;
+  error?: string;
 };
 
 const ONLINE_WINDOW_MS = 3 * 60 * 1000; // Tailscale clients check in roughly every 1-2 min
@@ -198,9 +208,23 @@ export async function getServerStatusSnapshot(): Promise<ServerStatusSnapshot> {
 
   const tailscaleValue = tailscaleResult.status === 'fulfilled' ? tailscaleResult.value : { devices: [] };
   const beszelValue = beszelResult.status === 'fulfilled' ? beszelResult.value : { metrics: [] };
+  const tailscaleDevices = 'devices' in tailscaleValue ? tailscaleValue.devices : [];
+  const beszelMetrics = 'metrics' in beszelValue ? beszelValue.metrics : [];
 
   return {
-    devices: 'devices' in tailscaleValue ? tailscaleValue.devices : [],
-    metrics: 'metrics' in beszelValue ? beszelValue.metrics : [],
+    devices: tailscaleDevices,
+    metrics: beszelMetrics,
+    providers: {
+      tailscale: {
+        configured: Boolean(process.env.TAILSCALE_API_KEY),
+        ok: tailscaleDevices.length > 0,
+        error: 'error' in tailscaleValue ? tailscaleValue.error : tailscaleResult.status === 'rejected' ? 'Tailscale request failed' : undefined,
+      },
+      beszel: {
+        configured: Boolean(process.env.BESZEL_URL && process.env.BESZEL_EMAIL && process.env.BESZEL_PASSWORD),
+        ok: beszelMetrics.length > 0,
+        error: 'error' in beszelValue ? beszelValue.error : beszelResult.status === 'rejected' ? 'Beszel request failed' : undefined,
+      },
+    },
   };
 }
