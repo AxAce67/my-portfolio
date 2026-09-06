@@ -3,7 +3,7 @@
 import { useTranslations } from '@/hooks/useTranslations';
 import Image from '@/components/ui/Image';
 import { Github, Twitter, Mail } from 'lucide-react';
-import { SiDiscord } from '@icons-pack/react-simple-icons';
+import { SiDiscord } from 'react-icons/si';
 import { FadeLink } from '@/components/ui/FadeLink';
 import { toast } from 'sonner';
 

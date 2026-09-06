@@ -1,4 +1,4 @@
-import { getLocaleMeta, locales, type AppLocale } from '@/i18n/locales';
+import { getLocaleMeta, type AppLocale } from '@/i18n/locales';
 
 const HOME_DESCRIPTION = 'Building what I love with code.';
 const PROJECTS_DESCRIPTION = 'Projects Aki has built.';
@@ -11,21 +11,13 @@ export function getSiteUrl(): string {
 
 export const DEFAULT_OG_IMAGE_PATH = '/og-default.png';
 
-export function buildLocalePath(locale: AppLocale, path = ''): string {
+function buildLocalePath(locale: AppLocale, path = ''): string {
   const normalized = path.startsWith('/') ? path : `/${path}`;
   return `/${locale}${normalized === '/' ? '' : normalized}`;
 }
 
 export function buildLocaleUrl(locale: AppLocale, path = ''): string {
   return `${getSiteUrl()}${buildLocalePath(locale, path)}`;
-}
-
-export function buildLocaleAlternates(path = '') {
-  return Object.fromEntries(locales.map((locale) => [locale, buildLocalePath(locale, path)])) as Record<AppLocale, string>;
-}
-
-export function buildLocaleUrlAlternates(path = '') {
-  return Object.fromEntries(locales.map((locale) => [locale, buildLocaleUrl(locale, path)])) as Record<AppLocale, string>;
 }
 
 export function getLocaleSeo(locale: AppLocale) {

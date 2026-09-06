@@ -27,6 +27,24 @@ export type SelfHostedServer = {
 // `tailscaleHostname`). Edit this list to match your real machine(s).
 export const selfHostedServers: SelfHostedServer[] = [
   {
+    id: 'home-server',
+    name: 'Home Server',
+    description: '自宅環境でアプリケーションを運用しているサーバー。',
+    category: 'infra',
+    status: 'online',
+    tailscaleHostname: 'home-server',
+    beszelName: 'home-server',
+  },
+  {
+    id: 'home-nas',
+    name: 'Home NAS',
+    description: '自宅環境のストレージを担うNASサーバー。',
+    category: 'infra',
+    status: 'online',
+    tailscaleHostname: 'home-nas',
+    beszelName: 'home-nas',
+  },
+  {
     id: 'jp-server',
     name: 'JP Server',
     description: '日本リージョンで運用しているサーバー。',
@@ -61,23 +79,5 @@ export const selfHostedServers: SelfHostedServer[] = [
     status: 'online',
     tailscaleHostname: 'sg-server',
     beszelName: 'sg-server',
-  },
-  {
-    id: 'aki-hp-envy-laptop',
-    name: 'HP ENVY Laptop',
-    description: 'ノートPCを転用したサーバー。',
-    category: 'infra',
-    status: 'online',
-    tailscaleHostname: 'aki-hp-envy-laptop-13-ba1xxx',
-    beszelName: 'hp-laptop',
-  },
-  {
-    id: 'raspberrypi',
-    name: 'Raspberry Pi',
-    description: 'Raspberry Piを転用したサーバー。',
-    category: 'infra',
-    status: 'online',
-    tailscaleHostname: 'raspberrypi',
-    beszelName: 'Raspberry Pi',
   },
 ];

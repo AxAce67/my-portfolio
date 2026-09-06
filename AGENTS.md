@@ -7,7 +7,9 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 ```bash
 npm run dev          # Start Next.js dev server
 npm run build        # Typecheck + production build
+npm run start        # Start the production server on 0.0.0.0
 npm run lint         # ESLint (flat config, eslint.config.js)
+npm run typecheck    # TypeScript without emitting files
 npm run preview      # Preview the production build locally
 ```
 
@@ -27,7 +29,7 @@ There are no automated tests. Verify changes by building (`npm run build`) to ca
 
 ### Appwrite
 
-Single Appwrite project, no SSR — all calls happen directly from the browser.
+Single Appwrite project. Content, auth, and Storage calls happen directly from the browser; server-only integrations such as Tailscale, Beszel, and GitHub run through App Router route handlers.
 
 - `src/lib/appwrite/client.ts` exports `tablesDB`, `account`, `storage`, plus hardcoded IDs: `DATABASE_ID` (`portfolio`), `PROJECTS_TABLE_ID`, `ACTIVE_PROJECTS_TABLE_ID`, `ASSETS_BUCKET_ID` (`portfolio-assets`)
 - Public read: `src/lib/content/publicContent.ts` — read-only queries, `is_published`/`status` filtered, no auth required (table permission `read("any")`)
@@ -40,7 +42,7 @@ Single route serves both login and dashboard — `src/views/AdminPage.tsx` check
 
 - Auth: Appwrite Account API (`account.createEmailPasswordSession`), single/few admin users created manually via the Appwrite console — there is no public signup
 - `RequireAuth` (`src/components/auth/RequireAuth.tsx`) gates `/admin/projects/new` and `/admin/projects/:id`, redirecting to `/admin` if unauthenticated
-- `DashboardPage` has 2 tabs (projects, active) — no audit-log tab (that depended on Supabase-only rate-limit/audit infra that no longer exists)
+- `DashboardPage` has 3 tabs (projects, active, mutual links) — no audit-log tab (that depended on Supabase-only rate-limit/audit infra that no longer exists)
 - `ProjectEditorForm` mirrors the live article page's typography (`.article-content`) so editing looks like the published result. It autosaves a draft to `localStorage` (debounced) and warns on unsaved navigation/tab-close
 - Thumbnails go through a crop step (`react-easy-crop`, locked 16:9) before upload
 - Active Projects use `@dnd-kit` for drag-to-reorder (no manual priority field — `display_order` is set automatically)
@@ -54,7 +56,7 @@ Projects store content in two fields:
 
 Article display (`src/views/ProjectDetailPage.tsx`) prefers `content_json` when present, rendered by `src/components/content/BlockNoteContent.tsx`.
 
-**Storage cleanup**: deleting a project (`deleteProject`) walks `content_json` (including nested block `children`) to find every uploaded file URL and deletes them from the `portfolio-assets` bucket, plus the thumbnail. Replacing a thumbnail on update also deletes the old file. This is all best-effort (failures don't block the row delete/update). Known gap: removing an inline image from the article body without deleting the whole project does **not** clean up that file — it becomes an orphan in storage.
+**Storage cleanup**: deleting or updating a project walks `content_json` (including nested block `children`) to find uploaded file URLs. Project deletion removes body assets plus the thumbnail; project updates remove assets no longer referenced by the saved content. Thumbnail/avatar/banner replacements also remove the previous file. Cleanup is best-effort and runs only after the corresponding row update succeeds.
 
 ### Styling
 
@@ -65,13 +67,13 @@ Article display (`src/views/ProjectDetailPage.tsx`) prefers `content_json` when 
 
 ### Removed vs. the old Next.js version
 
-No CSP middleware, no CSP violation reporting endpoint, no login rate-limiting, no auth audit log table — all of that was Supabase/Next.js-server-specific and was not rebuilt when this became a static SPA. Don't assume any backend-side request gate exists; Appwrite's own permission rules are the only enforcement.
+No CSP middleware, no CSP violation reporting endpoint, no login rate-limiting, and no auth audit-log table. These controls were removed during the former Vite/Appwrite migration and were not reintroduced after returning to Next.js. Appwrite permissions remain the enforcement boundary for content administration.
 
 ## Key Environment Variables
 
 ```
-VITE_APPWRITE_ENDPOINT
-VITE_APPWRITE_PROJECT_ID
+NEXT_PUBLIC_APPWRITE_ENDPOINT
+NEXT_PUBLIC_APPWRITE_PROJECT_ID
 NEXT_PUBLIC_SITE_URL          # SEO/OGP base URL fallback
 ```
 

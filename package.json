@@ -1,5 +1,5 @@
 {
-  "name": "portforio",
+  "name": "portfolio",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -9,10 +9,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "start": "next start -H 0.0.0.0",
     "preview": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit",
-    "lighthouse": "node scripts/lighthouse-runner.mjs"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@blocknote/core": "^0.51.4",
@@ -24,19 +24,16 @@
     "@fontsource-variable/noto-sans-jp": "^5.2.10",
     "@fontsource/geist-mono": "^5.2.8",
     "@fontsource/geist-sans": "^5.2.5",
-    "@icons-pack/react-simple-icons": "^13.11.2",
     "@mantine/core": "^8.3.15",
     "@mantine/hooks": "^8.3.15",
-    "@mantine/utils": "^6.0.22",
     "appwrite": "^26.0.0",
     "cobe": "^2.0.1",
     "framer-motion": "^12.34.3",
     "i18next": "^26.3.1",
-    "i18next-browser-languagedetector": "^8.2.1",
     "lucide-react": "^0.575.0",
-    "next": "^16.2.10",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
+    "next": "^16.3.4",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "react-easy-crop": "^6.0.2",
     "react-i18next": "^17.0.8",
     "react-icons": "^5.7.0",
@@ -50,16 +47,15 @@
     "eslint": "^10.5.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.6.0",
-    "lighthouse": "^12.6.1",
-    "postcss": "^8",
-    "start-server-and-test": "^2.1.2",
+    "postcss": "^8.5.28",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.61.1"
   },
   "overrides": {
-    "next": {
-      "postcss": "^8.5.16"
-    }
+    "@tiptap/core": "3.31.3",
+    "@tiptap/pm": "3.31.3",
+    "@tiptap/react": "3.31.3",
+    "postcss": "$postcss"
   }
 }

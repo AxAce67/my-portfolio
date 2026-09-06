@@ -1,6 +1,5 @@
-import i18n, { createInstance, type Resource } from 'i18next';
+import { createInstance, type Resource } from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
 import type { AppLocale } from '@/i18n/locales';
 
 import en from '../../messages/en.json';
@@ -18,7 +17,7 @@ import pt from '../../messages/pt.json';
 // segments) and the normalized form (what lookups actually resolve to).
 type MessageBundle = Resource[string];
 
-export const resources: Resource = {
+const resources: Resource = {
   en: { ...en } as unknown as MessageBundle,
   ja: { ...ja } as unknown as MessageBundle,
   'zh-cn': { ...zhCn } as unknown as MessageBundle,
@@ -31,7 +30,7 @@ export const resources: Resource = {
   pt: { ...pt } as unknown as MessageBundle,
 };
 
-export const i18nOptions = {
+const i18nOptions = {
   resources,
   fallbackLng: 'en',
   // Keep i18n.language lowercase (zh-cn, zh-tw) so it matches our
@@ -57,10 +56,3 @@ export function createLocaleI18n(locale: AppLocale) {
   });
   return instance;
 }
-
-i18n
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init(i18nOptions);
-
-export default i18n;

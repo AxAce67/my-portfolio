@@ -9,7 +9,7 @@ type TailscaleDevice = {
   addresses?: string[];
 };
 
-export type ServerStatusDevice = {
+type ServerStatusDevice = {
   id: string;
   name: string;
   online: boolean;
@@ -37,17 +37,17 @@ type BeszelStatsRecord = {
   system: string;
   stats?: {
     cpu?: number;
+    cpus?: number[];
     m?: number;
     mu?: number;
     mp?: number;
-    s?: number;
     d?: number;
     du?: number;
     dp?: number;
   };
 };
 
-export type ServerMetrics = {
+type ServerMetrics = {
   id: string;
   name: string;
   cpuPercent: number | null;
@@ -63,16 +63,6 @@ export type ServerMetrics = {
 export type ServerStatusSnapshot = {
   devices: ServerStatusDevice[];
   metrics: ServerMetrics[];
-  providers?: {
-    tailscale: ProviderStatus;
-    beszel: ProviderStatus;
-  };
-};
-
-type ProviderStatus = {
-  configured: boolean;
-  ok: boolean;
-  error?: string;
 };
 
 const ONLINE_WINDOW_MS = 3 * 60 * 1000; // Tailscale clients check in roughly every 1-2 min
@@ -89,7 +79,7 @@ function asNumber(value: unknown): number | null {
   return typeof value === 'number' && Number.isFinite(value) ? value : null;
 }
 
-export async function getTailscaleDeviceStatus(): Promise<{ devices: ServerStatusDevice[] } | { error: string }> {
+async function getTailscaleDeviceStatus(): Promise<{ devices: ServerStatusDevice[] } | { error: string }> {
   const apiKey = process.env.TAILSCALE_API_KEY;
   const tailnet = process.env.TAILSCALE_TAILNET || '-';
 
@@ -128,7 +118,7 @@ export async function getTailscaleDeviceStatus(): Promise<{ devices: ServerStatu
   return { devices };
 }
 
-export async function getBeszelServerMetrics(): Promise<{ metrics: ServerMetrics[] } | { error: string }> {
+async function getBeszelServerMetrics(): Promise<{ metrics: ServerMetrics[] } | { error: string }> {
   const baseUrl = process.env.BESZEL_URL?.trim().replace(/\/+$/, '');
   const email = process.env.BESZEL_EMAIL?.trim();
   const password = process.env.BESZEL_PASSWORD?.trim();
@@ -187,7 +177,10 @@ export async function getBeszelServerMetrics(): Promise<{ metrics: ServerMetrics
       id: system.id,
       name: system.name,
       cpuPercent: asNumber(stats?.cpu ?? system.info?.cpu),
-      cpuThreads: asNumber(stats?.s ?? system.info?.t),
+      // Beszel's stats.s is total swap space in GB, not a CPU count.
+      // Thread count lives in the system snapshot (info.t); the
+      // per-thread CPU series is a reliable fallback for older records.
+      cpuThreads: asNumber(system.info?.t ?? stats?.cpus?.length),
       memoryUsedGb: asNumber(stats?.mu),
       memoryTotalGb: asNumber(stats?.m),
       memoryPercent: asNumber(stats?.mp ?? system.info?.mp),
@@ -214,17 +207,5 @@ export async function getServerStatusSnapshot(): Promise<ServerStatusSnapshot> {
   return {
     devices: tailscaleDevices,
     metrics: beszelMetrics,
-    providers: {
-      tailscale: {
-        configured: Boolean(process.env.TAILSCALE_API_KEY),
-        ok: tailscaleDevices.length > 0,
-        error: 'error' in tailscaleValue ? tailscaleValue.error : tailscaleResult.status === 'rejected' ? 'Tailscale request failed' : undefined,
-      },
-      beszel: {
-        configured: Boolean(process.env.BESZEL_URL?.trim() && process.env.BESZEL_EMAIL?.trim() && process.env.BESZEL_PASSWORD?.trim()),
-        ok: beszelMetrics.length > 0,
-        error: 'error' in beszelValue ? beszelValue.error : beszelResult.status === 'rejected' ? 'Beszel request failed' : undefined,
-      },
-    },
   };
 }

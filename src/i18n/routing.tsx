@@ -1,18 +1,15 @@
 export {
-    defaultLocale,
     getLocaleMeta,
     getValidLocale,
     isAppLocale,
-    localeMeta,
     locales,
-    routing,
     type AppLocale,
 } from './locales';
 
 import { isAppLocale, type AppLocale } from './locales';
 
 import NextLink, { type LinkProps } from 'next/link';
-import { redirect as nextRedirect, usePathname as useNextPathname, useRouter as useNextRouter } from 'next/navigation';
+import { usePathname as useNextPathname, useRouter as useNextRouter } from 'next/navigation';
 import type { AnchorHTMLAttributes } from 'react';
 import { useAppLocale } from '@/i18n/LocaleProvider';
 
@@ -56,8 +53,6 @@ export const Link = ({ href, prefetch: _prefetch, ...props }: CompatibleLinkProp
         : withLocale(href, locale);
     return <NextLink href={resolved} prefetch={_prefetch} {...props} />;
 };
-
-export const redirect = nextRedirect;
 
 export function usePathname() {
     return useNextPathname() ?? '';

@@ -21,7 +21,7 @@ type LocaleMeta = {
     skipToContentLabel: string;
 };
 
-export const localeMeta: Record<AppLocale, LocaleMeta> = {
+const localeMeta: Record<AppLocale, LocaleMeta> = {
     ja: {
         label: '日本語',
         shortLabel: 'JA',
@@ -91,9 +91,3 @@ export function getValidLocale(value: string): AppLocale {
 export function getLocaleMeta(value: string): LocaleMeta {
     return localeMeta[getValidLocale(value)];
 }
-
-export const routing = {
-    locales: [...locales],
-    defaultLocale,
-    localeDetection: true,
-};

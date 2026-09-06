@@ -12,7 +12,7 @@ function getFileExtension(fileName: string, fallback = 'jpg') {
   return rawExt.replace(/[^a-z0-9]/g, '') || fallback;
 }
 
-export function assertImageFile(file: File) {
+function assertImageFile(file: File) {
   if (file.size > MAX_UPLOAD_SIZE) {
     throw new UploadValidationError('size');
   }

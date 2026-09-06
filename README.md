@@ -35,6 +35,7 @@ Next.js App Router + React をベースに、多言語対応、記事ページ�
 - 日本語 / English を含む多言語 UI
 - SEO / OGP / sitemap 対応
 - 公開面と管理画面を同一リポジトリで管理
+- Tailscale / Beszel を使ったサーバーステータス表示
 - モバイル表示と遷移体験の最適化
 
 ## Notes
@@ -59,6 +60,14 @@ npm run dev
 ```bash
 npm run dev
 npm run build
+npm run start
 npm run preview
 npm run lint
+npm run typecheck
 ```
+
+## Deployment
+
+DokployではリポジトリルートをBuild Pathにし、Nixpacksでビルドします。`package.json`の`build`/`start`スクリプトが自動検出されるため、`nixpacks.toml`は不要です。DomainのTarget Portは`3000`、Publish Directoryは空欄にします。
+
+公開設定は`NEXT_PUBLIC_*`、Tailscale・Beszel・GitHubの認証情報はサーバー専用環境変数としてDokployのEnvironmentへ登録してください。値はリポジトリへコミットしません。

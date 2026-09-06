@@ -1,5 +1,5 @@
 import { Mail, Twitter } from 'lucide-react';
-import { SiDiscord } from '@icons-pack/react-simple-icons';
+import { SiDiscord } from 'react-icons/si';
 import { toast } from 'sonner';
 import { useTranslations } from '@/hooks/useTranslations';
 
@@ -12,7 +12,7 @@ const DEFAULT_CONTACT_EMAIL = 'hello@aki.quest';
 
 export function ContactMethods({ className = '', thirdMethod = 'form' }: ContactMethodsProps) {
   const t = useTranslations('Contact');
-  const contactEmail = (process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? process.env.VITE_CONTACT_EMAIL)?.trim() || DEFAULT_CONTACT_EMAIL;
+  const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || DEFAULT_CONTACT_EMAIL;
 
   const copyDiscordUsername = () => {
     navigator.clipboard.writeText('@xaki67').then(() => toast.success(t('discordCopied')));

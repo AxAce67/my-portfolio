@@ -1,6 +1,6 @@
 import { getLocaleMeta } from '@/i18n/routing';
 
-export function toIsoCalendarDate(value: string | null | undefined) {
+function toIsoCalendarDate(value: string | null | undefined) {
   if (!value) return null;
 
   const date = new Date(value);

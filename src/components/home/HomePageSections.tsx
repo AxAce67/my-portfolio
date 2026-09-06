@@ -34,7 +34,7 @@ import {
   SiGooglegemini,
   SiVercel,
   SiDiscord,
-} from '@icons-pack/react-simple-icons';
+} from 'react-icons/si';
 import {
   getSiteSettings,
   DEFAULT_AVATAR_URL,

@@ -78,7 +78,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <Script id="theme-init" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: getThemeInitScript() }} />
         <Script
           src="https://analytics.aki.quest/script.js"
-          data-website-id="9612c4b4-0548-4e2b-93ba-c85c880d5d08"
+          data-website-id="37176f59-41f2-4fd6-b3f8-949a03f12d5c"
           data-domains="aki.quest"
           strategy="afterInteractive"
         />

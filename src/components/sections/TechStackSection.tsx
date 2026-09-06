@@ -37,7 +37,7 @@ import {
   SiVscodium,
   SiXcode,
   SiAndroidstudio,
-} from '@icons-pack/react-simple-icons';
+} from 'react-icons/si';
 import { Sparkles } from 'lucide-react';
 import { FaWindows, FaCube } from 'react-icons/fa';
 type IconComponent = ComponentType<{ size?: number | string; className?: string; style?: React.CSSProperties }>;
