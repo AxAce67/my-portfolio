@@ -466,7 +466,6 @@
     "backTimeline": "← 활성 프로젝트로 돌아가기"
   },
   "Radar": {
-    "eyebrow": "Live ADS-B",
     "heading": "Radar",
     "description": "내 수신기에서 제공하는 tar1090 항공기 레이더를 실시간으로 표시합니다.",
     "openExternal": "레이더 열기",

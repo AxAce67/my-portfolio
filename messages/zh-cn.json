@@ -466,7 +466,6 @@
     "backTimeline": "← 返回活跃项目"
   },
   "Radar": {
-    "eyebrow": "Live ADS-B",
     "heading": "Radar",
     "description": "显示来自我的接收器的 tar1090 实时航空器雷达。",
     "openExternal": "打开雷达",

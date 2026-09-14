@@ -466,7 +466,6 @@
     "backTimeline": "← Back to Active Projects"
   },
   "Radar": {
-    "eyebrow": "Live ADS-B",
     "heading": "Radar",
     "description": "A live tar1090 aircraft radar view from my receiver.",
     "openExternal": "Open radar",

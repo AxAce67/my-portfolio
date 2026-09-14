@@ -33,6 +33,14 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
 
   return (
     <section className="max-w-md mx-auto px-6 lg:px-8 py-24">
+      <TransitionLink
+        href={`/${locale}`}
+        className="mb-4 inline-block text-xs font-mono text-muted-foreground hover:text-foreground"
+        direction="backward"
+      >
+        {t('backToSite')}
+      </TransitionLink>
+
       <div className="rounded-xl border border-border bg-card p-6 space-y-5">
         <h1 className="text-2xl font-bold tracking-tight">{t('title')}</h1>
 
@@ -80,9 +88,6 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
           </button>
         </form>
       </div>
-      <TransitionLink href={`/${locale}`} className="mt-4 inline-block text-xs font-mono text-muted-foreground hover:text-foreground" direction="backward">
-        {t('backToSite')}
-      </TransitionLink>
     </section>
   );
 }

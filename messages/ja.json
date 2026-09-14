@@ -466,7 +466,6 @@
     "backTimeline": "← Active Projectsへ戻る"
   },
   "Radar": {
-    "eyebrow": "Live ADS-B",
     "heading": "Radar",
     "description": "自宅受信機の tar1090 航空機レーダーをリアルタイムで表示しています。",
     "openExternal": "レーダーを開く",

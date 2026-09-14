@@ -21,7 +21,7 @@ export default function RadarPage() {
 
   return (
     <section className="max-w-5xl mx-auto px-6 lg:px-8 py-16 sm:py-20">
-      <div className="mb-6 sm:mb-8">
+      <div className="mb-3 sm:mb-4">
         <Link
           href="/"
           className="text-xs font-mono text-muted-foreground transition-colors hover:text-foreground"
@@ -34,8 +34,7 @@ export default function RadarPage() {
 
         <div className="mt-4 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground">{t('eyebrow')}</p>
-            <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">{t('heading')}</h1>
+            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{t('heading')}</h1>
             <p className="mt-2 max-w-2xl text-sm text-muted-foreground leading-relaxed">
               {t('description')}
             </p>

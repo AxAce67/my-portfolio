@@ -466,7 +466,6 @@
     "backTimeline": "← 返回活躍項目"
   },
   "Radar": {
-    "eyebrow": "Live ADS-B",
     "heading": "Radar",
     "description": "顯示來自我的接收器的 tar1090 即時航空器雷達。",
     "openExternal": "開啟雷達",
