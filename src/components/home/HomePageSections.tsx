@@ -18,7 +18,6 @@ import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, r
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
 import { navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 import { toast } from 'sonner';
-import { ContactMethods } from '@/components/home/ContactMethods';
 import SponsorsSection from '@/components/home/SponsorsSection';
 import { selfHostedServers } from '@/lib/selfHostedServers';
 import {
@@ -657,7 +656,7 @@ function AboutSection({ avatarUrl }: { avatarUrl: string }) {
     : '--';
 
   return (
-    <section id="about" className="pt-8 sm:pt-12 pb-12 sm:pb-16 lg:pb-20">
+    <section id="about" className="pt-8 sm:pt-12 pb-10 sm:pb-12 lg:pb-16">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-5 sm:mb-6">{t('heading')}</h2>
@@ -975,7 +974,7 @@ function SkillsSection() {
   const selectedSkills = sampleSkills.filter((s) => s.category === selectedCategory);
 
   return (
-    <section id="skills" className="py-12 sm:py-16 lg:py-20">
+    <section id="skills" className="py-10 sm:py-12 lg:py-16">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2">{t('heading')}</h2>
@@ -1148,8 +1147,8 @@ function ProjectsSection({
   }, []);
 
   return (
-    <section id="projects" className="py-12 sm:py-16 lg:py-20">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="projects" className="py-10 sm:py-12 lg:py-16">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
           <div className="flex flex-wrap items-end justify-between gap-4 mb-5 sm:mb-6">
             <h2 className="text-2xl sm:text-4xl font-bold tracking-tight">{t('heading')}</h2>
@@ -1362,7 +1361,7 @@ function ActiveProjectsSection({
   };
 
   return (
-    <section id="timeline" className="py-12 sm:py-16 lg:py-20">
+    <section id="timeline" className="py-10 sm:py-12 lg:py-16">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-5 sm:mb-6">{text('heading', 'Active Projects')}</h2>
@@ -1559,7 +1558,7 @@ function MutualLinksSection({ links }: { links: MutualLink[] }) {
   const t = useTranslations('MutualLinks');
 
   return (
-    <section id="links" className="py-12 sm:py-16 lg:py-20">
+    <section id="links" className="py-10 sm:py-12 lg:py-16">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2">{t('heading')}</h2>
@@ -1616,7 +1615,19 @@ function MutualLinksSection({ links }: { links: MutualLink[] }) {
                 <p className="text-sm font-semibold">{t('ctaTitle')}</p>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{t('empty')}</p>
               </div>
-              <ContactMethods className="w-full sm:w-auto sm:min-w-[460px]" />
+              {/* The contact options themselves live in the Contact section
+                  right below; repeating them here doubled the same buttons. */}
+              <a
+                href="#contact"
+                onClick={(event) => {
+                  event.preventDefault();
+                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="btn-outline inline-flex shrink-0 items-center justify-center gap-1.5 px-4 py-2 text-xs"
+              >
+                {t('ctaContact')}
+                <ArrowUpRight className="h-3.5 w-3.5 rotate-90" strokeWidth={1.7} />
+              </a>
             </div>
           </div>
         </ScrollReveal>

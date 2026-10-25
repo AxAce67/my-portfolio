@@ -479,6 +479,7 @@
     "ctaTitle": "상호 링크를 모집 중입니다",
     "empty": "게재를 원하시면 X, Discord 또는 문의 양식으로 편하게 연락해 주세요!",
     "visitSite": "사이트 방문",
-    "discordCopied": "Discord 사용자 이름을 복사했습니다"
+    "discordCopied": "Discord 사용자 이름을 복사했습니다",
+    "ctaContact": "문의하기로"
   }
 }

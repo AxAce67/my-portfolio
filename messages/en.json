@@ -479,6 +479,7 @@
     "ctaTitle": "Open for mutual links",
     "empty": "Want to exchange links? Reach out through X, Discord, or the contact form.",
     "visitSite": "Visit site",
-    "discordCopied": "Copied Discord username"
+    "discordCopied": "Copied Discord username",
+    "ctaContact": "Go to contact"
   }
 }

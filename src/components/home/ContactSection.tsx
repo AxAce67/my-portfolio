@@ -259,124 +259,128 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" ref={sectionRef} className="py-12 sm:py-16 lg:py-20">
-      <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contact" ref={sectionRef} className="py-10 sm:py-12 lg:py-16">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {turnstileSiteKey && shouldLoadTurnstile ? (
           <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
         ) : null}
-        <ScrollReveal delay={0.1}>
-          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2 sm:mb-3">{t('heading')}</h2>
-          <p className="text-sm text-muted-foreground mb-5 sm:mb-6">{t('description')}</p>
-        </ScrollReveal>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-10">
+          <div>
+            <ScrollReveal delay={0.1}>
+              <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2 sm:mb-3">{t('heading')}</h2>
+              <p className="text-sm text-muted-foreground mb-5 sm:mb-6">{t('description')}</p>
+            </ScrollReveal>
 
-        <ContactMethods className="mb-3" thirdMethod="email" />
+            <ContactMethods className="lg:grid-cols-1" thirdMethod="email" />
+          </div>
 
-        <div id="contact-form" className="bento-card bento-card--static scroll-mt-24 p-5 sm:p-8">
-          <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
-            <input
-              type="text"
-              name="_gotcha"
-              maxLength={200}
-              tabIndex={-1}
-              autoComplete="off"
-              aria-hidden="true"
-              className="hidden"
-            />
+          <div id="contact-form" className="bento-card bento-card--static scroll-mt-24 p-5 sm:p-8">
+            <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
+              <input
+                type="text"
+                name="_gotcha"
+                maxLength={200}
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="hidden"
+              />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label htmlFor="contact-name" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
+                    {t('name')}
+                    <span className="ml-1 text-red-500" aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    id="contact-name"
+                    name="name"
+                    type="text"
+                    required
+                    maxLength={80}
+                    placeholder={t('namePlaceholder')}
+                    autoComplete="name"
+                    className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm transition-[border-color,background-color] focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="contact-email" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
+                    {t('email')}
+                    <span className="ml-1 text-muted-foreground/60">({t('optional')})</span>
+                  </label>
+                  <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    maxLength={320}
+                    placeholder={t('emailPlaceholder')}
+                    autoComplete="email"
+                    inputMode="email"
+                    spellCheck={false}
+                    className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm transition-[border-color,background-color] focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
+                  />
+                </div>
+              </div>
+
               <div>
-                <label htmlFor="contact-name" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
-                  {t('name')}
+                <label htmlFor="contact-subject" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
+                  {t('subject')}
                   <span className="ml-1 text-red-500" aria-hidden="true">*</span>
                 </label>
                 <input
-                  id="contact-name"
-                  name="name"
+                  id="contact-subject"
+                  name="subject"
                   type="text"
                   required
-                  maxLength={80}
-                  placeholder={t('namePlaceholder')}
-                  autoComplete="name"
+                  maxLength={160}
+                  placeholder={t('subjectPlaceholder')}
+                  autoComplete="off"
                   className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm transition-[border-color,background-color] focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
                 />
               </div>
 
               <div>
-                <label htmlFor="contact-email" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
-                  {t('email')}
-                  <span className="ml-1 text-muted-foreground/60">({t('optional')})</span>
+                <label htmlFor="contact-message" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
+                  {t('message')}
+                  <span className="ml-1 text-red-500" aria-hidden="true">*</span>
                 </label>
-                <input
-                  id="contact-email"
-                  name="email"
-                  type="email"
-                  maxLength={320}
-                  placeholder={t('emailPlaceholder')}
-                  autoComplete="email"
-                  inputMode="email"
-                  spellCheck={false}
-                  className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm transition-[border-color,background-color] focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  required
+                  rows={5}
+                  maxLength={5000}
+                  placeholder={t('messagePlaceholder')}
+                  autoComplete="off"
+                  className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm transition-[border-color,background-color] focus:border-foreground focus:bg-transparent resize-none placeholder:text-muted-foreground/40"
                 />
               </div>
-            </div>
 
-            <div>
-              <label htmlFor="contact-subject" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
-                {t('subject')}
-                <span className="ml-1 text-red-500" aria-hidden="true">*</span>
-              </label>
-              <input
-                id="contact-subject"
-                name="subject"
-                type="text"
-                required
-                maxLength={160}
-                placeholder={t('subjectPlaceholder')}
-                autoComplete="off"
-                className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm transition-[border-color,background-color] focus:border-foreground focus:bg-transparent placeholder:text-muted-foreground/40"
-              />
-            </div>
+              {turnstileSiteKey && shouldLoadTurnstile ? (
+                <div
+                  className="cf-turnstile"
+                  data-sitekey={turnstileSiteKey}
+                  data-callback="onTurnstileSuccess"
+                  data-expired-callback="onTurnstileExpired"
+                  data-error-callback="onTurnstileError"
+                />
+              ) : null}
 
-            <div>
-              <label htmlFor="contact-message" className="block text-xs font-mono text-muted-foreground mb-2 uppercase tracking-wider">
-                {t('message')}
-                <span className="ml-1 text-red-500" aria-hidden="true">*</span>
-              </label>
-              <textarea
-                id="contact-message"
-                name="message"
-                required
-                rows={5}
-                maxLength={5000}
-                placeholder={t('messagePlaceholder')}
-                autoComplete="off"
-                className="w-full bg-muted/50 border border-border rounded-lg px-3.5 py-2.5 text-sm transition-[border-color,background-color] focus:border-foreground focus:bg-transparent resize-none placeholder:text-muted-foreground/40"
-              />
-            </div>
-
-            {turnstileSiteKey && shouldLoadTurnstile ? (
-              <div
-                className="cf-turnstile"
-                data-sitekey={turnstileSiteKey}
-                data-callback="onTurnstileSuccess"
-                data-expired-callback="onTurnstileExpired"
-                data-error-callback="onTurnstileError"
-              />
-            ) : null}
-
-            <button
-              type="submit"
-              disabled={isSubmitting || !turnstileSiteKey || !shouldLoadTurnstile}
-              className="btn-primary w-full mt-2 flex items-center justify-center gap-2 disabled:opacity-60 disabled:pointer-events-none"
-            >
-              <Send className="w-4 h-4" strokeWidth={1.5} />
-              {isSubmitting ? t('sending') : t('preview')}
-            </button>
-            <div aria-live="polite" className="min-h-6">
-              {submitState === 'turnstile' && <p className="text-sm text-amber-500">{t('turnstileRequired')}</p>}
-              {submitState === 'error' && <p className="text-sm text-red-500">{t('error')}</p>}
-            </div>
-          </form>
+              <button
+                type="submit"
+                disabled={isSubmitting || !turnstileSiteKey || !shouldLoadTurnstile}
+                className="btn-primary w-full mt-2 flex items-center justify-center gap-2 disabled:opacity-60 disabled:pointer-events-none"
+              >
+                <Send className="w-4 h-4" strokeWidth={1.5} />
+                {isSubmitting ? t('sending') : t('preview')}
+              </button>
+              <div aria-live="polite" className="min-h-6">
+                {submitState === 'turnstile' && <p className="text-sm text-amber-500">{t('turnstileRequired')}</p>}
+                {submitState === 'error' && <p className="text-sm text-red-500">{t('error')}</p>}
+              </div>
+            </form>
+          </div>
         </div>
 
         {isPreviewOpen && pendingPayload ? (

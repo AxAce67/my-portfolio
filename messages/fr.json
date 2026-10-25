@@ -479,6 +479,7 @@
     "ctaTitle": "Échanges de liens ouverts",
     "empty": "Vous souhaitez échanger des liens ? Contactez-moi via X, Discord ou le formulaire.",
     "visitSite": "Visiter le site",
-    "discordCopied": "Nom d'utilisateur Discord copié"
+    "discordCopied": "Nom d'utilisateur Discord copié",
+    "ctaContact": "Aller au contact"
   }
 }
