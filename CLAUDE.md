@@ -33,7 +33,7 @@ Single Appwrite project. Content, auth, and Storage calls happen directly from t
 
 - `src/lib/appwrite/client.ts` exports `tablesDB`, `account`, `storage`, plus hardcoded IDs: `DATABASE_ID` (`portfolio`), `PROJECTS_TABLE_ID`, `ACTIVE_PROJECTS_TABLE_ID`, `ASSETS_BUCKET_ID` (`portfolio-assets`)
 - Public read: `src/lib/content/publicContent.ts` — read-only queries, `is_published`/`status` filtered, no auth required. `projects` and `active_projects` use row security: saving a row sets `read("any")` only when it is published (`publicReadPermissions` in `adminContent.ts`), so drafts are not readable through the public Appwrite API
-- Admin read/write: `src/lib/content/adminContent.ts` — full CRUD, requires an authenticated Appwrite session (table permissions `create`/`update`/`delete` scoped to `Role.users()`)
+- Admin read/write: `src/lib/content/adminContent.ts` — full CRUD, requires an Appwrite session whose user carries the `admin` label. Every table and the `portfolio-assets` bucket grant writes only to `label:admin`; `projects`/`active_projects` also grant table-level read only to `label:admin`, so admins see drafts while the public sees only rows with `read("any")`. Give a new admin user the `admin` label in the console (Auth > user > Labels)
 - Self-hosted Appwrite instance — when adding a new deploy target/domain, it must be registered as a Web Platform in the Appwrite console (Project > Overview > Platforms) or browser requests get a 403 `Invalid Origin`
 
 ### Admin Area (`/admin`)
