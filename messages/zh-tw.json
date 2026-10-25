@@ -21,7 +21,7 @@
     "ageLabel": "年齡",
     "locationLabel": "🇯🇵 Tokyo",
     "profileLabel": "Profile",
-    "profileParagraph1": "我是住在日本的一名高中一年級學生，正在製作網站、Discord 機器人、Ubuntu 伺服器與 Minecraft 伺服器等個人專案。",
+    "profileParagraph1": "我是住在日本的一名{grade}學生，正在製作網站、Discord 機器人、Ubuntu 伺服器與 Minecraft 伺服器等個人專案。",
     "profileParagraph2": "自從六年級接觸 ChatGPT 之後，我一直使用各種 AI 工具來改善工作流程，加快把想法做成可運作產品的速度。",
     "profileParagraph3": "我的流程是先把想法整理成需求，快速做出 MVP，然後透過測試與改進持續迭代。",
     "profileParagraph4": "我的優勢在於設計思考、持續改進與研究能力。我會跟上趨勢，同時兼顧可用性與可維護性。",
@@ -49,7 +49,22 @@
       "continuousImprovement": "持續改進"
     },
     "linksLabel": "Links",
-    "role": "獨立開發者"
+    "role": "獨立開發者",
+    "grade": {
+      "e1": "國小一年級",
+      "e2": "國小二年級",
+      "e3": "國小三年級",
+      "e4": "國小四年級",
+      "e5": "國小五年級",
+      "e6": "國小六年級",
+      "j1": "國中一年級",
+      "h1": "高中一年級",
+      "j2": "國中二年級",
+      "h2": "高中二年級",
+      "j3": "國中三年級",
+      "h3": "高中三年級"
+    },
+    "serversOnline": "{online}/{total} 台在線"
   },
   "Skills": {
     "sectionTitle": "// skills/",
@@ -127,7 +142,10 @@
     "tagline": "做自己喜歡的東西。就這樣。",
     "copyright": "© {year} 保留所有權利。",
     "terms": "使用條款",
-    "license": "授權"
+    "license": "授權",
+    "ntpSynced": "已與 {server} 同步",
+    "ntpDeviceOffset": "本裝置偏差 {offset}",
+    "ntpAccuracy": "估計誤差 ±{accuracy} ms"
   },
   "Language": {
     "label": "語言",

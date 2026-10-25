@@ -1,12 +1,17 @@
 import { useEffect, useRef } from 'react';
-import createGlobe from 'cobe';
+import createGlobe, { type Arc, type Marker } from 'cobe';
 
 type GlobeProps = {
   size?: number;
   className?: string;
+  markers?: Marker[];
+  arcs?: Arc[];
 };
 
-export function Globe({ size = 64, className = '' }: GlobeProps) {
+const NO_MARKERS: Marker[] = [];
+const NO_ARCS: Arc[] = [];
+
+export function Globe({ size = 64, className = '', markers = NO_MARKERS, arcs = NO_ARCS }: GlobeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -88,7 +93,12 @@ export function Globe({ size = 64, className = '' }: GlobeProps) {
         markerColor: [0.4, 0.87, 0.76],
         glowColor: [0.48, 0.74, 1],
         opacity: 0.92,
-        markers: [],
+        markers,
+        markerElevation: 0.02,
+        arcs,
+        arcColor: [0.48, 0.74, 1],
+        arcWidth: 0.6,
+        arcHeight: 0.25,
       });
 
       canvas.style.cursor = 'grab';
@@ -111,7 +121,7 @@ export function Globe({ size = 64, className = '' }: GlobeProps) {
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
     };
-  }, [size]);
+  }, [size, markers, arcs]);
 
   return (
     <canvas

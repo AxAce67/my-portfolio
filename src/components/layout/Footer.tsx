@@ -7,6 +7,7 @@ import { Github, Twitter } from '@/components/ui/brandIcons';
 import { SiDiscord } from 'react-icons/si';
 import { FadeLink } from '@/components/ui/FadeLink';
 import { toast } from 'sonner';
+import { NtpClock } from '@/components/layout/NtpClock';
 
 const socialLinks = [
     { icon: Github, href: 'https://github.com/AxAce67', label: 'GitHub' },
@@ -65,7 +66,10 @@ export function Footer() {
                     </FadeLink>
                 </div>
 
-                {/* 3. Subtle Counter */}
+                {/* 3. Clock synced to the site's own NTP server */}
+                <NtpClock />
+
+                {/* 4. Subtle Counter */}
                 <div className="mt-2 opacity-80 hover:opacity-100 transition-opacity duration-500 filter grayscale hover:grayscale-0">
                     <Image
                         src="https://count.getloli.com/@portfolio_Aki?name=portfolio_Aki&theme=3d-num&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto"

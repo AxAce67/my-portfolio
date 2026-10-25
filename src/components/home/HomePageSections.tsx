@@ -13,7 +13,7 @@ import { ScrollReveal, StaggerContainer, StaggerItem } from '@/components/ui/Scr
 import { TransitionLink } from '@/components/ui/TransitionLink';
 import { Link, useRouter } from '@/i18n/routing';
 import { useRouter as useTransitionRouter } from '@/i18n/routing';
-import TechStackSectionStatic from '@/components/sections/TechStackSection';
+import TechStackSectionStatic, { techStackCount } from '@/components/sections/TechStackSection';
 import { TiltCard } from '@/components/ui/TiltCard';
 import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, runViewTransition, shouldUseMobileRouteTransitions } from '@/lib/viewTransitions';
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
@@ -117,6 +117,7 @@ type HomePageSectionsProps = {
   initialActiveProjects: ActiveProject[];
   avatarUrl: string;
   mutualLinks: MutualLink[];
+  projectCount: number;
   returningProjectId?: string | null;
   isLoading?: boolean;
 };
@@ -128,6 +129,7 @@ type AboutStatItem = {
   label: string;
   href?: string;
   onActivate?: () => void;
+  badge?: ReactNode;
 };
 
 type GitHubMomentumStatus = 'loading' | 'ready' | 'error';
@@ -234,12 +236,13 @@ export default function HomePageSections({
   initialActiveProjects,
   avatarUrl,
   mutualLinks,
+  projectCount,
   returningProjectId = null,
   isLoading = false,
 }: HomePageSectionsProps) {
   return (
     <>
-      <AboutSection avatarUrl={avatarUrl} />
+      <AboutSection avatarUrl={avatarUrl} projectCount={projectCount} />
       <SkillsSection />
       <TechStackSection />
       <ProjectsSection initialProjects={initialCompletedProjects} returningProjectId={returningProjectId} isLoading={isLoading} />
@@ -325,6 +328,7 @@ function AboutStatCard({
   className = '',
   href,
   onActivate,
+  badge,
 }: {
   value: number;
   suffix?: string;
@@ -333,6 +337,7 @@ function AboutStatCard({
   className?: string;
   href?: string;
   onActivate?: () => void;
+  badge?: ReactNode;
 }) {
   const cardRef = useRef<HTMLDivElement | null>(null);
   const isCardInView = useInView(cardRef, { once: true, amount: 0.5 });
@@ -351,6 +356,7 @@ function AboutStatCard({
           <ExternalLink className="w-3 h-3 inline-block align-middle ml-1 text-muted-foreground group-hover:text-foreground transition-colors" strokeWidth={2} />
         )}
       </p>
+      {badge}
     </div>
   );
 
@@ -506,6 +512,50 @@ function calculateLiveAge(now: Date): number {
   return wholeYears + fractionalYear;
 }
 
+// Japanese school year: it starts on April 1, and a child born between
+// April 2 and April 1 of the next year enters elementary school together.
+function schoolGradeKey(now: Date): string {
+  const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  const academicYear = jst.getUTCMonth() >= 3 ? jst.getUTCFullYear() : jst.getUTCFullYear() - 1;
+  const bornAfterApril1 = BIRTH_DATE_JST.monthIndex > 3 || (BIRTH_DATE_JST.monthIndex === 3 && BIRTH_DATE_JST.day > 1);
+  const elementaryStartYear = BIRTH_DATE_JST.year + (bornAfterApril1 ? 7 : 6);
+  const grade = Math.min(Math.max(academicYear - elementaryStartYear + 1, 1), 12);
+  if (grade <= 6) return `e${grade}`;
+  if (grade <= 9) return `j${grade - 6}`;
+  return `h${grade - 9}`;
+}
+
+// Live count of self-hosted machines reported online by /api/server-status
+// (Tailscale). null until the first response, or if the check is unavailable.
+function useOnlineServerCount(): number | null {
+  const [online, setOnline] = useState<number | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    const load = () =>
+      fetch('/api/server-status')
+        .then((res) => (res.ok ? res.json() : Promise.reject(res)))
+        .then((data: { devices?: Array<{ name: string; online: boolean }> }) => {
+          if (cancelled) return;
+          const devices = data.devices ?? [];
+          if (devices.length === 0) return;
+          const shortName = (value: string) => value.split('.')[0]?.toLowerCase() ?? '';
+          const count = selfHostedServers.filter((server) => {
+            const target = shortName(server.tailscaleHostname ?? server.id);
+            return devices.some((device) => shortName(device.name) === target && device.online);
+          }).length;
+          setOnline(count);
+        })
+        .catch(() => {});
+    load();
+    const intervalId = window.setInterval(load, 60_000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(intervalId);
+    };
+  }, []);
+  return online;
+}
+
 function LiveAgeLocation({ ageLabel, locationLabel }: { ageLabel: string; locationLabel: string }) {
   const [age, setAge] = useState<number | null>(null);
 
@@ -537,22 +587,33 @@ function ProfileIdentity({ role, ageLabel, locationLabel }: { role: string; ageL
   );
 }
 
-function AboutSection({ avatarUrl }: { avatarUrl: string }) {
+function AboutSection({ avatarUrl, projectCount }: { avatarUrl: string; projectCount: number }) {
   const t = useTranslations('About');
   const contactT = useTranslations('Contact');
   const locale = useLocale();
   const focusAreas = ['productThinking', 'rapidPrototyping', 'uiUxDesign', 'problemSolving', 'research', 'continuousImprovement'] as const;
+  const onlineServers = useOnlineServerCount();
   const stats: AboutStatItem[] = [
-    { id: 'projects', value: 7, suffix: '+', label: t('statsProjects'), href: '/projects' },
+    { id: 'projects', value: projectCount, label: t('statsProjects'), href: '/projects' },
     {
       id: 'technologies',
-      value: 20,
-      suffix: '+',
+      value: techStackCount,
       label: t('statsTechnologies'),
       onActivate: () => document.getElementById('tech-stack')?.scrollIntoView({ behavior: 'smooth' }),
     },
     { id: 'years', value: 2, suffix: '+', label: t('statsYears') },
-    { id: 'servers', value: selfHostedServers.length, label: t('statsCommits'), href: '/servers' },
+    {
+      id: 'servers',
+      value: selfHostedServers.length,
+      label: t('statsCommits'),
+      href: '/servers',
+      badge: onlineServers === null ? null : (
+        <span className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-mono text-muted-foreground">
+          <span className={`h-1.5 w-1.5 rounded-full ${onlineServers === selfHostedServers.length ? 'bg-emerald-500' : 'bg-amber-500'}`} aria-hidden="true" />
+          {t('serversOnline', { online: onlineServers, total: selfHostedServers.length })}
+        </span>
+      ),
+    },
   ];
   const fallbackDays = useMemo(() => buildFallbackMomentumDays(), []);
   const [momentum, setMomentum] = useState<GitHubMomentumState>({
@@ -693,9 +754,9 @@ function AboutSection({ avatarUrl }: { avatarUrl: string }) {
 
           <ScrollReveal delay={0.2}>
             <StaggerContainer className="grid grid-cols-2 gap-2" staggerDelay={0.04}>
-              {stats.map(({ id, value, suffix, label, href, onActivate }, idx) => (
+              {stats.map(({ id, value, suffix, label, href, onActivate, badge }, idx) => (
                 <StaggerItem key={id} className="h-full">
-                  <AboutStatCard value={value} suffix={suffix} label={label} href={href} onActivate={onActivate} durationMs={900 + idx * 80} className="h-full py-4" />
+                  <AboutStatCard value={value} suffix={suffix} label={label} href={href} onActivate={onActivate} badge={badge} durationMs={900 + idx * 80} className="h-full py-4" />
                 </StaggerItem>
               ))}
             </StaggerContainer>
@@ -707,7 +768,7 @@ function AboutSection({ avatarUrl }: { avatarUrl: string }) {
                 <Terminal className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
                 <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('profileLabel')}</span>
               </div>
-              <p className="text-[13px] text-muted-foreground leading-relaxed">{t('profileParagraph1')}</p>
+              <p className="text-[13px] text-muted-foreground leading-relaxed">{t('profileParagraph1', { grade: t(`grade.${schoolGradeKey(new Date())}`) })}</p>
               <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph2')}</p>
               <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph3')}</p>
               <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph4')}</p>
@@ -777,7 +838,7 @@ function AboutSection({ avatarUrl }: { avatarUrl: string }) {
                   <Terminal className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
                   <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('profileLabel')}</span>
                 </div>
-                <p className="text-[13px] text-muted-foreground leading-relaxed">{t('profileParagraph1')}</p>
+                <p className="text-[13px] text-muted-foreground leading-relaxed">{t('profileParagraph1', { grade: t(`grade.${schoolGradeKey(new Date())}`) })}</p>
                 <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph2')}</p>
                 <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph3')}</p>
                 <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph4')}</p>
@@ -786,19 +847,19 @@ function AboutSection({ avatarUrl }: { avatarUrl: string }) {
           </ScrollReveal>
 
           <ScrollReveal delay={0.2} direction="scale">
-            <AboutStatCard value={stats[0].value} suffix={stats[0].suffix} label={stats[0].label} href={stats[0].href} onActivate={stats[0].onActivate} durationMs={1200} className="h-full py-5" />
+            <AboutStatCard value={stats[0].value} suffix={stats[0].suffix} label={stats[0].label} href={stats[0].href} onActivate={stats[0].onActivate} badge={stats[0].badge} durationMs={1200} className="h-full py-5" />
           </ScrollReveal>
 
           <ScrollReveal delay={0.24} direction="scale">
-            <AboutStatCard value={stats[1].value} suffix={stats[1].suffix} label={stats[1].label} href={stats[1].href} onActivate={stats[1].onActivate} durationMs={1300} className="h-full py-5" />
+            <AboutStatCard value={stats[1].value} suffix={stats[1].suffix} label={stats[1].label} href={stats[1].href} onActivate={stats[1].onActivate} badge={stats[1].badge} durationMs={1300} className="h-full py-5" />
           </ScrollReveal>
 
           <ScrollReveal delay={0.28} direction="scale">
-            <AboutStatCard value={stats[2].value} suffix={stats[2].suffix} label={stats[2].label} href={stats[2].href} onActivate={stats[2].onActivate} durationMs={1400} className="h-full py-5" />
+            <AboutStatCard value={stats[2].value} suffix={stats[2].suffix} label={stats[2].label} href={stats[2].href} onActivate={stats[2].onActivate} badge={stats[2].badge} durationMs={1400} className="h-full py-5" />
           </ScrollReveal>
 
           <ScrollReveal delay={0.32} direction="scale">
-            <AboutStatCard value={stats[3].value} label={stats[3].label} href={stats[3].href} onActivate={stats[3].onActivate} durationMs={1500} className="h-full py-5" />
+            <AboutStatCard value={stats[3].value} label={stats[3].label} href={stats[3].href} onActivate={stats[3].onActivate} badge={stats[3].badge} durationMs={1500} className="h-full py-5" />
           </ScrollReveal>
 
           <ScrollReveal delay={0.2} direction="right" className="md:col-span-2">

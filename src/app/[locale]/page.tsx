@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getValidLocale } from '@/i18n/locales';
 import { createPageMetadata } from '@/lib/metadata';
 import { createHomeJsonLd, serializeJsonLd } from '@/lib/structuredData';
-import { DEFAULT_AVATAR_URL, getHomePageData, getMutualLinks, getSiteSettings } from '@/lib/content/publicContent';
+import { DEFAULT_AVATAR_URL, getHomePageData, getMutualLinks, getPublishedProjectCount, getSiteSettings } from '@/lib/content/publicContent';
 import HomePage from '@/views/HomePage';
 
 type Props = {
@@ -17,10 +17,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { locale } = await params;
   const appLocale = getValidLocale(locale);
-  const [homeData, siteSettings, mutualLinks] = await Promise.all([
+  const [homeData, siteSettings, mutualLinks, projectCount] = await Promise.all([
     getHomePageData(),
     getSiteSettings(),
     getMutualLinks(),
+    getPublishedProjectCount(),
   ]);
 
   return (
@@ -34,6 +35,7 @@ export default async function Page({ params }: Props) {
         activeProjects={homeData.activeProjects}
         avatarUrl={siteSettings.avatarUrl ?? DEFAULT_AVATAR_URL}
         mutualLinks={mutualLinks}
+        projectCount={projectCount}
       />
     </>
   );

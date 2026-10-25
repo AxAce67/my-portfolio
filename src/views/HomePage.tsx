@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArrowUpRight } from 'lucide-react';
 import { Globe } from '@/components/ui/Globe';
+import type { Arc, Marker } from 'cobe';
 import HomePageSections from '@/components/home/HomePageSections';
 import type { HomeProject, HomeActiveProject, MutualLink } from '@/lib/content/publicContent';
 import { navigationStateKeys, readSessionValue } from '@/lib/navigationState';
@@ -14,11 +15,12 @@ type Props = {
   activeProjects: HomeActiveProject[];
   avatarUrl: string;
   mutualLinks: MutualLink[];
+  projectCount: number;
 };
 
 // Data is loaded on the server (src/app/[locale]/page.tsx) so the first HTML
 // already contains the projects, avatar and links.
-export default function HomePage({ projects, activeProjects, avatarUrl, mutualLinks }: Props) {
+export default function HomePage({ projects, activeProjects, avatarUrl, mutualLinks, projectCount }: Props) {
   const [returningProjectId] = useState(() => {
     return readSessionValue(navigationStateKeys.returnToProjects) === '1'
       ? readSessionValue(navigationStateKeys.homeFromProjectId)
@@ -35,11 +37,34 @@ export default function HomePage({ projects, activeProjects, avatarUrl, mutualLi
         initialActiveProjects={activeProjects}
         avatarUrl={avatarUrl}
         mutualLinks={mutualLinks}
+        projectCount={projectCount}
         returningProjectId={returningProjectId}
       />
     </>
   );
 }
+
+// Where the servers actually run: the three dn42 routers / NTP servers
+// (Oracle Cloud) and the home lab. Arcs follow the dn42 iBGP mesh, plus the
+// home network's link to Osaka.
+const OSAKA: [number, number] = [34.69, 135.5];
+const SINGAPORE: [number, number] = [1.29, 103.85];
+const PHOENIX: [number, number] = [33.45, -112.07];
+const TOKYO: [number, number] = [35.68, 139.69];
+
+const SERVER_MARKERS: Marker[] = [
+  { location: OSAKA, size: 0.035 },
+  { location: SINGAPORE, size: 0.035 },
+  { location: PHOENIX, size: 0.035 },
+  { location: TOKYO, size: 0.025 },
+];
+
+const SERVER_ARCS: Arc[] = [
+  { from: OSAKA, to: SINGAPORE },
+  { from: OSAKA, to: PHOENIX },
+  { from: SINGAPORE, to: PHOENIX },
+  { from: TOKYO, to: OSAKA },
+];
 
 function HeroSection({ hidden = false }: { hidden?: boolean }) {
   const { t } = useTranslation('Hero');
@@ -62,7 +87,7 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
           className="absolute -right-52 -bottom-52 w-104 h-104 sm:-right-128 sm:-bottom-128 sm:w-5xl sm:h-256 z-0 hero-v3-globe"
           style={{ filter: 'drop-shadow(0 0 60px rgba(var(--hero-accent-rgb), 0.22))' }}
         >
-          <Globe size={720} className="hero-globe-canvas" />
+          <Globe size={720} className="hero-globe-canvas" markers={SERVER_MARKERS} arcs={SERVER_ARCS} />
         </div>
 
         {/* Center content — left column, clear of the corner globe */}

@@ -21,7 +21,7 @@
     "ageLabel": "Age",
     "locationLabel": "🇯🇵 Tokyo",
     "profileLabel": "Profile",
-    "profileParagraph1": "I am a first-year high school student in Japan, building personal projects such as websites, Discord bots, Ubuntu servers, and Minecraft servers.",
+    "profileParagraph1": "I am {grade} in Japan, building personal projects such as websites, Discord bots, Ubuntu servers, and Minecraft servers.",
     "profileParagraph2": "Since discovering ChatGPT in sixth grade, I have used various AI tools to improve my workflow and speed up turning ideas into working products.",
     "profileParagraph3": "My process is to turn ideas into requirements, build an MVP quickly, then iterate through testing and improvements.",
     "profileParagraph4": "My strengths are design thinking, continuous improvement, and research. I keep up with trends while balancing usability and maintainability.",
@@ -49,7 +49,22 @@
       "continuousImprovement": "Continuous Improvement"
     },
     "linksLabel": "Links",
-    "role": "Independent Developer"
+    "role": "Independent Developer",
+    "grade": {
+      "e1": "a first-grade elementary school student",
+      "e2": "a second-grade elementary school student",
+      "e3": "a third-grade elementary school student",
+      "e4": "a fourth-grade elementary school student",
+      "e5": "a fifth-grade elementary school student",
+      "e6": "a sixth-grade elementary school student",
+      "j1": "a first-year junior high school student",
+      "h1": "a first-year high school student",
+      "j2": "a second-year junior high school student",
+      "h2": "a second-year high school student",
+      "j3": "a third-year junior high school student",
+      "h3": "a third-year high school student"
+    },
+    "serversOnline": "{online}/{total} online"
   },
   "Skills": {
     "sectionTitle": "// skills/",
@@ -127,7 +142,10 @@
     "tagline": "Building what I love. That's it.",
     "copyright": "© {year} All rights reserved.",
     "terms": "Terms of Use",
-    "license": "License"
+    "license": "License",
+    "ntpSynced": "synced with {server}",
+    "ntpDeviceOffset": "this device {offset}",
+    "ntpAccuracy": "estimated error ±{accuracy} ms"
   },
   "Language": {
     "label": "Language",

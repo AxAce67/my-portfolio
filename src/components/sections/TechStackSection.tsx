@@ -102,6 +102,8 @@ const techStack: TechItem[] = [
   { name: 'Minecraft', logo: '/brands/minecraft.svg', brandColor: '#62B47A' },
 ];
 
+export const techStackCount = techStack.length;
+
 function TechCard({ item, idx, prefix }: { item: TechItem; idx: number; prefix: string }) {
   const [isHovered, setIsHovered] = useState(false);
 

@@ -113,6 +113,25 @@ async function fetchPublishedActiveProjects(): Promise<HomeActiveProject[]> {
   }));
 }
 
+export async function getPublishedProjectCount(): Promise<number> {
+  try {
+    const rows = await tablesDB.listRows<ProjectRow>({
+      databaseId: DATABASE_ID,
+      tableId: PROJECTS_TABLE_ID,
+      queries: [
+        Query.equal('status', 'completed'),
+        Query.equal('is_published', true),
+        Query.select(['title']),
+        Query.limit(1),
+      ],
+    });
+    return rows.total;
+  } catch (error) {
+    console.error('[publicContent] Failed to count projects', error);
+    return 0;
+  }
+}
+
 export async function getHomePageData() {
   const [projects, activeProjects] = await Promise.allSettled([
     fetchPublishedProjectsWithTags(8),
