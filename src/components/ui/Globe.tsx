@@ -5,7 +5,7 @@ import createGlobe, { type Arc, type Marker } from 'cobe';
 // A marker with an `id` makes cobe publish its on-screen position as the CSS
 // anchor `--cobe-<id>` and its visibility (1 in front, 0 behind the globe)
 // as `--cobe-visible-<id>`. `label` is drawn next to it through that anchor.
-export type GlobeMarker = Marker & { id: string; label?: string; labelSide?: 'left' | 'right' };
+export type GlobeMarker = Marker & { id: string; label?: string; detail?: string; labelSide?: 'left' | 'right' };
 
 type GlobeProps = {
   size?: number;
@@ -147,13 +147,6 @@ export function Globe({
         className={className}
         style={{ width: '100%', height: '100%', touchAction: 'none' }}
       />
-      {markers.map((marker) => (
-        <span
-          key={marker.id}
-          className="globe-pulse"
-          style={{ positionAnchor: `--cobe-${marker.id}`, opacity: `var(--cobe-visible-${marker.id}, 0)` } as React.CSSProperties}
-        />
-      ))}
       {markers.filter((marker) => marker.label).map((marker) => (
         <span
           key={`${marker.id}-label`}
@@ -164,7 +157,8 @@ export function Globe({
             filter: `blur(calc((1 - var(--cobe-visible-${marker.id}, 0)) * 6px))`,
           } as React.CSSProperties}
         >
-          {marker.label}
+          <span className="globe-label__title">{marker.label}</span>
+          {marker.detail && <span className="globe-label__detail">{marker.detail}</span>}
         </span>
       ))}
     </div>

@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArrowUpRight } from 'lucide-react';
 import { Globe, type GlobeMarker } from '@/components/ui/Globe';
-import type { Arc } from 'cobe';
 import HomePageSections from '@/components/home/HomePageSections';
 import type { HomeProject, HomeActiveProject, MutualLink } from '@/lib/content/publicContent';
 import { navigationStateKeys, readSessionValue } from '@/lib/navigationState';
@@ -44,24 +43,14 @@ export default function HomePage({ projects, activeProjects, avatarUrl, mutualLi
   );
 }
 
-// Where the servers actually run: the three dn42 routers / NTP servers
-// (Oracle Cloud) and the home lab. Arcs follow the dn42 iBGP mesh.
-const OSAKA: [number, number] = [34.69, 135.5];
-const SINGAPORE: [number, number] = [1.29, 103.85];
-const PHOENIX: [number, number] = [33.45, -112.07];
-const TOKYO: [number, number] = [35.68, 139.69];
-
+// Where the six self-hosted machines run (same set as /servers), one marker
+// per location: Oracle Cloud in Osaka, Singapore and Phoenix, Contabo and
+// the home lab in Tokyo.
 const SERVER_MARKERS: GlobeMarker[] = [
-  { id: 'osaka', location: OSAKA, size: 0.03, label: 'Osaka · jp1', labelSide: 'left' },
-  { id: 'singapore', location: SINGAPORE, size: 0.03, label: 'Singapore · sg1' },
-  { id: 'phoenix', location: PHOENIX, size: 0.03, label: 'Phoenix · us1' },
-  { id: 'tokyo', location: TOKYO, size: 0.022, label: 'Tokyo · home' },
-];
-
-const SERVER_ARCS: Arc[] = [
-  { from: OSAKA, to: SINGAPORE },
-  { from: OSAKA, to: PHOENIX },
-  { from: SINGAPORE, to: PHOENIX },
+  { id: 'osaka', location: [34.69, 135.5], size: 0.03, label: 'Osaka', detail: 'JP Server', labelSide: 'left' },
+  { id: 'tokyo', location: [35.68, 139.69], size: 0.03, label: 'Tokyo', detail: 'JP Server 2 · Home Server · Home NAS' },
+  { id: 'singapore', location: [1.29, 103.85], size: 0.03, label: 'Singapore', detail: 'SG Server' },
+  { id: 'phoenix', location: [33.45, -112.07], size: 0.03, label: 'Phoenix', detail: 'US Server' },
 ];
 
 function HeroSection({ hidden = false }: { hidden?: boolean }) {
@@ -85,7 +74,7 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
           className="absolute -right-52 -bottom-52 w-104 h-104 sm:-right-128 sm:-bottom-128 sm:w-5xl sm:h-256 z-0 hero-v3-globe"
           style={{ filter: 'drop-shadow(0 0 60px rgba(var(--hero-accent-rgb), 0.22))' }}
         >
-          <Globe size={720} className="hero-globe-canvas" markers={SERVER_MARKERS} arcs={SERVER_ARCS} initialPhi={6.9} theta={0.35} />
+          <Globe size={720} className="hero-globe-canvas" markers={SERVER_MARKERS} initialPhi={6.9} theta={0.35} />
         </div>
 
         {/* Center content — left column, clear of the corner globe */}
