@@ -1,5 +1,7 @@
 // Shared server-side implementation for the Next.js server status route.
 
+import { selfHostedServers } from '@/lib/selfHostedServers';
+
 type TailscaleDevice = {
   id: string;
   name: string;
@@ -136,7 +138,17 @@ async function getTailscaleDeviceStatus(): Promise<{ devices: ServerStatusDevice
   const data = (await response.json()) as { devices?: TailscaleDevice[] };
   const now = Date.now();
 
-  const devices: ServerStatusDevice[] = (data.devices ?? []).map((device) => {
+  // This endpoint is public: only report the machines the site already lists
+  // on /servers. The tailnet also holds personal laptops and phones whose
+  // names (which can include a real name) must not be exposed.
+  const publicHostnames = new Set(
+    selfHostedServers.map((server) => (server.tailscaleHostname ?? server.id).toLowerCase()),
+  );
+  const listedDevices = (data.devices ?? []).filter((device) =>
+    publicHostnames.has((device.name.split('.')[0] || device.hostname).toLowerCase()),
+  );
+
+  const devices: ServerStatusDevice[] = listedDevices.map((device) => {
     const lastSeenMs = device.lastSeen ? new Date(device.lastSeen).getTime() : 0;
     return {
       id: device.id,
