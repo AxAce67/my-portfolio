@@ -24,8 +24,9 @@ export default function NewProjectPage() {
       await createProject(input);
       toast.success(tToast('project_created'));
       router.push(`/${locale}/admin?tab=projects`);
-    } catch {
+    } catch (error) {
       toast.error(tToast('project_create_failed'));
+      throw error;
     }
   }
 

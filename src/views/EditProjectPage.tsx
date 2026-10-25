@@ -42,8 +42,9 @@ export default function EditProjectPage() {
       await updateProject(id, input);
       toast.success(tToast('project_updated'));
       router.push(`/${locale}/admin?tab=projects`);
-    } catch {
+    } catch (error) {
       toast.error(tToast('project_update_failed'));
+      throw error;
     }
   }
 

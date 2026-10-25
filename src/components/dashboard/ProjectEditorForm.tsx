@@ -153,15 +153,21 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
         }
       }
 
-      await onSubmit({
-        title,
-        description,
-        content_md: contentMd,
-        content_json: contentJson,
-        status,
-        is_published: isPublished,
-        ...(thumbnailUrl ? { thumbnail_url: thumbnailUrl } : {}),
-      });
+      try {
+        await onSubmit({
+          title,
+          description,
+          content_md: contentMd,
+          content_json: contentJson,
+          status,
+          is_published: isPublished,
+          ...(thumbnailUrl ? { thumbnail_url: thumbnailUrl } : {}),
+        });
+      } catch {
+        // The caller already reported the failure; keep the local draft and
+        // the unsaved-changes guard so nothing is lost.
+        return;
+      }
       localStorage.removeItem(draftStorageKey(draftKey));
       isDirtyRef.current = false;
       onDirtyChange?.(false);
