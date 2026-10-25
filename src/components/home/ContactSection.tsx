@@ -48,7 +48,6 @@ export default function ContactSection() {
   const lastFocusedElementRef = useRef<HTMLElement | null>(null);
   const [shouldLoadTurnstile, setShouldLoadTurnstile] = useState(false);
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-  const web3formsAccessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -217,24 +216,24 @@ export default function ContactSection() {
     setSubmitState('idle');
 
     try {
-      const response = await fetch('https://api.web3forms.com/submit', {
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
         body: JSON.stringify({
-          access_key: web3formsAccessKey,
           name: pendingPayload.name,
-          ...(pendingPayload.email ? { email: pendingPayload.email } : {}),
+          email: pendingPayload.email,
           subject: pendingPayload.subject,
           message: pendingPayload.message,
+          token: pendingPayload.token,
         }),
       });
 
       const result = await response.json().catch(() => null);
 
-      if (response.ok && result?.success) {
+      if (response.ok && result?.ok) {
         formRef.current?.reset();
         window.turnstile?.reset();
         setTurnstileToken('');
@@ -242,9 +241,17 @@ export default function ContactSection() {
         setIsPreviewOpen(false);
         setPendingPayload(null);
       } else {
-        setSubmitState('error');
+        // A Turnstile token is single-use, so a fresh check is needed
+        // before the next attempt.
+        window.turnstile?.reset();
+        setTurnstileToken('');
+        setIsPreviewOpen(false);
+        setSubmitState(result?.error === 'turnstile' ? 'turnstile' : 'error');
       }
     } catch {
+      window.turnstile?.reset();
+      setTurnstileToken('');
+      setIsPreviewOpen(false);
       setSubmitState('error');
     } finally {
       setIsSubmitting(false);
