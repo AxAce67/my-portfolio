@@ -30,7 +30,7 @@ import {
   type AdminActiveProject,
 } from '@/lib/content/adminContent';
 
-const modalBaseClass = 'fixed inset-0 z-[2147483647] bg-black/45 backdrop-blur-sm flex items-center justify-center p-4';
+const modalBaseClass = 'fixed inset-0 z-2147483647 bg-black/45 backdrop-blur-xs flex items-center justify-center p-4';
 const STAGE_COUNT = 5;
 
 type StageOption = { value: number; label: string; badgeClass: string };
@@ -72,20 +72,20 @@ function ActiveProjectRowContent({
         {...dragHandleProps}
         title={dragHandleLabel}
         aria-label={dragHandleLabel}
-        className="cursor-grab active:cursor-grabbing text-muted-foreground flex-shrink-0 touch-none bg-transparent border-none p-0"
+        className="cursor-grab active:cursor-grabbing text-muted-foreground shrink-0 touch-none bg-transparent border-none p-0"
         style={{ touchAction: 'none' }}
       >
         <GripVertical className="w-4 h-4" />
       </button>
-      <p className="text-sm font-medium truncate flex-1 min-w-[5rem]">{project.name}</p>
-      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-muted text-muted-foreground uppercase flex-shrink-0 hidden sm:inline-block">
+      <p className="text-sm font-medium truncate flex-1 min-w-20">{project.name}</p>
+      <span className="text-[10px] font-mono px-2 py-0.5 rounded-sm bg-muted text-muted-foreground uppercase shrink-0 hidden sm:inline-block">
         {project.is_published ? publishedLabel : draftLabel}
       </span>
-      <span className={`text-[10px] font-mono px-2 py-0.5 rounded uppercase flex-shrink-0 hidden sm:inline-block ${stageOptions[currentStage].badgeClass}`}>
+      <span className={`text-[10px] font-mono px-2 py-0.5 rounded-sm uppercase shrink-0 hidden sm:inline-block ${stageOptions[currentStage].badgeClass}`}>
         {stageOptions[currentStage].label}
       </span>
 
-      <div className="relative w-16 sm:w-24 flex-shrink-0">
+      <div className="relative w-16 sm:w-24 shrink-0">
         <div
           className="absolute top-1/2 -translate-y-1/2 h-[2px] bg-border"
           style={{ left: `${lineInsetPercent}%`, right: `${lineInsetPercent}%` }}
@@ -113,7 +113,7 @@ function ActiveProjectRowContent({
         </div>
       </div>
 
-      <div className="flex items-center gap-2 flex-shrink-0 ml-auto">
+      <div className="flex items-center gap-2 shrink-0 ml-auto">
         <button
           type="button"
           title={editLabel}

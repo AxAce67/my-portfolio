@@ -500,7 +500,7 @@ function MomentumLineChart({
           </button>
         ))}
       </div>
-      <div className={`text-[11px] font-mono tabular-nums min-h-[1.25rem] transition-opacity ${activeDay ? 'text-muted-foreground opacity-100' : 'opacity-0'}`}>
+      <div className={`text-[11px] font-mono tabular-nums min-h-5 transition-opacity ${activeDay ? 'text-muted-foreground opacity-100' : 'opacity-0'}`}>
         {activeDay ? `${activeDay.shortLabel} ${activeDay.key} · ${activeDay.commits} commits` : '\u00A0'}
       </div>
     </div>
@@ -996,7 +996,7 @@ function SkillsSection() {
                 type="button"
                 onClick={() => setSelectedCategory(cat)}
                 className={`inline-flex w-full items-center justify-center gap-1 px-1 py-2.5 rounded-lg text-[12px] font-mono transition-all duration-200 ${selectedCategory === cat
-                  ? 'bg-background text-foreground shadow-sm'
+                  ? 'bg-background text-foreground shadow-xs'
                   : 'text-foreground/70 hover:text-foreground'
                   }`}
                 aria-pressed={selectedCategory === cat}
@@ -1029,7 +1029,7 @@ function SkillsSection() {
                       }`}
                   >
                     {(Icon || iconSrc) && (
-                      <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-background border border-border flex items-center justify-center">
+                      <span className="shrink-0 w-8 h-8 rounded-lg bg-background border border-border flex items-center justify-center">
                         {iconSrc ? (
                           <Image src={iconSrc} alt="" width={16} height={16} className="w-4 h-4 object-contain" aria-hidden="true" />
                         ) : Icon ? (
@@ -1081,7 +1081,7 @@ function SkillsSection() {
                           }`}
                       >
                         {(Icon || iconSrc) && (
-                          <span className={`flex-shrink-0 w-6 h-6 rounded flex items-center justify-center ${featured ? 'bg-background border border-border' : 'bg-muted/60'
+                          <span className={`shrink-0 w-6 h-6 rounded flex items-center justify-center ${featured ? 'bg-background border border-border' : 'bg-muted/60'
                             }`}>
                             {iconSrc ? (
                               <Image src={iconSrc} alt="" width={12} height={12} className="w-3 h-3 object-contain" aria-hidden="true" />
@@ -1152,7 +1152,7 @@ function ProjectsSection({
                 type="button"
                 onClick={() => setViewMode('list')}
                 className={`inline-flex flex-1 sm:flex-none items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-mono transition-colors ${viewMode === 'list'
-                  ? 'bg-background text-foreground shadow-sm'
+                  ? 'bg-background text-foreground shadow-xs'
                   : 'text-foreground/80 hover:text-foreground hover:bg-background/60'
                   }`}
                 aria-pressed={viewMode === 'list'}
@@ -1164,7 +1164,7 @@ function ProjectsSection({
                 type="button"
                 onClick={() => setViewMode('grid')}
                 className={`inline-flex flex-1 sm:flex-none items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-mono transition-colors ${viewMode === 'grid'
-                  ? 'bg-background text-foreground shadow-sm'
+                  ? 'bg-background text-foreground shadow-xs'
                   : 'text-foreground/80 hover:text-foreground hover:bg-background/60'
                   }`}
                 aria-pressed={viewMode === 'grid'}
@@ -1247,7 +1247,7 @@ function ProjectsSection({
                         <Box className="w-10 h-10 text-muted-foreground/30" strokeWidth={1} />
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/20" />
+                    <div className="absolute inset-0 bg-linear-to-b from-transparent to-background/20" />
                     <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-300 flex items-center justify-center">
                       <ArrowUpRight
                         className="w-8 h-8 text-foreground opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0"
@@ -1290,7 +1290,7 @@ function ProjectsSection({
                     </p>
                     <div className={`${effectiveViewMode === 'grid' ? 'flex flex-wrap gap-1.5' : 'flex flex-wrap gap-2'}`}>
                       {(effectiveViewMode === 'grid' || isMobileViewport ? project.tags.slice(0, 2) : project.tags).map((tag) => (
-                        <span key={tag} className="text-[11px] font-mono text-muted-foreground bg-muted px-2.5 py-1 rounded">
+                        <span key={tag} className="text-[11px] font-mono text-muted-foreground bg-muted px-2.5 py-1 rounded-sm">
                           {tag}
                         </span>
                       ))}
@@ -1575,7 +1575,7 @@ function MutualLinksSection() {
                   rel="noopener noreferrer"
                   className="group block h-full overflow-hidden rounded-xl border border-border bg-card/65 transition-[border-color,background-color,transform] duration-300 hover:-translate-y-0.5 hover:border-border-hover hover:bg-card"
                 >
-                  <div className="relative aspect-[3/1] w-full overflow-hidden border-b border-border bg-muted">
+                  <div className="relative aspect-3/1 w-full overflow-hidden border-b border-border bg-muted">
                     {link.banner_url ? (
                       <img
                         src={link.banner_url}

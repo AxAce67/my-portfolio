@@ -31,7 +31,7 @@ export default function ThumbnailCropModal({ imageSrc, aspect = 16 / 9, fileName
   }
 
   return createPortal(
-    <div className="fixed inset-0 z-[2147483647] bg-black/70 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-2147483647 bg-black/70 flex items-center justify-center p-4">
       <div className="relative w-full max-w-2xl rounded-xl border border-border bg-card p-4 sm:p-6 space-y-4">
         <h3 className="text-lg font-semibold">{t('cropTitle')}</h3>
         <div className="relative w-full bg-black/40 rounded-lg overflow-hidden" style={{ aspectRatio: aspect }}>

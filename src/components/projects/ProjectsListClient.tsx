@@ -190,7 +190,7 @@ export default function ProjectsListClient({ projects }: Props) {
                     <p className="hidden sm:block text-sm text-muted-foreground leading-relaxed mb-3 line-clamp-2">{project.description}</p>
                     <div className="flex flex-wrap gap-1 sm:gap-2">
                       {project.tags.slice(0, 2).map((tag) => (
-                        <span key={tag} className="text-[10px] sm:text-[11px] font-mono text-muted-foreground bg-muted px-2 sm:px-2.5 py-0.5 sm:py-1 rounded">
+                        <span key={tag} className="text-[10px] sm:text-[11px] font-mono text-muted-foreground bg-muted px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-sm">
                           {tag}
                         </span>
                       ))}

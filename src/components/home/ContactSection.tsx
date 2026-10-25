@@ -381,7 +381,7 @@ export default function ContactSection() {
 
         {isPreviewOpen && pendingPayload ? (
           <div
-            className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center px-4"
+            className="fixed inset-0 z-50 bg-background/80 backdrop-blur-xs flex items-center justify-center px-4"
             onClick={(event) => {
               if (event.target === event.currentTarget && !isSubmitting) {
                 setIsPreviewOpen(false);
@@ -433,7 +433,7 @@ export default function ContactSection() {
 
         {showSuccessModal ? (
           <div
-            className="fixed inset-0 z-[60] bg-background/75 backdrop-blur-sm flex items-center justify-center px-4"
+            className="fixed inset-0 z-60 bg-background/75 backdrop-blur-xs flex items-center justify-center px-4"
             onClick={(event) => {
               if (event.target === event.currentTarget) {
                 closeSuccessModal();

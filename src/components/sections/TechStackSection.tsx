@@ -137,7 +137,7 @@ function TechCard({ item, idx, prefix }: { item: TechItem; idx: number; prefix: 
   return (
     <div
       key={`${prefix}-${idx}`}
-      className="tech-card group flex-shrink-0 w-[104px] sm:w-[120px] transition-all duration-300"
+      className="tech-card group shrink-0 w-[104px] sm:w-[120px] transition-all duration-300"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
