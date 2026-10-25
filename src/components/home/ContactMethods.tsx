@@ -1,4 +1,5 @@
-import { Mail, Twitter } from 'lucide-react';
+import { Mail } from 'lucide-react';
+import { Twitter } from '@/components/ui/brandIcons';
 import { SiDiscord } from 'react-icons/si';
 import { toast } from 'sonner';
 import { useTranslations } from '@/hooks/useTranslations';
