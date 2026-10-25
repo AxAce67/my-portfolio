@@ -21,7 +21,7 @@
     "ageLabel": "年齢",
     "locationLabel": "🇯🇵 Tokyo",
     "profileLabel": "Profile",
-    "profileParagraph1": "日本の高校1年生として、個人開発でWebサイトやDiscord Bot、Ubuntuサーバー、Minecraftサーバーなどを作っています。",
+    "profileParagraph1": "日本の{grade}として、個人開発でWebサイトやDiscord Bot、Ubuntuサーバー、Minecraftサーバーなどを作っています。",
     "profileParagraph2": "小学6年生のときにChatGPTに出会ってから、さまざまなAIツールを使いながら開発フローを改善し、アイデアを形にするスピードを上げてきました。",
     "profileParagraph3": "企画案を要件定義に落とし込み、MVPを素早く実装して、テストと改善を回しながら使いやすく育てるのが開発スタイルです。",
     "profileParagraph4": "強みは、設計力・改善力・調査力。新しいトレンドも追いながら、使いやすさと運用しやすさを両立するプロダクトを目指しています。",
@@ -49,7 +49,22 @@
       "continuousImprovement": "継続的な改善"
     },
     "linksLabel": "Links",
-    "role": "個人開発者"
+    "role": "個人開発者",
+    "grade": {
+      "e1": "小学1年生",
+      "e2": "小学2年生",
+      "e3": "小学3年生",
+      "e4": "小学4年生",
+      "e5": "小学5年生",
+      "e6": "小学6年生",
+      "j1": "中学1年生",
+      "h1": "高校1年生",
+      "j2": "中学2年生",
+      "h2": "高校2年生",
+      "j3": "中学3年生",
+      "h3": "高校3年生"
+    },
+    "serversOnline": "{online}/{total} 台オンライン"
   },
   "Skills": {
     "sectionTitle": "// skills/",
@@ -76,7 +91,7 @@
   "TechStack": {
     "sectionTitle": "// tech_stack/",
     "heading": "Tech Stack",
-    "subtitle": "プロダクト開発で使用している技術スタック"
+    "subtitle": "使ったことのある技術スタック"
   },
   "Projects": {
     "sectionTitle": "// projects/",
@@ -127,7 +142,10 @@
     "tagline": "好きなものを作る。それだけ。",
     "copyright": "© {year} All rights reserved.",
     "terms": "利用規約",
-    "license": "ライセンス"
+    "license": "ライセンス",
+    "ntpSynced": "{server} と同期",
+    "ntpDeviceOffset": "この端末との差 {offset}",
+    "ntpAccuracy": "推定誤差 ±{accuracy} ms"
   },
   "Language": {
     "label": "言語",
@@ -308,7 +326,8 @@
       "draftDiscard": "破棄する",
       "cropTitle": "サムネイルを切り取り",
       "cropConfirm": "切り取りを確定",
-      "cropCancel": "キャンセル"
+      "cropCancel": "キャンセル",
+      "cropAdjust": "位置を調整"
     },
     "profile": {
       "title": "プロフィール画像",
@@ -478,6 +497,7 @@
     "ctaTitle": "相互リンクを募集中です",
     "empty": "掲載をご希望の方は、X・Discord・お問い合わせフォームから気軽にご連絡ください！",
     "visitSite": "サイトを見る",
-    "discordCopied": "Discordユーザー名をコピーしました"
+    "discordCopied": "Discordユーザー名をコピーしました",
+    "ctaContact": "お問い合わせへ"
   }
 }

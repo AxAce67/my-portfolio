@@ -42,8 +42,9 @@ export default function EditProjectPage() {
       await updateProject(id, input);
       toast.success(tToast('project_updated'));
       router.push(`/${locale}/admin?tab=projects`);
-    } catch {
+    } catch (error) {
       toast.error(tToast('project_update_failed'));
+      throw error;
     }
   }
 
@@ -63,7 +64,7 @@ export default function EditProjectPage() {
         <TransitionLink
           href={`/${locale}/admin?tab=projects`}
           onClick={handleBackClick}
-          className="text-xs font-mono text-muted-foreground hover:text-foreground"
+          className="back-link"
           direction="backward"
         >
           {t('backToDashboard')}

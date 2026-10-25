@@ -2,10 +2,12 @@
 
 import { useTranslations } from '@/hooks/useTranslations';
 import Image from '@/components/ui/Image';
-import { Github, Twitter, Mail } from 'lucide-react';
+import { Mail } from 'lucide-react';
+import { Github, Twitter } from '@/components/ui/brandIcons';
 import { SiDiscord } from 'react-icons/si';
 import { FadeLink } from '@/components/ui/FadeLink';
 import { toast } from 'sonner';
+import { NtpClock } from '@/components/layout/NtpClock';
 
 const socialLinks = [
     { icon: Github, href: 'https://github.com/AxAce67', label: 'GitHub' },
@@ -31,7 +33,7 @@ export function Footer() {
                                 key={label}
                                 type="button"
                                 onClick={() => navigator.clipboard.writeText(copyText).then(() => toast.success(contactT('discordCopied')))}
-                                className="text-muted-foreground/60 hover:text-foreground transition-all duration-300 hover:-translate-y-0.5"
+                                className="text-muted-foreground hover:text-foreground transition-all duration-300 hover:-translate-y-0.5"
                                 aria-label={`${label} @xaki67`}
                             >
                                 <Icon className="w-5 h-5" />
@@ -42,7 +44,7 @@ export function Footer() {
                                 href={href}
                                 target={href.startsWith('mailto:') ? undefined : '_blank'}
                                 rel={href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
-                                className="text-muted-foreground/60 hover:text-foreground transition-all duration-300 hover:-translate-y-0.5"
+                                className="text-muted-foreground hover:text-foreground transition-all duration-300 hover:-translate-y-0.5"
                                 aria-label={label}
                             >
                                 <Icon className="w-5 h-5" strokeWidth={1.5} />
@@ -52,19 +54,22 @@ export function Footer() {
                 </div>
 
                 {/* 2. Text & Legal Links */}
-                <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 text-xs font-mono text-muted-foreground/60">
+                <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 text-xs font-mono text-muted-foreground">
                     <p>&copy; {year} Aki.</p>
-                    <span className="text-muted-foreground/30">✦</span>
+                    <span className="text-muted-foreground/50">✦</span>
                     <FadeLink href="/terms" variant="document" className="hover:text-foreground transition-colors">
                         {t('terms')}
                     </FadeLink>
-                    <span className="text-muted-foreground/30">✦</span>
+                    <span className="text-muted-foreground/50">✦</span>
                     <FadeLink href="/license" variant="document" className="hover:text-foreground transition-colors">
                         {t('license')}
                     </FadeLink>
                 </div>
 
-                {/* 3. Subtle Counter */}
+                {/* 3. Clock synced to the site's own NTP server */}
+                <NtpClock />
+
+                {/* 4. Subtle Counter */}
                 <div className="mt-2 opacity-80 hover:opacity-100 transition-opacity duration-500 filter grayscale hover:grayscale-0">
                     <Image
                         src="https://count.getloli.com/@portfolio_Aki?name=portfolio_Aki&theme=3d-num&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto"

@@ -3,42 +3,26 @@
 import { useTranslations } from '@/hooks/useTranslations';
 import { useLocale } from '@/hooks/useLocale';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import type { ReactNode, ComponentType } from 'react';
+import type { ReactNode } from 'react';
 import Image from '@/components/ui/Image';
-import { ArrowUpRight, ExternalLink, Terminal, Code2, Globe, Box, Github, Twitter, Mail, List, LayoutGrid, Film, Sparkles, Wrench } from 'lucide-react';
+import { BrandLogo } from '@/components/ui/BrandLogo';
+import { ArrowUpRight, ExternalLink, Terminal, Code2, Globe, Box, Mail, List, LayoutGrid, Film, Sparkles, Wrench } from 'lucide-react';
+import { Github, Twitter } from '@/components/ui/brandIcons';
 import { motion, useInView, useReducedMotion, AnimatePresence } from 'framer-motion';
 import { ScrollReveal, StaggerContainer, StaggerItem } from '@/components/ui/ScrollReveal';
 import { TransitionLink } from '@/components/ui/TransitionLink';
 import { Link, useRouter } from '@/i18n/routing';
 import { useRouter as useTransitionRouter } from '@/i18n/routing';
-import TechStackSectionStatic from '@/components/sections/TechStackSection';
+import TechStackSectionStatic, { techStackCount } from '@/components/sections/TechStackSection';
 import { TiltCard } from '@/components/ui/TiltCard';
 import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, runViewTransition, shouldUseMobileRouteTransitions } from '@/lib/viewTransitions';
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
 import { navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 import { toast } from 'sonner';
-import { ContactMethods } from '@/components/home/ContactMethods';
 import SponsorsSection from '@/components/home/SponsorsSection';
 import { selfHostedServers } from '@/lib/selfHostedServers';
+import { SiDiscord } from 'react-icons/si';
 import {
-  SiTypescript,
-  SiJavascript,
-  SiPython,
-  SiHtml5,
-  SiCss,
-  SiNextdotjs,
-  SiReact,
-  SiTailwindcss,
-  SiAppwrite,
-  SiClaude,
-  SiGooglegemini,
-  SiVercel,
-  SiDiscord,
-} from 'react-icons/si';
-import {
-  getSiteSettings,
-  DEFAULT_AVATAR_URL,
-  getMutualLinks,
   type HomeProject as CompletedProject,
   type HomeActiveProject as ActiveProject,
   type MutualLink,
@@ -56,49 +40,39 @@ const BIRTH_DATE_JST = {
 };
 
 type SkillCategory = 'Languages' | 'Stack' | 'AI' | 'Creative';
-type SkillIconComponent = ComponentType<{ size?: number | string; className?: string }>;
 type SkillItem = {
   name: string;
   category: SkillCategory;
   featured?: boolean;
-  icon?: SkillIconComponent;
-  iconSrc?: string;
+  // Full-color brand logo under public/brands/stack (shared with Tech Stack).
+  logo: string;
+  hasDarkVariant?: boolean;
   level?: 'main' | 'familiar' | 'learning';
 };
 
-const FilmoraIcon: SkillIconComponent = ({ size = 16, className = '' }) => (
-  <Film width={size} height={size} strokeWidth={1.5} className={className} />
-);
-
-const OpenAIIcon: SkillIconComponent = ({ size = 16, className = '' }) => (
-  <Sparkles width={size} height={size} strokeWidth={1.5} className={className} />
-);
-
-const CanvaIcon: SkillIconComponent = ({ size = 16, className = '' }) => (
-  <LayoutGrid width={size} height={size} strokeWidth={1.5} className={className} />
-);
+const brandLogo = (slug: string) => `/brands/stack/${slug}.svg`;
 
 const sampleSkills: SkillItem[] = [
-  { name: 'TypeScript', category: 'Languages', featured: true, icon: SiTypescript, level: 'main' },
-  { name: 'Python', category: 'Languages', featured: true, icon: SiPython, level: 'main' },
-  { name: 'JavaScript', category: 'Languages', icon: SiJavascript, level: 'familiar' },
-  { name: 'HTML', category: 'Languages', icon: SiHtml5, level: 'familiar' },
-  { name: 'CSS', category: 'Languages', icon: SiCss, level: 'familiar' },
+  { name: 'TypeScript', category: 'Languages', featured: true, logo: brandLogo('typescript'), level: 'main' },
+  { name: 'Python', category: 'Languages', featured: true, logo: brandLogo('python'), level: 'main' },
+  { name: 'JavaScript', category: 'Languages', logo: brandLogo('javascript'), level: 'familiar' },
+  { name: 'HTML', category: 'Languages', logo: brandLogo('html'), level: 'familiar' },
+  { name: 'CSS', category: 'Languages', logo: brandLogo('css'), level: 'familiar' },
 
-  { name: 'Next.js', category: 'Stack', featured: true, icon: SiNextdotjs, level: 'main' },
-  { name: 'React', category: 'Stack', featured: true, icon: SiReact, level: 'main' },
-  { name: 'Tailwind CSS', category: 'Stack', icon: SiTailwindcss, level: 'familiar' },
-  { name: 'Appwrite', category: 'Stack', icon: SiAppwrite, level: 'familiar' },
-  { name: 'Vercel', category: 'Stack', icon: SiVercel, level: 'familiar' },
+  { name: 'Next.js', category: 'Stack', featured: true, logo: brandLogo('nextjs'), level: 'main' },
+  { name: 'React', category: 'Stack', featured: true, logo: brandLogo('react'), hasDarkVariant: true, level: 'main' },
+  { name: 'Tailwind CSS', category: 'Stack', logo: brandLogo('tailwindcss'), level: 'familiar' },
+  { name: 'Appwrite', category: 'Stack', logo: brandLogo('appwrite'), level: 'familiar' },
+  { name: 'Vercel', category: 'Stack', logo: brandLogo('vercel'), hasDarkVariant: true, level: 'familiar' },
 
-  { name: 'ChatGPT / Codex', category: 'AI', featured: true, icon: OpenAIIcon, level: 'main' },
-  { name: 'Claude / Claude Code', category: 'AI', featured: true, icon: SiClaude, level: 'main' },
-  { name: 'Gemini', category: 'AI', icon: SiGooglegemini, level: 'familiar' },
-  { name: 'Manus', category: 'AI', iconSrc: '/brands/manus.svg', level: 'familiar' },
+  { name: 'ChatGPT / Codex', category: 'AI', featured: true, logo: brandLogo('openai'), hasDarkVariant: true, level: 'main' },
+  { name: 'Claude / Claude Code', category: 'AI', featured: true, logo: brandLogo('claude'), level: 'main' },
+  { name: 'Gemini', category: 'AI', logo: brandLogo('gemini'), level: 'familiar' },
+  { name: 'Manus', category: 'AI', logo: brandLogo('manus'), hasDarkVariant: true, level: 'familiar' },
 
-  { name: 'Adobe Premiere Pro', category: 'Creative', featured: true, icon: FilmoraIcon, level: 'main' },
-  { name: 'Wondershare Filmora', category: 'Creative', icon: FilmoraIcon, level: 'familiar' },
-  { name: 'Canva', category: 'Creative', icon: CanvaIcon, level: 'familiar' },
+  { name: 'Adobe Premiere Pro', category: 'Creative', featured: true, logo: brandLogo('premiere'), level: 'main' },
+  { name: 'Wondershare Filmora', category: 'Creative', logo: brandLogo('filmora'), hasDarkVariant: true, level: 'familiar' },
+  { name: 'Canva', category: 'Creative', logo: brandLogo('canva'), level: 'familiar' },
 ];
 
 type ProfileLink = {
@@ -141,6 +115,9 @@ const profileLinks: ProfileLink[] = [
 type HomePageSectionsProps = {
   initialCompletedProjects: CompletedProject[];
   initialActiveProjects: ActiveProject[];
+  avatarUrl: string;
+  mutualLinks: MutualLink[];
+  projectCount: number;
   returningProjectId?: string | null;
   isLoading?: boolean;
 };
@@ -152,6 +129,7 @@ type AboutStatItem = {
   label: string;
   href?: string;
   onActivate?: () => void;
+  badge?: ReactNode;
 };
 
 type GitHubMomentumStatus = 'loading' | 'ready' | 'error';
@@ -256,17 +234,20 @@ declare global {
 export default function HomePageSections({
   initialCompletedProjects,
   initialActiveProjects,
+  avatarUrl,
+  mutualLinks,
+  projectCount,
   returningProjectId = null,
   isLoading = false,
 }: HomePageSectionsProps) {
   return (
     <>
-      <AboutSection />
+      <AboutSection avatarUrl={avatarUrl} projectCount={projectCount} />
       <SkillsSection />
       <TechStackSection />
       <ProjectsSection initialProjects={initialCompletedProjects} returningProjectId={returningProjectId} isLoading={isLoading} />
       <ActiveProjectsSection initialActiveProjects={initialActiveProjects} isLoading={isLoading} />
-      <MutualLinksSection />
+      <MutualLinksSection links={mutualLinks} />
       <SponsorsSection />
       <ContactSection />
     </>
@@ -347,6 +328,7 @@ function AboutStatCard({
   className = '',
   href,
   onActivate,
+  badge,
 }: {
   value: number;
   suffix?: string;
@@ -355,6 +337,7 @@ function AboutStatCard({
   className?: string;
   href?: string;
   onActivate?: () => void;
+  badge?: ReactNode;
 }) {
   const cardRef = useRef<HTMLDivElement | null>(null);
   const isCardInView = useInView(cardRef, { once: true, amount: 0.5 });
@@ -373,6 +356,7 @@ function AboutStatCard({
           <ExternalLink className="w-3 h-3 inline-block align-middle ml-1 text-muted-foreground group-hover:text-foreground transition-colors" strokeWidth={2} />
         )}
       </p>
+      {badge}
     </div>
   );
 
@@ -499,7 +483,7 @@ function MomentumLineChart({
           </button>
         ))}
       </div>
-      <div className={`text-[11px] font-mono tabular-nums min-h-[1.25rem] transition-opacity ${activeDay ? 'text-muted-foreground opacity-100' : 'opacity-0'}`}>
+      <div className={`text-[11px] font-mono tabular-nums min-h-5 transition-opacity ${activeDay ? 'text-muted-foreground opacity-100' : 'opacity-0'}`}>
         {activeDay ? `${activeDay.shortLabel} ${activeDay.key} · ${activeDay.commits} commits` : '\u00A0'}
       </div>
     </div>
@@ -526,6 +510,50 @@ function calculateLiveAge(now: Date): number {
   const fractionalYear = (now.getTime() - lastBirthday) / (nextBirthday - lastBirthday);
 
   return wholeYears + fractionalYear;
+}
+
+// Japanese school year: it starts on April 1, and a child born between
+// April 2 and April 1 of the next year enters elementary school together.
+function schoolGradeKey(now: Date): string {
+  const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  const academicYear = jst.getUTCMonth() >= 3 ? jst.getUTCFullYear() : jst.getUTCFullYear() - 1;
+  const bornAfterApril1 = BIRTH_DATE_JST.monthIndex > 3 || (BIRTH_DATE_JST.monthIndex === 3 && BIRTH_DATE_JST.day > 1);
+  const elementaryStartYear = BIRTH_DATE_JST.year + (bornAfterApril1 ? 7 : 6);
+  const grade = Math.min(Math.max(academicYear - elementaryStartYear + 1, 1), 12);
+  if (grade <= 6) return `e${grade}`;
+  if (grade <= 9) return `j${grade - 6}`;
+  return `h${grade - 9}`;
+}
+
+// Live count of self-hosted machines reported online by /api/server-status
+// (Tailscale). null until the first response, or if the check is unavailable.
+function useOnlineServerCount(): number | null {
+  const [online, setOnline] = useState<number | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    const load = () =>
+      fetch('/api/server-status')
+        .then((res) => (res.ok ? res.json() : Promise.reject(res)))
+        .then((data: { devices?: Array<{ name: string; online: boolean }> }) => {
+          if (cancelled) return;
+          const devices = data.devices ?? [];
+          if (devices.length === 0) return;
+          const shortName = (value: string) => value.split('.')[0]?.toLowerCase() ?? '';
+          const count = selfHostedServers.filter((server) => {
+            const target = shortName(server.tailscaleHostname ?? server.id);
+            return devices.some((device) => shortName(device.name) === target && device.online);
+          }).length;
+          setOnline(count);
+        })
+        .catch(() => {});
+    load();
+    const intervalId = window.setInterval(load, 60_000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(intervalId);
+    };
+  }, []);
+  return online;
 }
 
 function LiveAgeLocation({ ageLabel, locationLabel }: { ageLabel: string; locationLabel: string }) {
@@ -559,29 +587,34 @@ function ProfileIdentity({ role, ageLabel, locationLabel }: { role: string; ageL
   );
 }
 
-function AboutSection() {
+function AboutSection({ avatarUrl, projectCount }: { avatarUrl: string; projectCount: number }) {
   const t = useTranslations('About');
   const contactT = useTranslations('Contact');
   const locale = useLocale();
   const focusAreas = ['productThinking', 'rapidPrototyping', 'uiUxDesign', 'problemSolving', 'research', 'continuousImprovement'] as const;
+  const onlineServers = useOnlineServerCount();
   const stats: AboutStatItem[] = [
-    { id: 'projects', value: 7, suffix: '+', label: t('statsProjects'), href: '/projects' },
+    { id: 'projects', value: projectCount, label: t('statsProjects'), href: '/projects' },
     {
       id: 'technologies',
-      value: 20,
-      suffix: '+',
+      value: techStackCount,
       label: t('statsTechnologies'),
       onActivate: () => document.getElementById('tech-stack')?.scrollIntoView({ behavior: 'smooth' }),
     },
     { id: 'years', value: 2, suffix: '+', label: t('statsYears') },
-    { id: 'servers', value: selfHostedServers.length, label: t('statsCommits'), href: '/servers' },
+    {
+      id: 'servers',
+      value: selfHostedServers.length,
+      label: t('statsCommits'),
+      href: '/servers',
+      badge: onlineServers === null ? null : (
+        <span className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-mono text-muted-foreground">
+          <span className={`h-1.5 w-1.5 rounded-full ${onlineServers === selfHostedServers.length ? 'bg-emerald-500' : 'bg-amber-500'}`} aria-hidden="true" />
+          {t('serversOnline', { online: onlineServers, total: selfHostedServers.length })}
+        </span>
+      ),
+    },
   ];
-  const [avatarUrl, setAvatarUrl] = useState(DEFAULT_AVATAR_URL);
-  useEffect(() => {
-    getSiteSettings().then((settings) => {
-      if (settings.avatarUrl) setAvatarUrl(settings.avatarUrl);
-    });
-  }, []);
   const fallbackDays = useMemo(() => buildFallbackMomentumDays(), []);
   const [momentum, setMomentum] = useState<GitHubMomentumState>({
     status: 'loading',
@@ -661,7 +694,7 @@ function AboutSection() {
     : '--';
 
   return (
-    <section id="about" className="pt-8 sm:pt-12 pb-12 sm:pb-16 lg:pb-20">
+    <section id="about" className="pt-8 sm:pt-12 pb-10 sm:pb-12 lg:pb-16">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-5 sm:mb-6">{t('heading')}</h2>
@@ -721,9 +754,9 @@ function AboutSection() {
 
           <ScrollReveal delay={0.2}>
             <StaggerContainer className="grid grid-cols-2 gap-2" staggerDelay={0.04}>
-              {stats.map(({ id, value, suffix, label, href, onActivate }, idx) => (
+              {stats.map(({ id, value, suffix, label, href, onActivate, badge }, idx) => (
                 <StaggerItem key={id} className="h-full">
-                  <AboutStatCard value={value} suffix={suffix} label={label} href={href} onActivate={onActivate} durationMs={900 + idx * 80} className="h-full py-4" />
+                  <AboutStatCard value={value} suffix={suffix} label={label} href={href} onActivate={onActivate} badge={badge} durationMs={900 + idx * 80} className="h-full py-4" />
                 </StaggerItem>
               ))}
             </StaggerContainer>
@@ -735,7 +768,7 @@ function AboutSection() {
                 <Terminal className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
                 <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('profileLabel')}</span>
               </div>
-              <p className="text-[13px] text-muted-foreground leading-relaxed">{t('profileParagraph1')}</p>
+              <p className="text-[13px] text-muted-foreground leading-relaxed">{t('profileParagraph1', { grade: t(`grade.${schoolGradeKey(new Date())}`) })}</p>
               <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph2')}</p>
               <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph3')}</p>
               <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph4')}</p>
@@ -805,7 +838,7 @@ function AboutSection() {
                   <Terminal className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
                   <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('profileLabel')}</span>
                 </div>
-                <p className="text-[13px] text-muted-foreground leading-relaxed">{t('profileParagraph1')}</p>
+                <p className="text-[13px] text-muted-foreground leading-relaxed">{t('profileParagraph1', { grade: t(`grade.${schoolGradeKey(new Date())}`) })}</p>
                 <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph2')}</p>
                 <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph3')}</p>
                 <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph4')}</p>
@@ -814,19 +847,19 @@ function AboutSection() {
           </ScrollReveal>
 
           <ScrollReveal delay={0.2} direction="scale">
-            <AboutStatCard value={stats[0].value} suffix={stats[0].suffix} label={stats[0].label} href={stats[0].href} onActivate={stats[0].onActivate} durationMs={1200} className="h-full py-5" />
+            <AboutStatCard value={stats[0].value} suffix={stats[0].suffix} label={stats[0].label} href={stats[0].href} onActivate={stats[0].onActivate} badge={stats[0].badge} durationMs={1200} className="h-full py-5" />
           </ScrollReveal>
 
           <ScrollReveal delay={0.24} direction="scale">
-            <AboutStatCard value={stats[1].value} suffix={stats[1].suffix} label={stats[1].label} href={stats[1].href} onActivate={stats[1].onActivate} durationMs={1300} className="h-full py-5" />
+            <AboutStatCard value={stats[1].value} suffix={stats[1].suffix} label={stats[1].label} href={stats[1].href} onActivate={stats[1].onActivate} badge={stats[1].badge} durationMs={1300} className="h-full py-5" />
           </ScrollReveal>
 
           <ScrollReveal delay={0.28} direction="scale">
-            <AboutStatCard value={stats[2].value} suffix={stats[2].suffix} label={stats[2].label} href={stats[2].href} onActivate={stats[2].onActivate} durationMs={1400} className="h-full py-5" />
+            <AboutStatCard value={stats[2].value} suffix={stats[2].suffix} label={stats[2].label} href={stats[2].href} onActivate={stats[2].onActivate} badge={stats[2].badge} durationMs={1400} className="h-full py-5" />
           </ScrollReveal>
 
           <ScrollReveal delay={0.32} direction="scale">
-            <AboutStatCard value={stats[3].value} label={stats[3].label} href={stats[3].href} onActivate={stats[3].onActivate} durationMs={1500} className="h-full py-5" />
+            <AboutStatCard value={stats[3].value} label={stats[3].label} href={stats[3].href} onActivate={stats[3].onActivate} badge={stats[3].badge} durationMs={1500} className="h-full py-5" />
           </ScrollReveal>
 
           <ScrollReveal delay={0.2} direction="right" className="md:col-span-2">
@@ -979,7 +1012,7 @@ function SkillsSection() {
   const selectedSkills = sampleSkills.filter((s) => s.category === selectedCategory);
 
   return (
-    <section id="skills" className="py-12 sm:py-16 lg:py-20">
+    <section id="skills" className="py-10 sm:py-12 lg:py-16">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2">{t('heading')}</h2>
@@ -995,7 +1028,7 @@ function SkillsSection() {
                 type="button"
                 onClick={() => setSelectedCategory(cat)}
                 className={`inline-flex w-full items-center justify-center gap-1 px-1 py-2.5 rounded-lg text-[12px] font-mono transition-all duration-200 ${selectedCategory === cat
-                  ? 'bg-background text-foreground shadow-sm'
+                  ? 'bg-background text-foreground shadow-xs'
                   : 'text-foreground/70 hover:text-foreground'
                   }`}
                 aria-pressed={selectedCategory === cat}
@@ -1019,7 +1052,7 @@ function SkillsSection() {
             >
               <p className="text-[11px] text-muted-foreground font-mono mb-4">{categoryDescriptions[selectedCategory]}</p>
               <div className="space-y-2">
-                {selectedSkills.map(({ name, icon: Icon, iconSrc, featured }) => (
+                {selectedSkills.map(({ name, logo, hasDarkVariant, featured }) => (
                   <div
                     key={name}
                     className={`skill-item-card flex items-center gap-3 rounded-xl border px-3.5 py-3 transition-all duration-200 ${featured
@@ -1027,15 +1060,9 @@ function SkillsSection() {
                       : 'border-border bg-muted/40'
                       }`}
                   >
-                    {(Icon || iconSrc) && (
-                      <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-background border border-border flex items-center justify-center">
-                        {iconSrc ? (
-                          <Image src={iconSrc} alt="" width={16} height={16} className="w-4 h-4 object-contain" aria-hidden="true" />
-                        ) : Icon ? (
-                          <Icon size={16} className="text-foreground/80" />
-                        ) : null}
-                      </span>
-                    )}
+                    <span className="shrink-0 w-8 h-8 rounded-lg bg-background border border-border flex items-center justify-center">
+                      <BrandLogo src={logo} alt="" size={18} hasDarkVariant={hasDarkVariant} className="w-[18px] h-[18px]" />
+                    </span>
                     <span className="flex-1 text-[13px] font-mono text-foreground/95 tracking-tight">{name}</span>
                         {featured && (
                           <span className="text-[9px] font-mono tracking-wider uppercase px-2 py-0.5 rounded-full bg-foreground/10 text-foreground/80">
@@ -1071,7 +1098,7 @@ function SkillsSection() {
                     </span>
                   </div>
                   <div className="space-y-1">
-                    {skills.map(({ name, icon: Icon, iconSrc, featured }) => (
+                    {skills.map(({ name, logo, hasDarkVariant, featured }) => (
                       <div
                         key={name}
                         className={`flex items-center gap-2.5 rounded-md border px-2.5 py-2 transition-colors duration-200 ${featured
@@ -1079,16 +1106,10 @@ function SkillsSection() {
                           : 'border-transparent'
                           }`}
                       >
-                        {(Icon || iconSrc) && (
-                          <span className={`flex-shrink-0 w-6 h-6 rounded flex items-center justify-center ${featured ? 'bg-background border border-border' : 'bg-muted/60'
-                            }`}>
-                            {iconSrc ? (
-                              <Image src={iconSrc} alt="" width={12} height={12} className="w-3 h-3 object-contain" aria-hidden="true" />
-                            ) : Icon ? (
-                              <Icon size={12} className="text-foreground/70" />
-                            ) : null}
-                          </span>
-                        )}
+                        <span className={`shrink-0 w-7 h-7 rounded-md flex items-center justify-center ${featured ? 'bg-background border border-border' : 'bg-muted/60'
+                          }`}>
+                          <BrandLogo src={logo} alt="" size={16} hasDarkVariant={hasDarkVariant} className="w-4 h-4" />
+                        </span>
                         <span className="flex-1 text-[12px] font-mono text-foreground/90 tracking-tight">{name}</span>
                         {featured && (
                           <span className="text-[9px] font-mono tracking-wider uppercase px-1.5 py-0.5 rounded-full bg-foreground/8 text-foreground/70">
@@ -1122,14 +1143,25 @@ function ProjectsSection({
   const router = useRouter();
   const transitionRouter = useTransitionRouter();
   const projects = initialProjects;
-  const [viewMode, setViewMode] = useState<'list' | 'grid'>(() => {
-    return (readSessionValue(navigationStateKeys.projectsViewMode) as 'list' | 'grid') ?? 'list';
-  });
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
   const [isMobileViewport, setIsMobileViewport] = useState(false);
   // 戻りナビゲーション時はカードをすぐに visible にする（viewTransitionName 要素を不透明にするため）
-  const [forceCardVisible] = useState(() => {
-    return readSessionValue(navigationStateKeys.returnToProjects) === '1';
-  });
+  const [forceCardVisible, setForceCardVisible] = useState(false);
+  // Same reason: the returning card's eager image load is decided after mount.
+  const [eagerProjectId, setEagerProjectId] = useState<string | null>(null);
+
+  // sessionStorage only exists in the browser. Reading it in a layout effect
+  // (not in the useState initializer) keeps the first client render equal to
+  // the server HTML, and still applies before the first paint.
+  useLayoutEffect(() => {
+    const storedViewMode = readSessionValue(navigationStateKeys.projectsViewMode) as 'list' | 'grid' | null;
+    if (storedViewMode) setViewMode(storedViewMode);
+    if (readSessionValue(navigationStateKeys.returnToProjects) === '1') setForceCardVisible(true);
+  }, []);
+
+  useLayoutEffect(() => {
+    setEagerProjectId(returningProjectId ?? null);
+  }, [returningProjectId]);
   const effectiveViewMode: 'list' | 'grid' = isMobileViewport ? 'grid' : viewMode;
 
   useLayoutEffect(() => {
@@ -1141,8 +1173,8 @@ function ProjectsSection({
   }, []);
 
   return (
-    <section id="projects" className="py-12 sm:py-16 lg:py-20">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="projects" className="py-10 sm:py-12 lg:py-16">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
           <div className="flex flex-wrap items-end justify-between gap-4 mb-5 sm:mb-6">
             <h2 className="text-2xl sm:text-4xl font-bold tracking-tight">{t('heading')}</h2>
@@ -1151,7 +1183,7 @@ function ProjectsSection({
                 type="button"
                 onClick={() => setViewMode('list')}
                 className={`inline-flex flex-1 sm:flex-none items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-mono transition-colors ${viewMode === 'list'
-                  ? 'bg-background text-foreground shadow-sm'
+                  ? 'bg-background text-foreground shadow-xs'
                   : 'text-foreground/80 hover:text-foreground hover:bg-background/60'
                   }`}
                 aria-pressed={viewMode === 'list'}
@@ -1163,7 +1195,7 @@ function ProjectsSection({
                 type="button"
                 onClick={() => setViewMode('grid')}
                 className={`inline-flex flex-1 sm:flex-none items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-mono transition-colors ${viewMode === 'grid'
-                  ? 'bg-background text-foreground shadow-sm'
+                  ? 'bg-background text-foreground shadow-xs'
                   : 'text-foreground/80 hover:text-foreground hover:bg-background/60'
                   }`}
                 aria-pressed={viewMode === 'grid'}
@@ -1236,9 +1268,9 @@ function ProjectsSection({
                           ? 'rounded-t-xl'
                           : 'rounded-l-xl rounded-tr-none'
                           }`}
-                        priority={returningProjectId === project.id}
-                        loading={returningProjectId === project.id ? undefined : 'lazy'}
-                        fetchPriority={returningProjectId === project.id ? undefined : 'auto'}
+                        priority={eagerProjectId === project.id}
+                        loading={eagerProjectId === project.id ? undefined : 'lazy'}
+                        fetchPriority={eagerProjectId === project.id ? undefined : 'auto'}
                         style={{ viewTransitionName: `proj-${project.id}`, viewTransitionClass: 'project-media' }}
                       />
                     ) : (
@@ -1246,7 +1278,7 @@ function ProjectsSection({
                         <Box className="w-10 h-10 text-muted-foreground/30" strokeWidth={1} />
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/20" />
+                    <div className="absolute inset-0 bg-linear-to-b from-transparent to-background/20" />
                     <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-300 flex items-center justify-center">
                       <ArrowUpRight
                         className="w-8 h-8 text-foreground opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0"
@@ -1289,7 +1321,7 @@ function ProjectsSection({
                     </p>
                     <div className={`${effectiveViewMode === 'grid' ? 'flex flex-wrap gap-1.5' : 'flex flex-wrap gap-2'}`}>
                       {(effectiveViewMode === 'grid' || isMobileViewport ? project.tags.slice(0, 2) : project.tags).map((tag) => (
-                        <span key={tag} className="text-[11px] font-mono text-muted-foreground bg-muted px-2.5 py-1 rounded">
+                        <span key={tag} className="text-[11px] font-mono text-muted-foreground bg-muted px-2.5 py-1 rounded-sm">
                           {tag}
                         </span>
                       ))}
@@ -1355,7 +1387,7 @@ function ActiveProjectsSection({
   };
 
   return (
-    <section id="timeline" className="py-12 sm:py-16 lg:py-20">
+    <section id="timeline" className="py-10 sm:py-12 lg:py-16">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-5 sm:mb-6">{text('heading', 'Active Projects')}</h2>
@@ -1548,16 +1580,11 @@ function ActiveProjectsSection({
   );
 }
 
-function MutualLinksSection() {
+function MutualLinksSection({ links }: { links: MutualLink[] }) {
   const t = useTranslations('MutualLinks');
-  const [links, setLinks] = useState<MutualLink[]>([]);
-
-  useEffect(() => {
-    getMutualLinks().then(setLinks);
-  }, []);
 
   return (
-    <section id="links" className="py-12 sm:py-16 lg:py-20">
+    <section id="links" className="py-10 sm:py-12 lg:py-16">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2">{t('heading')}</h2>
@@ -1574,7 +1601,7 @@ function MutualLinksSection() {
                   rel="noopener noreferrer"
                   className="group block h-full overflow-hidden rounded-xl border border-border bg-card/65 transition-[border-color,background-color,transform] duration-300 hover:-translate-y-0.5 hover:border-border-hover hover:bg-card"
                 >
-                  <div className="relative aspect-[3/1] w-full overflow-hidden border-b border-border bg-muted">
+                  <div className="relative aspect-3/1 w-full overflow-hidden border-b border-border bg-muted">
                     {link.banner_url ? (
                       <img
                         src={link.banner_url}
@@ -1614,7 +1641,19 @@ function MutualLinksSection() {
                 <p className="text-sm font-semibold">{t('ctaTitle')}</p>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{t('empty')}</p>
               </div>
-              <ContactMethods className="w-full sm:w-auto sm:min-w-[460px]" />
+              {/* The contact options themselves live in the Contact section
+                  right below; repeating them here doubled the same buttons. */}
+              <a
+                href="#contact"
+                onClick={(event) => {
+                  event.preventDefault();
+                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="btn-outline inline-flex shrink-0 items-center justify-center gap-1.5 px-4 py-2 text-xs"
+              >
+                {t('ctaContact')}
+                <ArrowUpRight className="h-3.5 w-3.5 rotate-90" strokeWidth={1.7} />
+              </a>
             </div>
           </div>
         </ScrollReveal>

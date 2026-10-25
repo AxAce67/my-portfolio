@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { Query, type Models } from 'appwrite';
 import {
   tablesDB,
@@ -74,6 +75,9 @@ async function fetchPublishedProjectsWithTags(limit?: number): Promise<HomeProje
     queries: [
       Query.equal('status', 'completed'),
       Query.equal('is_published', true),
+      // Lists only need the card fields; skipping the article bodies keeps
+      // the response small as the number of projects grows.
+      Query.select(['title', 'description', 'thumbnail_url', 'tags']),
       Query.orderDesc('$updatedAt'),
       Query.limit(limit ?? 100),
     ],
@@ -107,6 +111,25 @@ async function fetchPublishedActiveProjects(): Promise<HomeActiveProject[]> {
     name: row.name ?? '',
     stage: row.stage ?? 0,
   }));
+}
+
+export async function getPublishedProjectCount(): Promise<number> {
+  try {
+    const rows = await tablesDB.listRows<ProjectRow>({
+      databaseId: DATABASE_ID,
+      tableId: PROJECTS_TABLE_ID,
+      queries: [
+        Query.equal('status', 'completed'),
+        Query.equal('is_published', true),
+        Query.select(['title']),
+        Query.limit(1),
+      ],
+    });
+    return rows.total;
+  } catch (error) {
+    console.error('[publicContent] Failed to count projects', error);
+    return 0;
+  }
 }
 
 export async function getHomePageData() {
@@ -153,7 +176,9 @@ async function getCachedProjectDetail(id: string): Promise<ProjectRow | null> {
   }
 }
 
-export async function getProjectById(id: string): Promise<ProjectDetailResult> {
+// cache(): generateMetadata and the page both ask for the same project in
+// one request; this makes that a single Appwrite call.
+export const getProjectById = cache(async (id: string): Promise<ProjectDetailResult> => {
   try {
     const row = await getCachedProjectDetail(id);
     if (!row) {
@@ -178,7 +203,7 @@ export async function getProjectById(id: string): Promise<ProjectDetailResult> {
     console.error('[publicContent] Failed to load project detail', error);
     return { status: 'unavailable', project: null };
   }
-}
+});
 
 export const DEFAULT_AVATAR_URL = '/images/profile/akiz-profile.jpg';
 
@@ -219,7 +244,9 @@ export async function getMutualLinks(): Promise<MutualLink[]> {
       tableId: MUTUAL_LINKS_TABLE_ID,
       queries: [Query.orderAsc('display_order'), Query.orderAsc('$createdAt'), Query.limit(100)],
     });
-    return rows.rows.map((row) => ({
+    // The links are rendered as plain <a href>; drop anything that is not
+    // http(s) so a mistyped javascript:/data: URL can never become clickable.
+    return rows.rows.filter((row) => /^https?:\/\//i.test(row.url ?? '')).map((row) => ({
       id: row.$id,
       name: row.name ?? '',
       url: row.url ?? '',

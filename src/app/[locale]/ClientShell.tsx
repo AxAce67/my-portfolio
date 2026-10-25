@@ -32,7 +32,7 @@ function ClientShellContent({ children }: Pick<Props, 'children'>) {
           {getLocaleMeta(locale).skipToContentLabel}
         </a>
         <Header />
-        <main id="main-content" tabIndex={-1} className="flex-1 relative z-10 w-full bg-[var(--background)]">
+        <main id="main-content" tabIndex={-1} className="flex-1 relative z-10 w-full bg-(--background)">
           {children}
         </main>
         <Footer />

@@ -32,7 +32,7 @@ There are no automated tests. Verify changes by building (`npm run build`) to ca
 Single Appwrite project. Content, auth, and Storage calls happen directly from the browser; server-only integrations such as Tailscale, Beszel, and GitHub run through App Router route handlers.
 
 - `src/lib/appwrite/client.ts` exports `tablesDB`, `account`, `storage`, plus hardcoded IDs: `DATABASE_ID` (`portfolio`), `PROJECTS_TABLE_ID`, `ACTIVE_PROJECTS_TABLE_ID`, `ASSETS_BUCKET_ID` (`portfolio-assets`)
-- Public read: `src/lib/content/publicContent.ts` — read-only queries, `is_published`/`status` filtered, no auth required (table permission `read("any")`)
+- Public read: `src/lib/content/publicContent.ts` — read-only queries, `is_published`/`status` filtered, no auth required. `projects` and `active_projects` use row security: saving a row sets `read("any")` only when it is published (`publicReadPermissions` in `adminContent.ts`), so drafts are not readable through the public Appwrite API
 - Admin read/write: `src/lib/content/adminContent.ts` — full CRUD, requires an authenticated Appwrite session (table permissions `create`/`update`/`delete` scoped to `Role.users()`)
 - Self-hosted Appwrite instance — when adding a new deploy target/domain, it must be registered as a Web Platform in the Appwrite console (Project > Overview > Platforms) or browser requests get a 403 `Invalid Origin`
 
@@ -60,7 +60,8 @@ Article display (`src/views/ProjectDetailPage.tsx`) prefers `content_json` when 
 
 ### Styling
 
-- Tailwind CSS with CSS custom properties (`--background`, `--foreground`, `--muted`, `--border`, etc.)
+- Tailwind CSS 4, configured in CSS (`@theme` in `src/app/globals.css`, no `tailwind.config`), on top of CSS custom properties (`--background`, `--foreground`, `--muted`, `--border`, etc.)
+- The site's own CSS sits in `@layer utilities`; never add element-wide resets there (a `* { margin: 0 }` cancels `space-y-*`, whose selectors have zero specificity)
 - Dark mode via a local `ThemeProvider` shim (`src/components/providers/ThemeProvider.tsx`), not the `next-themes` package
 - **Tailwind Preflight resets heading and list styles** — `.article-content` in `globals.css` carries the typography for rendered/edited article content (also used directly by the admin editor — see above)
 - Mantine + BlockNote CSS imported directly in the admin pages that need them (`NewProjectPage.tsx`/`EditProjectPage.tsx`), not globally
@@ -77,4 +78,14 @@ NEXT_PUBLIC_APPWRITE_PROJECT_ID
 NEXT_PUBLIC_SITE_URL          # SEO/OGP base URL fallback
 ```
 
-See `.env.example` for the full list (contact form, GitHub activity card, Tailscale status).
+See `.env.example` for the full list (contact form, GitHub activity card, Tailscale status). The contact form posts to `/api/contact`, which verifies Turnstile with `TURNSTILE_SECRET_KEY` and delivers to `CONTACT_DISCORD_WEBHOOK_URL`.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

@@ -1,4 +1,4 @@
-import { ID, Query, type Models } from 'appwrite';
+import { ID, Permission, Query, Role, type Models } from 'appwrite';
 import {
   tablesDB,
   storage,
@@ -121,6 +121,14 @@ export async function getAdminProjectById(id: string): Promise<AdminProjectDetai
   }
 }
 
+// The projects and active_projects tables use row security: the table grants
+// read access only to admins, and a row becomes publicly readable only when
+// it is published. Unpublished drafts therefore stay hidden from the public
+// Appwrite API, not just from the site.
+function publicReadPermissions(isPublished: boolean): string[] {
+  return isPublished ? [Permission.read(Role.any())] : [];
+}
+
 function projectInputToData(input: ProjectInput) {
   return {
     title: input.title,
@@ -139,6 +147,7 @@ export async function createProject(input: ProjectInput): Promise<string> {
     tableId: PROJECTS_TABLE_ID,
     rowId: ID.unique(),
     data: projectInputToData(input),
+    permissions: publicReadPermissions(input.is_published),
   });
   return row.$id;
 }
@@ -176,6 +185,7 @@ export async function updateProject(id: string, input: ProjectInput): Promise<vo
     tableId: PROJECTS_TABLE_ID,
     rowId: id,
     data: projectInputToData(input),
+    permissions: publicReadPermissions(input.is_published),
   });
 
   // Delete files only after the row update succeeds. Deleting them first
@@ -261,6 +271,7 @@ export async function createActiveProject(input: ActiveProjectInput): Promise<st
     tableId: ACTIVE_PROJECTS_TABLE_ID,
     rowId: ID.unique(),
     data: input,
+    permissions: publicReadPermissions(input.is_published),
   });
   return row.$id;
 }
@@ -271,6 +282,7 @@ export async function updateActiveProject(id: string, input: ActiveProjectInput)
     tableId: ACTIVE_PROJECTS_TABLE_ID,
     rowId: id,
     data: input,
+    permissions: publicReadPermissions(input.is_published),
   });
 }
 

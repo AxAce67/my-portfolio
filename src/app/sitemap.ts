@@ -3,6 +3,10 @@ import { locales, type AppLocale } from '@/i18n/locales';
 import { getProjectsListData } from '@/lib/content/publicContent';
 import { buildLocaleUrl } from '@/lib/seo';
 
+// Without this the sitemap is generated once at build time and never lists
+// projects published afterwards.
+export const revalidate = 3600;
+
 const staticRoutes = [
   { path: '', priority: 1, changeFrequency: 'weekly' },
   { path: '/projects', priority: 0.85, changeFrequency: 'weekly' },

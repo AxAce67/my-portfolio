@@ -40,39 +40,22 @@ export default function BackToProjectsLink({ homeHref, archiveHref, className, h
         if (shouldUseMobileRouteTransitions()) {
           e.preventDefault();
           runRouteTransition(() => {
-            router.push(targetHref);
+            // scroll: false — the destination restores its own saved scroll
+            // position; Next's default scroll-to-top would otherwise land
+            // after it in production builds.
+            router.push(targetHref, { scroll: false });
           }, { direction: 'backward' });
           return;
         }
 
         if (canUseSharedElementTransitions()) {
           e.preventDefault();
-          if (isArchive) {
-            runViewTransition(() => {
-              router.push(targetHref);
-            });
-            return;
-          }
-
-          const clearPendingResolver = () => {
-            window.__resolveHomeProjectsTransition = undefined;
-          };
-
-          const timeoutId = window.setTimeout(() => {
-            window.__resolveHomeProjectsTransition?.();
-            clearPendingResolver();
-          }, 360);
-
-          document.startViewTransition?.(() => new Promise<void>((resolve) => {
-            window.__resolveHomeProjectsTransition = () => {
-              window.clearTimeout(timeoutId);
-              clearPendingResolver();
-              resolve();
-            };
-
-            router.push(targetHref);
-          }));
-          return;
+          // runViewTransition waits until the destination has committed, and
+          // the home page restores its scroll position in a layout effect
+          // during that commit, so the card is in place for the morph.
+          runViewTransition(() => {
+            router.push(targetHref, { scroll: false });
+          });
         }
       }}
     >

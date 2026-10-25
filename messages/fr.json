@@ -21,7 +21,7 @@
     "ageLabel": "Âge",
     "locationLabel": "🇯🇵 Tokyo",
     "profileLabel": "Profile",
-    "profileParagraph1": "Je suis en première année de lycée au Japon et je développe des projets personnels tels que des sites web, des bots Discord, des serveurs Ubuntu et des serveurs Minecraft.",
+    "profileParagraph1": "Je suis {grade} au Japon et je développe des projets personnels tels que des sites web, des bots Discord, des serveurs Ubuntu et des serveurs Minecraft.",
     "profileParagraph2": "Depuis que j'ai découvert ChatGPT en sixième, j'utilise différents outils d'IA pour améliorer mon flux de travail et accélérer la transformation des idées en produits fonctionnels.",
     "profileParagraph3": "Mon processus consiste à transformer des idées en exigences, construire rapidement un MVP, puis itérer grâce aux tests et aux améliorations.",
     "profileParagraph4": "Mes points forts sont la réflexion design, l'amélioration continue et la recherche. Je suis les tendances tout en gardant l'utilisabilité et la maintenabilité en tête.",
@@ -49,7 +49,22 @@
       "continuousImprovement": "Amélioration continue"
     },
     "linksLabel": "Links",
-    "role": "Développeur indépendant"
+    "role": "Développeur indépendant",
+    "grade": {
+      "e1": "en première année d'école primaire",
+      "e2": "en deuxième année d'école primaire",
+      "e3": "en troisième année d'école primaire",
+      "e4": "en quatrième année d'école primaire",
+      "e5": "en cinquième année d'école primaire",
+      "e6": "en sixième année d'école primaire",
+      "j1": "en première année de collège",
+      "h1": "en première année de lycée",
+      "j2": "en deuxième année de collège",
+      "h2": "en deuxième année de lycée",
+      "j3": "en troisième année de collège",
+      "h3": "en troisième année de lycée"
+    },
+    "serversOnline": "{online}/{total} en ligne"
   },
   "Skills": {
     "sectionTitle": "// skills/",
@@ -76,7 +91,7 @@
   "TechStack": {
     "sectionTitle": "// tech_stack/",
     "heading": "Tech Stack",
-    "subtitle": "La stack technique que j'utilise pour construire des produits"
+    "subtitle": "Technologies que j'ai utilisées"
   },
   "Projects": {
     "sectionTitle": "// projects/",
@@ -127,7 +142,10 @@
     "tagline": "Je construis ce que j'aime. C'est tout.",
     "copyright": "© {year} Tous droits réservés.",
     "terms": "Conditions d'utilisation",
-    "license": "Licence"
+    "license": "Licence",
+    "ntpSynced": "synchronisé avec {server}",
+    "ntpDeviceOffset": "cet appareil {offset}",
+    "ntpAccuracy": "erreur estimée ±{accuracy} ms"
   },
   "Language": {
     "label": "Langue",
@@ -308,7 +326,8 @@
       "draftDiscard": "Ignorer",
       "cropTitle": "Recadrer la miniature",
       "cropConfirm": "Appliquer le recadrage",
-      "cropCancel": "Annuler"
+      "cropCancel": "Annuler",
+      "cropAdjust": "Ajuster le recadrage"
     },
     "profile": {
       "title": "Photo de profil",
@@ -478,6 +497,7 @@
     "ctaTitle": "Échanges de liens ouverts",
     "empty": "Vous souhaitez échanger des liens ? Contactez-moi via X, Discord ou le formulaire.",
     "visitSite": "Visiter le site",
-    "discordCopied": "Nom d'utilisateur Discord copié"
+    "discordCopied": "Nom d'utilisateur Discord copié",
+    "ctaContact": "Aller au contact"
   }
 }

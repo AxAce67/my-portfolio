@@ -32,7 +32,7 @@ import {
 import { uploadImage, UploadValidationError } from '@/lib/appwrite/upload';
 import ThumbnailCropModal from './ThumbnailCropModal';
 
-const modalBaseClass = 'fixed inset-0 z-[2147483647] bg-black/45 backdrop-blur-sm flex items-center justify-center p-4';
+const modalBaseClass = 'fixed inset-0 z-2147483647 bg-black/45 backdrop-blur-xs flex items-center justify-center p-4';
 const BANNER_ASPECT = 3 / 1;
 
 type MutualLinkRowContentProps = {
@@ -53,15 +53,15 @@ function MutualLinkRowContent({ link, dragHandleLabel, editLabel, deleteLabel, d
         {...dragHandleProps}
         title={dragHandleLabel}
         aria-label={dragHandleLabel}
-        className="cursor-grab active:cursor-grabbing text-muted-foreground flex-shrink-0 touch-none bg-transparent border-none p-0"
+        className="cursor-grab active:cursor-grabbing text-muted-foreground shrink-0 touch-none bg-transparent border-none p-0"
         style={{ touchAction: 'none' }}
       >
         <GripVertical className="w-4 h-4" />
       </button>
       {link.banner_url ? (
-        <img src={link.banner_url} alt="" className="w-[72px] h-6 rounded object-cover border border-border flex-shrink-0" />
+        <img src={link.banner_url} alt="" className="w-[72px] h-6 rounded-sm object-cover border border-border shrink-0" />
       ) : (
-        <div className="w-[72px] h-6 rounded border border-border bg-muted flex items-center justify-center flex-shrink-0">
+        <div className="w-[72px] h-6 rounded-sm border border-border bg-muted flex items-center justify-center shrink-0">
           <ImageOff className="w-3.5 h-3.5 text-muted-foreground" />
         </div>
       )}
@@ -70,7 +70,7 @@ function MutualLinkRowContent({ link, dragHandleLabel, editLabel, deleteLabel, d
         <p className="text-xs text-muted-foreground truncate">{link.url}</p>
       </div>
 
-      <div className="flex items-center gap-2 flex-shrink-0 ml-auto">
+      <div className="flex items-center gap-2 shrink-0 ml-auto">
         <button
           type="button"
           title={editLabel}
@@ -119,7 +119,7 @@ type BannerPickerProps = {
 
 function BannerPicker({ label, bannerUrl, onPick }: BannerPickerProps) {
   return (
-    <label className="group relative block w-full aspect-[3/1] cursor-pointer rounded-lg overflow-hidden border border-border bg-muted">
+    <label className="group relative block w-full aspect-3/1 cursor-pointer rounded-lg overflow-hidden border border-border bg-muted">
       {bannerUrl ? (
         <img src={bannerUrl} alt="" className="w-full h-full object-cover" />
       ) : (

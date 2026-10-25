@@ -21,7 +21,7 @@
     "ageLabel": "Idade",
     "locationLabel": "🇯🇵 Tokyo",
     "profileLabel": "Profile",
-    "profileParagraph1": "Sou um estudante do primeiro ano do ensino médio no Japão e desenvolvo projetos pessoais como sites, bots de Discord, servidores Ubuntu e servidores de Minecraft.",
+    "profileParagraph1": "Sou {grade} no Japão e desenvolvo projetos pessoais como sites, bots de Discord, servidores Ubuntu e servidores de Minecraft.",
     "profileParagraph2": "Desde que descobri o ChatGPT na sexta série, venho usando várias ferramentas de IA para melhorar meu fluxo de trabalho e acelerar a transformação de ideias em produtos funcionando.",
     "profileParagraph3": "Meu processo é transformar ideias em requisitos, criar um MVP rapidamente e depois iterar com testes e melhorias.",
     "profileParagraph4": "Meus pontos fortes são pensamento de design, melhoria contínua e pesquisa. Acompanho tendências sem perder de vista usabilidade e manutenção.",
@@ -49,7 +49,22 @@
       "continuousImprovement": "Melhoria contínua"
     },
     "linksLabel": "Links",
-    "role": "Desenvolvedor independente"
+    "role": "Desenvolvedor independente",
+    "grade": {
+      "e1": "um estudante do primeiro ano do ensino fundamental",
+      "e2": "um estudante do segundo ano do ensino fundamental",
+      "e3": "um estudante do terceiro ano do ensino fundamental",
+      "e4": "um estudante do quarto ano do ensino fundamental",
+      "e5": "um estudante do quinto ano do ensino fundamental",
+      "e6": "um estudante do sexto ano do ensino fundamental",
+      "j1": "um estudante do primeiro ano do ensino fundamental II",
+      "h1": "um estudante do primeiro ano do ensino médio",
+      "j2": "um estudante do segundo ano do ensino fundamental II",
+      "h2": "um estudante do segundo ano do ensino médio",
+      "j3": "um estudante do terceiro ano do ensino fundamental II",
+      "h3": "um estudante do terceiro ano do ensino médio"
+    },
+    "serversOnline": "{online}/{total} online"
   },
   "Skills": {
     "sectionTitle": "// skills/",
@@ -76,7 +91,7 @@
   "TechStack": {
     "sectionTitle": "// tech_stack/",
     "heading": "Tech Stack",
-    "subtitle": "A stack de tecnologia que uso para construir produtos"
+    "subtitle": "Tecnologias que já usei"
   },
   "Projects": {
     "sectionTitle": "// projects/",
@@ -127,7 +142,10 @@
     "tagline": "Construo o que eu gosto. Só isso.",
     "copyright": "© {year} Todos os direitos reservados.",
     "terms": "Termos de uso",
-    "license": "Licença"
+    "license": "Licença",
+    "ntpSynced": "sincronizado com {server}",
+    "ntpDeviceOffset": "este dispositivo {offset}",
+    "ntpAccuracy": "erro estimado ±{accuracy} ms"
   },
   "Language": {
     "label": "Idioma",
@@ -308,7 +326,8 @@
       "draftDiscard": "Descartar",
       "cropTitle": "Recortar miniatura",
       "cropConfirm": "Aplicar recorte",
-      "cropCancel": "Cancelar"
+      "cropCancel": "Cancelar",
+      "cropAdjust": "Ajustar recorte"
     },
     "profile": {
       "title": "Foto de perfil",
@@ -478,6 +497,7 @@
     "ctaTitle": "Troca de links aberta",
     "empty": "Quer trocar links? Entre em contato pelo X, Discord ou formulário.",
     "visitSite": "Visitar site",
-    "discordCopied": "Nome de usuário do Discord copiado"
+    "discordCopied": "Nome de usuário do Discord copiado",
+    "ctaContact": "Ir para contato"
   }
 }

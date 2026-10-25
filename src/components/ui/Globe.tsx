@@ -1,12 +1,32 @@
 import { useEffect, useRef } from 'react';
-import createGlobe from 'cobe';
+import type React from 'react';
+import createGlobe, { type Arc, type Marker } from 'cobe';
+
+// A marker with an `id` makes cobe publish its on-screen position as the CSS
+// anchor `--cobe-<id>` and its visibility (1 in front, 0 behind the globe)
+// as `--cobe-visible-<id>`. `label` is drawn next to it through that anchor.
+export type GlobeMarker = Marker & { id: string; label?: string; detail?: string; labelSide?: 'left' | 'right' };
 
 type GlobeProps = {
   size?: number;
   className?: string;
+  markers?: GlobeMarker[];
+  arcs?: Arc[];
+  initialPhi?: number;
+  theta?: number;
 };
 
-export function Globe({ size = 64, className = '' }: GlobeProps) {
+const NO_MARKERS: GlobeMarker[] = [];
+const NO_ARCS: Arc[] = [];
+
+export function Globe({
+  size = 64,
+  className = '',
+  markers = NO_MARKERS,
+  arcs = NO_ARCS,
+  initialPhi = 4.9, // roughly centered on Japan
+  theta = 0.3,
+}: GlobeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -20,7 +40,7 @@ export function Globe({ size = 64, className = '' }: GlobeProps) {
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    let phi = 4.9; // start roughly centered on Japan
+    let phi = initialPhi;
     let isPointerDown = false;
     let pointerX = 0;
     let dragPhi = 0;
@@ -78,7 +98,7 @@ export function Globe({ size = 64, className = '' }: GlobeProps) {
         width: size * dpr,
         height: size * dpr,
         phi,
-        theta: 0.3,
+        theta,
         dark: 1,
         diffuse: 1.1,
         scale: 1.05,
@@ -88,7 +108,12 @@ export function Globe({ size = 64, className = '' }: GlobeProps) {
         markerColor: [0.4, 0.87, 0.76],
         glowColor: [0.48, 0.74, 1],
         opacity: 0.92,
-        markers: [],
+        markers,
+        markerElevation: 0.01,
+        arcs,
+        arcColor: [0.48, 0.74, 1],
+        arcWidth: 0.35,
+        arcHeight: 0.18,
       });
 
       canvas.style.cursor = 'grab';
@@ -111,14 +136,31 @@ export function Globe({ size = 64, className = '' }: GlobeProps) {
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
     };
-  }, [size]);
+  }, [size, markers, arcs, initialPhi, theta]);
 
+  // cobe appends its anchor elements to the canvas's parent, so the canvas,
+  // anchors and labels share this positioned wrapper.
   return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden="true"
-      className={className}
-      style={{ width: '100%', height: '100%', touchAction: 'none' }}
-    />
+    <div className="globe-stage" aria-hidden="true">
+      <canvas
+        ref={canvasRef}
+        className={className}
+        style={{ width: '100%', height: '100%', touchAction: 'none' }}
+      />
+      {markers.filter((marker) => marker.label).map((marker) => (
+        <span
+          key={`${marker.id}-label`}
+          className={`globe-label ${marker.labelSide === 'left' ? 'globe-label--left' : ''}`}
+          style={{
+            positionAnchor: `--cobe-${marker.id}`,
+            opacity: `var(--cobe-visible-${marker.id}, 0)`,
+            filter: `blur(calc((1 - var(--cobe-visible-${marker.id}, 0)) * 6px))`,
+          } as React.CSSProperties}
+        >
+          <span className="globe-label__title">{marker.label}</span>
+          {marker.detail && <span className="globe-label__detail">{marker.detail}</span>}
+        </span>
+      ))}
+    </div>
   );
 }

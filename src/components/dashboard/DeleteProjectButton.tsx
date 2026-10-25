@@ -10,7 +10,7 @@ type Props = {
   onDeleted: () => void;
 };
 
-const modalBaseClass = 'fixed inset-0 z-[2147483647] bg-black/45 backdrop-blur-sm flex items-center justify-center p-4';
+const modalBaseClass = 'fixed inset-0 z-2147483647 bg-black/45 backdrop-blur-xs flex items-center justify-center p-4';
 
 export default function DeleteProjectButton({ projectId, projectTitle, onDeleted }: Props) {
   const t = useTranslations('Dashboard.deleteProject');

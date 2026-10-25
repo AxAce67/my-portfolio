@@ -1,5 +1,7 @@
 // Shared server-side implementation for the Next.js server status route.
 
+import { selfHostedServers } from '@/lib/selfHostedServers';
+
 type TailscaleDevice = {
   id: string;
   name: string;
@@ -79,18 +81,53 @@ function asNumber(value: unknown): number | null {
   return typeof value === 'number' && Number.isFinite(value) ? value : null;
 }
 
-async function getTailscaleDeviceStatus(): Promise<{ devices: ServerStatusDevice[] } | { error: string }> {
-  const apiKey = process.env.TAILSCALE_API_KEY;
-  const tailnet = process.env.TAILSCALE_TAILNET || '-';
+// Tailscale API keys expire after at most 90 days. An OAuth client does not
+// expire; it trades its ID and secret for an access token that lasts one
+// hour, which is cached here and renewed a few minutes before it runs out.
+let oauthToken: { value: string; expiresAt: number } | null = null;
 
-  if (!apiKey) {
-    return { error: 'TAILSCALE_API_KEY is not configured' };
+async function getTailscaleAuthHeader(): Promise<string | null> {
+  const clientId = process.env.TAILSCALE_OAUTH_CLIENT_ID?.trim();
+  const clientSecret = process.env.TAILSCALE_OAUTH_CLIENT_SECRET?.trim();
+
+  if (clientId && clientSecret) {
+    if (!oauthToken || oauthToken.expiresAt - Date.now() < 5 * 60 * 1000) {
+      const response = await fetch('https://api.tailscale.com/api/v2/oauth/token', {
+        method: 'POST',
+        cache: 'no-store',
+        body: new URLSearchParams({
+          grant_type: 'client_credentials',
+          client_id: clientId,
+          client_secret: clientSecret,
+        }),
+      });
+      if (!response.ok) {
+        oauthToken = null;
+        return null;
+      }
+      const token = (await response.json()) as { access_token?: string; expires_in?: number };
+      if (!token.access_token) return null;
+      oauthToken = { value: token.access_token, expiresAt: Date.now() + (token.expires_in ?? 3600) * 1000 };
+    }
+    return `Bearer ${oauthToken.value}`;
+  }
+
+  const apiKey = process.env.TAILSCALE_API_KEY;
+  return apiKey ? `Basic ${btoa(`${apiKey}:`)}` : null;
+}
+
+async function getTailscaleDeviceStatus(): Promise<{ devices: ServerStatusDevice[] } | { error: string }> {
+  const tailnet = process.env.TAILSCALE_TAILNET || '-';
+  const authorization = await getTailscaleAuthHeader();
+
+  if (!authorization) {
+    return { error: 'Tailscale credentials are not configured or were rejected' };
   }
 
   const response = await fetch(`https://api.tailscale.com/api/v2/tailnet/${encodeURIComponent(tailnet)}/devices`, {
     cache: 'no-store',
     headers: {
-      Authorization: `Basic ${btoa(`${apiKey}:`)}`,
+      Authorization: authorization,
     },
   });
 
@@ -101,7 +138,17 @@ async function getTailscaleDeviceStatus(): Promise<{ devices: ServerStatusDevice
   const data = (await response.json()) as { devices?: TailscaleDevice[] };
   const now = Date.now();
 
-  const devices: ServerStatusDevice[] = (data.devices ?? []).map((device) => {
+  // This endpoint is public: only report the machines the site already lists
+  // on /servers. The tailnet also holds personal laptops and phones whose
+  // names (which can include a real name) must not be exposed.
+  const publicHostnames = new Set(
+    selfHostedServers.map((server) => (server.tailscaleHostname ?? server.id).toLowerCase()),
+  );
+  const listedDevices = (data.devices ?? []).filter((device) =>
+    publicHostnames.has((device.name.split('.')[0] || device.hostname).toLowerCase()),
+  );
+
+  const devices: ServerStatusDevice[] = listedDevices.map((device) => {
     const lastSeenMs = device.lastSeen ? new Date(device.lastSeen).getTime() : 0;
     return {
       id: device.id,
@@ -203,6 +250,11 @@ export async function getServerStatusSnapshot(): Promise<ServerStatusSnapshot> {
   const beszelValue = beszelResult.status === 'fulfilled' ? beszelResult.value : { metrics: [] };
   const tailscaleDevices = 'devices' in tailscaleValue ? tailscaleValue.devices : [];
   const beszelMetrics = 'metrics' in beszelValue ? beszelValue.metrics : [];
+  // Surface why a source returned nothing (e.g. an expired API key) in the
+  // server log instead of failing silently.
+  if ('error' in tailscaleValue) console.error('[serverStatus] Tailscale:', tailscaleValue.error);
+  if (tailscaleResult.status === 'rejected') console.error('[serverStatus] Tailscale request failed:', tailscaleResult.reason);
+  if ('error' in beszelValue) console.error('[serverStatus] Beszel:', beszelValue.error);
 
   return {
     devices: tailscaleDevices,

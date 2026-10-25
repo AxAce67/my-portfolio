@@ -91,28 +91,28 @@ export default function DashboardPage({ onSignOut }: DashboardPageProps) {
           <button
             type="button"
             onClick={() => setTab('projects')}
-            className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-center text-xs font-mono transition-colors ${activeTab === 'projects' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+            className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-center text-xs font-mono transition-colors ${activeTab === 'projects' ? 'bg-background text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground'}`}
           >
             {t('tabs.projects')}
           </button>
           <button
             type="button"
             onClick={() => setTab('active')}
-            className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-center text-xs font-mono transition-colors ${activeTab === 'active' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+            className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-center text-xs font-mono transition-colors ${activeTab === 'active' ? 'bg-background text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground'}`}
           >
             {t('tabs.activeProjects')}
           </button>
           <button
             type="button"
             onClick={() => setTab('profile')}
-            className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-center text-xs font-mono transition-colors ${activeTab === 'profile' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+            className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-center text-xs font-mono transition-colors ${activeTab === 'profile' ? 'bg-background text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground'}`}
           >
             {t('tabs.profile')}
           </button>
           <button
             type="button"
             onClick={() => setTab('links')}
-            className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-center text-xs font-mono transition-colors ${activeTab === 'links' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+            className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-center text-xs font-mono transition-colors ${activeTab === 'links' ? 'bg-background text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground'}`}
           >
             {t('tabs.mutualLinks')}
           </button>
@@ -164,19 +164,19 @@ export default function DashboardPage({ onSignOut }: DashboardPageProps) {
                   <div key={project.id} className="border border-border rounded-lg px-3 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div className="flex items-center gap-3 min-w-0">
                       {project.thumbnail_url ? (
-                        <img src={project.thumbnail_url} alt="" className="w-14 h-8 rounded object-cover border border-border flex-shrink-0" />
+                        <img src={project.thumbnail_url} alt="" className="w-14 h-8 rounded-sm object-cover border border-border shrink-0" />
                       ) : (
-                        <div className="w-14 h-8 rounded border border-border bg-muted flex items-center justify-center flex-shrink-0">
+                        <div className="w-14 h-8 rounded-sm border border-border bg-muted flex items-center justify-center shrink-0">
                           <ImageOff className="w-3.5 h-3.5 text-muted-foreground" />
                         </div>
                       )}
                       <div className="min-w-0">
                         <p className="text-sm font-medium truncate">{project.title}</p>
                         <div className="mt-1 flex items-center gap-2">
-                          <span className={`text-[10px] font-mono px-2 py-0.5 rounded uppercase ${statusBadgeClass[project.status]}`}>
+                          <span className={`text-[10px] font-mono px-2 py-0.5 rounded-sm uppercase ${statusBadgeClass[project.status]}`}>
                             {t(statusKeyMap[project.status] as 'status.idea')}
                           </span>
-                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-muted text-muted-foreground uppercase">
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded-sm bg-muted text-muted-foreground uppercase">
                             {project.is_published ? t('publish.published') : t('publish.draft')}
                           </span>
                         </div>
