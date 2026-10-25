@@ -1,11 +1,13 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type React from 'react';
 import createGlobe, { type Arc, type Marker } from 'cobe';
 
 // A marker with an `id` makes cobe publish its on-screen position as the CSS
 // anchor `--cobe-<id>` and its visibility (1 in front, 0 behind the globe)
-// as `--cobe-visible-<id>`. `label` is drawn next to it through that anchor.
-export type GlobeMarker = Marker & { id: string; label?: string; detail?: string; labelSide?: 'left' | 'right' };
+// as `--cobe-visible-<id>`. `label` (with one line per entry in `details`) is
+// drawn next to it through that anchor. With `renderMarkerPanel`, clicking a
+// label opens that panel under the marker and pauses the rotation.
+export type GlobeMarker = Marker & { id: string; label?: string; details?: string[]; labelSide?: 'left' | 'right' };
 
 type GlobeProps = {
   size?: number;
@@ -14,6 +16,7 @@ type GlobeProps = {
   arcs?: Arc[];
   initialPhi?: number;
   theta?: number;
+  renderMarkerPanel?: (marker: GlobeMarker) => React.ReactNode;
 };
 
 const NO_MARKERS: GlobeMarker[] = [];
@@ -26,8 +29,28 @@ export function Globe({
   arcs = NO_ARCS,
   initialPhi = 4.9, // roughly centered on Japan
   theta = 0.3,
+  renderMarkerPanel,
 }: GlobeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const [openMarkerId, setOpenMarkerId] = useState<string | null>(null);
+  const pausedRef = useRef(false);
+  pausedRef.current = openMarkerId !== null;
+
+  useEffect(() => {
+    if (!openMarkerId) return;
+    const close = (event: Event) => {
+      if (event instanceof KeyboardEvent ? event.key === 'Escape' : !stageRef.current?.contains(event.target as Node)) {
+        setOpenMarkerId(null);
+      }
+    };
+    document.addEventListener('pointerdown', close);
+    document.addEventListener('keydown', close);
+    return () => {
+      document.removeEventListener('pointerdown', close);
+      document.removeEventListener('keydown', close);
+    };
+  }, [openMarkerId]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -44,6 +67,11 @@ export function Globe({
     let isPointerDown = false;
     let pointerX = 0;
     let dragPhi = 0;
+
+    // Where CSS anchors work, the markers are drawn as flat dots in the DOM
+    // (see .globe-dot) and cobe's own raised markers are shrunk out of view.
+    const drawDotsInDom = CSS.supports('position-anchor: --globe');
+    const globeMarkers = drawDotsInDom ? markers.map((marker) => ({ ...marker, size: 0.001 })) : markers;
 
     const onPointerDown = (e: PointerEvent) => {
       isPointerDown = true;
@@ -78,7 +106,7 @@ export function Globe({
 
     const animate = () => {
       if (destroyed || !globe || !isInView) return;
-      if (!isPointerDown && !prefersReducedMotion) {
+      if (!isPointerDown && !prefersReducedMotion && !pausedRef.current) {
         phi += 0.001;
       }
       globe.update({ phi: phi + dragPhi });
@@ -108,8 +136,8 @@ export function Globe({
         markerColor: [0.4, 0.87, 0.76],
         glowColor: [0.48, 0.74, 1],
         opacity: 0.92,
-        markers,
-        markerElevation: 0.01,
+        markers: globeMarkers,
+        markerElevation: 0,
         arcs,
         arcColor: [0.48, 0.74, 1],
         arcWidth: 0.35,
@@ -141,26 +169,71 @@ export function Globe({
   // cobe appends its anchor elements to the canvas's parent, so the canvas,
   // anchors and labels share this positioned wrapper.
   return (
-    <div className="globe-stage" aria-hidden="true">
+    <div ref={stageRef} className="globe-stage">
       <canvas
         ref={canvasRef}
+        aria-hidden="true"
         className={className}
         style={{ width: '100%', height: '100%', touchAction: 'none' }}
       />
-      {markers.filter((marker) => marker.label).map((marker) => (
+      {markers.map((marker) => (
         <span
-          key={`${marker.id}-label`}
-          className={`globe-label ${marker.labelSide === 'left' ? 'globe-label--left' : ''}`}
+          key={`${marker.id}-dot`}
+          className="globe-dot"
           style={{
             positionAnchor: `--cobe-${marker.id}`,
             opacity: `var(--cobe-visible-${marker.id}, 0)`,
-            filter: `blur(calc((1 - var(--cobe-visible-${marker.id}, 0)) * 6px))`,
           } as React.CSSProperties}
-        >
-          <span className="globe-label__title">{marker.label}</span>
-          {marker.detail && <span className="globe-label__detail">{marker.detail}</span>}
-        </span>
+        />
       ))}
+      {markers.filter((marker) => marker.label).map((marker) => {
+        const anchorStyle = {
+          positionAnchor: `--cobe-${marker.id}`,
+          opacity: `var(--cobe-visible-${marker.id}, 0)`,
+        } as React.CSSProperties;
+        const labelContent = (
+          <>
+            <span className="globe-label__title">{marker.label}</span>
+            {marker.details?.map((detail) => (
+              <span key={detail} className="globe-label__detail">{detail}</span>
+            ))}
+          </>
+        );
+        const labelClassName = `globe-label ${marker.labelSide === 'left' ? 'globe-label--left' : ''}`;
+        const labelStyle = {
+          ...anchorStyle,
+          filter: `blur(calc((1 - var(--cobe-visible-${marker.id}, 0)) * 6px))`,
+        } as React.CSSProperties;
+
+        if (!renderMarkerPanel) {
+          return (
+            <span key={`${marker.id}-label`} className={labelClassName} style={labelStyle} aria-hidden="true">
+              {labelContent}
+            </span>
+          );
+        }
+
+        const isOpen = openMarkerId === marker.id;
+        return (
+          <div key={`${marker.id}-label`}>
+            <button
+              type="button"
+              className={`${labelClassName} globe-label--interactive`}
+              style={labelStyle}
+              aria-expanded={isOpen}
+              aria-controls={`globe-panel-${marker.id}`}
+              onClick={() => setOpenMarkerId(isOpen ? null : marker.id)}
+            >
+              {labelContent}
+            </button>
+            {isOpen && (
+              <div id={`globe-panel-${marker.id}`} className="globe-panel" style={anchorStyle}>
+                {renderMarkerPanel(marker)}
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }

@@ -5,6 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { ArrowUpRight } from 'lucide-react';
 import { Globe, type GlobeMarker } from '@/components/ui/Globe';
 import HomePageSections from '@/components/home/HomePageSections';
+import { Link } from '@/i18n/routing';
+import { selfHostedServers, type SelfHostedServer } from '@/lib/selfHostedServers';
+import { findServerDevice, findServerMetrics, useServerStatus, type LiveServerStatus } from '@/hooks/useServerStatus';
 import type { HomeProject, HomeActiveProject, MutualLink } from '@/lib/content/publicContent';
 import { navigationStateKeys, readSessionValue } from '@/lib/navigationState';
 import { useHomeNavigationRestoration } from '@/hooks/useHomeNavigationRestoration';
@@ -46,15 +49,66 @@ export default function HomePage({ projects, activeProjects, avatarUrl, mutualLi
 // Where the six self-hosted machines run (same set as /servers), one marker
 // per location: Oracle Cloud in Osaka, Singapore and Phoenix, Contabo and
 // the home lab in Tokyo.
-const SERVER_MARKERS: GlobeMarker[] = [
-  { id: 'osaka', location: [34.69, 135.5], size: 0.03, label: 'Osaka', detail: 'JP Server', labelSide: 'left' },
-  { id: 'tokyo', location: [35.68, 139.69], size: 0.03, label: 'Tokyo', detail: 'JP Server 2 · Home Server · Home NAS' },
-  { id: 'singapore', location: [1.29, 103.85], size: 0.03, label: 'Singapore', detail: 'SG Server' },
-  { id: 'phoenix', location: [33.45, -112.07], size: 0.03, label: 'Phoenix', detail: 'US Server' },
-];
+const MARKER_SERVER_IDS: Record<string, string[]> = {
+  osaka: ['jp-server'],
+  tokyo: ['jp-server-2', 'home-server', 'home-nas'],
+  singapore: ['sg-server'],
+  phoenix: ['us-server'],
+};
+
+const serversAt = (markerId: string): SelfHostedServer[] =>
+  (MARKER_SERVER_IDS[markerId] ?? []).flatMap((id) => selfHostedServers.filter((server) => server.id === id));
+
+const SERVER_MARKERS: GlobeMarker[] = ([
+  { id: 'osaka', location: [34.69, 135.5], size: 0.03, label: 'Osaka', labelSide: 'left' },
+  { id: 'tokyo', location: [35.68, 139.69], size: 0.03, label: 'Tokyo' },
+  { id: 'singapore', location: [1.29, 103.85], size: 0.03, label: 'Singapore' },
+  { id: 'phoenix', location: [33.45, -112.07], size: 0.03, label: 'Phoenix' },
+] satisfies GlobeMarker[]).map((marker) => ({ ...marker, details: serversAt(marker.id).map((server) => server.name) }));
+
+function formatPercent(value: number | null | undefined): string {
+  return value === null || value === undefined ? '–' : `${Math.round(value)}%`;
+}
+
+function ServerPanel({ marker, status }: { marker: GlobeMarker; status: LiveServerStatus | null }) {
+  return (
+    <div className="flex flex-col gap-2.5 leading-[1.4]">
+      {serversAt(marker.id).map((server) => {
+        const online = status ? findServerDevice(status, server)?.online ?? false : null;
+        const metrics = status ? findServerMetrics(status, server) : null;
+        return (
+          <div key={server.id}>
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-[0.72rem] text-white">{server.name}</span>
+              <span className="flex items-center gap-1.5 text-white/60">
+                <span
+                  className={`size-1.5 rounded-full ${online === null ? 'bg-white/30' : online ? 'bg-[rgb(102_222_194)]' : 'bg-red-400'}`}
+                />
+                {online === null ? '…' : online ? 'online' : 'offline'}
+              </span>
+            </div>
+            <div className="mt-0.5 flex gap-3 text-white/55">
+              <span>CPU {formatPercent(metrics?.cpuPercent)}</span>
+              <span>MEM {formatPercent(metrics?.memoryPercent)}</span>
+              <span>DISK {formatPercent(metrics?.diskPercent)}</span>
+            </div>
+          </div>
+        );
+      })}
+      <Link
+        href="/servers"
+        className="inline-flex items-center gap-1 self-start text-[rgb(102_222_194)] hover:underline"
+      >
+        All servers
+        <ArrowUpRight className="size-3" />
+      </Link>
+    </div>
+  );
+}
 
 function HeroSection({ hidden = false }: { hidden?: boolean }) {
   const { t } = useTranslation('Hero');
+  const serverStatus = useServerStatus();
 
   return (
     <section
@@ -71,10 +125,17 @@ function HeroSection({ hidden = false }: { hidden?: boolean }) {
 
         {/* Giant globe, peeking in from the bottom-right corner */}
         <div
-          className="absolute -right-52 -bottom-52 w-104 h-104 sm:-right-128 sm:-bottom-128 sm:w-5xl sm:h-256 z-0 hero-v3-globe"
+          className="absolute -right-52 -bottom-52 w-104 h-104 sm:-right-128 sm:-bottom-96 sm:w-5xl sm:h-256 z-0 hero-v3-globe"
           style={{ filter: 'drop-shadow(0 0 60px rgba(var(--hero-accent-rgb), 0.22))' }}
         >
-          <Globe size={720} className="hero-globe-canvas" markers={SERVER_MARKERS} initialPhi={6.9} theta={0.35} />
+          <Globe
+            size={720}
+            className="hero-globe-canvas"
+            markers={SERVER_MARKERS}
+            initialPhi={7.3}
+            theta={0.35}
+            renderMarkerPanel={(marker) => <ServerPanel marker={marker} status={serverStatus} />}
+          />
         </div>
 
         {/* Center content — left column, clear of the corner globe */}

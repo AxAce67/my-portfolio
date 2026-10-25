@@ -21,6 +21,7 @@ import { navigationStateKeys, readSessionValue, removeSessionValue, writeSession
 import { toast } from 'sonner';
 import SponsorsSection from '@/components/home/SponsorsSection';
 import { selfHostedServers } from '@/lib/selfHostedServers';
+import { findServerDevice, useServerStatus } from '@/hooks/useServerStatus';
 import { SiDiscord } from 'react-icons/si';
 import {
   type HomeProject as CompletedProject,
@@ -528,32 +529,9 @@ function schoolGradeKey(now: Date): string {
 // Live count of self-hosted machines reported online by /api/server-status
 // (Tailscale). null until the first response, or if the check is unavailable.
 function useOnlineServerCount(): number | null {
-  const [online, setOnline] = useState<number | null>(null);
-  useEffect(() => {
-    let cancelled = false;
-    const load = () =>
-      fetch('/api/server-status')
-        .then((res) => (res.ok ? res.json() : Promise.reject(res)))
-        .then((data: { devices?: Array<{ name: string; online: boolean }> }) => {
-          if (cancelled) return;
-          const devices = data.devices ?? [];
-          if (devices.length === 0) return;
-          const shortName = (value: string) => value.split('.')[0]?.toLowerCase() ?? '';
-          const count = selfHostedServers.filter((server) => {
-            const target = shortName(server.tailscaleHostname ?? server.id);
-            return devices.some((device) => shortName(device.name) === target && device.online);
-          }).length;
-          setOnline(count);
-        })
-        .catch(() => {});
-    load();
-    const intervalId = window.setInterval(load, 60_000);
-    return () => {
-      cancelled = true;
-      window.clearInterval(intervalId);
-    };
-  }, []);
-  return online;
+  const status = useServerStatus();
+  if (!status) return null;
+  return selfHostedServers.filter((server) => findServerDevice(status, server)?.online).length;
 }
 
 function LiveAgeLocation({ ageLabel, locationLabel }: { ageLabel: string; locationLabel: string }) {
