@@ -308,7 +308,8 @@
       "draftDiscard": "Discard",
       "cropTitle": "Crop thumbnail",
       "cropConfirm": "Apply crop",
-      "cropCancel": "Cancel"
+      "cropCancel": "Cancel",
+      "cropAdjust": "Adjust crop"
     },
     "profile": {
       "title": "Profile Photo",

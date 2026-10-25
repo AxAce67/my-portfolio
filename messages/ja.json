@@ -308,7 +308,8 @@
       "draftDiscard": "破棄する",
       "cropTitle": "サムネイルを切り取り",
       "cropConfirm": "切り取りを確定",
-      "cropCancel": "キャンセル"
+      "cropCancel": "キャンセル",
+      "cropAdjust": "位置を調整"
     },
     "profile": {
       "title": "プロフィール画像",

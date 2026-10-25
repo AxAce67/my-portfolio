@@ -308,7 +308,8 @@
       "draftDiscard": "Ignorer",
       "cropTitle": "Recadrer la miniature",
       "cropConfirm": "Appliquer le recadrage",
-      "cropCancel": "Annuler"
+      "cropCancel": "Annuler",
+      "cropAdjust": "Ajuster le recadrage"
     },
     "profile": {
       "title": "Photo de profil",

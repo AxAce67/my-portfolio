@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ImagePlus, Loader2 } from 'lucide-react';
+import { Crop, ImagePlus, Loader2 } from 'lucide-react';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useLocale } from '@/hooks/useLocale';
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
@@ -55,6 +55,9 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(initialValues?.thumbnail_url ?? null);
   const [thumbnailError, setThumbnailError] = useState<string | null>(null);
   const [cropSrc, setCropSrc] = useState<string | null>(null);
+  // The uncropped source for re-adjusting: the picked file before cropping,
+  // or the saved thumbnail when nothing new has been picked.
+  const [cropSource, setCropSource] = useState<string | null>(initialValues?.thumbnail_url ?? null);
   const [submitting, setSubmitting] = useState(false);
   const [pendingDraft, setPendingDraft] = useState<DraftState | null>(null);
   const isDirtyRef = useRef(false);
@@ -129,7 +132,9 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
   function handleThumbnailSelect(file: File | undefined) {
     if (!file) return;
     setThumbnailError(null);
-    setCropSrc(URL.createObjectURL(file));
+    const src = URL.createObjectURL(file);
+    setCropSource(src);
+    setCropSrc(src);
   }
 
   function handleCropConfirm(croppedFile: File) {
@@ -273,6 +278,18 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
             onChange={(event) => handleThumbnailSelect(event.target.files?.[0])}
           />
         </label>
+        {thumbnailPreview && cropSource && (
+          <div className="flex justify-end border-t border-border bg-card px-3 py-2">
+            <button
+              type="button"
+              onClick={() => setCropSrc(cropSource)}
+              className="btn-outline px-3 py-1.5 text-xs inline-flex items-center gap-1.5"
+            >
+              <Crop className="w-3.5 h-3.5" />
+              {t('cropAdjust')}
+            </button>
+          </div>
+        )}
         {thumbnailError && <p className="mt-2 text-xs text-red-500 px-px">{thumbnailError}</p>}
       </div>
 

@@ -3,6 +3,9 @@ type PixelCrop = { x: number; y: number; width: number; height: number };
 function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const image = new Image();
+    // Saved thumbnails come from Appwrite; without CORS mode the canvas is
+    // tainted and toBlob() fails.
+    if (!src.startsWith('blob:') && !src.startsWith('data:')) image.crossOrigin = 'anonymous';
     image.onload = () => resolve(image);
     image.onerror = reject;
     image.src = src;

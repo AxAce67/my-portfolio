@@ -43,6 +43,7 @@ export default function ThumbnailCropModal({ imageSrc, aspect = 16 / 9, fileName
             onCropChange={setCrop}
             onZoomChange={setZoom}
             onCropComplete={(_, areaPixels) => setCroppedAreaPixels(areaPixels)}
+            mediaProps={{ crossOrigin: 'anonymous' }}
           />
         </div>
         <input

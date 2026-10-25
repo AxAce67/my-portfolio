@@ -308,7 +308,8 @@
       "draftDiscard": "放弃",
       "cropTitle": "裁剪缩略图",
       "cropConfirm": "应用裁剪",
-      "cropCancel": "取消"
+      "cropCancel": "取消",
+      "cropAdjust": "调整裁剪"
     },
     "profile": {
       "title": "头像",

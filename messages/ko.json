@@ -308,7 +308,8 @@
       "draftDiscard": "삭제",
       "cropTitle": "썸네일 자르기",
       "cropConfirm": "자르기 적용",
-      "cropCancel": "취소"
+      "cropCancel": "취소",
+      "cropAdjust": "위치 조정"
     },
     "profile": {
       "title": "프로필 사진",

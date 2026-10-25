@@ -308,7 +308,8 @@
       "draftDiscard": "Descartar",
       "cropTitle": "Recortar miniatura",
       "cropConfirm": "Aplicar recorte",
-      "cropCancel": "Cancelar"
+      "cropCancel": "Cancelar",
+      "cropAdjust": "Ajustar recorte"
     },
     "profile": {
       "title": "Foto de perfil",
