@@ -90,14 +90,13 @@ export default function ProjectDetailPage({ initialResult }: Props) {
       </div>
 
       {project.thumbnail_url ? (
-        <div className="mb-10 overflow-hidden rounded-xl border border-border max-w-3xl mx-auto bg-muted">
+        <div className="relative mb-10 aspect-video overflow-hidden rounded-xl border border-border max-w-3xl mx-auto bg-muted">
           <Image
             src={project.thumbnail_url}
             alt={`${project.title} thumbnail`}
-            width={1600}
-            height={900}
+            fill
             sizes="(max-width: 768px) 100vw, 768px"
-            className="w-full h-auto object-cover"
+            className="object-cover"
             priority
             style={{ viewTransitionName: `proj-${project.id}`, viewTransitionClass: 'project-media' }}
           />
