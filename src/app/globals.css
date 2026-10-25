@@ -973,6 +973,13 @@
     vertical-align: top;
   }
 
+  /* The article already has a divider above it; a heading's own top
+     margin on top of that read as an oddly large gap. */
+  & > :first-child,
+  & > :first-child > :first-child {
+    margin-top: 0;
+  }
+
   & .bn-container {
     border: 0;
     background: transparent;
@@ -984,6 +991,36 @@
 
   & .bn-block-content {
     padding: 1px 0;
+  }
+}
+
+@utility back-link {
+  /* Shared "← back" control: a pill with a comfortable hit area instead of
+     a bare line of small text. */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.25rem;
+  padding: 0.4rem 0.95rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease;
+
+  &:hover {
+    color: var(--foreground);
+    border-color: var(--border-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--foreground);
+    outline-offset: 2px;
   }
 }
 

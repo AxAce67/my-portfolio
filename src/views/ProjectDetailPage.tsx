@@ -29,7 +29,7 @@ export default function ProjectDetailPage({ initialResult }: Props) {
             archiveHref={`/${locale}/projects`}
             homeLabel={t('backToProjects')}
             archiveLabel={t('backToArchive')}
-            className="text-xs font-mono text-muted-foreground hover:text-foreground"
+            className="back-link"
           />
           <div className="mt-10 rounded-xl border border-border bg-card/70 p-6 sm:p-8">
             <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">{t('unavailableTitle')}</h1>
@@ -56,10 +56,10 @@ export default function ProjectDetailPage({ initialResult }: Props) {
           archiveHref={`/${locale}/projects`}
           homeLabel={t('backToProjects')}
           archiveLabel={t('backToArchive')}
-          className="text-xs font-mono text-muted-foreground hover:text-foreground"
+          className="back-link"
         />
 
-        <header className="mt-7 mb-10">
+        <header className="mt-6 mb-8">
           <div className="mb-4 flex flex-wrap items-center gap-2">
             <span className="rounded-full border border-border bg-muted/60 px-3 py-1 text-[11px] font-mono uppercase tracking-wide text-muted-foreground">
               Project
@@ -90,7 +90,7 @@ export default function ProjectDetailPage({ initialResult }: Props) {
       </div>
 
       {project.thumbnail_url ? (
-        <div className="relative mb-10 aspect-video overflow-hidden rounded-xl border border-border max-w-3xl mx-auto bg-muted">
+        <div className="relative mb-8 aspect-video overflow-hidden rounded-xl border border-border max-w-3xl mx-auto bg-muted">
           <Image
             src={project.thumbnail_url}
             alt={`${project.title} thumbnail`}
@@ -103,7 +103,7 @@ export default function ProjectDetailPage({ initialResult }: Props) {
         </div>
       ) : null}
 
-      <div className="max-w-3xl mx-auto border-t border-border pt-8 article-content">
+      <div className="max-w-3xl mx-auto border-t border-border pt-7 article-content">
         {Array.isArray(project.content_json) && (project.content_json as unknown[]).length > 0 ? (
           <BlockNoteContent blocks={project.content_json} />
         ) : project.content_md ? (

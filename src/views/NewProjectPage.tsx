@@ -42,7 +42,7 @@ export default function NewProjectPage() {
         <TransitionLink
           href={`/${locale}/admin?tab=projects`}
           onClick={handleBackClick}
-          className="text-xs font-mono text-muted-foreground hover:text-foreground"
+          className="back-link"
           direction="backward"
         >
           {t('backToDashboard')}

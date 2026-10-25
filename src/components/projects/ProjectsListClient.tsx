@@ -84,7 +84,7 @@ export default function ProjectsListClient({ projects }: Props) {
       <div className="mb-8">
         <Link
           href={backHref}
-          className="text-xs font-mono text-muted-foreground hover:text-foreground"
+          className="back-link"
           onClick={(e) => {
             if (!isPlainLeftClick(e)) {
               return;

@@ -35,7 +35,7 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
     <section className="max-w-md mx-auto px-6 lg:px-8 py-24">
       <TransitionLink
         href={`/${locale}`}
-        className="mb-4 inline-block text-xs font-mono text-muted-foreground hover:text-foreground"
+        className="back-link mb-4"
         direction="backward"
       >
         {t('backToSite')}

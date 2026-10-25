@@ -231,7 +231,7 @@ export default function ServersPage() {
       <div className="mb-6 sm:mb-8">
         <Link
           href="/"
-          className="text-xs font-mono text-muted-foreground hover:text-foreground"
+          className="back-link"
           onClick={() => {
             writeSessionValue(navigationStateKeys.returnToProjects, '1');
           }}
