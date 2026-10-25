@@ -1,34 +1,31 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArrowUpRight } from 'lucide-react';
 import { Globe } from '@/components/ui/Globe';
 import HomePageSections from '@/components/home/HomePageSections';
-import { getHomePageData, type HomeProject, type HomeActiveProject } from '@/lib/content/publicContent';
+import type { HomeProject, HomeActiveProject, MutualLink } from '@/lib/content/publicContent';
 import { navigationStateKeys, readSessionValue } from '@/lib/navigationState';
 import { useHomeNavigationRestoration } from '@/hooks/useHomeNavigationRestoration';
 
-export default function HomePage() {
-  const [projects, setProjects] = useState<HomeProject[]>([]);
-  const [activeProjects, setActiveProjects] = useState<HomeActiveProject[]>([]);
-  const [dataReady, setDataReady] = useState(false);
+type Props = {
+  projects: HomeProject[];
+  activeProjects: HomeActiveProject[];
+  avatarUrl: string;
+  mutualLinks: MutualLink[];
+};
 
+// Data is loaded on the server (src/app/[locale]/page.tsx) so the first HTML
+// already contains the projects, avatar and links.
+export default function HomePage({ projects, activeProjects, avatarUrl, mutualLinks }: Props) {
   const [returningProjectId] = useState(() => {
     return readSessionValue(navigationStateKeys.returnToProjects) === '1'
       ? readSessionValue(navigationStateKeys.homeFromProjectId)
       : null;
   });
 
-  useHomeNavigationRestoration(returningProjectId, dataReady);
-
-  useEffect(() => {
-    getHomePageData().then((data) => {
-      setProjects(data.projects);
-      setActiveProjects(data.activeProjects);
-      setDataReady(true);
-    });
-  }, []);
+  useHomeNavigationRestoration(returningProjectId, true);
 
   return (
     <>
@@ -36,8 +33,9 @@ export default function HomePage() {
       <HomePageSections
         initialCompletedProjects={projects}
         initialActiveProjects={activeProjects}
+        avatarUrl={avatarUrl}
+        mutualLinks={mutualLinks}
         returningProjectId={returningProjectId}
-        isLoading={!dataReady}
       />
     </>
   );

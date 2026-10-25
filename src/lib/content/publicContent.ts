@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { Query, type Models } from 'appwrite';
 import {
   tablesDB,
@@ -156,7 +157,9 @@ async function getCachedProjectDetail(id: string): Promise<ProjectRow | null> {
   }
 }
 
-export async function getProjectById(id: string): Promise<ProjectDetailResult> {
+// cache(): generateMetadata and the page both ask for the same project in
+// one request; this makes that a single Appwrite call.
+export const getProjectById = cache(async (id: string): Promise<ProjectDetailResult> => {
   try {
     const row = await getCachedProjectDetail(id);
     if (!row) {
@@ -181,7 +184,7 @@ export async function getProjectById(id: string): Promise<ProjectDetailResult> {
     console.error('[publicContent] Failed to load project detail', error);
     return { status: 'unavailable', project: null };
   }
-}
+});
 
 export const DEFAULT_AVATAR_URL = '/images/profile/akiz-profile.jpg';
 

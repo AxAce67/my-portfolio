@@ -37,9 +37,6 @@ import {
   SiDiscord,
 } from 'react-icons/si';
 import {
-  getSiteSettings,
-  DEFAULT_AVATAR_URL,
-  getMutualLinks,
   type HomeProject as CompletedProject,
   type HomeActiveProject as ActiveProject,
   type MutualLink,
@@ -142,6 +139,8 @@ const profileLinks: ProfileLink[] = [
 type HomePageSectionsProps = {
   initialCompletedProjects: CompletedProject[];
   initialActiveProjects: ActiveProject[];
+  avatarUrl: string;
+  mutualLinks: MutualLink[];
   returningProjectId?: string | null;
   isLoading?: boolean;
 };
@@ -257,17 +256,19 @@ declare global {
 export default function HomePageSections({
   initialCompletedProjects,
   initialActiveProjects,
+  avatarUrl,
+  mutualLinks,
   returningProjectId = null,
   isLoading = false,
 }: HomePageSectionsProps) {
   return (
     <>
-      <AboutSection />
+      <AboutSection avatarUrl={avatarUrl} />
       <SkillsSection />
       <TechStackSection />
       <ProjectsSection initialProjects={initialCompletedProjects} returningProjectId={returningProjectId} isLoading={isLoading} />
       <ActiveProjectsSection initialActiveProjects={initialActiveProjects} isLoading={isLoading} />
-      <MutualLinksSection />
+      <MutualLinksSection links={mutualLinks} />
       <SponsorsSection />
       <ContactSection />
     </>
@@ -560,7 +561,7 @@ function ProfileIdentity({ role, ageLabel, locationLabel }: { role: string; ageL
   );
 }
 
-function AboutSection() {
+function AboutSection({ avatarUrl }: { avatarUrl: string }) {
   const t = useTranslations('About');
   const contactT = useTranslations('Contact');
   const locale = useLocale();
@@ -577,12 +578,6 @@ function AboutSection() {
     { id: 'years', value: 2, suffix: '+', label: t('statsYears') },
     { id: 'servers', value: selfHostedServers.length, label: t('statsCommits'), href: '/servers' },
   ];
-  const [avatarUrl, setAvatarUrl] = useState(DEFAULT_AVATAR_URL);
-  useEffect(() => {
-    getSiteSettings().then((settings) => {
-      if (settings.avatarUrl) setAvatarUrl(settings.avatarUrl);
-    });
-  }, []);
   const fallbackDays = useMemo(() => buildFallbackMomentumDays(), []);
   const [momentum, setMomentum] = useState<GitHubMomentumState>({
     status: 'loading',
@@ -1549,13 +1544,8 @@ function ActiveProjectsSection({
   );
 }
 
-function MutualLinksSection() {
+function MutualLinksSection({ links }: { links: MutualLink[] }) {
   const t = useTranslations('MutualLinks');
-  const [links, setLinks] = useState<MutualLink[]>([]);
-
-  useEffect(() => {
-    getMutualLinks().then(setLinks);
-  }, []);
 
   return (
     <section id="links" className="py-12 sm:py-16 lg:py-20">
