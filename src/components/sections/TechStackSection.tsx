@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from '@/hooks/useTranslations';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
+import { BrandLogo } from '@/components/ui/BrandLogo';
 
 // Full-color brand logos, self-hosted under public/brands/stack (from svgl
 // and devicon). Logos that are dark or light only ship a second file for the
@@ -64,20 +65,6 @@ const techStack: TechItem[] = [
   { name: 'Minecraft', logo: '/brands/minecraft.svg', brandColor: '#62B47A' },
 ];
 
-function BrandLogo({ item }: { item: TechItem }) {
-  const alt = `${item.name} logo`;
-  if (!item.hasDarkVariant) {
-    return <img src={item.logo} alt={alt} width={28} height={28} loading="lazy" className="h-7 w-7 object-contain" />;
-  }
-  const darkLogo = item.logo.replace(/\.svg$/, '-dark.svg');
-  return (
-    <>
-      <img src={item.logo} alt={alt} width={28} height={28} loading="lazy" className="h-7 w-7 object-contain dark:hidden" />
-      <img src={darkLogo} alt={alt} width={28} height={28} loading="lazy" className="hidden h-7 w-7 object-contain dark:block" />
-    </>
-  );
-}
-
 function TechCard({ item, idx, prefix }: { item: TechItem; idx: number; prefix: string }) {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -94,7 +81,7 @@ function TechCard({ item, idx, prefix }: { item: TechItem; idx: number; prefix: 
     >
       <div className="relative flex flex-col items-center gap-3 py-5 px-4">
         <div className="tech-icon-wrapper">
-          <BrandLogo item={item} />
+          <BrandLogo src={item.logo} alt={`${item.name} logo`} size={28} hasDarkVariant={item.hasDarkVariant} className="h-7 w-7" />
         </div>
         <span
           className="text-[12px] font-mono text-muted-foreground transition-colors duration-300 text-center leading-tight whitespace-nowrap"

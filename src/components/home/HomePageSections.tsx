@@ -3,8 +3,9 @@
 import { useTranslations } from '@/hooks/useTranslations';
 import { useLocale } from '@/hooks/useLocale';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import type { ReactNode, ComponentType } from 'react';
+import type { ReactNode } from 'react';
 import Image from '@/components/ui/Image';
+import { BrandLogo } from '@/components/ui/BrandLogo';
 import { ArrowUpRight, ExternalLink, Terminal, Code2, Globe, Box, Mail, List, LayoutGrid, Film, Sparkles, Wrench } from 'lucide-react';
 import { Github, Twitter } from '@/components/ui/brandIcons';
 import { motion, useInView, useReducedMotion, AnimatePresence } from 'framer-motion';
@@ -20,21 +21,7 @@ import { navigationStateKeys, readSessionValue, removeSessionValue, writeSession
 import { toast } from 'sonner';
 import SponsorsSection from '@/components/home/SponsorsSection';
 import { selfHostedServers } from '@/lib/selfHostedServers';
-import {
-  SiTypescript,
-  SiJavascript,
-  SiPython,
-  SiHtml5,
-  SiCss,
-  SiNextdotjs,
-  SiReact,
-  SiTailwindcss,
-  SiAppwrite,
-  SiClaude,
-  SiGooglegemini,
-  SiVercel,
-  SiDiscord,
-} from 'react-icons/si';
+import { SiDiscord } from 'react-icons/si';
 import {
   type HomeProject as CompletedProject,
   type HomeActiveProject as ActiveProject,
@@ -53,49 +40,39 @@ const BIRTH_DATE_JST = {
 };
 
 type SkillCategory = 'Languages' | 'Stack' | 'AI' | 'Creative';
-type SkillIconComponent = ComponentType<{ size?: number | string; className?: string }>;
 type SkillItem = {
   name: string;
   category: SkillCategory;
   featured?: boolean;
-  icon?: SkillIconComponent;
-  iconSrc?: string;
+  // Full-color brand logo under public/brands/stack (shared with Tech Stack).
+  logo: string;
+  hasDarkVariant?: boolean;
   level?: 'main' | 'familiar' | 'learning';
 };
 
-const FilmoraIcon: SkillIconComponent = ({ size = 16, className = '' }) => (
-  <Film width={size} height={size} strokeWidth={1.5} className={className} />
-);
-
-const OpenAIIcon: SkillIconComponent = ({ size = 16, className = '' }) => (
-  <Sparkles width={size} height={size} strokeWidth={1.5} className={className} />
-);
-
-const CanvaIcon: SkillIconComponent = ({ size = 16, className = '' }) => (
-  <LayoutGrid width={size} height={size} strokeWidth={1.5} className={className} />
-);
+const brandLogo = (slug: string) => `/brands/stack/${slug}.svg`;
 
 const sampleSkills: SkillItem[] = [
-  { name: 'TypeScript', category: 'Languages', featured: true, icon: SiTypescript, level: 'main' },
-  { name: 'Python', category: 'Languages', featured: true, icon: SiPython, level: 'main' },
-  { name: 'JavaScript', category: 'Languages', icon: SiJavascript, level: 'familiar' },
-  { name: 'HTML', category: 'Languages', icon: SiHtml5, level: 'familiar' },
-  { name: 'CSS', category: 'Languages', icon: SiCss, level: 'familiar' },
+  { name: 'TypeScript', category: 'Languages', featured: true, logo: brandLogo('typescript'), level: 'main' },
+  { name: 'Python', category: 'Languages', featured: true, logo: brandLogo('python'), level: 'main' },
+  { name: 'JavaScript', category: 'Languages', logo: brandLogo('javascript'), level: 'familiar' },
+  { name: 'HTML', category: 'Languages', logo: brandLogo('html'), level: 'familiar' },
+  { name: 'CSS', category: 'Languages', logo: brandLogo('css'), level: 'familiar' },
 
-  { name: 'Next.js', category: 'Stack', featured: true, icon: SiNextdotjs, level: 'main' },
-  { name: 'React', category: 'Stack', featured: true, icon: SiReact, level: 'main' },
-  { name: 'Tailwind CSS', category: 'Stack', icon: SiTailwindcss, level: 'familiar' },
-  { name: 'Appwrite', category: 'Stack', icon: SiAppwrite, level: 'familiar' },
-  { name: 'Vercel', category: 'Stack', icon: SiVercel, level: 'familiar' },
+  { name: 'Next.js', category: 'Stack', featured: true, logo: brandLogo('nextjs'), level: 'main' },
+  { name: 'React', category: 'Stack', featured: true, logo: brandLogo('react'), hasDarkVariant: true, level: 'main' },
+  { name: 'Tailwind CSS', category: 'Stack', logo: brandLogo('tailwindcss'), level: 'familiar' },
+  { name: 'Appwrite', category: 'Stack', logo: brandLogo('appwrite'), level: 'familiar' },
+  { name: 'Vercel', category: 'Stack', logo: brandLogo('vercel'), hasDarkVariant: true, level: 'familiar' },
 
-  { name: 'ChatGPT / Codex', category: 'AI', featured: true, icon: OpenAIIcon, level: 'main' },
-  { name: 'Claude / Claude Code', category: 'AI', featured: true, icon: SiClaude, level: 'main' },
-  { name: 'Gemini', category: 'AI', icon: SiGooglegemini, level: 'familiar' },
-  { name: 'Manus', category: 'AI', iconSrc: '/brands/manus.svg', level: 'familiar' },
+  { name: 'ChatGPT / Codex', category: 'AI', featured: true, logo: brandLogo('openai'), hasDarkVariant: true, level: 'main' },
+  { name: 'Claude / Claude Code', category: 'AI', featured: true, logo: brandLogo('claude'), level: 'main' },
+  { name: 'Gemini', category: 'AI', logo: brandLogo('gemini'), level: 'familiar' },
+  { name: 'Manus', category: 'AI', logo: brandLogo('manus'), hasDarkVariant: true, level: 'familiar' },
 
-  { name: 'Adobe Premiere Pro', category: 'Creative', featured: true, icon: FilmoraIcon, level: 'main' },
-  { name: 'Wondershare Filmora', category: 'Creative', icon: FilmoraIcon, level: 'familiar' },
-  { name: 'Canva', category: 'Creative', icon: CanvaIcon, level: 'familiar' },
+  { name: 'Adobe Premiere Pro', category: 'Creative', featured: true, logo: brandLogo('premiere'), level: 'main' },
+  { name: 'Wondershare Filmora', category: 'Creative', logo: brandLogo('filmora'), hasDarkVariant: true, level: 'familiar' },
+  { name: 'Canva', category: 'Creative', logo: brandLogo('canva'), level: 'familiar' },
 ];
 
 type ProfileLink = {
@@ -1014,7 +991,7 @@ function SkillsSection() {
             >
               <p className="text-[11px] text-muted-foreground font-mono mb-4">{categoryDescriptions[selectedCategory]}</p>
               <div className="space-y-2">
-                {selectedSkills.map(({ name, icon: Icon, iconSrc, featured }) => (
+                {selectedSkills.map(({ name, logo, hasDarkVariant, featured }) => (
                   <div
                     key={name}
                     className={`skill-item-card flex items-center gap-3 rounded-xl border px-3.5 py-3 transition-all duration-200 ${featured
@@ -1022,15 +999,9 @@ function SkillsSection() {
                       : 'border-border bg-muted/40'
                       }`}
                   >
-                    {(Icon || iconSrc) && (
-                      <span className="shrink-0 w-8 h-8 rounded-lg bg-background border border-border flex items-center justify-center">
-                        {iconSrc ? (
-                          <Image src={iconSrc} alt="" width={16} height={16} className="w-4 h-4 object-contain" aria-hidden="true" />
-                        ) : Icon ? (
-                          <Icon size={16} className="text-foreground/80" />
-                        ) : null}
-                      </span>
-                    )}
+                    <span className="shrink-0 w-8 h-8 rounded-lg bg-background border border-border flex items-center justify-center">
+                      <BrandLogo src={logo} alt="" size={18} hasDarkVariant={hasDarkVariant} className="w-[18px] h-[18px]" />
+                    </span>
                     <span className="flex-1 text-[13px] font-mono text-foreground/95 tracking-tight">{name}</span>
                         {featured && (
                           <span className="text-[9px] font-mono tracking-wider uppercase px-2 py-0.5 rounded-full bg-foreground/10 text-foreground/80">
@@ -1066,7 +1037,7 @@ function SkillsSection() {
                     </span>
                   </div>
                   <div className="space-y-1">
-                    {skills.map(({ name, icon: Icon, iconSrc, featured }) => (
+                    {skills.map(({ name, logo, hasDarkVariant, featured }) => (
                       <div
                         key={name}
                         className={`flex items-center gap-2.5 rounded-md border px-2.5 py-2 transition-colors duration-200 ${featured
@@ -1074,16 +1045,10 @@ function SkillsSection() {
                           : 'border-transparent'
                           }`}
                       >
-                        {(Icon || iconSrc) && (
-                          <span className={`shrink-0 w-6 h-6 rounded flex items-center justify-center ${featured ? 'bg-background border border-border' : 'bg-muted/60'
-                            }`}>
-                            {iconSrc ? (
-                              <Image src={iconSrc} alt="" width={12} height={12} className="w-3 h-3 object-contain" aria-hidden="true" />
-                            ) : Icon ? (
-                              <Icon size={12} className="text-foreground/70" />
-                            ) : null}
-                          </span>
-                        )}
+                        <span className={`shrink-0 w-7 h-7 rounded-md flex items-center justify-center ${featured ? 'bg-background border border-border' : 'bg-muted/60'
+                          }`}>
+                          <BrandLogo src={logo} alt="" size={16} hasDarkVariant={hasDarkVariant} className="w-4 h-4" />
+                        </span>
                         <span className="flex-1 text-[12px] font-mono text-foreground/90 tracking-tight">{name}</span>
                         {featured && (
                           <span className="text-[9px] font-mono tracking-wider uppercase px-1.5 py-0.5 rounded-full bg-foreground/8 text-foreground/70">
