@@ -40,7 +40,10 @@ export default function BackToProjectsLink({ homeHref, archiveHref, className, h
         if (shouldUseMobileRouteTransitions()) {
           e.preventDefault();
           runRouteTransition(() => {
-            router.push(targetHref);
+            // scroll: false — the destination restores its own saved scroll
+            // position; Next's default scroll-to-top would otherwise land
+            // after it in production builds.
+            router.push(targetHref, { scroll: false });
           }, { direction: 'backward' });
           return;
         }
@@ -51,7 +54,7 @@ export default function BackToProjectsLink({ homeHref, archiveHref, className, h
           // the home page restores its scroll position in a layout effect
           // during that commit, so the card is in place for the morph.
           runViewTransition(() => {
-            router.push(targetHref);
+            router.push(targetHref, { scroll: false });
           });
         }
       }}
