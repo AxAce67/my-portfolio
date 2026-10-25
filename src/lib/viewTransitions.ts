@@ -1,9 +1,7 @@
 'use client';
 
-import { flushSync } from 'react-dom';
-
 type TransitionCapableDocument = Document & {
-  startViewTransition?: (update: () => void) => {
+  startViewTransition?: (update: () => void | Promise<void>) => {
     finished: Promise<void>;
   };
 };
@@ -62,6 +60,36 @@ export function isPlainLeftClick(event: ClickLikeEvent) {
   return !event.defaultPrevented && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
 }
 
+// Next.js App Router navigations commit asynchronously (the destination's
+// RSC payload is fetched first), so flushSync() alone returns before the new
+// page exists and the "after" snapshot has nothing to morph into. Resolve
+// once the URL has changed (Next updates history when the new tree commits),
+// then give React one more task to finish painting. The timeout keeps a slow
+// or same-URL navigation from freezing the screen.
+const NAVIGATION_WAIT_TIMEOUT_MS = 1500;
+
+function waitForNavigation(previousUrl: string): Promise<void> {
+  return new Promise((resolve) => {
+    const startedAt = Date.now();
+    const check = () => {
+      if (window.location.href !== previousUrl || Date.now() - startedAt > NAVIGATION_WAIT_TIMEOUT_MS) {
+        window.setTimeout(resolve, 0);
+        return;
+      }
+      // setTimeout rather than requestAnimationFrame: rendering is paused
+      // while a view transition waits for its update callback.
+      window.setTimeout(check, 16);
+    };
+    check();
+  });
+}
+
+function navigateAndWait(action: () => void): Promise<void> {
+  const previousUrl = window.location.href;
+  action();
+  return waitForNavigation(previousUrl);
+}
+
 export function runViewTransition(action: () => void) {
   if (typeof document === 'undefined' || typeof window === 'undefined') {
     action();
@@ -76,15 +104,7 @@ export function runViewTransition(action: () => void) {
     return;
   }
 
-  transitionDocument.startViewTransition(() => {
-    // React Router's navigate() doesn't commit synchronously on its own —
-    // without flushSync, startViewTransition captures its "after" snapshot
-    // before the new route's DOM (and its viewTransitionName element) has
-    // actually been painted, so there's nothing for it to morph into.
-    flushSync(() => {
-      action();
-    });
-  });
+  transitionDocument.startViewTransition(() => navigateAndWait(action));
 }
 
 export function runRouteTransition(
@@ -138,11 +158,7 @@ export function runRouteTransition(
     return;
   }
 
-  const transition = transitionDocument.startViewTransition(() => {
-    flushSync(() => {
-      action();
-    });
-  });
+  const transition = transitionDocument.startViewTransition(() => navigateAndWait(action));
 
   window.__routeTransitionFinished = transition.finished.catch(() => undefined);
   transition.finished.finally(scheduleCleanup);

@@ -10,7 +10,7 @@ import { useRouter as useTransitionRouter } from '@/i18n/routing';
 import { StaggerContainer, StaggerItem } from '@/components/ui/ScrollReveal';
 import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, runViewTransition, shouldUseMobileRouteTransitions } from '@/lib/viewTransitions';
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
-import { navigationStateKeys, readSessionNumber, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
+import { navigationStateKeys, readSessionNumber, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 
 const PAGE_SIZE = 12;
 
@@ -36,9 +36,7 @@ export default function ProjectsListClient({ projects }: Props) {
   const [keyword, setKeyword] = useState('');
   const [page, setPage] = useState(1);
   // 戻りナビゲーション時はカードをすぐに visible にする（viewTransitionName 要素を不透明にするため）
-  const [forceCardVisible] = useState(() => {
-    return readSessionValue(navigationStateKeys.projectsScrollY) !== null;
-  });
+  const [forceCardVisible, setForceCardVisible] = useState(false);
 
   // 戻り時にスクロール位置を復元（ViewTransitionsのfinishより先に実行される）
   // 注意: projectsScrollY はアーカイブ一覧からプロジェクト詳細に移動する際にのみ
@@ -47,6 +45,8 @@ export default function ProjectsListClient({ projects }: Props) {
   useLayoutEffect(() => {
     const y = readSessionNumber(navigationStateKeys.projectsScrollY);
     if (y !== null) {
+      // Read here rather than in useState so hydration matches the server HTML.
+      setForceCardVisible(true);
       removeSessionValue(navigationStateKeys.projectsScrollY);
       window.scrollTo(0, y);
     }

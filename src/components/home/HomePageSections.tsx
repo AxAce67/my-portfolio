@@ -1118,14 +1118,25 @@ function ProjectsSection({
   const router = useRouter();
   const transitionRouter = useTransitionRouter();
   const projects = initialProjects;
-  const [viewMode, setViewMode] = useState<'list' | 'grid'>(() => {
-    return (readSessionValue(navigationStateKeys.projectsViewMode) as 'list' | 'grid') ?? 'list';
-  });
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
   const [isMobileViewport, setIsMobileViewport] = useState(false);
   // 戻りナビゲーション時はカードをすぐに visible にする（viewTransitionName 要素を不透明にするため）
-  const [forceCardVisible] = useState(() => {
-    return readSessionValue(navigationStateKeys.returnToProjects) === '1';
-  });
+  const [forceCardVisible, setForceCardVisible] = useState(false);
+  // Same reason: the returning card's eager image load is decided after mount.
+  const [eagerProjectId, setEagerProjectId] = useState<string | null>(null);
+
+  // sessionStorage only exists in the browser. Reading it in a layout effect
+  // (not in the useState initializer) keeps the first client render equal to
+  // the server HTML, and still applies before the first paint.
+  useLayoutEffect(() => {
+    const storedViewMode = readSessionValue(navigationStateKeys.projectsViewMode) as 'list' | 'grid' | null;
+    if (storedViewMode) setViewMode(storedViewMode);
+    if (readSessionValue(navigationStateKeys.returnToProjects) === '1') setForceCardVisible(true);
+  }, []);
+
+  useLayoutEffect(() => {
+    setEagerProjectId(returningProjectId ?? null);
+  }, [returningProjectId]);
   const effectiveViewMode: 'list' | 'grid' = isMobileViewport ? 'grid' : viewMode;
 
   useLayoutEffect(() => {
@@ -1232,9 +1243,9 @@ function ProjectsSection({
                           ? 'rounded-t-xl'
                           : 'rounded-l-xl rounded-tr-none'
                           }`}
-                        priority={returningProjectId === project.id}
-                        loading={returningProjectId === project.id ? undefined : 'lazy'}
-                        fetchPriority={returningProjectId === project.id ? undefined : 'auto'}
+                        priority={eagerProjectId === project.id}
+                        loading={eagerProjectId === project.id ? undefined : 'lazy'}
+                        fetchPriority={eagerProjectId === project.id ? undefined : 'auto'}
                         style={{ viewTransitionName: `proj-${project.id}`, viewTransitionClass: 'project-media' }}
                       />
                     ) : (

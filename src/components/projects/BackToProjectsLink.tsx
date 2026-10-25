@@ -47,32 +47,12 @@ export default function BackToProjectsLink({ homeHref, archiveHref, className, h
 
         if (canUseSharedElementTransitions()) {
           e.preventDefault();
-          if (isArchive) {
-            runViewTransition(() => {
-              router.push(targetHref);
-            });
-            return;
-          }
-
-          const clearPendingResolver = () => {
-            window.__resolveHomeProjectsTransition = undefined;
-          };
-
-          const timeoutId = window.setTimeout(() => {
-            window.__resolveHomeProjectsTransition?.();
-            clearPendingResolver();
-          }, 360);
-
-          document.startViewTransition?.(() => new Promise<void>((resolve) => {
-            window.__resolveHomeProjectsTransition = () => {
-              window.clearTimeout(timeoutId);
-              clearPendingResolver();
-              resolve();
-            };
-
+          // runViewTransition waits until the destination has committed, and
+          // the home page restores its scroll position in a layout effect
+          // during that commit, so the card is in place for the morph.
+          runViewTransition(() => {
             router.push(targetHref);
-          }));
-          return;
+          });
         }
       }}
     >
