@@ -74,6 +74,9 @@ async function fetchPublishedProjectsWithTags(limit?: number): Promise<HomeProje
     queries: [
       Query.equal('status', 'completed'),
       Query.equal('is_published', true),
+      // Lists only need the card fields; skipping the article bodies keeps
+      // the response small as the number of projects grows.
+      Query.select(['title', 'description', 'thumbnail_url', 'tags']),
       Query.orderDesc('$updatedAt'),
       Query.limit(limit ?? 100),
     ],
@@ -219,7 +222,9 @@ export async function getMutualLinks(): Promise<MutualLink[]> {
       tableId: MUTUAL_LINKS_TABLE_ID,
       queries: [Query.orderAsc('display_order'), Query.orderAsc('$createdAt'), Query.limit(100)],
     });
-    return rows.rows.map((row) => ({
+    // The links are rendered as plain <a href>; drop anything that is not
+    // http(s) so a mistyped javascript:/data: URL can never become clickable.
+    return rows.rows.filter((row) => /^https?:\/\//i.test(row.url ?? '')).map((row) => ({
       id: row.$id,
       name: row.name ?? '',
       url: row.url ?? '',
