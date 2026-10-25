@@ -59,17 +59,16 @@ export default function ProjectDetailPage({ initialResult }: Props) {
           className="back-link"
         />
 
-        <header className="mt-6 mb-8">
-          <div className="mb-4 flex flex-wrap items-center gap-2">
-            <span className="rounded-full border border-border bg-muted/60 px-3 py-1 text-[11px] font-mono uppercase tracking-wide text-muted-foreground">
-              Project
-            </span>
-            {hasTags && project.tags.slice(0, 3).map((tag) => (
-              <span key={tag} className="rounded-full border border-border px-3 py-1 text-[11px] font-mono text-muted-foreground">
-                {tag}
-              </span>
-            ))}
-          </div>
+        <header className="mt-5 mb-8">
+          {hasTags && (
+            <div className="mb-4 flex flex-wrap items-center gap-2">
+              {project.tags.slice(0, 3).map((tag) => (
+                <span key={tag} className="rounded-full border border-border px-3 py-1 text-[11px] font-mono text-muted-foreground">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight text-balance">{project.title}</h1>
           {project.description && (
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mt-4 text-pretty">
