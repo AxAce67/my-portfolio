@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { SwitchTrack } from '@/components/ui/SwitchTrack';
+import { Select } from '@/components/ui/Select';
 import { ImageOff, Eye, Plus, Search } from 'lucide-react';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useLocale } from '@/hooks/useLocale';
@@ -152,10 +153,11 @@ export default function DashboardPage({ onSignOut }: DashboardPageProps) {
                   className="w-full bg-transparent border border-border rounded-lg pl-8 pr-3 py-1.5 text-xs"
                 />
               </div>
-              <select
+              <Select
                 value={statusFilter}
                 onChange={(event) => setStatusFilter(event.target.value as ProjectStatus | 'all')}
-                className="w-full sm:w-auto bg-transparent border border-border rounded-lg px-3 py-1.5 text-xs"
+                wrapperClassName="w-full sm:w-auto"
+                className="bg-transparent border border-border rounded-lg pl-3 py-1.5 text-xs"
               >
                 <option value="all">{t('projects.filterAll')}</option>
                 {statusFilterOptions.map((status) => (
@@ -163,7 +165,7 @@ export default function DashboardPage({ onSignOut }: DashboardPageProps) {
                     {tStatus(status)}
                   </option>
                 ))}
-              </select>
+              </Select>
             </div>
 
             <div className="space-y-2">

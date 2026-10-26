@@ -2,6 +2,7 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { toast } from 'sonner';
 import { GripVertical, Pencil, Trash2 } from 'lucide-react';
+import { Select } from '@/components/ui/Select';
 import {
   DndContext,
   DragOverlay,
@@ -359,11 +360,11 @@ export default function ActiveProjectsManager() {
                   </div>
                   <div className="sm:col-span-2">
                     <label className="block text-[11px] font-mono text-muted-foreground mb-1 uppercase tracking-wider">{t('fields.stage')}</label>
-                    <select name="stage" defaultValue={0} className="w-full bg-transparent border border-border rounded-lg px-3 py-2 text-sm">
+                    <Select name="stage" defaultValue={0} wrapperClassName="w-full" className="bg-transparent border border-border rounded-lg pl-3 py-2 text-sm">
                       {stageOptions.map((option) => (
                         <option key={option.value} value={option.value}>{option.label}</option>
                       ))}
-                    </select>
+                    </Select>
                   </div>
                   <div className="sm:col-span-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <label className="text-sm text-muted-foreground flex items-center gap-2">
@@ -396,11 +397,11 @@ export default function ActiveProjectsManager() {
                   </div>
                   <div className="sm:col-span-2">
                     <label className="block text-[11px] font-mono text-muted-foreground mb-1 uppercase tracking-wider">{t('fields.stage')}</label>
-                    <select name="stage" defaultValue={editingProject.stage} className="w-full bg-transparent border border-border rounded-lg px-3 py-2 text-sm">
+                    <Select name="stage" defaultValue={editingProject.stage} wrapperClassName="w-full" className="bg-transparent border border-border rounded-lg pl-3 py-2 text-sm">
                       {stageOptions.map((option) => (
                         <option key={option.value} value={option.value}>{option.label}</option>
                       ))}
-                    </select>
+                    </Select>
                   </div>
                   <div className="sm:col-span-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <label className="text-sm text-muted-foreground flex items-center gap-2">
