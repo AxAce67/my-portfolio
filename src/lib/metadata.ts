@@ -14,7 +14,7 @@ const routePaths: Record<PageKind, string> = {
   radar: '/radar',
   terms: '/terms',
   license: '/license',
-  admin: '/admin',
+  admin: '/admin/projects',
 };
 
 function getAlternateLanguages(path: string) {

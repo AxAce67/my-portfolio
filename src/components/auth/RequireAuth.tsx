@@ -16,7 +16,7 @@ export default function RequireAuth({ children }: Props) {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.replace(`/${locale}/admin`);
+      router.replace(`/${locale}/admin/projects`);
     }
   }, [loading, locale, router, user]);
 

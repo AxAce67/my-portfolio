@@ -21,13 +21,13 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/admin',
-        destination: '/ja/admin',
+        destination: '/ja/admin/projects',
         permanent: false,
       },
       {
-        // The project list is the dashboard's first tab, at /admin.
-        source: '/:locale/admin/projects',
-        destination: '/:locale/admin',
+        // The dashboard opens on its first tab.
+        source: '/:locale/admin',
+        destination: '/:locale/admin/projects',
         permanent: false,
       },
       {

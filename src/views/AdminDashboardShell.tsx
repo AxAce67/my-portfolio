@@ -11,17 +11,17 @@ import { useLocale } from '@/hooks/useLocale';
 import LoginForm from '@/components/auth/LoginForm';
 
 const TABS = [
-  { path: '', label: 'tabs.projects' },
+  { path: '/projects', label: 'tabs.projects' },
   { path: '/active', label: 'tabs.activeProjects' },
   { path: '/profile', label: 'tabs.profile' },
   { path: '/links', label: 'tabs.mutualLinks' },
 ] as const;
 
-const LEGACY_TABS: Record<string, string> = { projects: '', active: '/active', profile: '/profile', links: '/links' };
+const LEGACY_TABS: Record<string, string> = { projects: '/projects', active: '/active', profile: '/profile', links: '/links' };
 
 /**
- * Login check, heading and tab bar for /admin, /admin/active, /admin/profile
- * and /admin/links. It lives in the layout, so switching tabs keeps the
+ * Login check, heading and tab bar for /admin/projects, /admin/active,
+ * /admin/profile and /admin/links (/admin itself redirects to the first). It lives in the layout, so switching tabs keeps the
  * session and only swaps the content below.
  */
 export default function AdminDashboardShell({ children }: { children: ReactNode }) {
@@ -62,7 +62,7 @@ export default function AdminDashboardShell({ children }: { children: ReactNode 
         <nav className="mt-5 inline-flex w-full sm:w-auto rounded-xl border border-border p-1 bg-muted">
           {TABS.map((tab) => {
             const href = `${base}${tab.path}`;
-            const current = pathname === href || (tab.path === '' && pathname === `${base}/`);
+            const current = pathname === href;
             return (
               <Link
                 key={tab.path}
