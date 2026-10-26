@@ -18,7 +18,16 @@ type ProjectRow = Models.Row & {
   is_published: boolean | null;
   status: string | null;
   tags: string[] | null;
+  kind: string | null;
+  service_url: string | null;
 };
+
+// 'project': something built or run; 'service': something visitors can use.
+export type ProjectKind = 'project' | 'service';
+
+function toKind(value: string | null | undefined): ProjectKind {
+  return value === 'service' ? 'service' : 'project';
+}
 
 type ActiveProjectRow = Models.Row & {
   name: string | null;
@@ -36,6 +45,9 @@ export type ProjectDetailRecord = {
   is_published: boolean | null;
   thumbnail_url: string | null;
   tags: string[];
+  kind: ProjectKind;
+  status: string | null;
+  service_url: string | null;
 };
 
 export type ProjectDetailResult =
@@ -51,6 +63,8 @@ export type HomeProject = {
   created_at: string | null;
   updated_at: string | null;
   tags: string[];
+  kind: ProjectKind;
+  status: string | null;
 };
 
 export type HomeActiveProject = {
@@ -73,11 +87,10 @@ async function fetchPublishedProjectsWithTags(limit?: number): Promise<HomeProje
     databaseId: DATABASE_ID,
     tableId: PROJECTS_TABLE_ID,
     queries: [
-      Query.equal('status', 'completed'),
       Query.equal('is_published', true),
       // Lists only need the card fields; skipping the article bodies keeps
       // the response small as the number of projects grows.
-      Query.select(['title', 'description', 'thumbnail_url', 'tags']),
+      Query.select(['title', 'description', 'thumbnail_url', 'tags', 'kind', 'status']),
       Query.orderDesc('$updatedAt'),
       Query.limit(limit ?? 100),
     ],
@@ -91,6 +104,8 @@ async function fetchPublishedProjectsWithTags(limit?: number): Promise<HomeProje
     created_at: row.$createdAt ?? null,
     updated_at: row.$updatedAt ?? null,
     tags: row.tags ?? [],
+    kind: toKind(row.kind),
+    status: row.status ?? null,
   }));
 }
 
@@ -119,7 +134,6 @@ export async function getPublishedProjectCount(): Promise<number> {
       databaseId: DATABASE_ID,
       tableId: PROJECTS_TABLE_ID,
       queries: [
-        Query.equal('status', 'completed'),
         Query.equal('is_published', true),
         Query.select(['title']),
         Query.limit(1),
@@ -168,7 +182,8 @@ async function getCachedProjectDetail(id: string): Promise<ProjectRow | null> {
       tableId: PROJECTS_TABLE_ID,
       rowId: id,
     });
-    return row.is_published && row.status === 'completed' ? row : null;
+    // Publishing is the only gate; the status is shown as a badge.
+    return row.is_published ? row : null;
   } catch (error) {
     const code = (error as { code?: number })?.code;
     if (code === 404 || code === 400) return null;
@@ -196,6 +211,9 @@ export const getProjectById = cache(async (id: string): Promise<ProjectDetailRes
       is_published: row.is_published ?? null,
       thumbnail_url: row.thumbnail_url ?? null,
       tags: row.tags ?? [],
+      kind: toKind(row.kind),
+      status: row.status ?? null,
+      service_url: row.service_url ?? null,
     };
 
     return { status: 'ok', project };

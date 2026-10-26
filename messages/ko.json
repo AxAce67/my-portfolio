@@ -163,7 +163,8 @@
       "design": "디자인",
       "development": "개발",
       "completed": "완료",
-      "on_hold": "보류"
+      "on_hold": "보류",
+      "running": "운영 중"
     },
     "projects": {
       "manageTitle": "프로젝트 관리",
@@ -265,7 +266,8 @@
         "design": "디자인",
         "development": "개발",
         "completed": "완료",
-        "on_hold": "보류"
+        "on_hold": "보류",
+        "running": "운영 중"
       },
       "saving": "저장 중…",
       "unsavedWarning": "저장하지 않은 변경 사항이 있습니다. 그래도 나가시겠습니까?",
@@ -276,7 +278,15 @@
       "cropTitle": "썸네일 자르기",
       "cropConfirm": "자르기 적용",
       "cropCancel": "취소",
-      "cropAdjust": "위치 조정"
+      "cropAdjust": "위치 조정",
+      "kind": {
+        "project": "프로젝트",
+        "service": "서비스"
+      },
+      "serviceUrlPlaceholder": "서비스 URL (https://…)",
+      "tags": "태그",
+      "tagPlaceholder": "태그 추가 (Enter)",
+      "removeTag": "{tag} 삭제"
     },
     "profile": {
       "title": "프로필 사진",
@@ -342,7 +352,12 @@
     "empty": "곧 공개됩니다. 기다려 주셔서 감사합니다.",
     "noResults": "일치하는 프로젝트를 찾을 수 없습니다.",
     "prev": "이전",
-    "next": "다음"
+    "next": "다음",
+    "filterAll": "전체",
+    "filterTag": "태그: {tag}",
+    "clearTag": "{tag} 태그 해제",
+    "backToAbout": "← About으로 돌아가기",
+    "backToActive": "← 진행 중 프로젝트로 돌아가기"
   },
   "ProjectDetail": {
     "backToProjects": "← 프로젝트로 돌아가기",
@@ -351,7 +366,8 @@
     "updatedAt": "수정일",
     "noContent": "아직 내용이 없습니다.",
     "unavailableTitle": "이 글을 일시적으로 불러올 수 없습니다",
-    "unavailableDescription": "공개된 콘텐츠를 불러오지 못했습니다. 잠시 후 페이지를 새로고침해 주세요."
+    "unavailableDescription": "공개된 콘텐츠를 불러오지 못했습니다. 잠시 후 페이지를 새로고침해 주세요.",
+    "openService": "사용해 보기"
   },
   "Login": {
     "title": "대시보드 로그인",
@@ -448,5 +464,17 @@
   },
   "Seo": {
     "homeDescription": "개인 개발자 Aki의 포트폴리오. 직접 만든 웹사이트와 Discord 봇, 운영 중인 서버를 소개합니다."
+  },
+  "ProjectStatus": {
+    "idea": "구상 중",
+    "design": "설계 중",
+    "development": "개발 중",
+    "running": "운영 중",
+    "completed": "완료",
+    "on_hold": "보류"
+  },
+  "ProjectKind": {
+    "project": "프로젝트",
+    "service": "서비스"
   }
 }

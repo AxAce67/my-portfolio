@@ -163,7 +163,8 @@
       "design": "Design",
       "development": "Développement",
       "completed": "Terminé",
-      "on_hold": "En pause"
+      "on_hold": "En pause",
+      "running": "En service"
     },
     "projects": {
       "manageTitle": "Gestion des projets",
@@ -265,7 +266,8 @@
         "design": "Design",
         "development": "Développement",
         "completed": "Terminé",
-        "on_hold": "En pause"
+        "on_hold": "En pause",
+        "running": "En service"
       },
       "saving": "Enregistrement…",
       "unsavedWarning": "Vous avez des modifications non enregistrées. Quitter quand même ?",
@@ -276,7 +278,15 @@
       "cropTitle": "Recadrer la miniature",
       "cropConfirm": "Appliquer le recadrage",
       "cropCancel": "Annuler",
-      "cropAdjust": "Ajuster le recadrage"
+      "cropAdjust": "Ajuster le recadrage",
+      "kind": {
+        "project": "Projet",
+        "service": "Service"
+      },
+      "serviceUrlPlaceholder": "URL du service (https://…)",
+      "tags": "Tags",
+      "tagPlaceholder": "Ajouter un tag (Entrée)",
+      "removeTag": "Retirer {tag}"
     },
     "profile": {
       "title": "Photo de profil",
@@ -342,7 +352,12 @@
     "empty": "Bientôt disponible. Merci pour votre patience.",
     "noResults": "Aucun projet correspondant trouvé.",
     "prev": "Précédent",
-    "next": "Suivant"
+    "next": "Suivant",
+    "filterAll": "Tout",
+    "filterTag": "Tag : {tag}",
+    "clearTag": "Retirer le tag {tag}",
+    "backToAbout": "← Retour à À propos",
+    "backToActive": "← Retour aux projets en cours"
   },
   "ProjectDetail": {
     "backToProjects": "← Retour aux projets",
@@ -351,7 +366,8 @@
     "updatedAt": "Mis à jour",
     "noContent": "Aucun contenu pour le moment.",
     "unavailableTitle": "Cet article est temporairement indisponible",
-    "unavailableDescription": "Impossible de charger le contenu publié pour le moment. Veuillez patienter puis recharger la page."
+    "unavailableDescription": "Impossible de charger le contenu publié pour le moment. Veuillez patienter puis recharger la page.",
+    "openService": "Essayer"
   },
   "Login": {
     "title": "Connexion au tableau de bord",
@@ -448,5 +464,17 @@
   },
   "Seo": {
     "homeDescription": "Portfolio d'Aki, développeur indépendant : sites web, bots Discord et les serveurs que je gère."
+  },
+  "ProjectStatus": {
+    "idea": "Idée",
+    "design": "Conception",
+    "development": "En développement",
+    "running": "En service",
+    "completed": "Terminé",
+    "on_hold": "En pause"
+  },
+  "ProjectKind": {
+    "project": "Projet",
+    "service": "Service"
   }
 }

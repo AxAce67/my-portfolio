@@ -163,7 +163,8 @@
       "design": "Design",
       "development": "Desenvolvimento",
       "completed": "Concluído",
-      "on_hold": "Em pausa"
+      "on_hold": "Em pausa",
+      "running": "Em operação"
     },
     "projects": {
       "manageTitle": "Gerenciamento de projetos",
@@ -265,7 +266,8 @@
         "design": "Design",
         "development": "Desenvolvimento",
         "completed": "Concluído",
-        "on_hold": "Em pausa"
+        "on_hold": "Em pausa",
+        "running": "Em operação"
       },
       "saving": "Salvando…",
       "unsavedWarning": "Você tem alterações não salvas. Sair assim mesmo?",
@@ -276,7 +278,15 @@
       "cropTitle": "Recortar miniatura",
       "cropConfirm": "Aplicar recorte",
       "cropCancel": "Cancelar",
-      "cropAdjust": "Ajustar recorte"
+      "cropAdjust": "Ajustar recorte",
+      "kind": {
+        "project": "Projeto",
+        "service": "Serviço"
+      },
+      "serviceUrlPlaceholder": "URL do serviço (https://…)",
+      "tags": "Tags",
+      "tagPlaceholder": "Adicionar tag (Enter)",
+      "removeTag": "Remover {tag}"
     },
     "profile": {
       "title": "Foto de perfil",
@@ -342,7 +352,12 @@
     "empty": "Em breve. Obrigado pela paciência.",
     "noResults": "Nenhum projeto correspondente encontrado.",
     "prev": "Anterior",
-    "next": "Próximo"
+    "next": "Próximo",
+    "filterAll": "Todos",
+    "filterTag": "Tag: {tag}",
+    "clearTag": "Remover a tag {tag}",
+    "backToAbout": "← Voltar para Sobre",
+    "backToActive": "← Voltar para Projetos em andamento"
   },
   "ProjectDetail": {
     "backToProjects": "← Voltar aos projetos",
@@ -351,7 +366,8 @@
     "updatedAt": "Atualizado",
     "noContent": "Ainda não há conteúdo.",
     "unavailableTitle": "Este artigo está temporariamente indisponível",
-    "unavailableDescription": "Não foi possível carregar o conteúdo publicado agora. Aguarde um momento e recarregue a página."
+    "unavailableDescription": "Não foi possível carregar o conteúdo publicado agora. Aguarde um momento e recarregue a página.",
+    "openService": "Experimentar"
   },
   "Login": {
     "title": "Login do painel",
@@ -448,5 +464,17 @@
   },
   "Seo": {
     "homeDescription": "Portfólio de Aki, desenvolvedor independente: sites, bots de Discord e os servidores que eu mantenho."
+  },
+  "ProjectStatus": {
+    "idea": "Ideia",
+    "design": "Design",
+    "development": "Em desenvolvimento",
+    "running": "Em operação",
+    "completed": "Concluído",
+    "on_hold": "Pausado"
+  },
+  "ProjectKind": {
+    "project": "Projeto",
+    "service": "Serviço"
   }
 }

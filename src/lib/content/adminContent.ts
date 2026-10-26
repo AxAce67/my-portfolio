@@ -11,7 +11,8 @@ import {
 } from '@/lib/appwrite/client';
 import { parseContentJson } from '@/lib/content/publicContent';
 
-export type ProjectStatus = 'idea' | 'design' | 'development' | 'completed' | 'on_hold';
+export type ProjectStatus = 'idea' | 'design' | 'development' | 'running' | 'completed' | 'on_hold';
+export type ProjectKind = 'project' | 'service';
 
 type ProjectRow = Models.Row & {
   title: string | null;
@@ -22,6 +23,8 @@ type ProjectRow = Models.Row & {
   is_published: boolean | null;
   status: ProjectStatus | null;
   tags: string[] | null;
+  kind: ProjectKind | null;
+  service_url: string | null;
 };
 
 type ActiveProjectRow = Models.Row & {
@@ -49,6 +52,9 @@ export type AdminProjectDetail = {
   status: ProjectStatus;
   is_published: boolean;
   thumbnail_url: string | null;
+  kind: ProjectKind;
+  service_url: string | null;
+  tags: string[];
   created_at: string;
   updated_at: string;
 };
@@ -61,6 +67,9 @@ export type ProjectInput = {
   status: ProjectStatus;
   is_published: boolean;
   thumbnail_url?: string | null;
+  kind: ProjectKind;
+  service_url: string | null;
+  tags: string[];
 };
 
 export type AdminActiveProject = {
@@ -99,6 +108,17 @@ export async function listAdminProjects(): Promise<AdminProjectSummary[]> {
   return rows.rows.map(toProjectSummary);
 }
 
+// Every tag used so far, for suggestions in the editor.
+export async function listAdminTags(): Promise<string[]> {
+  const rows = await tablesDB.listRows<ProjectRow>({
+    databaseId: DATABASE_ID,
+    tableId: PROJECTS_TABLE_ID,
+    queries: [Query.select(['tags']), Query.limit(100)],
+  });
+  const tags = new Set(rows.rows.flatMap((row) => row.tags ?? []));
+  return [...tags].sort((a, b) => a.localeCompare(b));
+}
+
 export async function getAdminProjectById(id: string): Promise<AdminProjectDetail | null> {
   try {
     const row = await tablesDB.getRow<ProjectRow>({ databaseId: DATABASE_ID, tableId: PROJECTS_TABLE_ID, rowId: id });
@@ -111,6 +131,9 @@ export async function getAdminProjectById(id: string): Promise<AdminProjectDetai
       status: row.status ?? 'idea',
       is_published: row.is_published ?? false,
       thumbnail_url: row.thumbnail_url ?? null,
+      kind: row.kind ?? 'project',
+      service_url: row.service_url ?? null,
+      tags: row.tags ?? [],
       created_at: row.$createdAt,
       updated_at: row.$updatedAt,
     };
@@ -137,6 +160,10 @@ function projectInputToData(input: ProjectInput) {
     content_json: JSON.stringify(input.content_json ?? []),
     status: input.status,
     is_published: input.is_published,
+    kind: input.kind,
+    // Only services link out; an empty field clears the column.
+    service_url: input.kind === 'service' && input.service_url?.trim() ? input.service_url.trim() : null,
+    tags: input.tags,
     ...(input.thumbnail_url !== undefined ? { thumbnail_url: input.thumbnail_url } : {}),
   };
 }

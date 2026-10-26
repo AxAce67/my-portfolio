@@ -163,7 +163,8 @@
       "design": "设计",
       "development": "开发",
       "completed": "已完成",
-      "on_hold": "暂停中"
+      "on_hold": "暂停中",
+      "running": "运行中"
     },
     "projects": {
       "manageTitle": "项目管理",
@@ -265,7 +266,8 @@
         "design": "设计",
         "development": "开发",
         "completed": "已完成",
-        "on_hold": "暂停中"
+        "on_hold": "暂停中",
+        "running": "运行中"
       },
       "saving": "保存中…",
       "unsavedWarning": "您有未保存的更改。仍要离开吗？",
@@ -276,7 +278,15 @@
       "cropTitle": "裁剪缩略图",
       "cropConfirm": "应用裁剪",
       "cropCancel": "取消",
-      "cropAdjust": "调整裁剪"
+      "cropAdjust": "调整裁剪",
+      "kind": {
+        "project": "项目",
+        "service": "服务"
+      },
+      "serviceUrlPlaceholder": "服务 URL（https://…）",
+      "tags": "标签",
+      "tagPlaceholder": "添加标签（回车确认）",
+      "removeTag": "移除 {tag}"
     },
     "profile": {
       "title": "头像",
@@ -342,7 +352,12 @@
     "empty": "即将上线，感谢你的耐心等待。",
     "noResults": "未找到匹配的项目。",
     "prev": "上一页",
-    "next": "下一页"
+    "next": "下一页",
+    "filterAll": "全部",
+    "filterTag": "标签：{tag}",
+    "clearTag": "清除标签 {tag}",
+    "backToAbout": "← 返回关于",
+    "backToActive": "← 返回进行中项目"
   },
   "ProjectDetail": {
     "backToProjects": "← 返回项目",
@@ -351,7 +366,8 @@
     "updatedAt": "更新于",
     "noContent": "暂时还没有内容。",
     "unavailableTitle": "这篇文章暂时无法加载",
-    "unavailableDescription": "已发布内容加载失败。请稍等片刻后刷新页面。"
+    "unavailableDescription": "已发布内容加载失败。请稍等片刻后刷新页面。",
+    "openService": "去试试"
   },
   "Login": {
     "title": "控制台登录",
@@ -448,5 +464,17 @@
   },
   "Seo": {
     "homeDescription": "独立开发者 Aki 的作品集，介绍我做的网站、Discord 机器人和自己运维的服务器。"
+  },
+  "ProjectStatus": {
+    "idea": "构思中",
+    "design": "设计中",
+    "development": "开发中",
+    "running": "运行中",
+    "completed": "已完成",
+    "on_hold": "暂停"
+  },
+  "ProjectKind": {
+    "project": "项目",
+    "service": "服务"
   }
 }

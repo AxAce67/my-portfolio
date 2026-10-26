@@ -9,6 +9,7 @@ import { useLocale } from '@/hooks/useLocale';
 import { TransitionLink } from '@/components/ui/TransitionLink';
 import { listAdminProjects, type AdminProjectSummary, type ProjectStatus } from '@/lib/content/adminContent';
 import DeleteProjectButton from '@/components/dashboard/DeleteProjectButton';
+import { PROJECT_STATUSES, PROJECT_STATUS_BADGE_CLASS } from '@/lib/projectStatus';
 import ActiveProjectsManager from '@/components/dashboard/ActiveProjectsManager';
 import ProfileSettings from '@/components/dashboard/ProfileSettings';
 import MutualLinksManager from '@/components/dashboard/MutualLinksManager';
@@ -17,19 +18,14 @@ const statusKeyMap: Record<ProjectStatus, string> = {
   idea: 'status.idea',
   design: 'status.design',
   development: 'status.development',
+  running: 'status.running',
   completed: 'status.completed',
   on_hold: 'status.on_hold',
 };
 
-const statusBadgeClass: Record<ProjectStatus, string> = {
-  idea: 'bg-slate-500/15 text-slate-600 dark:text-slate-300 border border-slate-500/25',
-  design: 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/25',
-  development: 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/25',
-  completed: 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25',
-  on_hold: 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/25',
-};
+const statusBadgeClass: Record<ProjectStatus, string> = PROJECT_STATUS_BADGE_CLASS;
 
-const statusFilterOptions: ProjectStatus[] = ['idea', 'design', 'development', 'completed', 'on_hold'];
+const statusFilterOptions: ProjectStatus[] = [...PROJECT_STATUSES];
 
 type DashboardPageProps = {
   onSignOut: () => void;

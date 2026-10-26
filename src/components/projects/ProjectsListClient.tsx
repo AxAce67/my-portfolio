@@ -11,6 +11,9 @@ import { StaggerContainer, StaggerItem } from '@/components/ui/ScrollReveal';
 import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, runViewTransition, shouldUseMobileRouteTransitions } from '@/lib/viewTransitions';
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
 import { navigationStateKeys, readSessionNumber, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
+import { ProjectBadges, TagChip } from '@/components/projects/ProjectBadges';
+import type { ProjectKind } from '@/lib/content/publicContent';
+import { X } from 'lucide-react';
 
 const PAGE_SIZE = 12;
 
@@ -22,7 +25,12 @@ export type ProjectListItem = {
   createdAt: string | null;
   updatedAt: string | null;
   tags: string[];
+  kind: ProjectKind;
+  status: string | null;
 };
+
+type KindFilter = 'all' | ProjectKind;
+const KIND_FILTERS: KindFilter[] = ['all', 'project', 'service'];
 
 type Props = {
   projects: ProjectListItem[];
@@ -30,6 +38,7 @@ type Props = {
 
 export default function ProjectsListClient({ projects }: Props) {
   const t = useTranslations('ProjectList');
+  const tKind = useTranslations('ProjectKind');
   const locale = useLocale();
   const router = useRouter();
   const transitionRouter = useTransitionRouter();
@@ -52,16 +61,42 @@ export default function ProjectsListClient({ projects }: Props) {
     }
   }, []);
 
+  const [kindFilter, setKindFilter] = useState<KindFilter>('all');
+  const [tagFilter, setTagFilter] = useState<string | null>(null);
+
+  // ?kind= and ?tag= (e.g. from a tag clicked on the home page or an article)
+  // are read after mount so the first render matches the server HTML.
+  useLayoutEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const kind = params.get('kind');
+    if (kind === 'project' || kind === 'service') setKindFilter(kind);
+    const tag = params.get('tag');
+    if (tag) setTagFilter(tag);
+  }, []);
+
+  // Keep the filters in the URL so a filtered list can be shared or reloaded.
+  useLayoutEffect(() => {
+    const url = new URL(window.location.href);
+    if (kindFilter === 'all') url.searchParams.delete('kind');
+    else url.searchParams.set('kind', kindFilter);
+    if (tagFilter) url.searchParams.set('tag', tagFilter);
+    else url.searchParams.delete('tag');
+    if (url.href !== window.location.href) window.history.replaceState(window.history.state, '', url);
+  }, [kindFilter, tagFilter]);
+
   const filtered = useMemo(() => {
     const q = keyword.trim().toLowerCase();
-    if (!q) return projects;
+    const tag = tagFilter?.toLowerCase();
     return projects.filter((project) => {
+      if (kindFilter !== 'all' && project.kind !== kindFilter) return false;
+      if (tag && !project.tags.some((projectTag) => projectTag.toLowerCase() === tag)) return false;
+      if (!q) return true;
       const title = (project.title ?? '').toLowerCase();
       const description = (project.description ?? '').toLowerCase();
       const tags = project.tags.map((tag) => tag.toLowerCase()).join(' ');
       return title.includes(q) || description.includes(q) || tags.includes(q);
     });
-  }, [projects, keyword]);
+  }, [projects, keyword, kindFilter, tagFilter]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const normalizedPage = Math.min(page, totalPages);
@@ -72,9 +107,9 @@ export default function ProjectsListClient({ projects }: Props) {
     const hash = sessionStorage.getItem(navigationStateKeys.homeReferrerHash);
     let label = null;
     if (hash === 'about') {
-      label = locale === 'ja' ? '← Aboutへ戻る' : '← Back to About';
+      label = t('backToAbout');
     } else if (hash === 'timeline') {
-      label = locale === 'ja' ? '← Active Projectsへ戻る' : '← Back to Active Projects';
+      label = t('backToActive');
     }
     return ['/', label];
   });
@@ -122,10 +157,42 @@ export default function ProjectsListClient({ projects }: Props) {
             className="w-full rounded-xl border border-border bg-card pl-10 pr-4 py-2.5 text-sm focus:border-border-hover"
           />
         </div>
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          {KIND_FILTERS.map((option) => (
+            <button
+              key={option}
+              type="button"
+              aria-pressed={kindFilter === option}
+              onClick={() => {
+                setKindFilter(option);
+                setPage(1);
+              }}
+              className={`rounded-full border px-3 py-1 text-xs transition-colors ${kindFilter === option
+                ? 'border-foreground bg-foreground text-background'
+                : 'border-border text-muted-foreground hover:text-foreground hover:border-border-hover'}`}
+            >
+              {option === 'all' ? t('filterAll') : tKind(option)}
+            </button>
+          ))}
+          {tagFilter && (
+            <button
+              type="button"
+              onClick={() => {
+                setTagFilter(null);
+                setPage(1);
+              }}
+              className="inline-flex items-center gap-1 rounded-full border border-foreground/40 px-3 py-1 text-xs font-mono"
+              aria-label={t('clearTag', { tag: tagFilter })}
+            >
+              {t('filterTag', { tag: tagFilter })}
+              <X className="w-3 h-3" />
+            </button>
+          )}
+        </div>
       </div>
 
       <StaggerContainer
-        key={`${keyword}-${normalizedPage}`}
+        key={`${keyword}-${kindFilter}-${tagFilter}-${normalizedPage}`}
         className="grid grid-cols-1 min-[420px]:grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-4"
         staggerDelay={0.08}
         forceVisible={forceCardVisible}
@@ -193,10 +260,16 @@ export default function ProjectsListClient({ projects }: Props) {
                     </div>
                     <p className="hidden sm:block text-sm text-muted-foreground leading-relaxed mb-3 line-clamp-2">{project.description}</p>
                     <div className="flex flex-wrap gap-1 sm:gap-2">
+                      <ProjectBadges kind={project.kind} status={project.status} />
                       {project.tags.slice(0, 2).map((tag) => (
-                        <span key={tag} className="text-[10px] sm:text-[11px] font-mono text-muted-foreground bg-muted px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-sm">
-                          {tag}
-                        </span>
+                        <TagChip
+                          key={tag}
+                          tag={tag}
+                          onSelect={(selected) => {
+                            setTagFilter(selected);
+                            setPage(1);
+                          }}
+                        />
                       ))}
                     </div>
                   </div>
@@ -207,7 +280,7 @@ export default function ProjectsListClient({ projects }: Props) {
         })}
         {filtered.length === 0 && (
           <p className="col-span-1 min-[420px]:col-span-2 sm:col-span-1 text-sm text-muted-foreground">
-            {keyword.trim() ? t('noResults') : t('empty')}
+            {keyword.trim() || tagFilter || kindFilter !== 'all' ? t('noResults') : t('empty')}
           </p>
         )}
       </StaggerContainer>

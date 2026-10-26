@@ -20,6 +20,7 @@ import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
 import { navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 import { toast } from 'sonner';
 import SponsorsSection from '@/components/home/SponsorsSection';
+import { ProjectBadges, TagChip } from '@/components/projects/ProjectBadges';
 import { selfHostedServers } from '@/lib/selfHostedServers';
 import { findServerDevice, useServerStatus } from '@/hooks/useServerStatus';
 import { SiDiscord } from 'react-icons/si';
@@ -1299,11 +1300,10 @@ function ProjectsSection({
                     >
                       {project.description}
                     </p>
-                    <div className={`${effectiveViewMode === 'grid' ? 'flex flex-wrap gap-1.5' : 'flex flex-wrap gap-2'}`}>
+                    <div className={`${effectiveViewMode === 'grid' ? 'flex flex-wrap items-center gap-1.5' : 'flex flex-wrap items-center gap-2'}`}>
+                      <ProjectBadges kind={project.kind} status={project.status} />
                       {(effectiveViewMode === 'grid' || isMobileViewport ? project.tags.slice(0, 2) : project.tags).map((tag) => (
-                        <span key={tag} className="text-[11px] font-mono text-muted-foreground bg-muted px-2.5 py-1 rounded-sm">
-                          {tag}
-                        </span>
+                        <TagChip key={tag} tag={tag} className="sm:text-[11px] sm:px-2.5 sm:py-1" />
                       ))}
                     </div>
                   </div>

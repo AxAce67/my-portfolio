@@ -12,6 +12,8 @@ export default function ProjectsPage({ rows }: { rows: HomeProject[] }) {
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     tags: row.tags,
+    kind: row.kind,
+    status: row.status,
   }));
 
   return <ProjectsListClient projects={projects} />;

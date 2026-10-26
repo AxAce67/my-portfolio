@@ -84,6 +84,9 @@ export default function EditProjectPage() {
           status: project.status,
           is_published: project.is_published,
           thumbnail_url: project.thumbnail_url,
+          kind: project.kind,
+          service_url: project.service_url,
+          tags: project.tags,
           created_at: project.created_at,
           updated_at: project.updated_at,
         }}

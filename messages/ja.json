@@ -163,7 +163,8 @@
       "design": "設計中",
       "development": "実装中",
       "completed": "完了",
-      "on_hold": "保留"
+      "on_hold": "保留",
+      "running": "運用中"
     },
     "projects": {
       "manageTitle": "プロジェクト管理",
@@ -265,7 +266,8 @@
         "design": "設計中",
         "development": "実装中",
         "completed": "完了",
-        "on_hold": "保留"
+        "on_hold": "保留",
+        "running": "運用中"
       },
       "saving": "保存中…",
       "unsavedWarning": "未保存の変更があります。このページを離れますか？",
@@ -276,7 +278,15 @@
       "cropTitle": "サムネイルを切り取り",
       "cropConfirm": "切り取りを確定",
       "cropCancel": "キャンセル",
-      "cropAdjust": "位置を調整"
+      "cropAdjust": "位置を調整",
+      "kind": {
+        "project": "プロジェクト",
+        "service": "サービス"
+      },
+      "serviceUrlPlaceholder": "サービスの URL（https://…）",
+      "tags": "タグ",
+      "tagPlaceholder": "タグを追加（Enter で確定）",
+      "removeTag": "{tag} を外す"
     },
     "profile": {
       "title": "プロフィール画像",
@@ -342,7 +352,12 @@
     "empty": "ただいま準備中です。もうしばらくお待ちください。",
     "noResults": "一致するプロジェクトが見つかりませんでした。",
     "prev": "前へ",
-    "next": "次へ"
+    "next": "次へ",
+    "filterAll": "すべて",
+    "filterTag": "タグ: {tag}",
+    "clearTag": "「{tag}」の絞り込みを解除",
+    "backToAbout": "← Aboutへ戻る",
+    "backToActive": "← Active Projectsへ戻る"
   },
   "ProjectDetail": {
     "backToProjects": "← Projectsへ戻る",
@@ -351,7 +366,8 @@
     "updatedAt": "更新",
     "noContent": "本文はまだありません。",
     "unavailableTitle": "記事を一時的に読み込めません",
-    "unavailableDescription": "公開データの取得に失敗しました。少し待ってから再読み込みしてください。"
+    "unavailableDescription": "公開データの取得に失敗しました。少し待ってから再読み込みしてください。",
+    "openService": "使ってみる"
   },
   "Login": {
     "title": "ダッシュボード ログイン",
@@ -448,5 +464,17 @@
   },
   "Seo": {
     "homeDescription": "個人開発者 Aki のポートフォリオ。作った Web サイトや Discord Bot、運用しているサーバーを紹介しています。"
+  },
+  "ProjectStatus": {
+    "idea": "構想中",
+    "design": "設計中",
+    "development": "開発中",
+    "running": "運用中",
+    "completed": "完了",
+    "on_hold": "休止中"
+  },
+  "ProjectKind": {
+    "project": "プロジェクト",
+    "service": "サービス"
   }
 }

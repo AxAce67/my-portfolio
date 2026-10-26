@@ -8,6 +8,8 @@ import ScrollToTopOnMount from '@/components/projects/ScrollToTopOnMount';
 import MarkdownArticle from '@/components/content/MarkdownArticle';
 import BlockNoteContent from '@/components/content/BlockNoteContent';
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
+import { ProjectBadges, TagChip } from '@/components/projects/ProjectBadges';
+import { ArrowUpRight } from 'lucide-react';
 
 type Props = {
   initialResult: ProjectDetailResult;
@@ -60,20 +62,26 @@ export default function ProjectDetailPage({ initialResult }: Props) {
         />
 
         <header className="mt-5 mb-8">
-          {hasTags && (
-            <div className="mb-4 flex flex-wrap items-center gap-2">
-              {project.tags.slice(0, 3).map((tag) => (
-                <span key={tag} className="rounded-full border border-border px-3 py-1 text-[11px] font-mono text-muted-foreground">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
+          <div className="mb-4 flex flex-wrap items-center gap-2 empty:hidden">
+            <ProjectBadges kind={project.kind} status={project.status} />
+            {hasTags && project.tags.map((tag) => <TagChip key={tag} tag={tag} />)}
+          </div>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight text-balance">{project.title}</h1>
           {project.description && (
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mt-4 text-pretty">
               {project.description}
             </p>
+          )}
+          {project.kind === 'service' && project.service_url && (
+            <a
+              href={project.service_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary mt-6 inline-flex items-center gap-1.5 px-4 py-2 text-sm"
+            >
+              {t('openService')}
+              <ArrowUpRight className="w-4 h-4" />
+            </a>
           )}
           <div className="mt-6 flex flex-wrap gap-4">
             <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">

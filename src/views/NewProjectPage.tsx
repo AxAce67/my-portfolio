@@ -54,7 +54,7 @@ export default function NewProjectPage() {
         submitLabel={t('createSubmit')}
         onSubmit={handleSubmit}
         onDirtyChange={setIsDirty}
-        initialValues={{ status: 'completed', is_published: true }}
+        initialValues={{ status: 'development', is_published: true }}
       />
     </section>
   );

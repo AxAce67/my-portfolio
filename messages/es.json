@@ -163,7 +163,8 @@
       "design": "Diseño",
       "development": "Desarrollo",
       "completed": "Completado",
-      "on_hold": "En pausa"
+      "on_hold": "En pausa",
+      "running": "En funcionamiento"
     },
     "projects": {
       "manageTitle": "Gestión de proyectos",
@@ -265,7 +266,8 @@
         "design": "Diseño",
         "development": "Desarrollo",
         "completed": "Completado",
-        "on_hold": "En pausa"
+        "on_hold": "En pausa",
+        "running": "En funcionamiento"
       },
       "saving": "Guardando…",
       "unsavedWarning": "Tienes cambios sin guardar. ¿Salir de todos modos?",
@@ -276,7 +278,15 @@
       "cropTitle": "Recortar miniatura",
       "cropConfirm": "Aplicar recorte",
       "cropCancel": "Cancelar",
-      "cropAdjust": "Ajustar recorte"
+      "cropAdjust": "Ajustar recorte",
+      "kind": {
+        "project": "Proyecto",
+        "service": "Servicio"
+      },
+      "serviceUrlPlaceholder": "URL del servicio (https://…)",
+      "tags": "Etiquetas",
+      "tagPlaceholder": "Añadir etiqueta (Enter)",
+      "removeTag": "Quitar {tag}"
     },
     "profile": {
       "title": "Foto de perfil",
@@ -342,7 +352,12 @@
     "empty": "Próximamente. Gracias por tu paciencia.",
     "noResults": "No se encontraron proyectos coincidentes.",
     "prev": "Anterior",
-    "next": "Siguiente"
+    "next": "Siguiente",
+    "filterAll": "Todo",
+    "filterTag": "Etiqueta: {tag}",
+    "clearTag": "Quitar la etiqueta {tag}",
+    "backToAbout": "← Volver a Sobre mí",
+    "backToActive": "← Volver a Proyectos en curso"
   },
   "ProjectDetail": {
     "backToProjects": "← Volver a proyectos",
@@ -351,7 +366,8 @@
     "updatedAt": "Actualizado",
     "noContent": "Aún no hay contenido.",
     "unavailableTitle": "Este artículo no está disponible temporalmente",
-    "unavailableDescription": "No se pudo cargar el contenido publicado. Espera un momento y vuelve a recargar la página."
+    "unavailableDescription": "No se pudo cargar el contenido publicado. Espera un momento y vuelve a recargar la página.",
+    "openService": "Probarlo"
   },
   "Login": {
     "title": "Inicio de sesión del panel",
@@ -448,5 +464,17 @@
   },
   "Seo": {
     "homeDescription": "Portafolio de Aki, desarrollador independiente: sitios web, bots de Discord y los servidores que administro."
+  },
+  "ProjectStatus": {
+    "idea": "Idea",
+    "design": "Diseño",
+    "development": "En desarrollo",
+    "running": "En funcionamiento",
+    "completed": "Completado",
+    "on_hold": "En pausa"
+  },
+  "ProjectKind": {
+    "project": "Proyecto",
+    "service": "Servicio"
   }
 }

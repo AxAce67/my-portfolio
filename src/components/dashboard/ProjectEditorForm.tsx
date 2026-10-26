@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { Crop, ImagePlus, Loader2 } from 'lucide-react';
+import { Crop, ImagePlus, Loader2, X } from 'lucide-react';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useLocale } from '@/hooks/useLocale';
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
 import { uploadImage, UploadValidationError } from '@/lib/appwrite/upload';
-import type { ProjectInput, ProjectStatus } from '@/lib/content/adminContent';
+import { listAdminTags, type ProjectInput, type ProjectKind, type ProjectStatus } from '@/lib/content/adminContent';
 import BlockNoteEditorField from './BlockNoteEditorField';
 import ThumbnailCropModal from './ThumbnailCropModal';
 
@@ -21,6 +21,9 @@ type ProjectEditorFormProps = {
     status?: ProjectStatus;
     is_published?: boolean;
     thumbnail_url?: string | null;
+    kind?: ProjectKind;
+    service_url?: string | null;
+    tags?: string[];
     created_at?: string;
     updated_at?: string;
   };
@@ -33,9 +36,13 @@ type DraftState = {
   content_json: unknown;
   status: ProjectStatus;
   is_published: boolean;
+  kind?: ProjectKind;
+  service_url?: string;
+  tags?: string[];
 };
 
-const statusOptions: ProjectStatus[] = ['idea', 'design', 'development', 'completed', 'on_hold'];
+const statusOptions: ProjectStatus[] = ['idea', 'design', 'development', 'running', 'completed', 'on_hold'];
+const kindOptions: ProjectKind[] = ['project', 'service'];
 
 function draftStorageKey(draftKey: string) {
   return `portfolio-admin-draft:${draftKey}`;
@@ -49,6 +56,11 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
   const [description, setDescription] = useState(initialValues?.description ?? '');
   const [status, setStatus] = useState<ProjectStatus>(initialValues?.status ?? 'idea');
   const [isPublished, setIsPublished] = useState(initialValues?.is_published ?? false);
+  const [kind, setKind] = useState<ProjectKind>(initialValues?.kind ?? 'project');
+  const [serviceUrl, setServiceUrl] = useState(initialValues?.service_url ?? '');
+  const [tags, setTags] = useState<string[]>(initialValues?.tags ?? []);
+  const [tagInput, setTagInput] = useState('');
+  const [knownTags, setKnownTags] = useState<string[]>([]);
   const [contentMd, setContentMd] = useState(initialValues?.content_md ?? '');
   const [contentJson, setContentJson] = useState<unknown>(initialValues?.content_json ?? []);
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
@@ -74,6 +86,18 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
     el.style.height = `${el.scrollHeight}px`;
   }, [description]);
 
+  useEffect(() => {
+    listAdminTags().then(setKnownTags, () => setKnownTags([]));
+  }, []);
+
+  function addTag(raw: string) {
+    const tag = raw.trim();
+    if (tag && !tags.some((existing) => existing.toLowerCase() === tag.toLowerCase())) {
+      setTags([...tags, tag]);
+    }
+    setTagInput('');
+  }
+
   // Offer to restore a draft left over from a tab close / crash before the
   // user ever saved.
   useEffect(() => {
@@ -97,12 +121,22 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
     onDirtyChange?.(true);
 
     const timeoutId = window.setTimeout(() => {
-      const draft: DraftState = { title, description, content_md: contentMd, content_json: contentJson, status, is_published: isPublished };
+      const draft: DraftState = {
+        title,
+        description,
+        content_md: contentMd,
+        content_json: contentJson,
+        status,
+        is_published: isPublished,
+        kind,
+        service_url: serviceUrl,
+        tags,
+      };
       localStorage.setItem(draftStorageKey(draftKey), JSON.stringify(draft));
     }, 800);
 
     return () => window.clearTimeout(timeoutId);
-  }, [draftKey, title, description, contentMd, contentJson, status, isPublished, onDirtyChange]);
+  }, [draftKey, title, description, contentMd, contentJson, status, isPublished, kind, serviceUrl, tags, onDirtyChange]);
 
   useEffect(() => {
     function handleBeforeUnload(event: BeforeUnloadEvent) {
@@ -121,6 +155,9 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
     setContentJson(draft.content_json);
     setStatus(draft.status);
     setIsPublished(draft.is_published);
+    setKind(draft.kind ?? 'project');
+    setServiceUrl(draft.service_url ?? '');
+    setTags(draft.tags ?? []);
     setPendingDraft(null);
   }
 
@@ -166,6 +203,9 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
           content_json: contentJson,
           status,
           is_published: isPublished,
+          kind,
+          service_url: serviceUrl,
+          tags,
           ...(thumbnailUrl ? { thumbnail_url: thumbnailUrl } : {}),
         });
       } catch {
@@ -214,6 +254,26 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
             </option>
           ))}
         </select>
+        <select
+          value={kind}
+          onChange={(event) => setKind(event.target.value as ProjectKind)}
+          className="w-full sm:w-auto bg-transparent border border-border rounded-lg px-3 py-2 text-sm"
+        >
+          {kindOptions.map((option) => (
+            <option key={option} value={option}>
+              {t(`kind.${option}` as 'kind.project')}
+            </option>
+          ))}
+        </select>
+        {kind === 'service' && (
+          <input
+            type="url"
+            value={serviceUrl}
+            onChange={(event) => setServiceUrl(event.target.value)}
+            placeholder={t('serviceUrlPlaceholder')}
+            className="w-full sm:w-64 bg-transparent border border-border rounded-lg px-3 py-2 text-sm"
+          />
+        )}
         <label className="text-sm text-muted-foreground flex items-center gap-2">
           <input type="checkbox" checked={isPublished} onChange={(event) => setIsPublished(event.target.checked)} />
           {t('published')}
@@ -222,6 +282,39 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
           {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
           {submitting ? t('saving') : submitLabel}
         </button>
+      </div>
+
+      <div className="-mt-5 mb-8 flex flex-wrap items-center gap-2 rounded-xl border border-border bg-card px-3 py-2.5 sm:px-4">
+        <span className="text-xs text-muted-foreground mr-1">{t('tags')}</span>
+        {tags.map((tag) => (
+          <span key={tag} className="inline-flex items-center gap-1 rounded-full border border-border px-2.5 py-0.5 text-xs font-mono">
+            {tag}
+            <button type="button" onClick={() => setTags(tags.filter((existing) => existing !== tag))} aria-label={t('removeTag', { tag })}>
+              <X className="w-3 h-3" />
+            </button>
+          </span>
+        ))}
+        <input
+          value={tagInput}
+          onChange={(event) => setTagInput(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ',') {
+              event.preventDefault();
+              addTag(tagInput);
+            } else if (event.key === 'Backspace' && !tagInput && tags.length > 0) {
+              setTags(tags.slice(0, -1));
+            }
+          }}
+          onBlur={() => tagInput && addTag(tagInput)}
+          list="known-tags"
+          placeholder={t('tagPlaceholder')}
+          className="flex-1 min-w-32 bg-transparent text-sm outline-none"
+        />
+        <datalist id="known-tags">
+          {knownTags.filter((tag) => !tags.includes(tag)).map((tag) => (
+            <option key={tag} value={tag} />
+          ))}
+        </datalist>
       </div>
 
       <div className="max-w-3xl mx-auto">

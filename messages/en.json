@@ -163,7 +163,8 @@
       "design": "Design",
       "development": "Development",
       "completed": "Completed",
-      "on_hold": "On Hold"
+      "on_hold": "On Hold",
+      "running": "Running"
     },
     "projects": {
       "manageTitle": "Project Management",
@@ -265,7 +266,8 @@
         "design": "Design",
         "development": "Development",
         "completed": "Completed",
-        "on_hold": "On Hold"
+        "on_hold": "On Hold",
+        "running": "Running"
       },
       "saving": "Saving…",
       "unsavedWarning": "You have unsaved changes. Leave anyway?",
@@ -276,7 +278,15 @@
       "cropTitle": "Crop thumbnail",
       "cropConfirm": "Apply crop",
       "cropCancel": "Cancel",
-      "cropAdjust": "Adjust crop"
+      "cropAdjust": "Adjust crop",
+      "kind": {
+        "project": "Project",
+        "service": "Service"
+      },
+      "serviceUrlPlaceholder": "Service URL (https://…)",
+      "tags": "Tags",
+      "tagPlaceholder": "Add a tag (Enter)",
+      "removeTag": "Remove {tag}"
     },
     "profile": {
       "title": "Profile Photo",
@@ -342,7 +352,12 @@
     "empty": "Coming soon. Thanks for your patience.",
     "noResults": "No matching projects found.",
     "prev": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "filterAll": "All",
+    "filterTag": "Tag: {tag}",
+    "clearTag": "Clear tag {tag}",
+    "backToAbout": "← Back to About",
+    "backToActive": "← Back to Active Projects"
   },
   "ProjectDetail": {
     "backToProjects": "← Back to Projects",
@@ -351,7 +366,8 @@
     "updatedAt": "Updated",
     "noContent": "No content yet.",
     "unavailableTitle": "This article is temporarily unavailable",
-    "unavailableDescription": "Failed to load the published content. Please wait a moment and reload the page."
+    "unavailableDescription": "Failed to load the published content. Please wait a moment and reload the page.",
+    "openService": "Try it"
   },
   "Login": {
     "title": "Dashboard Login",
@@ -448,5 +464,17 @@
   },
   "Seo": {
     "homeDescription": "Portfolio of Aki, an independent developer: websites, Discord bots, and the servers I run."
+  },
+  "ProjectStatus": {
+    "idea": "Idea",
+    "design": "Design",
+    "development": "In development",
+    "running": "Running",
+    "completed": "Completed",
+    "on_hold": "On hold"
+  },
+  "ProjectKind": {
+    "project": "Project",
+    "service": "Service"
   }
 }
