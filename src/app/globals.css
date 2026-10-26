@@ -1112,10 +1112,10 @@
 /* Server card opened from a globe label, hanging just below the marker. */
 @utility globe-panel {
   display: none;
-  position: absolute;
+  position: fixed;
   left: anchor(center);
   top: anchor(center);
-  z-index: 2;
+  z-index: 40;
   width: 17rem;
   margin: 0.75rem 0 0 -0.75rem;
   padding: 0.65rem 0.75rem;

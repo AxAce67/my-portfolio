@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import type React from 'react';
 import createGlobe, { type Arc, type Marker } from 'cobe';
 
@@ -33,16 +34,23 @@ export function Globe({
 }: GlobeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const [openMarkerId, setOpenMarkerId] = useState<string | null>(null);
   const pausedRef = useRef(false);
   pausedRef.current = openMarkerId !== null;
 
   useEffect(() => {
     if (!openMarkerId) return;
+    // Any click outside the open card and the marker labels closes it,
+    // including clicks on the globe itself.
     const close = (event: Event) => {
-      if (event instanceof KeyboardEvent ? event.key === 'Escape' : !stageRef.current?.contains(event.target as Node)) {
-        setOpenMarkerId(null);
+      if (event instanceof KeyboardEvent) {
+        if (event.key === 'Escape') setOpenMarkerId(null);
+        return;
       }
+      const target = event.target as Element | null;
+      if (panelRef.current?.contains(target) || target?.closest?.('.globe-label--interactive')) return;
+      setOpenMarkerId(null);
     };
     document.addEventListener('pointerdown', close);
     document.addEventListener('keydown', close);
@@ -226,10 +234,13 @@ export function Globe({
             >
               {labelContent}
             </button>
-            {isOpen && (
-              <div id={`globe-panel-${marker.id}`} className="globe-panel" style={anchorStyle}>
+            {/* Rendered into <body> so the hero card's overflow/transform can't
+                clip it; it still follows the marker through the CSS anchor. */}
+            {isOpen && createPortal(
+              <div id={`globe-panel-${marker.id}`} ref={panelRef} className="globe-panel" style={anchorStyle}>
                 {renderMarkerPanel(marker)}
-              </div>
+              </div>,
+              document.body,
             )}
           </div>
         );

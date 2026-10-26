@@ -9,7 +9,7 @@ import { Link } from '@/i18n/routing';
 import { selfHostedServers, type SelfHostedServer } from '@/lib/selfHostedServers';
 import { findServerDevice, findServerMetrics, useServerStatus, type LiveServerStatus } from '@/hooks/useServerStatus';
 import type { HomeProject, HomeActiveProject, MutualLink } from '@/lib/content/publicContent';
-import { navigationStateKeys, readSessionValue } from '@/lib/navigationState';
+import { navigationStateKeys, readSessionValue, writeSessionValue } from '@/lib/navigationState';
 import { useHomeNavigationRestoration } from '@/hooks/useHomeNavigationRestoration';
 
 type Props = {
@@ -98,6 +98,10 @@ function ServerPanel({ marker, status }: { marker: GlobeMarker; status: LiveServ
       <Link
         href="/servers"
         className="inline-flex items-center gap-1 self-start text-[rgb(102_222_194)] hover:underline"
+        onClick={() => {
+          // Coming back from /servers should land on the hero, not the projects.
+          writeSessionValue(navigationStateKeys.homeScrollY, String(window.scrollY));
+        }}
       >
         All servers
         <ArrowUpRight className="size-3" />
