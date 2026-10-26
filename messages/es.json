@@ -9,20 +9,16 @@
     "links": "Links"
   },
   "Hero": {
-    "name": "Aki",
-    "role": "// indie dev · student",
-    "title": "『Convertir ideas en realidad』",
     "subtitle": "Construyo lo que me gusta. Eso es todo.",
     "ctaPrimary": "Ver proyectos"
   },
   "About": {
-    "sectionTitle": "// about/",
     "heading": "About",
     "ageLabel": "Edad",
     "locationLabel": "🇯🇵 Tokyo",
     "profileLabel": "Profile",
     "profileParagraph1": "Soy {grade} en Japón y desarrollo proyectos personales como sitios web, bots de Discord, servidores Ubuntu y servidores de Minecraft.",
-    "profileParagraph2": "Desde que descubrí ChatGPT en sexto grado, he usado varias herramientas de IA para mejorar mi flujo de trabajo y acelerar el proceso de convertir ideas en productos funcionales.",
+    "profileParagraph2": "Desde que descubrí ChatGPT en sexto de primaria, he usado varias herramientas de IA para mejorar mi forma de trabajar y convertir mis ideas en productos funcionales más rápido.",
     "profileParagraph3": "Mi proceso consiste en convertir ideas en requisitos, construir un MVP rápidamente y luego iterar mediante pruebas y mejoras.",
     "profileParagraph4": "Mis puntos fuertes son el pensamiento de diseño, la mejora continua y la investigación. Sigo las tendencias sin perder de vista la usabilidad y el mantenimiento.",
     "statsProjects": "Proyectos publicados",
@@ -31,14 +27,14 @@
     "statsCommits": "Servidores autogestionados",
     "focusLabel": "Focus",
     "momentum": {
-      "label": "Medidor de motivación",
+      "label": "Ritmo de desarrollo",
       "description": "Una lectura ligera de mi energía actual para programar basada en los commits de los últimos 7 días.",
       "weeklyCommits": "Commits esta semana",
       "streak": "Racha",
       "daySuffix": "d",
       "updated": "Actualizado",
       "unavailable": "No se pudo leer el medidor ahora mismo. Inténtalo de nuevo en un momento.",
-      "note": "Los números son orientativos. Motivación incluida."
+      "note": "Las cifras son aproximadas."
     },
     "focus": {
       "productThinking": "Pensamiento de producto",
@@ -67,7 +63,6 @@
     "serversOnline": "{online}/{total} en línea"
   },
   "Skills": {
-    "sectionTitle": "// skills/",
     "heading": "Skills",
     "subtitle": "Fortalezas y nivel de dominio",
     "categories": {
@@ -84,17 +79,15 @@
     },
     "levels": {
       "main": "Principal",
-      "familiar": "Producción",
+      "familiar": "Competente",
       "learning": "Aprendiendo"
     }
   },
   "TechStack": {
-    "sectionTitle": "// tech_stack/",
     "heading": "Tech Stack",
     "subtitle": "Tecnologías que he usado"
   },
   "Projects": {
-    "sectionTitle": "// projects/",
     "heading": "Projects",
     "viewList": "Lista",
     "viewGrid": "Cuadrícula",
@@ -105,13 +98,11 @@
     "loading": "Cargando…"
   },
   "Contact": {
-    "sectionTitle": "> send_message",
     "heading": "Contact",
     "description": "Preguntas, propuestas o comentarios: no dudes en escribirme.",
     "optional": "Opcional",
     "formLabel": "Form",
     "formContact": "Enviar por formulario",
-    "emailUnavailable": "Próximamente",
     "discordCopied": "Nombre de usuario de Discord copiado",
     "name": "Nombre",
     "namePlaceholder": "Tu nombre",
@@ -122,7 +113,6 @@
     "message": "Mensaje",
     "messagePlaceholder": "Escribe tu mensaje aquí…",
     "preview": "Revisar mensaje",
-    "verifying": "Verificando…",
     "sending": "Enviando…",
     "previewTitle": "Revisa tu mensaje",
     "previewDescription": "Confirma los datos antes de enviar.",
@@ -139,12 +129,10 @@
     "heading": "Sponsors"
   },
   "Footer": {
-    "tagline": "Construyo lo que me gusta. Eso es todo.",
-    "copyright": "© {year} Todos los derechos reservados.",
     "terms": "Términos de uso",
     "license": "Licencia",
     "ntpSynced": "sincronizado con {server}",
-    "ntpDeviceOffset": "este dispositivo {offset}",
+    "ntpDeviceOffset": "desfase del dispositivo {offset}",
     "ntpAccuracy": "error estimado ±{accuracy} ms"
   },
   "Language": {
@@ -155,11 +143,9 @@
     "title": "Portfolio Dashboard",
     "subtitle": "Administra el contenido publicado de tu portafolio.",
     "signOut": "Cerrar sesión",
-    "noAdmin": "Esta cuenta no tiene acceso de administrador.",
     "tabs": {
       "projects": "Proyectos",
       "activeProjects": "Proyectos en curso",
-      "audit": "Registros de auditoría",
       "profile": "Perfil",
       "mutualLinks": "Enlaces"
     },
@@ -219,7 +205,6 @@
       "title": "Proyectos en curso",
       "description": "Administra el orden, la etapa y el estado de publicación.",
       "newButton": "Nuevo proyecto en curso",
-      "priority": "prioridad",
       "published": "publicado",
       "draft": "borrador",
       "empty": "Aún no hay proyectos en curso.",
@@ -233,8 +218,7 @@
       "fields": {
         "name": "Nombre",
         "namePlaceholder": "Nombre",
-        "stage": "Etapa",
-        "priority": "Prioridad"
+        "stage": "Etapa"
       },
       "createModal": {
         "title": "Crear proyecto en curso"
@@ -256,40 +240,9 @@
       },
       "dragHandle": "Arrastra para reordenar"
     },
-    "audit": {
-      "title": "Registros de auditoría de acceso",
-      "description": "Muestra todos los registros de inicio de sesión correcto o fallido con paginación.",
-      "authTab": "Registros de acceso",
-      "cspTab": "Registros CSP",
-      "filterAll": "Todo",
-      "filterSuccess": "Correcto",
-      "filterInvalid": "Fallido",
-      "filterRateLimited": "Limitado",
-      "total": "Total",
-      "empty": "Aún no hay registros de auditoría.",
-      "notConfigured": "La tabla de auditoría no está configurada. Aplica primero la configuración SQL.",
-      "prev": "Anterior",
-      "next": "Siguiente",
-      "cspTitle": "Informes de infracción CSP",
-      "cspDescription": "Registros de infracciones CSP enviados por los navegadores.",
-      "cspEmpty": "Aún no hay registros de infracciones CSP.",
-      "cspNotConfigured": "La tabla de registros CSP no está configurada. Aplica primero la configuración SQL.",
-      "labelEmail": "correo",
-      "labelIp": "ip",
-      "labelIpHash": "hash ip",
-      "labelUserId": "id de usuario",
-      "labelLocale": "idioma",
-      "labelUserAgent": "user agent",
-      "labelDirective": "directiva",
-      "labelBlocked": "bloqueado",
-      "labelDocument": "documento",
-      "labelDisposition": "disposición"
-    },
     "editor": {
       "backToDashboard": "← Volver al panel",
       "draftLabel": "Borrador de proyecto",
-      "createTitle": "Crear proyecto",
-      "createDescription": "Usa un editor estilo Notion para crear artículos con títulos, listas e imágenes.",
       "createSubmit": "Crear proyecto",
       "editTitle": "Editor de proyecto",
       "saveChanges": "Guardar cambios"
@@ -300,11 +253,6 @@
       "description": "Descripción",
       "descriptionPlaceholder": "Resumen (2-3 frases)",
       "thumbnail": "Imagen miniatura",
-      "thumbnailHint": "JPG / PNG / WEBP, hasta 5MB",
-      "thumbnailPreview": "Vista previa 16:9",
-      "thumbnailRecommended": "Recomendado:",
-      "thumbnailSafeArea": "Centro del área segura:",
-      "articleContent": "Contenido del artículo",
       "published": "Publicado",
       "uploadAuthError": "Inicia sesión antes de subir archivos.",
       "uploadTypeError": "Solo se permiten archivos JPG / PNG / WEBP / AVIF.",
@@ -372,7 +320,6 @@
     }
   },
   "ActiveProjects": {
-    "sectionLabel": "// in_progress",
     "heading": "Active Projects",
     "projectColumn": "Project",
     "empty": "Aún no hay proyectos en curso.",
@@ -411,11 +358,9 @@
     "password": "Contraseña",
     "submit": "Entrar",
     "backToSite": "← Volver al sitio",
-    "errorInvalid": "Correo o contraseña incorrectos.",
-    "errorRateLimit": "Demasiados intentos. Espera unos 10 minutos antes de volver a intentarlo."
+    "errorInvalid": "Correo o contraseña incorrectos."
   },
   "NotFound": {
-    "code": "404 / Not Found",
     "title": "Página no encontrada",
     "description": "La página que solicitaste no existe o puede haberse movido.",
     "backHome": "Volver al inicio",
@@ -467,13 +412,13 @@
     "refreshButton": "Actualizar",
     "lastUpdatedLabel": "Actualizado",
     "statusOnline": "En línea",
-    "statusOffline": "Desconectado",
+    "statusOffline": "Fuera de línea",
     "statusMaintenance": "Mantenimiento",
     "categoryWeb": "Web",
     "categoryGame": "Juego",
     "categoryBot": "Bot",
     "categoryInfra": "Infra",
-    "specsLabel": "Specs",
+    "specsLabel": "Especificaciones",
     "osLabel": "SO",
     "ipLabel": "TAILNET IP",
     "cpuLabel": "CPU",
@@ -482,7 +427,7 @@
     "threadsLabel": "threads",
     "lastSeenLabel": "Última conexión",
     "backAbout": "← Volver a Sobre mí",
-    "backTimeline": "← Volver a Proyectos activos"
+    "backTimeline": "← Volver a Proyectos en curso"
   },
   "Radar": {
     "heading": "Radar",
@@ -499,5 +444,8 @@
     "visitSite": "Visitar sitio",
     "discordCopied": "Nombre de usuario de Discord copiado",
     "ctaContact": "Ir a contacto"
+  },
+  "Seo": {
+    "homeDescription": "Portafolio de Aki, desarrollador independiente: sitios web, bots de Discord y los servidores que administro."
   }
 }

@@ -9,14 +9,10 @@
     "links": "Links"
   },
   "Hero": {
-    "name": "Aki",
-    "role": "// indie dev · student",
-    "title": "『把想法变成现实』",
     "subtitle": "做自己喜欢的东西。仅此而已。",
     "ctaPrimary": "查看项目"
   },
   "About": {
-    "sectionTitle": "// about/",
     "heading": "About",
     "ageLabel": "年龄",
     "locationLabel": "🇯🇵 Tokyo",
@@ -31,14 +27,14 @@
     "statsCommits": "自建服务器",
     "focusLabel": "Focus",
     "momentum": {
-      "label": "开发动力仪表",
-      "description": "根据最近 7 天的提交记录，轻松读取我当前的开发状态。",
+      "label": "开发状态",
+      "description": "根据最近 7 天的提交记录，大致展示我目前的开发状态。",
       "weeklyCommits": "本周提交",
       "streak": "连续天数",
       "daySuffix": "天",
       "updated": "更新时间",
       "unavailable": "暂时无法读取仪表，请稍后再试。",
-      "note": "这些数字仅供参考。动力值已包含在内。"
+      "note": "数字仅供参考。"
     },
     "focus": {
       "productThinking": "产品思维",
@@ -67,7 +63,6 @@
     "serversOnline": "{online}/{total} 台在线"
   },
   "Skills": {
-    "sectionTitle": "// skills/",
     "heading": "Skills",
     "subtitle": "擅长的技术与熟练度",
     "categories": {
@@ -84,17 +79,15 @@
     },
     "levels": {
       "main": "主力",
-      "familiar": "实战",
+      "familiar": "熟练",
       "learning": "学习中"
     }
   },
   "TechStack": {
-    "sectionTitle": "// tech_stack/",
     "heading": "Tech Stack",
     "subtitle": "用过的技术栈"
   },
   "Projects": {
-    "sectionTitle": "// projects/",
     "heading": "Projects",
     "viewList": "列表",
     "viewGrid": "网格",
@@ -105,13 +98,11 @@
     "loading": "加载中…"
   },
   "Contact": {
-    "sectionTitle": "> send_message",
     "heading": "Contact",
     "description": "如有问题、委托或反馈，欢迎随时联系。",
     "optional": "选填",
     "formLabel": "Form",
     "formContact": "通过表单发送",
-    "emailUnavailable": "准备中",
     "discordCopied": "已复制 Discord 用户名",
     "name": "姓名",
     "namePlaceholder": "你的名字",
@@ -122,7 +113,6 @@
     "message": "内容",
     "messagePlaceholder": "在这里输入你的消息…",
     "preview": "确认内容",
-    "verifying": "正在验证…",
     "sending": "正在发送…",
     "previewTitle": "确认你的消息",
     "previewDescription": "发送前请再次确认内容。",
@@ -139,8 +129,6 @@
     "heading": "Sponsors"
   },
   "Footer": {
-    "tagline": "做自己喜欢的东西。仅此而已。",
-    "copyright": "© {year} 保留所有权利。",
     "terms": "使用条款",
     "license": "许可",
     "ntpSynced": "已与 {server} 同步",
@@ -155,11 +143,9 @@
     "title": "Portfolio Dashboard",
     "subtitle": "管理你已发布的作品集内容。",
     "signOut": "退出登录",
-    "noAdmin": "此账号没有管理员权限。",
     "tabs": {
       "projects": "项目",
       "activeProjects": "进行中项目",
-      "audit": "审计日志",
       "profile": "个人资料",
       "mutualLinks": "友链"
     },
@@ -219,7 +205,6 @@
       "title": "进行中项目",
       "description": "管理排序、阶段和发布状态。",
       "newButton": "新建进行中项目",
-      "priority": "优先级",
       "published": "已发布",
       "draft": "草稿",
       "empty": "还没有进行中项目。",
@@ -233,8 +218,7 @@
       "fields": {
         "name": "名称",
         "namePlaceholder": "名称",
-        "stage": "阶段",
-        "priority": "优先级"
+        "stage": "阶段"
       },
       "createModal": {
         "title": "创建进行中项目"
@@ -256,40 +240,9 @@
       },
       "dragHandle": "拖动以重新排序"
     },
-    "audit": {
-      "title": "认证审计日志",
-      "description": "显示所有登录成功/失败日志，并支持分页。",
-      "authTab": "认证日志",
-      "cspTab": "CSP 日志",
-      "filterAll": "全部",
-      "filterSuccess": "成功",
-      "filterInvalid": "失败",
-      "filterRateLimited": "受限",
-      "total": "总数",
-      "empty": "还没有审计日志。",
-      "notConfigured": "审计日志表尚未配置，请先应用 SQL 设置。",
-      "prev": "上一页",
-      "next": "下一页",
-      "cspTitle": "CSP 违规报告",
-      "cspDescription": "浏览器上报的 CSP 违规日志。",
-      "cspEmpty": "还没有 CSP 违规日志。",
-      "cspNotConfigured": "CSP 日志表尚未配置，请先应用 SQL 设置。",
-      "labelEmail": "邮箱",
-      "labelIp": "IP",
-      "labelIpHash": "IP 哈希",
-      "labelUserId": "用户 ID",
-      "labelLocale": "语言区域",
-      "labelUserAgent": "User-Agent",
-      "labelDirective": "指令",
-      "labelBlocked": "被阻止资源",
-      "labelDocument": "文档",
-      "labelDisposition": "处置方式"
-    },
     "editor": {
       "backToDashboard": "← 返回控制台",
       "draftLabel": "项目草稿",
-      "createTitle": "创建项目",
-      "createDescription": "使用类似 Notion 的编辑器创建包含标题、列表和图片的文章。",
       "createSubmit": "创建项目",
       "editTitle": "项目编辑器",
       "saveChanges": "保存更改"
@@ -300,11 +253,6 @@
       "description": "说明",
       "descriptionPlaceholder": "摘要（2-3 句）",
       "thumbnail": "缩略图",
-      "thumbnailHint": "JPG / PNG / WEBP，最大 5MB",
-      "thumbnailPreview": "16:9 缩略图预览",
-      "thumbnailRecommended": "推荐：",
-      "thumbnailSafeArea": "安全区域中心：",
-      "articleContent": "文章内容",
       "published": "已发布",
       "uploadAuthError": "上传文件前请先登录。",
       "uploadTypeError": "仅支持 JPG / PNG / WEBP / AVIF 文件。",
@@ -372,7 +320,6 @@
     }
   },
   "ActiveProjects": {
-    "sectionLabel": "// in_progress",
     "heading": "Active Projects",
     "projectColumn": "Project",
     "empty": "还没有进行中项目。",
@@ -411,11 +358,9 @@
     "password": "密码",
     "submit": "登录",
     "backToSite": "← 返回网站",
-    "errorInvalid": "邮箱或密码不正确。",
-    "errorRateLimit": "尝试次数过多，请等待约 10 分钟后再试。"
+    "errorInvalid": "邮箱或密码不正确。"
   },
   "NotFound": {
-    "code": "404 / Not Found",
     "title": "页面未找到",
     "description": "你访问的页面不存在，或可能已被移动。",
     "backHome": "返回首页",
@@ -482,7 +427,7 @@
     "threadsLabel": "threads",
     "lastSeenLabel": "最后在线",
     "backAbout": "← 返回关于",
-    "backTimeline": "← 返回活跃项目"
+    "backTimeline": "← 返回进行中项目"
   },
   "Radar": {
     "heading": "Radar",
@@ -499,5 +444,8 @@
     "visitSite": "访问网站",
     "discordCopied": "已复制 Discord 用户名",
     "ctaContact": "前往联系"
+  },
+  "Seo": {
+    "homeDescription": "独立开发者 Aki 的作品集，介绍我做的网站、Discord 机器人和自己运维的服务器。"
   }
 }

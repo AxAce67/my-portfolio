@@ -9,14 +9,10 @@
     "links": "Links"
   },
   "Hero": {
-    "name": "Aki",
-    "role": "// indie dev · student",
-    "title": "『把想法變成現實』",
     "subtitle": "做自己喜歡的東西。就這樣。",
     "ctaPrimary": "查看專案"
   },
   "About": {
-    "sectionTitle": "// about/",
     "heading": "About",
     "ageLabel": "年齡",
     "locationLabel": "🇯🇵 Tokyo",
@@ -31,14 +27,14 @@
     "statsCommits": "自建伺服器",
     "focusLabel": "Focus",
     "momentum": {
-      "label": "開發動力儀表",
-      "description": "根據最近 7 天的提交記錄，輕鬆讀取我目前的開發狀態。",
+      "label": "開發狀態",
+      "description": "根據最近 7 天的提交記錄，大致呈現我目前的開發狀態。",
       "weeklyCommits": "本週提交",
       "streak": "連續天數",
       "daySuffix": "天",
       "updated": "更新時間",
       "unavailable": "暫時無法讀取儀表，請稍後再試。",
-      "note": "這些數字僅供參考，已包含動力值。"
+      "note": "數字僅供參考。"
     },
     "focus": {
       "productThinking": "產品思維",
@@ -67,7 +63,6 @@
     "serversOnline": "{online}/{total} 台在線"
   },
   "Skills": {
-    "sectionTitle": "// skills/",
     "heading": "Skills",
     "subtitle": "擅長的技術與熟練度",
     "categories": {
@@ -84,17 +79,15 @@
     },
     "levels": {
       "main": "主力",
-      "familiar": "實戰",
+      "familiar": "熟練",
       "learning": "學習中"
     }
   },
   "TechStack": {
-    "sectionTitle": "// tech_stack/",
     "heading": "Tech Stack",
     "subtitle": "用過的技術棧"
   },
   "Projects": {
-    "sectionTitle": "// projects/",
     "heading": "Projects",
     "viewList": "列表",
     "viewGrid": "格狀",
@@ -105,13 +98,11 @@
     "loading": "載入中…"
   },
   "Contact": {
-    "sectionTitle": "> send_message",
     "heading": "Contact",
     "description": "如有問題、委託或回饋，歡迎隨時聯絡。",
     "optional": "選填",
     "formLabel": "Form",
     "formContact": "透過表單傳送",
-    "emailUnavailable": "準備中",
     "discordCopied": "已複製 Discord 使用者名稱",
     "name": "姓名",
     "namePlaceholder": "你的名字",
@@ -122,7 +113,6 @@
     "message": "內容",
     "messagePlaceholder": "在這裡輸入你的訊息…",
     "preview": "確認內容",
-    "verifying": "驗證中…",
     "sending": "傳送中…",
     "previewTitle": "確認你的訊息",
     "previewDescription": "送出前請再次確認內容。",
@@ -139,8 +129,6 @@
     "heading": "Sponsors"
   },
   "Footer": {
-    "tagline": "做自己喜歡的東西。就這樣。",
-    "copyright": "© {year} 保留所有權利。",
     "terms": "使用條款",
     "license": "授權",
     "ntpSynced": "已與 {server} 同步",
@@ -155,11 +143,9 @@
     "title": "Portfolio Dashboard",
     "subtitle": "管理你已發布的作品集內容。",
     "signOut": "登出",
-    "noAdmin": "此帳號沒有管理員權限。",
     "tabs": {
       "projects": "專案",
       "activeProjects": "進行中專案",
-      "audit": "稽核日誌",
       "profile": "個人資料",
       "mutualLinks": "友連"
     },
@@ -219,7 +205,6 @@
       "title": "進行中專案",
       "description": "管理排序、階段與發布狀態。",
       "newButton": "新建進行中專案",
-      "priority": "優先順序",
       "published": "已發布",
       "draft": "草稿",
       "empty": "尚無進行中專案。",
@@ -233,8 +218,7 @@
       "fields": {
         "name": "名稱",
         "namePlaceholder": "名稱",
-        "stage": "階段",
-        "priority": "優先順序"
+        "stage": "階段"
       },
       "createModal": {
         "title": "建立進行中專案"
@@ -256,40 +240,9 @@
       },
       "dragHandle": "拖曳以重新排序"
     },
-    "audit": {
-      "title": "認證稽核日誌",
-      "description": "顯示所有登入成功/失敗日誌，並支援分頁。",
-      "authTab": "認證日誌",
-      "cspTab": "CSP 日誌",
-      "filterAll": "全部",
-      "filterSuccess": "成功",
-      "filterInvalid": "失敗",
-      "filterRateLimited": "受限",
-      "total": "總數",
-      "empty": "尚無稽核日誌。",
-      "notConfigured": "稽核日誌資料表尚未設定，請先套用 SQL 設定。",
-      "prev": "上一頁",
-      "next": "下一頁",
-      "cspTitle": "CSP 違規報告",
-      "cspDescription": "由瀏覽器回報的 CSP 違規日誌。",
-      "cspEmpty": "尚無 CSP 違規日誌。",
-      "cspNotConfigured": "CSP 日誌資料表尚未設定，請先套用 SQL 設定。",
-      "labelEmail": "電子郵件",
-      "labelIp": "IP",
-      "labelIpHash": "IP 雜湊",
-      "labelUserId": "使用者 ID",
-      "labelLocale": "語系",
-      "labelUserAgent": "User-Agent",
-      "labelDirective": "指令",
-      "labelBlocked": "被封鎖資源",
-      "labelDocument": "文件",
-      "labelDisposition": "處置方式"
-    },
     "editor": {
       "backToDashboard": "← 返回控制台",
       "draftLabel": "專案草稿",
-      "createTitle": "建立專案",
-      "createDescription": "使用類似 Notion 的編輯器建立包含標題、列表與圖片的文章。",
       "createSubmit": "建立專案",
       "editTitle": "專案編輯器",
       "saveChanges": "儲存變更"
@@ -300,11 +253,6 @@
       "description": "說明",
       "descriptionPlaceholder": "摘要（2-3 句）",
       "thumbnail": "縮圖",
-      "thumbnailHint": "JPG / PNG / WEBP，最大 5MB",
-      "thumbnailPreview": "16:9 縮圖預覽",
-      "thumbnailRecommended": "建議：",
-      "thumbnailSafeArea": "安全區域中心：",
-      "articleContent": "文章內容",
       "published": "已發布",
       "uploadAuthError": "上傳檔案前請先登入。",
       "uploadTypeError": "僅支援 JPG / PNG / WEBP / AVIF 檔案。",
@@ -372,7 +320,6 @@
     }
   },
   "ActiveProjects": {
-    "sectionLabel": "// in_progress",
     "heading": "Active Projects",
     "projectColumn": "Project",
     "empty": "尚無進行中專案。",
@@ -398,7 +345,7 @@
   },
   "ProjectDetail": {
     "backToProjects": "← 返回專案",
-    "backToArchive": "← 返回檔案",
+    "backToArchive": "← 返回專案列表",
     "createdAt": "建立於",
     "updatedAt": "更新於",
     "noContent": "尚無內容。",
@@ -411,11 +358,9 @@
     "password": "密碼",
     "submit": "登入",
     "backToSite": "← 返回網站",
-    "errorInvalid": "電子郵件或密碼不正確。",
-    "errorRateLimit": "嘗試次數過多，請等待約 10 分鐘後再試。"
+    "errorInvalid": "電子郵件或密碼不正確。"
   },
   "NotFound": {
-    "code": "404 / Not Found",
     "title": "找不到頁面",
     "description": "你要尋找的頁面不存在，或可能已被移動。",
     "backHome": "返回首頁",
@@ -482,7 +427,7 @@
     "threadsLabel": "threads",
     "lastSeenLabel": "最後上線",
     "backAbout": "← 返回關於",
-    "backTimeline": "← 返回活躍項目"
+    "backTimeline": "← 返回進行中專案"
   },
   "Radar": {
     "heading": "Radar",
@@ -496,8 +441,11 @@
     "subtitle": "互相交換連結的朋友與網站",
     "ctaTitle": "友情連結申請開放中",
     "empty": "如希望交換連結，歡迎透過 X、Discord 或聯絡表單與我聯繫！",
-    "visitSite": "訪問網站",
+    "visitSite": "前往網站",
     "discordCopied": "已複製 Discord 使用者名稱",
     "ctaContact": "前往聯絡"
+  },
+  "Seo": {
+    "homeDescription": "獨立開發者 Aki 的作品集，介紹我做的網站、Discord 機器人與自己維運的伺服器。"
   }
 }

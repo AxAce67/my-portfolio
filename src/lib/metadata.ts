@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { defaultLocale, locales, type AppLocale } from '@/i18n/locales';
 import type { ProjectDetailRecord } from '@/lib/content/publicContent';
+import { getMessages } from '@/i18n/messages';
 import { DEFAULT_OG_IMAGE_PATH, buildLocaleUrl, getLocaleSeo, getOpenGraphLocale, getSiteUrl } from '@/lib/seo';
 
 type PageKind = 'home' | 'projects' | 'projectDetail' | 'servers' | 'radar' | 'terms' | 'license' | 'admin';
@@ -26,6 +27,7 @@ function getAlternateLanguages(path: string) {
 
 function getRouteCopy(locale: AppLocale, kind: PageKind) {
   const seo = getLocaleSeo(locale);
+  const messages = getMessages(locale);
 
   switch (kind) {
     case 'projects':
@@ -33,13 +35,13 @@ function getRouteCopy(locale: AppLocale, kind: PageKind) {
     case 'projectDetail':
       return { title: `Project | ${seo.siteName}`, description: seo.projectsDescription };
     case 'servers':
-      return { title: `Servers | ${seo.siteName}`, description: seo.homeDescription };
+      return { title: `Servers | ${seo.siteName}`, description: messages.Servers.description };
     case 'radar':
-      return { title: `Radar | ${seo.siteName}`, description: 'Live ADS-B aircraft radar powered by tar1090.' };
+      return { title: `Radar | ${seo.siteName}`, description: messages.Radar.description };
     case 'terms':
-      return { title: `Terms | ${seo.siteName}`, description: seo.homeDescription };
+      return { title: `Terms | ${seo.siteName}`, description: messages.Terms.description };
     case 'license':
-      return { title: `License | ${seo.siteName}`, description: seo.homeDescription };
+      return { title: `License | ${seo.siteName}`, description: messages.License.description };
     case 'admin':
       return { title: `Admin | ${seo.siteName}`, description: seo.homeDescription };
     case 'home':

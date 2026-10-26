@@ -1,7 +1,5 @@
 import { getLocaleMeta, type AppLocale } from '@/i18n/locales';
-
-const HOME_DESCRIPTION = 'Building what I love with code.';
-const PROJECTS_DESCRIPTION = 'Projects Aki has built.';
+import { getMessages } from '@/i18n/messages';
 
 export function getSiteUrl(): string {
   const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
@@ -26,66 +24,66 @@ export function getLocaleSeo(locale: AppLocale) {
       return {
         siteName: 'Aki Portfolio',
         homeTitle: 'Aki Portfolio',
-        homeDescription: HOME_DESCRIPTION,
+        homeDescription: getMessages(locale).Seo.homeDescription,
         projectsTitle: 'Projects Archive | Aki Portfolio',
-        projectsDescription: PROJECTS_DESCRIPTION,
+        projectsDescription: getMessages(locale).ProjectList.description,
       };
     case 'zh-cn':
       return {
         siteName: 'Aki Portfolio',
         homeTitle: 'Aki Portfolio',
-        homeDescription: HOME_DESCRIPTION,
-        projectsTitle: '项目档案 | Aki Portfolio',
-        projectsDescription: PROJECTS_DESCRIPTION,
+        homeDescription: getMessages(locale).Seo.homeDescription,
+        projectsTitle: '项目归档 | Aki Portfolio',
+        projectsDescription: getMessages(locale).ProjectList.description,
       };
     case 'zh-tw':
       return {
         siteName: 'Aki Portfolio',
         homeTitle: 'Aki Portfolio',
-        homeDescription: HOME_DESCRIPTION,
-        projectsTitle: '專案檔案 | Aki Portfolio',
-        projectsDescription: PROJECTS_DESCRIPTION,
+        homeDescription: getMessages(locale).Seo.homeDescription,
+        projectsTitle: '專案列表 | Aki Portfolio',
+        projectsDescription: getMessages(locale).ProjectList.description,
       };
     case 'ko':
       return {
         siteName: 'Aki Portfolio',
         homeTitle: 'Aki Portfolio',
-        homeDescription: HOME_DESCRIPTION,
+        homeDescription: getMessages(locale).Seo.homeDescription,
         projectsTitle: '프로젝트 아카이브 | Aki Portfolio',
-        projectsDescription: PROJECTS_DESCRIPTION,
+        projectsDescription: getMessages(locale).ProjectList.description,
       };
     case 'es':
       return {
         siteName: 'Aki Portfolio',
         homeTitle: 'Aki Portfolio',
-        homeDescription: HOME_DESCRIPTION,
+        homeDescription: getMessages(locale).Seo.homeDescription,
         projectsTitle: 'Archivo de proyectos | Aki Portfolio',
-        projectsDescription: PROJECTS_DESCRIPTION,
+        projectsDescription: getMessages(locale).ProjectList.description,
       };
     case 'fr':
       return {
         siteName: 'Aki Portfolio',
         homeTitle: 'Aki Portfolio',
-        homeDescription: HOME_DESCRIPTION,
+        homeDescription: getMessages(locale).Seo.homeDescription,
         projectsTitle: 'Archives des projets | Aki Portfolio',
-        projectsDescription: PROJECTS_DESCRIPTION,
+        projectsDescription: getMessages(locale).ProjectList.description,
       };
     case 'pt':
       return {
         siteName: 'Aki Portfolio',
         homeTitle: 'Aki Portfolio',
-        homeDescription: HOME_DESCRIPTION,
+        homeDescription: getMessages(locale).Seo.homeDescription,
         projectsTitle: 'Arquivo de projetos | Aki Portfolio',
-        projectsDescription: PROJECTS_DESCRIPTION,
+        projectsDescription: getMessages(locale).ProjectList.description,
       };
     case 'en':
     default:
       return {
         siteName: 'Aki Portfolio',
         homeTitle: 'Aki Portfolio',
-        homeDescription: HOME_DESCRIPTION,
+        homeDescription: getMessages(locale).Seo.homeDescription,
         projectsTitle: 'Projects Archive | Aki Portfolio',
-        projectsDescription: PROJECTS_DESCRIPTION,
+        projectsDescription: getMessages(locale).ProjectList.description,
       };
   }
 }

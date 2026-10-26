@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { Trash2 } from 'lucide-react';
 import { useTranslations } from '@/hooks/useTranslations';
 import { deleteProject } from '@/lib/content/adminContent';
+import { toast } from 'sonner';
 
 type Props = {
   projectId: string;
@@ -14,6 +15,7 @@ const modalBaseClass = 'fixed inset-0 z-2147483647 bg-black/45 backdrop-blur-xs 
 
 export default function DeleteProjectButton({ projectId, projectTitle, onDeleted }: Props) {
   const t = useTranslations('Dashboard.deleteProject');
+  const tToast = useTranslations('Dashboard.toast');
   const [open, setOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -23,6 +25,8 @@ export default function DeleteProjectButton({ projectId, projectTitle, onDeleted
       await deleteProject(projectId);
       setOpen(false);
       onDeleted();
+    } catch {
+      toast.error(tToast('project_delete_failed'));
     } finally {
       setIsDeleting(false);
     }

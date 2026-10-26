@@ -9,14 +9,10 @@
     "links": "Links"
   },
   "Hero": {
-    "name": "Aki",
-    "role": "// indie dev · student",
-    "title": "『Transformando ideias em realidade』",
     "subtitle": "Construo o que eu gosto. Só isso.",
     "ctaPrimary": "Ver projetos"
   },
   "About": {
-    "sectionTitle": "// about/",
     "heading": "About",
     "ageLabel": "Idade",
     "locationLabel": "🇯🇵 Tokyo",
@@ -31,14 +27,14 @@
     "statsCommits": "Servidores próprios",
     "focusLabel": "Focus",
     "momentum": {
-      "label": "Medidor de motivação dev",
+      "label": "Ritmo de desenvolvimento",
       "description": "Uma leitura leve da minha energia atual para programar com base nos commits dos últimos 7 dias.",
       "weeklyCommits": "Commits nesta semana",
       "streak": "Sequência",
       "daySuffix": "d",
       "updated": "Atualizado",
       "unavailable": "Não foi possível ler o medidor agora. Tente novamente em instantes.",
-      "note": "Os números são apenas indicativos. Motivação incluída."
+      "note": "Os números são aproximados."
     },
     "focus": {
       "productThinking": "Pensamento de produto",
@@ -67,7 +63,6 @@
     "serversOnline": "{online}/{total} online"
   },
   "Skills": {
-    "sectionTitle": "// skills/",
     "heading": "Skills",
     "subtitle": "Pontos fortes e nível de domínio",
     "categories": {
@@ -84,17 +79,15 @@
     },
     "levels": {
       "main": "Principal",
-      "familiar": "Produção",
+      "familiar": "Proficiente",
       "learning": "Aprendendo"
     }
   },
   "TechStack": {
-    "sectionTitle": "// tech_stack/",
     "heading": "Tech Stack",
     "subtitle": "Tecnologias que já usei"
   },
   "Projects": {
-    "sectionTitle": "// projects/",
     "heading": "Projects",
     "viewList": "Lista",
     "viewGrid": "Grade",
@@ -105,13 +98,11 @@
     "loading": "Carregando…"
   },
   "Contact": {
-    "sectionTitle": "> send_message",
     "heading": "Contact",
     "description": "Perguntas, propostas ou feedback: fique à vontade para entrar em contato.",
     "optional": "Opcional",
     "formLabel": "Form",
     "formContact": "Enviar pelo formulário",
-    "emailUnavailable": "Em breve",
     "discordCopied": "Nome de usuário do Discord copiado",
     "name": "Nome",
     "namePlaceholder": "Seu nome",
@@ -122,7 +113,6 @@
     "message": "Mensagem",
     "messagePlaceholder": "Digite sua mensagem aqui…",
     "preview": "Revisar mensagem",
-    "verifying": "Verificando…",
     "sending": "Enviando…",
     "previewTitle": "Revise sua mensagem",
     "previewDescription": "Confirme os dados antes de enviar.",
@@ -139,12 +129,10 @@
     "heading": "Sponsors"
   },
   "Footer": {
-    "tagline": "Construo o que eu gosto. Só isso.",
-    "copyright": "© {year} Todos os direitos reservados.",
     "terms": "Termos de uso",
     "license": "Licença",
     "ntpSynced": "sincronizado com {server}",
-    "ntpDeviceOffset": "este dispositivo {offset}",
+    "ntpDeviceOffset": "diferença do dispositivo {offset}",
     "ntpAccuracy": "erro estimado ±{accuracy} ms"
   },
   "Language": {
@@ -155,11 +143,9 @@
     "title": "Portfolio Dashboard",
     "subtitle": "Gerencie o conteúdo publicado do seu portfólio.",
     "signOut": "Sair",
-    "noAdmin": "Esta conta não tem acesso de administrador.",
     "tabs": {
       "projects": "Projetos",
       "activeProjects": "Projetos em andamento",
-      "audit": "Logs de auditoria",
       "profile": "Perfil",
       "mutualLinks": "Links"
     },
@@ -219,7 +205,6 @@
       "title": "Projetos em andamento",
       "description": "Gerencie ordem, etapa e status de publicação.",
       "newButton": "Novo projeto em andamento",
-      "priority": "prioridade",
       "published": "publicado",
       "draft": "rascunho",
       "empty": "Ainda não há projetos em andamento.",
@@ -233,8 +218,7 @@
       "fields": {
         "name": "Nome",
         "namePlaceholder": "Nome",
-        "stage": "Etapa",
-        "priority": "Prioridade"
+        "stage": "Etapa"
       },
       "createModal": {
         "title": "Criar projeto em andamento"
@@ -256,40 +240,9 @@
       },
       "dragHandle": "Arraste para reordenar"
     },
-    "audit": {
-      "title": "Logs de auditoria de autenticação",
-      "description": "Mostra todos os logs de login bem-sucedido/falho com paginação.",
-      "authTab": "Logs de autenticação",
-      "cspTab": "Logs CSP",
-      "filterAll": "Todos",
-      "filterSuccess": "Sucesso",
-      "filterInvalid": "Falha",
-      "filterRateLimited": "Limitado",
-      "total": "Total",
-      "empty": "Ainda não há logs de auditoria.",
-      "notConfigured": "A tabela de auditoria não está configurada. Aplique primeiro a configuração SQL.",
-      "prev": "Anterior",
-      "next": "Próximo",
-      "cspTitle": "Relatórios de violação de CSP",
-      "cspDescription": "Logs de violação de CSP enviados pelos navegadores.",
-      "cspEmpty": "Ainda não há logs de violação de CSP.",
-      "cspNotConfigured": "A tabela de logs de CSP não está configurada. Aplique primeiro a configuração SQL.",
-      "labelEmail": "e-mail",
-      "labelIp": "ip",
-      "labelIpHash": "hash do ip",
-      "labelUserId": "id do usuário",
-      "labelLocale": "idioma",
-      "labelUserAgent": "user agent",
-      "labelDirective": "diretiva",
-      "labelBlocked": "bloqueado",
-      "labelDocument": "documento",
-      "labelDisposition": "disposição"
-    },
     "editor": {
       "backToDashboard": "← Voltar ao painel",
       "draftLabel": "Rascunho do projeto",
-      "createTitle": "Criar projeto",
-      "createDescription": "Use um editor no estilo Notion para criar artigos com títulos, listas e imagens.",
       "createSubmit": "Criar projeto",
       "editTitle": "Editor de projeto",
       "saveChanges": "Salvar alterações"
@@ -300,11 +253,6 @@
       "description": "Descrição",
       "descriptionPlaceholder": "Resumo (2-3 frases)",
       "thumbnail": "Imagem de capa",
-      "thumbnailHint": "JPG / PNG / WEBP, até 5MB",
-      "thumbnailPreview": "Prévia 16:9",
-      "thumbnailRecommended": "Recomendado:",
-      "thumbnailSafeArea": "Centro da área segura:",
-      "articleContent": "Conteúdo do artigo",
       "published": "Publicado",
       "uploadAuthError": "Faça login antes de enviar arquivos.",
       "uploadTypeError": "Apenas arquivos JPG / PNG / WEBP / AVIF são permitidos.",
@@ -372,7 +320,6 @@
     }
   },
   "ActiveProjects": {
-    "sectionLabel": "// in_progress",
     "heading": "Active Projects",
     "projectColumn": "Project",
     "empty": "Ainda não há projetos em andamento.",
@@ -411,11 +358,9 @@
     "password": "Senha",
     "submit": "Entrar",
     "backToSite": "← Voltar ao site",
-    "errorInvalid": "E-mail ou senha incorretos.",
-    "errorRateLimit": "Muitas tentativas. Aguarde cerca de 10 minutos antes de tentar novamente."
+    "errorInvalid": "E-mail ou senha incorretos."
   },
   "NotFound": {
-    "code": "404 / Not Found",
     "title": "Página não encontrada",
     "description": "A página solicitada não existe ou pode ter sido movida.",
     "backHome": "Voltar ao início",
@@ -473,7 +418,7 @@
     "categoryGame": "Jogo",
     "categoryBot": "Bot",
     "categoryInfra": "Infra",
-    "specsLabel": "Specs",
+    "specsLabel": "Especificações",
     "osLabel": "SO",
     "ipLabel": "TAILNET IP",
     "cpuLabel": "CPU",
@@ -482,7 +427,7 @@
     "threadsLabel": "threads",
     "lastSeenLabel": "Visto por último",
     "backAbout": "← Voltar para Sobre",
-    "backTimeline": "← Voltar para Projetos ativos"
+    "backTimeline": "← Voltar para Projetos em andamento"
   },
   "Radar": {
     "heading": "Radar",
@@ -499,5 +444,8 @@
     "visitSite": "Visitar site",
     "discordCopied": "Nome de usuário do Discord copiado",
     "ctaContact": "Ir para contato"
+  },
+  "Seo": {
+    "homeDescription": "Portfólio de Aki, desenvolvedor independente: sites, bots de Discord e os servidores que eu mantenho."
   }
 }

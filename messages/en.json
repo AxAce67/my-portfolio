@@ -9,14 +9,10 @@
     "links": "Links"
   },
   "Hero": {
-    "name": "Aki",
-    "role": "// indie dev · student",
-    "title": "『Turning Ideas into Reality』",
     "subtitle": "Building what I love. That's it.",
     "ctaPrimary": "View Projects"
   },
   "About": {
-    "sectionTitle": "// about/",
     "heading": "About",
     "ageLabel": "Age",
     "locationLabel": "🇯🇵 Tokyo",
@@ -31,14 +27,14 @@
     "statsCommits": "Self-hosted Servers",
     "focusLabel": "Focus",
     "momentum": {
-      "label": "Dev Motivation Meter",
+      "label": "Dev Momentum",
       "description": "A playful read on my current coding energy based on commits from the last 7 days.",
       "weeklyCommits": "Commits this week",
       "streak": "Streak",
       "daySuffix": "d",
       "updated": "Updated",
       "unavailable": "Could not read the meter right now. Please try again in a moment.",
-      "note": "Numbers are directional. Momentum included"
+      "note": "Numbers are rough estimates."
     },
     "focus": {
       "productThinking": "Product Thinking",
@@ -67,7 +63,6 @@
     "serversOnline": "{online}/{total} online"
   },
   "Skills": {
-    "sectionTitle": "// skills/",
     "heading": "Skills",
     "subtitle": "Strengths and proficiency level",
     "categories": {
@@ -84,17 +79,15 @@
     },
     "levels": {
       "main": "Main",
-      "familiar": "Production",
+      "familiar": "Proficient",
       "learning": "Learning"
     }
   },
   "TechStack": {
-    "sectionTitle": "// tech_stack/",
     "heading": "Tech Stack",
     "subtitle": "Tech I've worked with"
   },
   "Projects": {
-    "sectionTitle": "// projects/",
     "heading": "Projects",
     "viewList": "List",
     "viewGrid": "Grid",
@@ -105,13 +98,11 @@
     "loading": "Loading…"
   },
   "Contact": {
-    "sectionTitle": "> send_message",
     "heading": "Contact",
     "description": "Questions, requests, or feedback — feel free to reach out.",
     "optional": "Optional",
     "formLabel": "Form",
     "formContact": "Send a message",
-    "emailUnavailable": "Coming soon",
     "discordCopied": "Copied Discord username",
     "name": "Name",
     "namePlaceholder": "Your name",
@@ -122,7 +113,6 @@
     "message": "Message",
     "messagePlaceholder": "Type your message here…",
     "preview": "Review Message",
-    "verifying": "Verifying…",
     "sending": "Sending…",
     "previewTitle": "Review your message",
     "previewDescription": "Please confirm the details before sending.",
@@ -139,12 +129,10 @@
     "heading": "Sponsors"
   },
   "Footer": {
-    "tagline": "Building what I love. That's it.",
-    "copyright": "© {year} All rights reserved.",
     "terms": "Terms of Use",
     "license": "License",
     "ntpSynced": "synced with {server}",
-    "ntpDeviceOffset": "this device {offset}",
+    "ntpDeviceOffset": "device offset {offset}",
     "ntpAccuracy": "estimated error ±{accuracy} ms"
   },
   "Language": {
@@ -155,11 +143,9 @@
     "title": "Portfolio Dashboard",
     "subtitle": "Manage your published portfolio content.",
     "signOut": "Sign Out",
-    "noAdmin": "This account does not have admin access.",
     "tabs": {
       "projects": "Projects",
       "activeProjects": "Active Projects",
-      "audit": "Audit Logs",
       "profile": "Profile",
       "mutualLinks": "Links"
     },
@@ -219,7 +205,6 @@
       "title": "Active Projects",
       "description": "Manage sort order, stage, and publish status for active projects.",
       "newButton": "New Active Project",
-      "priority": "priority",
       "published": "published",
       "draft": "draft",
       "empty": "No active projects yet.",
@@ -233,8 +218,7 @@
       "fields": {
         "name": "Name",
         "namePlaceholder": "Name",
-        "stage": "Stage",
-        "priority": "Priority"
+        "stage": "Stage"
       },
       "createModal": {
         "title": "Create Active Project"
@@ -256,40 +240,9 @@
       },
       "dragHandle": "Drag to reorder"
     },
-    "audit": {
-      "title": "Auth Audit Logs",
-      "description": "Showing all login success/failure logs with pagination.",
-      "authTab": "Auth Logs",
-      "cspTab": "CSP Logs",
-      "filterAll": "All",
-      "filterSuccess": "Success",
-      "filterInvalid": "Failed",
-      "filterRateLimited": "Rate Limited",
-      "total": "Total",
-      "empty": "No audit logs yet.",
-      "notConfigured": "Audit log table is not configured. Please apply the SQL setup.",
-      "prev": "Previous",
-      "next": "Next",
-      "cspTitle": "CSP Violation Reports",
-      "cspDescription": "CSP violation logs reported by browsers.",
-      "cspEmpty": "No CSP violation logs yet.",
-      "cspNotConfigured": "CSP log table is not configured. Please apply the SQL setup.",
-      "labelEmail": "email",
-      "labelIp": "ip",
-      "labelIpHash": "ip hash",
-      "labelUserId": "user id",
-      "labelLocale": "locale",
-      "labelUserAgent": "user agent",
-      "labelDirective": "directive",
-      "labelBlocked": "blocked",
-      "labelDocument": "document",
-      "labelDisposition": "disposition"
-    },
     "editor": {
       "backToDashboard": "← Back to Dashboard",
       "draftLabel": "Project Draft",
-      "createTitle": "Create Project",
-      "createDescription": "Use a Notion-style editor to create articles with headings, lists, and images.",
       "createSubmit": "Create Project",
       "editTitle": "Project Editor",
       "saveChanges": "Save Changes"
@@ -300,11 +253,6 @@
       "description": "Description",
       "descriptionPlaceholder": "Summary (2-3 sentences)",
       "thumbnail": "Thumbnail Image",
-      "thumbnailHint": "JPG / PNG / WEBP, up to 5MB",
-      "thumbnailPreview": "16:9 Thumbnail Preview",
-      "thumbnailRecommended": "Recommended:",
-      "thumbnailSafeArea": "Safe area center:",
-      "articleContent": "Article Content",
       "published": "Published",
       "uploadAuthError": "Please sign in before uploading files.",
       "uploadTypeError": "Only JPG / PNG / WEBP / AVIF files are allowed.",
@@ -372,7 +320,6 @@
     }
   },
   "ActiveProjects": {
-    "sectionLabel": "// in_progress",
     "heading": "Active Projects",
     "projectColumn": "Project",
     "empty": "No active projects yet.",
@@ -411,11 +358,9 @@
     "password": "Password",
     "submit": "Sign In",
     "backToSite": "← Back to Site",
-    "errorInvalid": "Incorrect email or password.",
-    "errorRateLimit": "Too many attempts. Please wait about 10 minutes before trying again."
+    "errorInvalid": "Incorrect email or password."
   },
   "NotFound": {
-    "code": "404 / Not Found",
     "title": "Page not found",
     "description": "The page you requested does not exist or may have been moved.",
     "backHome": "Back to Home",
@@ -430,7 +375,7 @@
     "sourceTitle": "Source Code License",
     "sourceDescription": "The source code of this site, including its design, implementation, and configuration, is All Rights Reserved unless otherwise stated. Unauthorized reproduction, repurposing, modification, or redistribution is prohibited.",
     "contentTitle": "Content Copyright",
-    "contentDescription": "All text, photographs, illustrations, designs, layouts, logos, and other creative works (collectively, \"Content\") published on this site are the property of the author (Aki) unless otherwise stated. Unauthorized reproduction, redistribution, modification, or secondary use of Content is prohibited. For personal reference or citation, please clearly attribute the source by including this site's URL. For commercial use, please contact us via the contact form in advance.",
+    "contentDescription": "All text, photographs, illustrations, designs, layouts, logos, and other creative works (collectively, \"Content\") published on this site are the property of the author (Aki) unless otherwise stated. Unauthorized reproduction, redistribution, modification, or secondary use of Content is prohibited. For personal reference or citation, please clearly attribute the source by including this site's URL. For commercial use, please get in touch through the contact form first.",
     "brandTitle": "Third-Party Logos and Trademarks",
     "brandDescription": "Third-party service names, logos, icons, and trademarks used on this site remain the property of their respective owners. They are used solely for identification and reference purposes and remain subject to each brand's applicable guidelines and usage terms.",
     "thirdPartyTitle": "Third-Party Libraries",
@@ -499,5 +444,8 @@
     "visitSite": "Visit site",
     "discordCopied": "Copied Discord username",
     "ctaContact": "Go to contact"
+  },
+  "Seo": {
+    "homeDescription": "Portfolio of Aki, an independent developer: websites, Discord bots, and the servers I run."
   }
 }

@@ -9,14 +9,10 @@
     "links": "Links"
   },
   "Hero": {
-    "name": "Aki",
-    "role": "// indie dev · student",
-    "title": "『아이디어를 현실로』",
     "subtitle": "좋아하는 것을 만든다. 그뿐입니다.",
     "ctaPrimary": "프로젝트 보기"
   },
   "About": {
-    "sectionTitle": "// about/",
     "heading": "About",
     "ageLabel": "나이",
     "locationLabel": "🇯🇵 Tokyo",
@@ -31,14 +27,14 @@
     "statsCommits": "자체 운영 서버",
     "focusLabel": "Focus",
     "momentum": {
-      "label": "개발 동기 미터",
+      "label": "개발 모멘텀",
       "description": "최근 7일간의 커밋을 바탕으로 현재 코딩 에너지를 가볍게 보여줍니다.",
       "weeklyCommits": "이번 주 커밋",
       "streak": "연속 일수",
       "daySuffix": "일",
       "updated": "업데이트",
       "unavailable": "지금은 미터를 불러올 수 없습니다. 잠시 후 다시 시도해 주세요.",
-      "note": "수치는 방향성을 보여주는 참고용입니다. 동기 수치도 포함되어 있습니다."
+      "note": "수치는 참고용입니다."
     },
     "focus": {
       "productThinking": "제품 사고",
@@ -67,7 +63,6 @@
     "serversOnline": "{online}/{total}대 온라인"
   },
   "Skills": {
-    "sectionTitle": "// skills/",
     "heading": "Skills",
     "subtitle": "강점 기술과 숙련도",
     "categories": {
@@ -84,17 +79,15 @@
     },
     "levels": {
       "main": "주력",
-      "familiar": "실전",
+      "familiar": "실무 수준",
       "learning": "학습 중"
     }
   },
   "TechStack": {
-    "sectionTitle": "// tech_stack/",
     "heading": "Tech Stack",
     "subtitle": "사용해 본 기술 스택"
   },
   "Projects": {
-    "sectionTitle": "// projects/",
     "heading": "Projects",
     "viewList": "목록",
     "viewGrid": "그리드",
@@ -105,13 +98,11 @@
     "loading": "불러오는 중…"
   },
   "Contact": {
-    "sectionTitle": "> send_message",
     "heading": "Contact",
     "description": "질문, 의뢰, 피드백이 있다면 편하게 연락해 주세요.",
     "optional": "선택",
     "formLabel": "Form",
     "formContact": "폼으로 보내기",
-    "emailUnavailable": "준비 중",
     "discordCopied": "Discord 사용자 이름을 복사했습니다",
     "name": "이름",
     "namePlaceholder": "이름",
@@ -122,7 +113,6 @@
     "message": "메시지",
     "messagePlaceholder": "메시지를 입력해 주세요…",
     "preview": "메시지 확인",
-    "verifying": "확인 중…",
     "sending": "전송 중…",
     "previewTitle": "메시지 내용을 확인해 주세요",
     "previewDescription": "전송 전에 내용을 다시 확인해 주세요.",
@@ -139,8 +129,6 @@
     "heading": "Sponsors"
   },
   "Footer": {
-    "tagline": "좋아하는 것을 만든다. 그뿐입니다.",
-    "copyright": "© {year} All rights reserved.",
     "terms": "이용 약관",
     "license": "라이선스",
     "ntpSynced": "{server}와 동기화",
@@ -155,11 +143,9 @@
     "title": "Portfolio Dashboard",
     "subtitle": "공개된 포트폴리오 콘텐츠를 관리합니다.",
     "signOut": "로그아웃",
-    "noAdmin": "이 계정에는 관리자 권한이 없습니다.",
     "tabs": {
       "projects": "프로젝트",
       "activeProjects": "진행 중 프로젝트",
-      "audit": "감사 로그",
       "profile": "프로필",
       "mutualLinks": "상호 링크"
     },
@@ -219,7 +205,6 @@
       "title": "진행 중 프로젝트",
       "description": "정렬 순서, 단계, 공개 상태를 관리합니다.",
       "newButton": "새 진행 중 프로젝트",
-      "priority": "우선순위",
       "published": "공개",
       "draft": "초안",
       "empty": "진행 중 프로젝트가 없습니다.",
@@ -233,8 +218,7 @@
       "fields": {
         "name": "이름",
         "namePlaceholder": "이름",
-        "stage": "단계",
-        "priority": "우선순위"
+        "stage": "단계"
       },
       "createModal": {
         "title": "진행 중 프로젝트 만들기"
@@ -256,40 +240,9 @@
       },
       "dragHandle": "드래그하여 순서 변경"
     },
-    "audit": {
-      "title": "인증 감사 로그",
-      "description": "로그인 성공/실패 로그를 모두 표시하며 페이지네이션을 지원합니다.",
-      "authTab": "인증 로그",
-      "cspTab": "CSP 로그",
-      "filterAll": "전체",
-      "filterSuccess": "성공",
-      "filterInvalid": "실패",
-      "filterRateLimited": "제한됨",
-      "total": "전체",
-      "empty": "감사 로그가 아직 없습니다.",
-      "notConfigured": "감사 로그 테이블이 설정되지 않았습니다. SQL 설정을 먼저 적용해 주세요.",
-      "prev": "이전",
-      "next": "다음",
-      "cspTitle": "CSP 위반 보고서",
-      "cspDescription": "브라우저가 보고한 CSP 위반 로그입니다.",
-      "cspEmpty": "CSP 위반 로그가 아직 없습니다.",
-      "cspNotConfigured": "CSP 로그 테이블이 설정되지 않았습니다. SQL 설정을 먼저 적용해 주세요.",
-      "labelEmail": "이메일",
-      "labelIp": "ip",
-      "labelIpHash": "ip 해시",
-      "labelUserId": "사용자 ID",
-      "labelLocale": "로캘",
-      "labelUserAgent": "user agent",
-      "labelDirective": "directive",
-      "labelBlocked": "blocked",
-      "labelDocument": "document",
-      "labelDisposition": "disposition"
-    },
     "editor": {
       "backToDashboard": "← 대시보드로 돌아가기",
       "draftLabel": "프로젝트 초안",
-      "createTitle": "프로젝트 만들기",
-      "createDescription": "Notion 스타일 편집기로 제목, 목록, 이미지를 포함한 글을 만듭니다.",
       "createSubmit": "프로젝트 만들기",
       "editTitle": "프로젝트 편집기",
       "saveChanges": "변경 사항 저장"
@@ -300,11 +253,6 @@
       "description": "설명",
       "descriptionPlaceholder": "요약 (2-3문장)",
       "thumbnail": "썸네일 이미지",
-      "thumbnailHint": "JPG / PNG / WEBP, 최대 5MB",
-      "thumbnailPreview": "16:9 썸네일 미리보기",
-      "thumbnailRecommended": "권장:",
-      "thumbnailSafeArea": "안전 영역 중앙:",
-      "articleContent": "글 내용",
       "published": "공개됨",
       "uploadAuthError": "파일을 업로드하기 전에 로그인해 주세요.",
       "uploadTypeError": "JPG / PNG / WEBP / AVIF 파일만 허용됩니다.",
@@ -372,7 +320,6 @@
     }
   },
   "ActiveProjects": {
-    "sectionLabel": "// in_progress",
     "heading": "Active Projects",
     "projectColumn": "Project",
     "empty": "진행 중 프로젝트가 없습니다.",
@@ -411,11 +358,9 @@
     "password": "비밀번호",
     "submit": "로그인",
     "backToSite": "← 사이트로 돌아가기",
-    "errorInvalid": "이메일 또는 비밀번호가 올바르지 않습니다.",
-    "errorRateLimit": "시도가 너무 많습니다. 약 10분 후 다시 시도해 주세요."
+    "errorInvalid": "이메일 또는 비밀번호가 올바르지 않습니다."
   },
   "NotFound": {
-    "code": "404 / Not Found",
     "title": "페이지를 찾을 수 없습니다",
     "description": "요청한 페이지가 없거나 이동되었을 수 있습니다.",
     "backHome": "홈으로 돌아가기",
@@ -482,7 +427,7 @@
     "threadsLabel": "threads",
     "lastSeenLabel": "마지막 확인",
     "backAbout": "← About으로 돌아가기",
-    "backTimeline": "← 활성 프로젝트로 돌아가기"
+    "backTimeline": "← 진행 중 프로젝트로 돌아가기"
   },
   "Radar": {
     "heading": "Radar",
@@ -499,5 +444,8 @@
     "visitSite": "사이트 방문",
     "discordCopied": "Discord 사용자 이름을 복사했습니다",
     "ctaContact": "문의하기로"
+  },
+  "Seo": {
+    "homeDescription": "개인 개발자 Aki의 포트폴리오. 직접 만든 웹사이트와 Discord 봇, 운영 중인 서버를 소개합니다."
   }
 }

@@ -9,14 +9,10 @@
     "links": "Links"
   },
   "Hero": {
-    "name": "Aki",
-    "role": "// indie dev · student",
-    "title": "『アイデアを形にする』",
     "subtitle": "好きなものを作る。それだけ。",
     "ctaPrimary": "Projects を見る"
   },
   "About": {
-    "sectionTitle": "// about/",
     "heading": "About",
     "ageLabel": "年齢",
     "locationLabel": "🇯🇵 Tokyo",
@@ -67,7 +63,6 @@
     "serversOnline": "{online}/{total} 台オンライン"
   },
   "Skills": {
-    "sectionTitle": "// skills/",
     "heading": "Skills",
     "subtitle": "得意な技術と習熟度",
     "categories": {
@@ -89,12 +84,10 @@
     }
   },
   "TechStack": {
-    "sectionTitle": "// tech_stack/",
     "heading": "Tech Stack",
     "subtitle": "使ったことのある技術スタック"
   },
   "Projects": {
-    "sectionTitle": "// projects/",
     "heading": "Projects",
     "viewList": "リスト",
     "viewGrid": "グリッド",
@@ -105,13 +98,11 @@
     "loading": "読み込み中…"
   },
   "Contact": {
-    "sectionTitle": "> send_message",
     "heading": "Contact",
     "description": "ご質問・ご依頼・フィードバック等、お気軽にどうぞ！",
     "optional": "任意",
     "formLabel": "Form",
     "formContact": "フォームで送る",
-    "emailUnavailable": "準備中",
     "discordCopied": "Discordユーザー名をコピーしました",
     "name": "名前",
     "namePlaceholder": "お名前",
@@ -122,7 +113,6 @@
     "message": "メッセージ",
     "messagePlaceholder": "メッセージを入力してください…",
     "preview": "内容を確認",
-    "verifying": "確認中…",
     "sending": "送信中…",
     "previewTitle": "送信内容の確認",
     "previewDescription": "以下の内容で送信してよろしいですか？",
@@ -139,8 +129,6 @@
     "heading": "Sponsors"
   },
   "Footer": {
-    "tagline": "好きなものを作る。それだけ。",
-    "copyright": "© {year} All rights reserved.",
     "terms": "利用規約",
     "license": "ライセンス",
     "ntpSynced": "{server} と同期",
@@ -155,11 +143,9 @@
     "title": "Portfolio Dashboard",
     "subtitle": "公開中コンテンツを管理します。",
     "signOut": "サインアウト",
-    "noAdmin": "このアカウントには管理権限がありません。",
     "tabs": {
       "projects": "プロジェクト",
       "activeProjects": "進行中プロジェクト",
-      "audit": "監査ログ",
       "profile": "プロフィール",
       "mutualLinks": "相互リンク"
     },
@@ -219,7 +205,6 @@
       "title": "進行中プロジェクト",
       "description": "進行中プロジェクトの並び順・ステージ・公開状態を管理します。",
       "newButton": "進行中プロジェクトを追加",
-      "priority": "優先度",
       "published": "公開中",
       "draft": "下書き",
       "empty": "進行中プロジェクトがまだありません。",
@@ -233,8 +218,7 @@
       "fields": {
         "name": "名前",
         "namePlaceholder": "プロジェクト名",
-        "stage": "ステージ",
-        "priority": "優先度"
+        "stage": "ステージ"
       },
       "createModal": {
         "title": "進行中プロジェクトを作成"
@@ -256,40 +240,9 @@
       },
       "dragHandle": "ドラッグで並び替え"
     },
-    "audit": {
-      "title": "認証監査ログ",
-      "description": "ログイン成功/失敗の全ログをページング表示します。",
-      "authTab": "認証ログ",
-      "cspTab": "CSPログ",
-      "filterAll": "すべて",
-      "filterSuccess": "成功",
-      "filterInvalid": "失敗",
-      "filterRateLimited": "制限",
-      "total": "総件数",
-      "empty": "まだ監査ログがありません。",
-      "notConfigured": "監査ログテーブルが未設定です。SQLを適用してください。",
-      "prev": "前へ",
-      "next": "次へ",
-      "cspTitle": "CSP違反レポート",
-      "cspDescription": "ブラウザから送信されたCSP違反ログです。",
-      "cspEmpty": "CSP違反ログはまだありません。",
-      "cspNotConfigured": "CSPログテーブルが未設定です。SQLを適用してください。",
-      "labelEmail": "email",
-      "labelIp": "ip",
-      "labelIpHash": "ip hash",
-      "labelUserId": "user id",
-      "labelLocale": "locale",
-      "labelUserAgent": "user agent",
-      "labelDirective": "directive",
-      "labelBlocked": "blocked",
-      "labelDocument": "document",
-      "labelDisposition": "disposition"
-    },
     "editor": {
       "backToDashboard": "← ダッシュボードに戻る",
       "draftLabel": "プロジェクト下書き",
-      "createTitle": "プロジェクトを作成",
-      "createDescription": "Notion風エディタで、見出し・リスト・画像を含む記事を作成できます。",
       "createSubmit": "プロジェクトを作成",
       "editTitle": "プロジェクト編集",
       "saveChanges": "変更を保存"
@@ -300,11 +253,6 @@
       "description": "説明",
       "descriptionPlaceholder": "概要（2〜3文）",
       "thumbnail": "サムネイル画像",
-      "thumbnailHint": "JPG / PNG / WEBP, up to 5MB",
-      "thumbnailPreview": "16:9 Thumbnail Preview",
-      "thumbnailRecommended": "推奨サイズ:",
-      "thumbnailSafeArea": "セーフエリア中央:",
-      "articleContent": "記事本文",
       "published": "公開する",
       "uploadAuthError": "ファイルをアップロードするにはログインが必要です。",
       "uploadTypeError": "JPG / PNG / WEBP / AVIF 形式のみアップロードできます。",
@@ -372,7 +320,6 @@
     }
   },
   "ActiveProjects": {
-    "sectionLabel": "// in_progress",
     "heading": "Active Projects",
     "projectColumn": "Project",
     "empty": "進行中プロジェクトがまだありません。",
@@ -411,11 +358,9 @@
     "password": "パスワード",
     "submit": "ログイン",
     "backToSite": "← サイトに戻る",
-    "errorInvalid": "メールアドレスまたはパスワードが違います。",
-    "errorRateLimit": "試行回数が多すぎます。10分ほど待ってから再試行してください。"
+    "errorInvalid": "メールアドレスまたはパスワードが違います。"
   },
   "NotFound": {
-    "code": "404 / Not Found",
     "title": "ページが見つかりません",
     "description": "お探しのページは存在しないか、移動された可能性があります。",
     "backHome": "トップへ戻る",
@@ -499,5 +444,8 @@
     "visitSite": "サイトを見る",
     "discordCopied": "Discordユーザー名をコピーしました",
     "ctaContact": "お問い合わせへ"
+  },
+  "Seo": {
+    "homeDescription": "個人開発者 Aki のポートフォリオ。作った Web サイトや Discord Bot、運用しているサーバーを紹介しています。"
   }
 }

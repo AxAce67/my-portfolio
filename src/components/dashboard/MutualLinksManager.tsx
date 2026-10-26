@@ -201,7 +201,7 @@ export default function MutualLinksManager() {
       if (error instanceof UploadValidationError) {
         toast.error(error.message === 'size' ? tForm('uploadSizeError') : tForm('uploadTypeError'));
       } else {
-        toast.error(tToast('active_update_failed'));
+        toast.error(tToast('links_update_failed'));
       }
     }
   }
