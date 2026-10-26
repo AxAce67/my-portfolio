@@ -354,10 +354,10 @@
     "prev": "Anterior",
     "next": "Próximo",
     "filterAll": "Todos",
-    "filterTag": "Tag: {tag}",
-    "clearTag": "Remover a tag {tag}",
     "backToAbout": "← Voltar para Sobre",
-    "backToActive": "← Voltar para Projetos em andamento"
+    "backToActive": "← Voltar para Projetos em andamento",
+    "allTags": "Todas as tags",
+    "tagLabel": "Filtrar por tag"
   },
   "ProjectDetail": {
     "backToProjects": "← Voltar aos projetos",

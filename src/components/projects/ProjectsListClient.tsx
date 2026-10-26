@@ -13,7 +13,6 @@ import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
 import { navigationStateKeys, readSessionNumber, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
 import { ProjectBadges, TagChip } from '@/components/projects/ProjectBadges';
 import type { ProjectKind } from '@/lib/content/publicContent';
-import { X } from 'lucide-react';
 
 const PAGE_SIZE = 12;
 
@@ -62,6 +61,12 @@ export default function ProjectsListClient({ projects }: Props) {
   }, []);
 
   const [kindFilter, setKindFilter] = useState<KindFilter>('all');
+  // Every tag in use, most-used first, for the tag dropdown.
+  const tagOptions = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const project of projects) for (const tag of project.tags) counts.set(tag, (counts.get(tag) ?? 0) + 1);
+    return [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  }, [projects]);
   const [tagFilter, setTagFilter] = useState<string | null>(null);
 
   // ?kind= and ?tag= (e.g. from a tag clicked on the home page or an article)
@@ -174,20 +179,25 @@ export default function ProjectsListClient({ projects }: Props) {
               {option === 'all' ? t('filterAll') : tKind(option)}
             </button>
           ))}
-          {tagFilter && (
-            <button
-              type="button"
-              onClick={() => {
-                setTagFilter(null);
-                setPage(1);
-              }}
-              className="inline-flex items-center gap-1 rounded-full border border-foreground/40 px-3 py-1 text-xs font-mono"
-              aria-label={t('clearTag', { tag: tagFilter })}
-            >
-              {t('filterTag', { tag: tagFilter })}
-              <X className="w-3 h-3" />
-            </button>
-          )}
+          <label htmlFor="projects-tag" className="sr-only">{t('tagLabel')}</label>
+          <select
+            id="projects-tag"
+            value={tagFilter ?? ''}
+            onChange={(event) => {
+              setTagFilter(event.target.value || null);
+              setPage(1);
+            }}
+            className={`ml-auto rounded-full border bg-card px-3 py-1 text-xs font-mono ${tagFilter
+              ? 'border-foreground text-foreground'
+              : 'border-border text-muted-foreground hover:border-border-hover'}`}
+          >
+            <option value="">{t('allTags')}</option>
+            {tagOptions.map(([tag, count]) => (
+              <option key={tag} value={tag}>
+                {tag} ({count})
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 

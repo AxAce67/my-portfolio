@@ -354,10 +354,10 @@
     "prev": "上一页",
     "next": "下一页",
     "filterAll": "全部",
-    "filterTag": "标签：{tag}",
-    "clearTag": "清除标签 {tag}",
     "backToAbout": "← 返回关于",
-    "backToActive": "← 返回进行中项目"
+    "backToActive": "← 返回进行中项目",
+    "allTags": "全部标签",
+    "tagLabel": "按标签筛选"
   },
   "ProjectDetail": {
     "backToProjects": "← 返回项目",

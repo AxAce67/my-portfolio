@@ -354,10 +354,10 @@
     "prev": "Previous",
     "next": "Next",
     "filterAll": "All",
-    "filterTag": "Tag: {tag}",
-    "clearTag": "Clear tag {tag}",
     "backToAbout": "← Back to About",
-    "backToActive": "← Back to Active Projects"
+    "backToActive": "← Back to Active Projects",
+    "allTags": "All tags",
+    "tagLabel": "Filter by tag"
   },
   "ProjectDetail": {
     "backToProjects": "← Back to Projects",

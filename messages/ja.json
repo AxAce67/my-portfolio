@@ -354,10 +354,10 @@
     "prev": "前へ",
     "next": "次へ",
     "filterAll": "すべて",
-    "filterTag": "タグ: {tag}",
-    "clearTag": "「{tag}」の絞り込みを解除",
     "backToAbout": "← Aboutへ戻る",
-    "backToActive": "← Active Projectsへ戻る"
+    "backToActive": "← Active Projectsへ戻る",
+    "allTags": "すべてのタグ",
+    "tagLabel": "タグで絞り込む"
   },
   "ProjectDetail": {
     "backToProjects": "← Projectsへ戻る",
