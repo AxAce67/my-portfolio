@@ -174,7 +174,15 @@
       "empty": "プロジェクトがまだありません。",
       "searchPlaceholder": "プロジェクトを検索…",
       "filterAll": "すべてのステータス",
-      "noResults": "条件に一致するプロジェクトがありません。"
+      "noResults": "条件に一致するプロジェクトがありません。",
+      "kindService": "サービス",
+      "updated": "更新 {when}",
+      "preview": "プレビュー",
+      "publishedToast": "公開しました",
+      "unpublishedToast": "非公開にしました",
+      "publishFailed": "切り替えられませんでした",
+      "previewNotice": "保存済みの内容のプレビューです。",
+      "backToEditor": "編集に戻る"
     },
     "toast": {
       "project_created": "プロジェクトを作成しました。",
@@ -286,7 +294,13 @@
       "serviceUrlPlaceholder": "サービスの URL（https://…）",
       "tags": "タグ",
       "tagPlaceholder": "タグを追加（Enter で確定）",
-      "removeTag": "{tag} を外す"
+      "removeTag": "{tag} を外す",
+      "unsaved": "保存していない変更があります",
+      "savedAt": "保存済み・{when}",
+      "saveShortcut": "⌘S / Ctrl+S で保存",
+      "statusLabel": "状態",
+      "kindLabel": "種類",
+      "preview": "プレビューを開く"
     },
     "profile": {
       "title": "プロフィール画像",

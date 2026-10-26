@@ -174,7 +174,15 @@
       "empty": "Aucun projet pour le moment.",
       "searchPlaceholder": "Rechercher des projets…",
       "filterAll": "Tous les statuts",
-      "noResults": "Aucun projet ne correspond."
+      "noResults": "Aucun projet ne correspond.",
+      "kindService": "Service",
+      "updated": "Mis à jour {when}",
+      "preview": "Aperçu",
+      "publishedToast": "Publié",
+      "unpublishedToast": "Dépublié",
+      "publishFailed": "Impossible de changer",
+      "previewNotice": "Aperçu de la version enregistrée.",
+      "backToEditor": "Retour à l'éditeur"
     },
     "toast": {
       "project_created": "Projet créé.",
@@ -286,7 +294,13 @@
       "serviceUrlPlaceholder": "URL du service (https://…)",
       "tags": "Tags",
       "tagPlaceholder": "Ajouter un tag (Entrée)",
-      "removeTag": "Retirer {tag}"
+      "removeTag": "Retirer {tag}",
+      "unsaved": "Modifications non enregistrées",
+      "savedAt": "Enregistré {when}",
+      "saveShortcut": "Enregistrer avec ⌘S / Ctrl+S",
+      "statusLabel": "Statut",
+      "kindLabel": "Type",
+      "preview": "Ouvrir l'aperçu"
     },
     "profile": {
       "title": "Photo de profil",

@@ -174,7 +174,15 @@
       "empty": "아직 프로젝트가 없습니다.",
       "searchPlaceholder": "프로젝트 검색…",
       "filterAll": "모든 상태",
-      "noResults": "일치하는 프로젝트가 없습니다."
+      "noResults": "일치하는 프로젝트가 없습니다.",
+      "kindService": "서비스",
+      "updated": "{when} 수정",
+      "preview": "미리보기",
+      "publishedToast": "공개했습니다",
+      "unpublishedToast": "비공개로 바꿨습니다",
+      "publishFailed": "바꾸지 못했습니다",
+      "previewNotice": "저장된 내용의 미리보기입니다.",
+      "backToEditor": "편집으로 돌아가기"
     },
     "toast": {
       "project_created": "프로젝트가 생성되었습니다.",
@@ -286,7 +294,13 @@
       "serviceUrlPlaceholder": "서비스 URL (https://…)",
       "tags": "태그",
       "tagPlaceholder": "태그 추가 (Enter)",
-      "removeTag": "{tag} 삭제"
+      "removeTag": "{tag} 삭제",
+      "unsaved": "저장하지 않은 변경 사항이 있습니다",
+      "savedAt": "{when} 저장됨",
+      "saveShortcut": "⌘S / Ctrl+S로 저장",
+      "statusLabel": "상태",
+      "kindLabel": "종류",
+      "preview": "미리보기 열기"
     },
     "profile": {
       "title": "프로필 사진",

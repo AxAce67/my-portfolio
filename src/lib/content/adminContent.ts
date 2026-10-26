@@ -40,6 +40,8 @@ export type AdminProjectSummary = {
   status: ProjectStatus;
   is_published: boolean;
   thumbnail_url: string | null;
+  kind: ProjectKind;
+  tags: string[];
   updated_at: string;
 };
 
@@ -95,6 +97,8 @@ function toProjectSummary(row: ProjectRow): AdminProjectSummary {
     status: row.status ?? 'idea',
     is_published: row.is_published ?? false,
     thumbnail_url: row.thumbnail_url ?? null,
+    kind: row.kind ?? 'project',
+    tags: row.tags ?? [],
     updated_at: row.$updatedAt,
   };
 }
@@ -103,9 +107,25 @@ export async function listAdminProjects(): Promise<AdminProjectSummary[]> {
   const rows = await tablesDB.listRows<ProjectRow>({
     databaseId: DATABASE_ID,
     tableId: PROJECTS_TABLE_ID,
-    queries: [Query.orderDesc('$updatedAt'), Query.limit(100)],
+    queries: [
+      Query.select(['title', 'status', 'is_published', 'thumbnail_url', 'kind', 'tags']),
+      Query.orderDesc('$updatedAt'),
+      Query.limit(100),
+    ],
   });
   return rows.rows.map(toProjectSummary);
+}
+
+// Flip only the published flag (and with it who may read the row), from the
+// dashboard list without opening the editor.
+export async function setProjectPublished(id: string, isPublished: boolean): Promise<void> {
+  await tablesDB.updateRow({
+    databaseId: DATABASE_ID,
+    tableId: PROJECTS_TABLE_ID,
+    rowId: id,
+    data: { is_published: isPublished },
+    permissions: publicReadPermissions(isPublished),
+  });
 }
 
 // Every tag used so far, for suggestions in the editor.

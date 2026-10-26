@@ -36,3 +36,17 @@ export function formatLocaleDate(value: string | null | undefined, locale: strin
     day: 'numeric',
   }).format(date);
 }
+
+// "3 minutes ago" / "3分前" style text for recent dates (admin lists).
+export function formatRelativeTime(value: string | null | undefined, locale: string, now = Date.now()): string {
+  if (!value) return '';
+  const diffSeconds = Math.round((new Date(value).getTime() - now) / 1000);
+  const units: [Intl.RelativeTimeFormatUnit, number][] = [
+    ['year', 31536000], ['month', 2592000], ['week', 604800], ['day', 86400], ['hour', 3600], ['minute', 60],
+  ];
+  const format = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
+  for (const [unit, seconds] of units) {
+    if (Math.abs(diffSeconds) >= seconds) return format.format(Math.round(diffSeconds / seconds), unit);
+  }
+  return format.format(0, 'minute');
+}

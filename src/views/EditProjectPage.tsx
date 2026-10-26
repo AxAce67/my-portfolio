@@ -41,7 +41,6 @@ export default function EditProjectPage() {
     try {
       await updateProject(id, input);
       toast.success(tToast('project_updated'));
-      router.push(`/${locale}/admin?tab=projects`);
     } catch (error) {
       toast.error(tToast('project_update_failed'));
       throw error;
@@ -59,7 +58,7 @@ export default function EditProjectPage() {
   }
 
   return (
-    <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-10 sm:pb-20">
+    <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-10 sm:pb-20">
       <div className="mb-4 sm:mb-6 flex items-center justify-between gap-3">
         <TransitionLink
           href={`/${locale}/admin?tab=projects`}
@@ -76,6 +75,7 @@ export default function EditProjectPage() {
         submitLabel={t('saveChanges')}
         onSubmit={handleSubmit}
         onDirtyChange={setIsDirty}
+        previewHref={`/${locale}/admin/projects/${id}/preview`}
         initialValues={{
           title: project.title,
           description: project.description,

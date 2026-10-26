@@ -174,7 +174,15 @@
       "empty": "Aún no hay proyectos.",
       "searchPlaceholder": "Buscar proyectos…",
       "filterAll": "Todos los estados",
-      "noResults": "No hay proyectos que coincidan."
+      "noResults": "No hay proyectos que coincidan.",
+      "kindService": "Servicio",
+      "updated": "Actualizado {when}",
+      "preview": "Vista previa",
+      "publishedToast": "Publicado",
+      "unpublishedToast": "Despublicado",
+      "publishFailed": "No se pudo cambiar",
+      "previewNotice": "Vista previa de la versión guardada.",
+      "backToEditor": "Volver al editor"
     },
     "toast": {
       "project_created": "Proyecto creado.",
@@ -286,7 +294,13 @@
       "serviceUrlPlaceholder": "URL del servicio (https://…)",
       "tags": "Etiquetas",
       "tagPlaceholder": "Añadir etiqueta (Enter)",
-      "removeTag": "Quitar {tag}"
+      "removeTag": "Quitar {tag}",
+      "unsaved": "Hay cambios sin guardar",
+      "savedAt": "Guardado {when}",
+      "saveShortcut": "Guarda con ⌘S / Ctrl+S",
+      "statusLabel": "Estado",
+      "kindLabel": "Tipo",
+      "preview": "Abrir vista previa"
     },
     "profile": {
       "title": "Foto de perfil",

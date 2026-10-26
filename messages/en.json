@@ -174,7 +174,15 @@
       "empty": "No projects yet.",
       "searchPlaceholder": "Search projects…",
       "filterAll": "All statuses",
-      "noResults": "No matching projects."
+      "noResults": "No matching projects.",
+      "kindService": "Service",
+      "updated": "Updated {when}",
+      "preview": "Preview",
+      "publishedToast": "Published",
+      "unpublishedToast": "Unpublished",
+      "publishFailed": "Could not change it",
+      "previewNotice": "Preview of the saved version.",
+      "backToEditor": "Back to editor"
     },
     "toast": {
       "project_created": "Project created.",
@@ -286,7 +294,13 @@
       "serviceUrlPlaceholder": "Service URL (https://…)",
       "tags": "Tags",
       "tagPlaceholder": "Add a tag (Enter)",
-      "removeTag": "Remove {tag}"
+      "removeTag": "Remove {tag}",
+      "unsaved": "You have unsaved changes",
+      "savedAt": "Saved {when}",
+      "saveShortcut": "Save with ⌘S / Ctrl+S",
+      "statusLabel": "Status",
+      "kindLabel": "Kind",
+      "preview": "Open preview"
     },
     "profile": {
       "title": "Profile Photo",

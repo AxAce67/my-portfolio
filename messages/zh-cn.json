@@ -174,7 +174,15 @@
       "empty": "还没有项目。",
       "searchPlaceholder": "搜索项目…",
       "filterAll": "所有状态",
-      "noResults": "没有匹配的项目。"
+      "noResults": "没有匹配的项目。",
+      "kindService": "服务",
+      "updated": "更新于 {when}",
+      "preview": "预览",
+      "publishedToast": "已公开",
+      "unpublishedToast": "已设为不公开",
+      "publishFailed": "切换失败",
+      "previewNotice": "这是已保存内容的预览。",
+      "backToEditor": "返回编辑"
     },
     "toast": {
       "project_created": "项目已创建。",
@@ -286,7 +294,13 @@
       "serviceUrlPlaceholder": "服务 URL（https://…）",
       "tags": "标签",
       "tagPlaceholder": "添加标签（回车确认）",
-      "removeTag": "移除 {tag}"
+      "removeTag": "移除 {tag}",
+      "unsaved": "有未保存的更改",
+      "savedAt": "已保存 · {when}",
+      "saveShortcut": "按 ⌘S / Ctrl+S 保存",
+      "statusLabel": "状态",
+      "kindLabel": "类型",
+      "preview": "打开预览"
     },
     "profile": {
       "title": "头像",

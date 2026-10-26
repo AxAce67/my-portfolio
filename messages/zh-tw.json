@@ -174,7 +174,15 @@
       "empty": "尚無專案。",
       "searchPlaceholder": "搜尋專案…",
       "filterAll": "所有狀態",
-      "noResults": "沒有符合的專案。"
+      "noResults": "沒有符合的專案。",
+      "kindService": "服務",
+      "updated": "更新於 {when}",
+      "preview": "預覽",
+      "publishedToast": "已公開",
+      "unpublishedToast": "已設為不公開",
+      "publishFailed": "切換失敗",
+      "previewNotice": "這是已儲存內容的預覽。",
+      "backToEditor": "返回編輯"
     },
     "toast": {
       "project_created": "專案已建立。",
@@ -286,7 +294,13 @@
       "serviceUrlPlaceholder": "服務 URL（https://…）",
       "tags": "標籤",
       "tagPlaceholder": "新增標籤（Enter 確認）",
-      "removeTag": "移除 {tag}"
+      "removeTag": "移除 {tag}",
+      "unsaved": "有未儲存的變更",
+      "savedAt": "已儲存 · {when}",
+      "saveShortcut": "按 ⌘S / Ctrl+S 儲存",
+      "statusLabel": "狀態",
+      "kindLabel": "類型",
+      "preview": "開啟預覽"
     },
     "profile": {
       "title": "頭像",
