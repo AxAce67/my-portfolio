@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { navigationStateKeys, readSessionValue } from '@/lib/navigationState';
+import { restoreScroll, takeHistoryRestore } from '@/lib/scrollMemory';
 
 // Pages that intentionally restore a previous scroll position on mount
 // (project archive return, home return, language switch) read one of these
@@ -21,7 +22,15 @@ export function ScrollToTop() {
 
   hasPendingRestoreRef.current = shouldSkip;
 
+  // This layout effect runs after the page's own ones (it sits above them in
+  // the tree), so on back/forward it has the last word: land where the page
+  // was left, or leave the scroll alone if that position is unknown.
   useLayoutEffect(() => {
+    const historyRestore = takeHistoryRestore();
+    if (historyRestore !== undefined) {
+      if (historyRestore !== null) restoreScroll(historyRestore);
+      return;
+    }
     if (!hasPendingRestoreRef.current) {
       window.scrollTo(0, 0);
     }

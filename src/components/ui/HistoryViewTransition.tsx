@@ -2,15 +2,15 @@
 
 import { useEffect } from 'react';
 import { canUseSharedElementTransitions } from '@/lib/viewTransitions';
+import { startScrollMemory } from '@/lib/scrollMemory';
 
 // Browser back/forward between a project card and its article should morph
 // the thumbnail the same way the in-page links do. Next.js handles popstate
 // by re-rendering right away, which is too early: the view transition has to
 // snapshot the old page first. So the popstate is held back, the transition
 // starts, and only inside its update callback is the event handed on to
-// Next.js. The callback then waits until the old page has been replaced and
-// puts the page back at the scroll position it had when it was left (the
-// browser's own restoration is lost by holding the event back).
+// Next.js. The callback then waits until the old page has been replaced
+// (ScrollToTop puts the new page at its remembered position in that commit).
 
 const SHARED_SELECTOR = '[style*="view-transition-name: proj-"]';
 const WAIT_TIMEOUT_MS = 1500;
@@ -36,13 +36,10 @@ function waitUntilDetached(elements: Element[]): Promise<void> {
 
 export function HistoryViewTransition() {
   useEffect(() => {
+    // Registered first so its popstate listener sees the event before the
+    // one below holds it back.
+    startScrollMemory();
     if (!canUseSharedElementTransitions()) return;
-
-    // Last scroll position seen on each URL, so back/forward can land where
-    // the page was left even when no "return here" note was saved for it.
-    const positions = new Map<string, number>();
-    const rememberScroll = () => positions.set(window.location.href, window.scrollY);
-    window.addEventListener('scroll', rememberScroll, { passive: true });
 
     let replaying = false;
     const onPopState = (event: PopStateEvent) => {
@@ -59,7 +56,6 @@ export function HistoryViewTransition() {
       // footer), and the snapshot would capture that. Put the old page back
       // where it was in the next frame, which runs before the snapshot.
       const scrollYAtPop = window.scrollY;
-      const destinationY = positions.get(window.location.href);
       window.requestAnimationFrame(() => {
         if (Math.abs(window.scrollY - scrollYAtPop) > 1) window.scrollTo(0, scrollYAtPop);
       });
@@ -68,17 +64,12 @@ export function HistoryViewTransition() {
         replaying = true;
         window.dispatchEvent(new PopStateEvent('popstate', { state: event.state }));
         replaying = false;
-        return waitUntilDetached(shared).then(() => {
-          if (destinationY !== undefined) window.scrollTo(0, destinationY);
-        });
+        return waitUntilDetached(shared);
       });
     };
 
     window.addEventListener('popstate', onPopState, { capture: true });
-    return () => {
-      window.removeEventListener('popstate', onPopState, { capture: true });
-      window.removeEventListener('scroll', rememberScroll);
-    };
+    return () => window.removeEventListener('popstate', onPopState, { capture: true });
   }, []);
 
   return null;
