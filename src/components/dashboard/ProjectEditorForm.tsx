@@ -384,8 +384,8 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
               className="flex w-full items-center justify-between text-sm"
             >
               <span>{t('published')}</span>
-              <span className={`relative h-5 w-9 rounded-full transition-colors ${isPublished ? 'bg-emerald-500' : 'bg-muted-foreground/30'}`}>
-                <span className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${isPublished ? 'translate-x-4' : 'translate-x-0.5'}`} />
+              <span className={`relative inline-block h-5 w-9 shrink-0 rounded-full transition-colors ${isPublished ? 'bg-emerald-500' : 'bg-muted-foreground/30'}`}>
+                <span className={`absolute left-0 top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${isPublished ? 'translate-x-4' : 'translate-x-0.5'}`} />
               </span>
             </button>
           </div>

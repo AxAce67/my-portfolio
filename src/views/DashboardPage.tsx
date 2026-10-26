@@ -231,10 +231,10 @@ export default function DashboardPage({ onSignOut }: DashboardPageProps) {
                         className="mr-auto sm:mr-1 inline-flex items-center gap-2 text-xs text-muted-foreground disabled:opacity-60"
                       >
                         <span
-                          className={`relative h-5 w-9 rounded-full transition-colors ${project.is_published ? 'bg-emerald-500' : 'bg-muted-foreground/30'}`}
+                          className={`relative inline-block h-5 w-9 shrink-0 rounded-full transition-colors ${project.is_published ? 'bg-emerald-500' : 'bg-muted-foreground/30'}`}
                         >
                           <span
-                            className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${project.is_published ? 'translate-x-4' : 'translate-x-0.5'}`}
+                            className={`absolute left-0 top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${project.is_published ? 'translate-x-4' : 'translate-x-0.5'}`}
                           />
                         </span>
                         {project.is_published ? t('publish.published') : t('publish.draft')}
