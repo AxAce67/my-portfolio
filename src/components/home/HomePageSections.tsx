@@ -569,7 +569,7 @@ function AboutSection({ avatarUrl, projectCount }: { avatarUrl: string; projectC
   const t = useTranslations('About');
   const contactT = useTranslations('Contact');
   const locale = useLocale();
-  const focusAreas = ['productThinking', 'rapidPrototyping', 'uiUxDesign', 'problemSolving', 'research', 'continuousImprovement'] as const;
+  const focusAreas = ['webDev', 'discordBots', 'serverOps', 'networking', 'aiAssisted', 'videoEditing'] as const;
   const onlineServers = useOnlineServerCount();
   const stats: AboutStatItem[] = [
     { id: 'projects', value: projectCount, label: t('statsProjects'), href: '/projects' },

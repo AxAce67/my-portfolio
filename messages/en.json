@@ -17,10 +17,10 @@
     "ageLabel": "Age",
     "locationLabel": "🇯🇵 Tokyo",
     "profileLabel": "Profile",
-    "profileParagraph1": "I am {grade} in Japan, building personal projects such as websites, Discord bots, Ubuntu servers, and Minecraft servers.",
-    "profileParagraph2": "Since discovering ChatGPT in sixth grade, I have used various AI tools to improve my workflow and speed up turning ideas into working products.",
-    "profileParagraph3": "My process is to turn ideas into requirements, build an MVP quickly, then iterate through testing and improvements.",
-    "profileParagraph4": "My strengths are design thinking, continuous improvement, and research. I keep up with trends while balancing usability and maintainability.",
+    "profileParagraph1": "I'm {grade} living in Tokyo. I build websites and Discord bots, and run my own servers.",
+    "profileParagraph2": "I started programming in sixth grade, when I first came across ChatGPT. By asking AI whenever I got stuck, the list of things I could build kept growing.",
+    "profileParagraph3": "I love tinkering with servers and networks, and I now run six servers across VPSes and machines at home. I also run my own AS on dn42, operate a public time server anyone can use, and pick up aircraft positions with an antenna at home.",
+    "profileParagraph4": "When I build something, I start with a small version that works, then keep improving it as I use it.",
     "statsProjects": "Published Projects",
     "statsTechnologies": "Technologies Used",
     "statsYears": "Years Building",
@@ -37,12 +37,12 @@
       "note": "Numbers are rough estimates."
     },
     "focus": {
-      "productThinking": "Product Thinking",
-      "rapidPrototyping": "Rapid Prototyping",
-      "uiUxDesign": "UI/UX Design",
-      "problemSolving": "Problem Solving",
-      "research": "Research",
-      "continuousImprovement": "Continuous Improvement"
+      "webDev": "Web Development",
+      "discordBots": "Discord Bots",
+      "serverOps": "Server Ops",
+      "networking": "Networking (BGP)",
+      "aiAssisted": "AI-assisted Dev",
+      "videoEditing": "Video Editing"
     },
     "linksLabel": "Links",
     "role": "Independent Developer",

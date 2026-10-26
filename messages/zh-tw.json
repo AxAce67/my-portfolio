@@ -17,10 +17,10 @@
     "ageLabel": "年齡",
     "locationLabel": "🇯🇵 Tokyo",
     "profileLabel": "Profile",
-    "profileParagraph1": "我是住在日本的一名{grade}學生，正在製作網站、Discord 機器人、Ubuntu 伺服器與 Minecraft 伺服器等個人專案。",
-    "profileParagraph2": "自從六年級接觸 ChatGPT 之後，我一直使用各種 AI 工具來改善工作流程，加快把想法做成可運作產品的速度。",
-    "profileParagraph3": "我的流程是先把想法整理成需求，快速做出 MVP，然後透過測試與改進持續迭代。",
-    "profileParagraph4": "我的優勢在於設計思考、持續改進與研究能力。我會跟上趨勢，同時兼顧可用性與可維護性。",
+    "profileParagraph1": "我是住在東京的{grade}學生，平常做網站和 Discord 機器人，也自己維運伺服器。",
+    "profileParagraph2": "國小六年級時接觸到 ChatGPT，從那時開始寫程式。遇到不懂的地方就問 AI，邊問邊做，能做出來的東西越來越多。",
+    "profileParagraph3": "我喜歡折騰伺服器和網路，現在在 VPS 和家裡的電腦上維運 6 台伺服器。我也在 dn42 上經營自己的 AS，公開了一台誰都能用的時間伺服器，並用家裡的天線接收飛機的位置資訊。",
+    "profileParagraph4": "做東西時，我會先做出一個能動的小版本，再一邊用一邊改。",
     "statsProjects": "已發布專案",
     "statsTechnologies": "使用技術",
     "statsYears": "開發年數",
@@ -37,12 +37,12 @@
       "note": "數字僅供參考。"
     },
     "focus": {
-      "productThinking": "產品思維",
-      "rapidPrototyping": "快速原型",
-      "uiUxDesign": "UI/UX 設計",
-      "problemSolving": "問題解決",
-      "research": "研究",
-      "continuousImprovement": "持續改進"
+      "webDev": "Web 開發",
+      "discordBots": "Discord 機器人",
+      "serverOps": "伺服器維運",
+      "networking": "網路（BGP）",
+      "aiAssisted": "AI 輔助開發",
+      "videoEditing": "影片剪輯"
     },
     "linksLabel": "Links",
     "role": "獨立開發者",

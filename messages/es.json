@@ -17,10 +17,10 @@
     "ageLabel": "Edad",
     "locationLabel": "🇯🇵 Tokyo",
     "profileLabel": "Profile",
-    "profileParagraph1": "Soy {grade} en Japón y desarrollo proyectos personales como sitios web, bots de Discord, servidores Ubuntu y servidores de Minecraft.",
-    "profileParagraph2": "Desde que descubrí ChatGPT en sexto de primaria, he usado varias herramientas de IA para mejorar mi forma de trabajar y convertir mis ideas en productos funcionales más rápido.",
-    "profileParagraph3": "Mi proceso consiste en convertir ideas en requisitos, construir un MVP rápidamente y luego iterar mediante pruebas y mejoras.",
-    "profileParagraph4": "Mis puntos fuertes son el pensamiento de diseño, la mejora continua y la investigación. Sigo las tendencias sin perder de vista la usabilidad y el mantenimiento.",
+    "profileParagraph1": "Soy {grade} y vivo en Tokio. Hago sitios web y bots de Discord, y administro mis propios servidores.",
+    "profileParagraph2": "Empecé a programar en sexto de primaria, cuando descubrí ChatGPT. Preguntándole a la IA cada vez que me atascaba, las cosas que podía crear no dejaron de aumentar.",
+    "profileParagraph3": "Me encanta trastear con servidores y redes; ahora administro seis servidores entre VPS y equipos en casa. También tengo mi propio AS en dn42, ofrezco un servidor de hora público que cualquiera puede usar y recibo la posición de aviones con una antena en casa.",
+    "profileParagraph4": "Cuando creo algo, empiezo con una versión pequeña que funcione y la voy mejorando mientras la uso.",
     "statsProjects": "Proyectos publicados",
     "statsTechnologies": "Tecnologías usadas",
     "statsYears": "Años creando",
@@ -37,12 +37,12 @@
       "note": "Las cifras son aproximadas."
     },
     "focus": {
-      "productThinking": "Pensamiento de producto",
-      "rapidPrototyping": "Prototipado rápido",
-      "uiUxDesign": "Diseño UI/UX",
-      "problemSolving": "Resolución de problemas",
-      "research": "Investigación",
-      "continuousImprovement": "Mejora continua"
+      "webDev": "Desarrollo web",
+      "discordBots": "Bots de Discord",
+      "serverOps": "Administración de servidores",
+      "networking": "Redes (BGP)",
+      "aiAssisted": "Desarrollo con IA",
+      "videoEditing": "Edición de video"
     },
     "linksLabel": "Links",
     "role": "Desarrollador independiente",

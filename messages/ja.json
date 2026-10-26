@@ -17,10 +17,10 @@
     "ageLabel": "年齢",
     "locationLabel": "🇯🇵 Tokyo",
     "profileLabel": "Profile",
-    "profileParagraph1": "日本の{grade}として、個人開発でWebサイトやDiscord Bot、Ubuntuサーバー、Minecraftサーバーなどを作っています。",
-    "profileParagraph2": "小学6年生のときにChatGPTに出会ってから、さまざまなAIツールを使いながら開発フローを改善し、アイデアを形にするスピードを上げてきました。",
-    "profileParagraph3": "企画案を要件定義に落とし込み、MVPを素早く実装して、テストと改善を回しながら使いやすく育てるのが開発スタイルです。",
-    "profileParagraph4": "強みは、設計力・改善力・調査力。新しいトレンドも追いながら、使いやすさと運用しやすさを両立するプロダクトを目指しています。",
+    "profileParagraph1": "東京に住む{grade}です。Web サイトや Discord Bot を作ったり、自分のサーバーを動かしたりしています。",
+    "profileParagraph2": "小学6年生のときに ChatGPT に出会って、プログラミングを始めました。わからないところを AI に聞きながら作っているうちに、作れるものがどんどん増えていきました。",
+    "profileParagraph3": "サーバーやネットワークをいじるのが好きで、今は VPS や自宅のマシンなど、6台のサーバーを運用しています。dn42 で自分の AS を持ったり、誰でも使える時刻サーバーを公開したり、自宅のアンテナで飛行機の位置を受信したりもしています。",
+    "profileParagraph4": "作るときは、まず小さく動くものを作って、使いながら直していきます。",
     "statsProjects": "公開プロジェクト",
     "statsTechnologies": "使用技術",
     "statsYears": "開発年数",
@@ -37,12 +37,12 @@
       "note": "数字は目安です"
     },
     "focus": {
-      "productThinking": "プロダクト思考",
-      "rapidPrototyping": "高速プロトタイピング",
-      "uiUxDesign": "UI/UXデザイン",
-      "problemSolving": "課題解決",
-      "research": "リサーチ",
-      "continuousImprovement": "継続的な改善"
+      "webDev": "Web 開発",
+      "discordBots": "Discord Bot",
+      "serverOps": "サーバー運用",
+      "networking": "ネットワーク（BGP）",
+      "aiAssisted": "AI 活用",
+      "videoEditing": "動画編集"
     },
     "linksLabel": "Links",
     "role": "個人開発者",
