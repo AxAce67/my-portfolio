@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
+import { SwitchTrack } from '@/components/ui/SwitchTrack';
 import { ImageOff, Eye, Plus, Search } from 'lucide-react';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useLocale } from '@/hooks/useLocale';
@@ -222,13 +223,7 @@ export default function DashboardPage({ onSignOut }: DashboardPageProps) {
                         onClick={() => togglePublished(project)}
                         className="mr-auto sm:mr-1 inline-flex items-center gap-2 text-xs text-muted-foreground disabled:opacity-60"
                       >
-                        <span
-                          className={`relative inline-block h-5 w-9 shrink-0 rounded-full transition-colors ${project.is_published ? 'bg-emerald-500' : 'bg-muted-foreground/30'}`}
-                        >
-                          <span
-                            className={`absolute left-0 top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${project.is_published ? 'translate-x-4' : 'translate-x-0.5'}`}
-                          />
-                        </span>
+                        <SwitchTrack on={project.is_published} size="sm" />
                         {project.is_published ? t('publish.published') : t('publish.draft')}
                       </button>
                       <TransitionLink

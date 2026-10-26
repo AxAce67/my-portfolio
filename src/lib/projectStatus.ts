@@ -16,3 +16,12 @@ export const PROJECT_STATUS_BADGE_CLASS: Record<ProjectStatusValue, string> = {
   completed: 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25',
   on_hold: 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/25',
 };
+
+export const PROJECT_STATUS_DOT_CLASS: Record<ProjectStatusValue, string> = {
+  idea: 'bg-slate-500',
+  design: 'bg-blue-500',
+  development: 'bg-amber-500',
+  running: 'bg-teal-500',
+  completed: 'bg-emerald-500',
+  on_hold: 'bg-rose-500',
+};

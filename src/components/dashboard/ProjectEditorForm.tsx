@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Crop, Eye, ImagePlus, Loader2, X } from 'lucide-react';
+import { Box, ChevronDown, Crop, Eye, Globe, ImagePlus, Link2, Loader2 } from 'lucide-react';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useLocale } from '@/hooks/useLocale';
 import { areSameCalendarDate, formatLocaleDate, formatRelativeTime } from '@/lib/dates';
@@ -7,6 +7,9 @@ import { uploadImage, UploadValidationError } from '@/lib/appwrite/upload';
 import { listAdminTags, type ProjectInput, type ProjectKind, type ProjectStatus } from '@/lib/content/adminContent';
 import BlockNoteEditorField from './BlockNoteEditorField';
 import ThumbnailCropModal from './ThumbnailCropModal';
+import { TagInput } from './TagInput';
+import { SwitchTrack } from '@/components/ui/SwitchTrack';
+import { PROJECT_STATUS_DOT_CLASS } from '@/lib/projectStatus';
 
 type ProjectEditorFormProps = {
   draftKey: string;
@@ -46,6 +49,11 @@ type DraftState = {
 const statusOptions: ProjectStatus[] = ['idea', 'design', 'development', 'running', 'completed', 'on_hold'];
 const kindOptions: ProjectKind[] = ['project', 'service'];
 
+const SELECT_CLASS =
+  'h-9 w-full appearance-none rounded-lg border border-border bg-background pr-9 text-sm outline-none focus-visible:outline-none transition-colors hover:border-foreground/30 focus:border-foreground/60';
+const CHEVRON_CLASS = 'pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground';
+const KIND_ICON_CLASS = 'pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground';
+
 function draftStorageKey(draftKey: string) {
   return `portfolio-admin-draft:${draftKey}`;
 }
@@ -62,7 +70,6 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
   const [kind, setKind] = useState<ProjectKind>(initialValues?.kind ?? 'project');
   const [serviceUrl, setServiceUrl] = useState(initialValues?.service_url ?? '');
   const [tags, setTags] = useState<string[]>(initialValues?.tags ?? []);
-  const [tagInput, setTagInput] = useState('');
   const [knownTags, setKnownTags] = useState<string[]>([]);
   const [contentMd, setContentMd] = useState(initialValues?.content_md ?? '');
   const [contentJson, setContentJson] = useState<unknown>(initialValues?.content_json ?? []);
@@ -124,14 +131,6 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
   useEffect(() => {
     listAdminTags().then(setKnownTags, () => setKnownTags([]));
   }, []);
-
-  function addTag(raw: string) {
-    const tag = raw.trim();
-    if (tag && !tags.some((existing) => existing.toLowerCase() === tag.toLowerCase())) {
-      setTags([...tags, tag]);
-    }
-    setTagInput('');
-  }
 
   // Offer to restore a draft left over from a tab close / crash before the
   // user ever saved.
@@ -290,54 +289,69 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
 
       {/* Settings sit in a bar above the article (sticky, so saving is
           always one click away); the article below reads like the page. */}
-      <div className="sticky top-16 z-20 mb-8 rounded-xl border border-border bg-card/95 backdrop-blur p-3 sm:p-4 space-y-3">
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          <button type="submit" disabled={submitting} className="btn-primary disabled:opacity-60 inline-flex items-center justify-center gap-1.5">
-            {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+      <div className="sticky top-16 z-20 mb-8 rounded-xl border border-border bg-card/95 p-3 shadow-sm backdrop-blur">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+          <button
+            type="submit"
+            disabled={submitting}
+            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-foreground px-4 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-60"
+          >
+            {submitting && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
             {submitting ? t('saving') : submitLabel}
           </button>
-          <span className={`text-xs ${dirty ? 'text-amber-600 dark:text-amber-400' : 'text-muted-foreground'}`}>
+          <span className={`inline-flex items-center gap-1.5 text-xs ${dirty ? 'text-amber-600 dark:text-amber-400' : 'text-muted-foreground'}`}>
+            <span className={`h-1.5 w-1.5 rounded-full ${dirty ? 'bg-amber-500' : 'bg-emerald-500'}`} aria-hidden />
             {dirty ? t('unsaved') : lastSavedAt ? t('savedAt', { when: formatRelativeTime(lastSavedAt, locale, now) }) : t('saveShortcut')}
           </span>
-          {previewHref && (
-            <a href={previewHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground">
-              <Eye className="w-3.5 h-3.5" />
-              {t('preview')}
-            </a>
-          )}
-          <button
-            type="button"
-            role="switch"
-            aria-checked={isPublished}
-            onClick={() => setIsPublished(!isPublished)}
-            className="ml-auto inline-flex items-center gap-2 text-sm"
-          >
-            {t('published')}
-            <span className={`relative inline-block h-5 w-9 shrink-0 rounded-full transition-colors ${isPublished ? 'bg-emerald-500' : 'bg-muted-foreground/30'}`}>
-              <span className={`absolute left-0 top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${isPublished ? 'translate-x-4' : 'translate-x-0.5'}`} />
-            </span>
-          </button>
+          <div className="ml-auto flex items-center gap-1">
+            {previewHref && (
+              <a
+                href={previewHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-9 items-center gap-1.5 rounded-lg px-3 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              >
+                <Eye className="h-3.5 w-3.5" />
+                {t('preview')}
+              </a>
+            )}
+            <button
+              type="button"
+              role="switch"
+              aria-checked={isPublished}
+              onClick={() => setIsPublished(!isPublished)}
+              className="inline-flex h-9 items-center gap-2 rounded-lg px-3 text-sm transition-colors hover:bg-muted"
+            >
+              {t('published')}
+              <SwitchTrack on={isPublished} />
+            </button>
+          </div>
         </div>
 
-        <div className="grid gap-2 sm:grid-cols-[10rem_10rem_1fr] sm:items-start border-t border-border pt-3">
-          <select
-            aria-label={t('statusLabel')}
-            value={status}
-            onChange={(event) => setStatus(event.target.value as ProjectStatus)}
-            className="w-full bg-transparent border border-border rounded-lg px-3 py-1.5 text-sm"
-          >
-            {statusOptions.map((option) => (
-              <option key={option} value={option}>
-                {tStatus(option)}
-              </option>
-            ))}
-          </select>
-          <div className="space-y-2">
+        <div className="mt-3 grid gap-2 border-t border-border pt-3 sm:grid-cols-[11rem_11rem_1fr] sm:items-start">
+          <div className="relative">
+            <span className={`pointer-events-none absolute left-3 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full ${PROJECT_STATUS_DOT_CLASS[status]}`} aria-hidden />
+            <select
+              aria-label={t('statusLabel')}
+              value={status}
+              onChange={(event) => setStatus(event.target.value as ProjectStatus)}
+              className={`${SELECT_CLASS} pl-7`}
+            >
+              {statusOptions.map((option) => (
+                <option key={option} value={option}>
+                  {tStatus(option)}
+                </option>
+              ))}
+            </select>
+            <ChevronDown className={CHEVRON_CLASS} />
+          </div>
+          <div className="relative">
+            {kind === 'service' ? <Globe className={KIND_ICON_CLASS} /> : <Box className={KIND_ICON_CLASS} />}
             <select
               aria-label={t('kindLabel')}
               value={kind}
               onChange={(event) => setKind(event.target.value as ProjectKind)}
-              className="w-full bg-transparent border border-border rounded-lg px-3 py-1.5 text-sm"
+              className={`${SELECT_CLASS} pl-8`}
             >
               {kindOptions.map((option) => (
                 <option key={option} value={option}>
@@ -345,48 +359,28 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
                 </option>
               ))}
             </select>
+            <ChevronDown className={CHEVRON_CLASS} />
           </div>
-          <div className="flex flex-wrap items-center gap-1.5 rounded-lg border border-border px-2 py-1">
-            {tags.map((tag) => (
-              <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs font-mono">
-                {tag}
-                <button type="button" onClick={() => setTags(tags.filter((existing) => existing !== tag))} aria-label={t('removeTag', { tag })}>
-                  <X className="w-3 h-3" />
-                </button>
-              </span>
-            ))}
-            <input
-              aria-label={t('tags')}
-              value={tagInput}
-              onChange={(event) => setTagInput(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter' || event.key === ',') {
-                  event.preventDefault();
-                  addTag(tagInput);
-                } else if (event.key === 'Backspace' && !tagInput && tags.length > 0) {
-                  setTags(tags.slice(0, -1));
-                }
-              }}
-              onBlur={() => tagInput && addTag(tagInput)}
-              list="known-tags"
-              placeholder={t('tagPlaceholder')}
-              className="flex-1 min-w-24 bg-transparent text-sm outline-none py-0.5"
-            />
-            <datalist id="known-tags">
-              {knownTags.filter((tag) => !tags.includes(tag)).map((tag) => (
-                <option key={tag} value={tag} />
-              ))}
-            </datalist>
-          </div>
+          <TagInput
+            tags={tags}
+            onChange={setTags}
+            knownTags={knownTags}
+            label={t('tags')}
+            placeholder={t('tagPlaceholder')}
+            removeLabel={(tag) => t('removeTag', { tag })}
+          />
           {kind === 'service' && (
-            <input
-              type="url"
-              aria-label={t('serviceUrlPlaceholder')}
-              value={serviceUrl}
-              onChange={(event) => setServiceUrl(event.target.value)}
-              placeholder={t('serviceUrlPlaceholder')}
-              className="sm:col-span-3 w-full bg-transparent border border-border rounded-lg px-3 py-1.5 text-sm"
-            />
+            <div className="relative sm:col-span-3">
+              <Link2 className={KIND_ICON_CLASS} />
+              <input
+                type="url"
+                aria-label={t('serviceUrlPlaceholder')}
+                value={serviceUrl}
+                onChange={(event) => setServiceUrl(event.target.value)}
+                placeholder={t('serviceUrlPlaceholder')}
+                className="h-9 w-full rounded-lg border border-border bg-background pl-8 pr-3 text-sm outline-none focus-visible:outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-foreground/60"
+              />
+            </div>
           )}
         </div>
       </div>
