@@ -45,6 +45,16 @@ export function HistoryViewTransition() {
       // Capture listeners on window run before Next.js's own popstate
       // listener, so this keeps it from seeing the event until the replay.
       event.stopImmediatePropagation();
+
+      // On a back/forward the old page gets scrolled to the destination's
+      // saved position right after popstate (a short article lands on its
+      // footer), and the snapshot would capture that. Put the old page back
+      // where it was in the next frame, which runs before the snapshot.
+      const scrollYAtPop = window.scrollY;
+      window.requestAnimationFrame(() => {
+        if (Math.abs(window.scrollY - scrollYAtPop) > 1) window.scrollTo(0, scrollYAtPop);
+      });
+
       (document as TransitionCapableDocument).startViewTransition?.(() => {
         replaying = true;
         window.dispatchEvent(new PopStateEvent('popstate', { state: event.state }));
