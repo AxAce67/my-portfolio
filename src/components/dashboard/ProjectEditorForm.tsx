@@ -289,7 +289,7 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
 
       {/* Settings sit in a bar above the article (sticky, so saving is
           always one click away); the article below reads like the page. */}
-      <div className="sticky top-16 z-20 mb-8 rounded-xl border border-border bg-card/95 p-3 shadow-sm backdrop-blur">
+      <div className="mx-auto mb-8 max-w-3xl rounded-xl border border-border bg-card p-3 shadow-sm">
         <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
           <button
             type="submit"
@@ -328,7 +328,7 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
           </div>
         </div>
 
-        <div className="mt-3 grid gap-2 border-t border-border pt-3 sm:grid-cols-[11rem_11rem_1fr] sm:items-start">
+        <div className="mt-3 grid gap-2 border-t border-border pt-3 sm:grid-cols-2">
           <div className="relative">
             <span className={`pointer-events-none absolute left-3 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full ${PROJECT_STATUS_DOT_CLASS[status]}`} aria-hidden />
             <select
@@ -361,16 +361,8 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
             </select>
             <ChevronDown className={CHEVRON_CLASS} />
           </div>
-          <TagInput
-            tags={tags}
-            onChange={setTags}
-            knownTags={knownTags}
-            label={t('tags')}
-            placeholder={t('tagPlaceholder')}
-            removeLabel={(tag) => t('removeTag', { tag })}
-          />
           {kind === 'service' && (
-            <div className="relative sm:col-span-3">
+            <div className="relative sm:col-span-2">
               <Link2 className={KIND_ICON_CLASS} />
               <input
                 type="url"
@@ -382,6 +374,16 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
               />
             </div>
           )}
+          <div className="sm:col-span-2">
+            <TagInput
+              tags={tags}
+              onChange={setTags}
+              knownTags={knownTags}
+              label={t('tags')}
+              placeholder={t('tagPlaceholder')}
+              removeLabel={(tag) => t('removeTag', { tag })}
+            />
+          </div>
         </div>
       </div>
 
