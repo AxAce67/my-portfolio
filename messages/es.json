@@ -158,14 +158,6 @@
       "published": "publicado",
       "draft": "borrador"
     },
-    "status": {
-      "idea": "Idea",
-      "design": "Diseño",
-      "development": "Desarrollo",
-      "completed": "Completado",
-      "on_hold": "En pausa",
-      "running": "En funcionamiento"
-    },
     "projects": {
       "manageTitle": "Gestión de proyectos",
       "manageDescription": "Crea nuevos proyectos desde la página del editor.",
@@ -269,14 +261,6 @@
       "uploadSizeError": "Mantén el tamaño del archivo en 5MB o menos.",
       "editorTipPrefix": "Escribe",
       "editorTipSuffix": "para ver las opciones de bloque. La subida de imágenes/archivos está habilitada.",
-      "status": {
-        "idea": "Idea",
-        "design": "Diseño",
-        "development": "Desarrollo",
-        "completed": "Completado",
-        "on_hold": "En pausa",
-        "running": "En funcionamiento"
-      },
       "saving": "Guardando…",
       "unsavedWarning": "Tienes cambios sin guardar. ¿Salir de todos modos?",
       "draftRestoredTitle": "Borrador sin guardar encontrado",

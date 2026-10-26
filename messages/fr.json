@@ -158,14 +158,6 @@
       "published": "publié",
       "draft": "brouillon"
     },
-    "status": {
-      "idea": "Idée",
-      "design": "Design",
-      "development": "Développement",
-      "completed": "Terminé",
-      "on_hold": "En pause",
-      "running": "En service"
-    },
     "projects": {
       "manageTitle": "Gestion des projets",
       "manageDescription": "Créez de nouveaux projets depuis la page d'édition dédiée.",
@@ -269,14 +261,6 @@
       "uploadSizeError": "Veuillez limiter la taille du fichier à 5 Mo maximum.",
       "editorTipPrefix": "Tapez",
       "editorTipSuffix": "pour afficher les options de bloc. Le téléversement d'images/fichiers est activé.",
-      "status": {
-        "idea": "Idée",
-        "design": "Design",
-        "development": "Développement",
-        "completed": "Terminé",
-        "on_hold": "En pause",
-        "running": "En service"
-      },
       "saving": "Enregistrement…",
       "unsavedWarning": "Vous avez des modifications non enregistrées. Quitter quand même ?",
       "draftRestoredTitle": "Brouillon non enregistré trouvé",

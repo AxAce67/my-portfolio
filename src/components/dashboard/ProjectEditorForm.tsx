@@ -53,6 +53,7 @@ function draftStorageKey(draftKey: string) {
 export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onDirtyChange, previewHref, initialValues }: ProjectEditorFormProps) {
   const t = useTranslations('Dashboard.editorForm');
   const tDetail = useTranslations('ProjectDetail');
+  const tStatus = useTranslations('ProjectStatus');
   const locale = useLocale();
   const [title, setTitle] = useState(initialValues?.title ?? '');
   const [description, setDescription] = useState(initialValues?.description ?? '');
@@ -99,6 +100,7 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
   const isDirtyRef = useRef(false);
   const hasMountedRef = useRef(false);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const titleRef = useRef<HTMLTextAreaElement>(null);
 
   // Auto-grow the description to exactly fit its content, like the <p> tag
   // the published page renders — a fixed `rows` count leaves a gap when the
@@ -109,6 +111,14 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
     el.style.height = 'auto';
     el.style.height = `${el.scrollHeight}px`;
   }, [description]);
+
+  // The title wraps like the published <h1> instead of scrolling sideways.
+  useEffect(() => {
+    const el = titleRef.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = `${el.scrollHeight}px`;
+  }, [title]);
 
   useEffect(() => {
     listAdminTags().then(setKnownTags, () => setKnownTags([]));
@@ -277,12 +287,15 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
         <div className="min-w-0">
           <div className="max-w-3xl mx-auto">
             <header className="mt-7 mb-10">
-              <input
+              <textarea
+                ref={titleRef}
                 value={title}
-                onChange={(event) => setTitle(event.target.value)}
+                onChange={(event) => setTitle(event.target.value.replace(/\n/g, ' '))}
+                onKeyDown={(event) => event.key === 'Enter' && event.preventDefault()}
                 required
+                rows={1}
                 placeholder={t('titlePlaceholder')}
-                className="w-full bg-transparent border-none text-4xl sm:text-5xl font-bold tracking-tight leading-tight placeholder:text-muted-foreground/40"
+                className="w-full bg-transparent border-none resize-none overflow-hidden text-4xl sm:text-5xl font-bold tracking-tight leading-tight text-balance placeholder:text-muted-foreground/40"
               />
               <textarea
                 ref={descriptionRef}
@@ -399,7 +412,7 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
             >
               {statusOptions.map((option) => (
                 <option key={option} value={option}>
-                  {t(`status.${option}` as 'status.idea')}
+                  {tStatus(option)}
                 </option>
               ))}
             </select>

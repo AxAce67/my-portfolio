@@ -158,14 +158,6 @@
       "published": "공개",
       "draft": "초안"
     },
-    "status": {
-      "idea": "아이디어",
-      "design": "디자인",
-      "development": "개발",
-      "completed": "완료",
-      "on_hold": "보류",
-      "running": "운영 중"
-    },
     "projects": {
       "manageTitle": "프로젝트 관리",
       "manageDescription": "전용 편집 페이지에서 새 프로젝트를 만들어 주세요.",
@@ -269,14 +261,6 @@
       "uploadSizeError": "파일 크기는 5MB 이하로 유지해 주세요.",
       "editorTipPrefix": "입력창에",
       "editorTipSuffix": "를 입력하면 블록 옵션이 표시됩니다. 이미지/파일 업로드가 활성화되어 있습니다.",
-      "status": {
-        "idea": "아이디어",
-        "design": "디자인",
-        "development": "개발",
-        "completed": "완료",
-        "on_hold": "보류",
-        "running": "운영 중"
-      },
       "saving": "저장 중…",
       "unsavedWarning": "저장하지 않은 변경 사항이 있습니다. 그래도 나가시겠습니까?",
       "draftRestoredTitle": "저장되지 않은 초안을 발견했습니다",

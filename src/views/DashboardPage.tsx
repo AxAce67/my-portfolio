@@ -15,15 +15,6 @@ import ActiveProjectsManager from '@/components/dashboard/ActiveProjectsManager'
 import ProfileSettings from '@/components/dashboard/ProfileSettings';
 import MutualLinksManager from '@/components/dashboard/MutualLinksManager';
 
-const statusKeyMap: Record<ProjectStatus, string> = {
-  idea: 'status.idea',
-  design: 'status.design',
-  development: 'status.development',
-  running: 'status.running',
-  completed: 'status.completed',
-  on_hold: 'status.on_hold',
-};
-
 const statusBadgeClass: Record<ProjectStatus, string> = PROJECT_STATUS_BADGE_CLASS;
 
 const statusFilterOptions: ProjectStatus[] = [...PROJECT_STATUSES];
@@ -34,6 +25,7 @@ type DashboardPageProps = {
 
 export default function DashboardPage({ onSignOut }: DashboardPageProps) {
   const t = useTranslations('Dashboard');
+  const tStatus = useTranslations('ProjectStatus');
   const locale = useLocale();
   const searchParams = useSearchParams();
   const pathname = usePathname() ?? '';
@@ -167,7 +159,7 @@ export default function DashboardPage({ onSignOut }: DashboardPageProps) {
                 <option value="all">{t('projects.filterAll')}</option>
                 {statusFilterOptions.map((status) => (
                   <option key={status} value={status}>
-                    {t(statusKeyMap[status] as 'status.idea')}
+                    {tStatus(status)}
                   </option>
                 ))}
               </select>
@@ -203,7 +195,7 @@ export default function DashboardPage({ onSignOut }: DashboardPageProps) {
                         <p className="text-sm font-medium truncate group-hover:underline underline-offset-4">{project.title}</p>
                         <div className="mt-1 flex flex-wrap items-center gap-1.5">
                           <span className={`text-[10px] font-mono px-2 py-0.5 rounded-sm ${statusBadgeClass[project.status]}`}>
-                            {t(statusKeyMap[project.status] as 'status.idea')}
+                            {tStatus(project.status)}
                           </span>
                           {project.kind === 'service' && (
                             <span className="text-[10px] font-mono px-2 py-0.5 rounded-sm bg-violet-500/15 text-violet-600 dark:text-violet-300 border border-violet-500/25">

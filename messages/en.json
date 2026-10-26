@@ -158,14 +158,6 @@
       "published": "published",
       "draft": "draft"
     },
-    "status": {
-      "idea": "Idea",
-      "design": "Design",
-      "development": "Development",
-      "completed": "Completed",
-      "on_hold": "On Hold",
-      "running": "Running"
-    },
     "projects": {
       "manageTitle": "Project Management",
       "manageDescription": "Create new projects from the dedicated editor page.",
@@ -269,14 +261,6 @@
       "uploadSizeError": "Please keep file size at 5MB or less.",
       "editorTipPrefix": "Type",
       "editorTipSuffix": "for block options. Image/File upload is enabled.",
-      "status": {
-        "idea": "Idea",
-        "design": "Design",
-        "development": "Development",
-        "completed": "Completed",
-        "on_hold": "On Hold",
-        "running": "Running"
-      },
       "saving": "Saving…",
       "unsavedWarning": "You have unsaved changes. Leave anyway?",
       "draftRestoredTitle": "Unsaved draft found",

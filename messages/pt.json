@@ -158,14 +158,6 @@
       "published": "publicado",
       "draft": "rascunho"
     },
-    "status": {
-      "idea": "Ideia",
-      "design": "Design",
-      "development": "Desenvolvimento",
-      "completed": "Concluído",
-      "on_hold": "Em pausa",
-      "running": "Em operação"
-    },
     "projects": {
       "manageTitle": "Gerenciamento de projetos",
       "manageDescription": "Crie novos projetos na página dedicada do editor.",
@@ -269,14 +261,6 @@
       "uploadSizeError": "Mantenha o tamanho do arquivo em 5MB ou menos.",
       "editorTipPrefix": "Digite",
       "editorTipSuffix": "para ver as opções de bloco. O envio de imagens/arquivos está ativado.",
-      "status": {
-        "idea": "Ideia",
-        "design": "Design",
-        "development": "Desenvolvimento",
-        "completed": "Concluído",
-        "on_hold": "Em pausa",
-        "running": "Em operação"
-      },
       "saving": "Salvando…",
       "unsavedWarning": "Você tem alterações não salvas. Sair assim mesmo?",
       "draftRestoredTitle": "Rascunho não salvo encontrado",

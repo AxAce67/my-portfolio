@@ -158,14 +158,6 @@
       "published": "已發布",
       "draft": "草稿"
     },
-    "status": {
-      "idea": "想法",
-      "design": "設計",
-      "development": "開發",
-      "completed": "已完成",
-      "on_hold": "暫停中",
-      "running": "運行中"
-    },
     "projects": {
       "manageTitle": "專案管理",
       "manageDescription": "請在專用編輯頁面建立新專案。",
@@ -269,14 +261,6 @@
       "uploadSizeError": "檔案大小請控制在 5MB 以內。",
       "editorTipPrefix": "輸入",
       "editorTipSuffix": "以顯示區塊選項。已啟用圖片/檔案上傳。",
-      "status": {
-        "idea": "想法",
-        "design": "設計",
-        "development": "開發",
-        "completed": "已完成",
-        "on_hold": "暫停中",
-        "running": "運行中"
-      },
       "saving": "儲存中…",
       "unsavedWarning": "您有未儲存的變更。仍要離開嗎？",
       "draftRestoredTitle": "發現未儲存的草稿",

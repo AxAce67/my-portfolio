@@ -158,14 +158,6 @@
       "published": "已发布",
       "draft": "草稿"
     },
-    "status": {
-      "idea": "想法",
-      "design": "设计",
-      "development": "开发",
-      "completed": "已完成",
-      "on_hold": "暂停中",
-      "running": "运行中"
-    },
     "projects": {
       "manageTitle": "项目管理",
       "manageDescription": "请在专用编辑页面创建新项目。",
@@ -269,14 +261,6 @@
       "uploadSizeError": "文件大小请控制在 5MB 以内。",
       "editorTipPrefix": "输入",
       "editorTipSuffix": "以显示区块选项。已启用图片/文件上传。",
-      "status": {
-        "idea": "想法",
-        "design": "设计",
-        "development": "开发",
-        "completed": "已完成",
-        "on_hold": "暂停中",
-        "running": "运行中"
-      },
       "saving": "保存中…",
       "unsavedWarning": "您有未保存的更改。仍要离开吗？",
       "draftRestoredTitle": "发现未保存的草稿",
