@@ -99,6 +99,7 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
   const [pendingDraft, setPendingDraft] = useState<DraftState | null>(null);
   const isDirtyRef = useRef(false);
   const hasMountedRef = useRef(false);
+  const mountedAtRef = useRef(0);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const titleRef = useRef<HTMLTextAreaElement>(null);
 
@@ -149,8 +150,12 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
   useEffect(() => {
     if (!hasMountedRef.current) {
       hasMountedRef.current = true;
+      mountedAtRef.current = Date.now();
       return;
     }
+    // The block editor rewrites its content once while loading; that is not
+    // an edit, so changes in the first moment after opening are ignored.
+    if (Date.now() - mountedAtRef.current < 1000) return;
     isDirtyRef.current = true;
     setDirty(true);
     onDirtyChange?.(true);
@@ -283,147 +288,56 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
         </div>
       )}
 
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-start">
-        <div className="min-w-0">
-          <div className="max-w-3xl mx-auto">
-            <header className="mt-7 mb-10">
-              <textarea
-                ref={titleRef}
-                value={title}
-                onChange={(event) => setTitle(event.target.value.replace(/\n/g, ' '))}
-                onKeyDown={(event) => event.key === 'Enter' && event.preventDefault()}
-                required
-                rows={1}
-                placeholder={t('titlePlaceholder')}
-                className="w-full bg-transparent border-none resize-none overflow-hidden text-4xl sm:text-5xl font-bold tracking-tight leading-tight text-balance placeholder:text-muted-foreground/40"
-              />
-              <textarea
-                ref={descriptionRef}
-                value={description}
-                onChange={(event) => setDescription(event.target.value)}
-                rows={1}
-                placeholder={t('descriptionPlaceholder')}
-                className="w-full bg-transparent border-none resize-none overflow-hidden text-base sm:text-lg text-muted-foreground leading-relaxed mt-4 placeholder:text-muted-foreground/40"
-              />
-              {initialValues?.created_at && (
-                <div className="mt-6 flex flex-wrap gap-4">
-                  <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
-                    {tDetail('createdAt')}: {formatLocaleDate(initialValues.created_at, locale)}
-                  </p>
-                  {initialValues.updated_at && !areSameCalendarDate(initialValues.created_at, initialValues.updated_at) && (
-                    <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
-                      {tDetail('updatedAt')}: {formatLocaleDate(initialValues.updated_at, locale)}
-                    </p>
-                  )}
-                </div>
-              )}
-            </header>
-          </div>
-
-          <div className="mb-10 overflow-hidden rounded-2xl border border-border max-w-3xl mx-auto">
-            <label className="group relative block cursor-pointer aspect-video bg-muted">
-              {thumbnailPreview ? (
-                <img src={thumbnailPreview} alt="Thumbnail preview" className="w-full h-full object-cover" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                  <ImagePlus className="w-8 h-8" />
-                </div>
-              )}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                <span className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-xs font-mono uppercase tracking-wider flex items-center gap-1.5">
-                  <ImagePlus className="w-3.5 h-3.5" />
-                  {t('thumbnail')}
-                </span>
-              </div>
-              <input
-                type="file"
-                accept="image/png,image/jpeg,image/webp,image/avif"
-                className="sr-only"
-                onChange={(event) => handleThumbnailSelect(event.target.files?.[0])}
-              />
-            </label>
-            {thumbnailPreview && cropSource && (
-              <div className="flex justify-end border-t border-border bg-card px-3 py-2">
-                <button
-                  type="button"
-                  onClick={() => setCropSrc(cropSource)}
-                  className="btn-outline px-3 py-1.5 text-xs inline-flex items-center gap-1.5"
-                >
-                  <Crop className="w-3.5 h-3.5" />
-                  {t('cropAdjust')}
-                </button>
-              </div>
-            )}
-            {thumbnailError && <p className="mt-2 text-xs text-red-500 px-px">{thumbnailError}</p>}
-          </div>
-
-          <div className="max-w-3xl mx-auto border-t border-border pt-8">
-            <BlockNoteEditorField
-              initialMarkdown={initialValues?.content_md ?? ''}
-              initialContentJson={initialValues?.content_json}
-              onContentChange={({ contentJson: nextContentJson, contentMd: nextContentMd }) => {
-                setContentJson(nextContentJson);
-                setContentMd(nextContentMd);
-              }}
-            />
-          </div>
-
+      {/* Settings sit in a bar above the article (sticky, so saving is
+          always one click away); the article below reads like the page. */}
+      <div className="sticky top-16 z-20 mb-8 rounded-xl border border-border bg-card/95 backdrop-blur p-3 sm:p-4 space-y-3">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <button type="submit" disabled={submitting} className="btn-primary disabled:opacity-60 inline-flex items-center justify-center gap-1.5">
+            {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+            {submitting ? t('saving') : submitLabel}
+          </button>
+          <span className={`text-xs ${dirty ? 'text-amber-600 dark:text-amber-400' : 'text-muted-foreground'}`}>
+            {dirty ? t('unsaved') : lastSavedAt ? t('savedAt', { when: formatRelativeTime(lastSavedAt, locale, now) }) : t('saveShortcut')}
+          </span>
+          {previewHref && (
+            <a href={previewHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground">
+              <Eye className="w-3.5 h-3.5" />
+              {t('preview')}
+            </a>
+          )}
+          <button
+            type="button"
+            role="switch"
+            aria-checked={isPublished}
+            onClick={() => setIsPublished(!isPublished)}
+            className="ml-auto inline-flex items-center gap-2 text-sm"
+          >
+            {t('published')}
+            <span className={`relative inline-block h-5 w-9 shrink-0 rounded-full transition-colors ${isPublished ? 'bg-emerald-500' : 'bg-muted-foreground/30'}`}>
+              <span className={`absolute left-0 top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${isPublished ? 'translate-x-4' : 'translate-x-0.5'}`} />
+            </span>
+          </button>
         </div>
-        {/* Settings live beside the article so the writing surface reads
-            like the published page. On phones the panel comes first. */}
-        <aside className="order-first lg:order-none lg:sticky lg:top-24 rounded-xl border border-border bg-card p-4 space-y-4">
-          <div>
-            <button type="submit" disabled={submitting} className="btn-primary w-full disabled:opacity-60 inline-flex items-center justify-center gap-1.5">
-              {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-              {submitting ? t('saving') : submitLabel}
-            </button>
-            <p className={`mt-2 text-center text-[11px] ${dirty ? 'text-amber-600 dark:text-amber-400' : 'text-muted-foreground'}`}>
-              {dirty ? t('unsaved') : lastSavedAt ? t('savedAt', { when: formatRelativeTime(lastSavedAt, locale, now) }) : t('saveShortcut')}
-            </p>
-            {previewHref && (
-              <a href={previewHref} target="_blank" rel="noopener noreferrer" className="mt-2 flex items-center justify-center gap-1.5 text-xs text-muted-foreground hover:text-foreground">
-                <Eye className="w-3.5 h-3.5" />
-                {t('preview')}
-              </a>
-            )}
-          </div>
 
-          <div className="border-t border-border pt-4">
-            <button
-              type="button"
-              role="switch"
-              aria-checked={isPublished}
-              onClick={() => setIsPublished(!isPublished)}
-              className="flex w-full items-center justify-between text-sm"
-            >
-              <span>{t('published')}</span>
-              <span className={`relative inline-block h-5 w-9 shrink-0 rounded-full transition-colors ${isPublished ? 'bg-emerald-500' : 'bg-muted-foreground/30'}`}>
-                <span className={`absolute left-0 top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${isPublished ? 'translate-x-4' : 'translate-x-0.5'}`} />
-              </span>
-            </button>
-          </div>
-
-          <label className="block">
-            <span className="text-xs text-muted-foreground">{t('statusLabel')}</span>
+        <div className="grid gap-2 sm:grid-cols-[10rem_10rem_1fr] sm:items-start border-t border-border pt-3">
+          <select
+            aria-label={t('statusLabel')}
+            value={status}
+            onChange={(event) => setStatus(event.target.value as ProjectStatus)}
+            className="w-full bg-transparent border border-border rounded-lg px-3 py-1.5 text-sm"
+          >
+            {statusOptions.map((option) => (
+              <option key={option} value={option}>
+                {tStatus(option)}
+              </option>
+            ))}
+          </select>
+          <div className="space-y-2">
             <select
-              value={status}
-              onChange={(event) => setStatus(event.target.value as ProjectStatus)}
-              className="mt-1 w-full bg-transparent border border-border rounded-lg px-3 py-2 text-sm"
-            >
-              {statusOptions.map((option) => (
-                <option key={option} value={option}>
-                  {tStatus(option)}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label className="block">
-            <span className="text-xs text-muted-foreground">{t('kindLabel')}</span>
-            <select
+              aria-label={t('kindLabel')}
               value={kind}
               onChange={(event) => setKind(event.target.value as ProjectKind)}
-              className="mt-1 w-full bg-transparent border border-border rounded-lg px-3 py-2 text-sm"
+              className="w-full bg-transparent border border-border rounded-lg px-3 py-1.5 text-sm"
             >
               {kindOptions.map((option) => (
                 <option key={option} value={option}>
@@ -431,52 +345,133 @@ export default function ProjectEditorForm({ draftKey, submitLabel, onSubmit, onD
                 </option>
               ))}
             </select>
-            {kind === 'service' && (
-              <input
-                type="url"
-                value={serviceUrl}
-                onChange={(event) => setServiceUrl(event.target.value)}
-                placeholder={t('serviceUrlPlaceholder')}
-                className="mt-2 w-full bg-transparent border border-border rounded-lg px-3 py-2 text-sm"
-              />
-            )}
-          </label>
-
-          <div>
-            <span className="text-xs text-muted-foreground">{t('tags')}</span>
-            <div className="mt-1 flex flex-wrap items-center gap-1.5 rounded-lg border border-border px-2 py-1.5">
-              {tags.map((tag) => (
-                <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs font-mono">
-                  {tag}
-                  <button type="button" onClick={() => setTags(tags.filter((existing) => existing !== tag))} aria-label={t('removeTag', { tag })}>
-                    <X className="w-3 h-3" />
-                  </button>
-                </span>
-              ))}
-              <input
-                value={tagInput}
-                onChange={(event) => setTagInput(event.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ',') {
-                    event.preventDefault();
-                    addTag(tagInput);
-                  } else if (event.key === 'Backspace' && !tagInput && tags.length > 0) {
-                    setTags(tags.slice(0, -1));
-                  }
-                }}
-                onBlur={() => tagInput && addTag(tagInput)}
-                list="known-tags"
-                placeholder={t('tagPlaceholder')}
-                className="flex-1 min-w-24 bg-transparent text-sm outline-none py-0.5"
-              />
-              <datalist id="known-tags">
-                {knownTags.filter((tag) => !tags.includes(tag)).map((tag) => (
-                  <option key={tag} value={tag} />
-                ))}
-              </datalist>
-            </div>
           </div>
-        </aside>
+          <div className="flex flex-wrap items-center gap-1.5 rounded-lg border border-border px-2 py-1">
+            {tags.map((tag) => (
+              <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs font-mono">
+                {tag}
+                <button type="button" onClick={() => setTags(tags.filter((existing) => existing !== tag))} aria-label={t('removeTag', { tag })}>
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            ))}
+            <input
+              aria-label={t('tags')}
+              value={tagInput}
+              onChange={(event) => setTagInput(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ',') {
+                  event.preventDefault();
+                  addTag(tagInput);
+                } else if (event.key === 'Backspace' && !tagInput && tags.length > 0) {
+                  setTags(tags.slice(0, -1));
+                }
+              }}
+              onBlur={() => tagInput && addTag(tagInput)}
+              list="known-tags"
+              placeholder={t('tagPlaceholder')}
+              className="flex-1 min-w-24 bg-transparent text-sm outline-none py-0.5"
+            />
+            <datalist id="known-tags">
+              {knownTags.filter((tag) => !tags.includes(tag)).map((tag) => (
+                <option key={tag} value={tag} />
+              ))}
+            </datalist>
+          </div>
+          {kind === 'service' && (
+            <input
+              type="url"
+              aria-label={t('serviceUrlPlaceholder')}
+              value={serviceUrl}
+              onChange={(event) => setServiceUrl(event.target.value)}
+              placeholder={t('serviceUrlPlaceholder')}
+              className="sm:col-span-3 w-full bg-transparent border border-border rounded-lg px-3 py-1.5 text-sm"
+            />
+          )}
+        </div>
+      </div>
+
+      <div className="max-w-3xl mx-auto">
+        <header className="mt-7 mb-10">
+          <textarea
+            ref={titleRef}
+            value={title}
+            onChange={(event) => setTitle(event.target.value.replace(/\n/g, ' '))}
+            onKeyDown={(event) => event.key === 'Enter' && event.preventDefault()}
+            required
+            rows={1}
+            placeholder={t('titlePlaceholder')}
+            className="w-full bg-transparent border-none resize-none overflow-hidden text-4xl sm:text-5xl font-bold tracking-tight leading-tight text-balance placeholder:text-muted-foreground/40"
+          />
+          <textarea
+            ref={descriptionRef}
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+            rows={1}
+            placeholder={t('descriptionPlaceholder')}
+            className="w-full bg-transparent border-none resize-none overflow-hidden text-base sm:text-lg text-muted-foreground leading-relaxed mt-4 placeholder:text-muted-foreground/40"
+          />
+          {initialValues?.created_at && (
+            <div className="mt-6 flex flex-wrap gap-4">
+              <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
+                {tDetail('createdAt')}: {formatLocaleDate(initialValues.created_at, locale)}
+              </p>
+              {initialValues.updated_at && !areSameCalendarDate(initialValues.created_at, initialValues.updated_at) && (
+                <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
+                  {tDetail('updatedAt')}: {formatLocaleDate(initialValues.updated_at, locale)}
+                </p>
+              )}
+            </div>
+          )}
+        </header>
+      </div>
+
+      <div className="mb-10 overflow-hidden rounded-2xl border border-border max-w-3xl mx-auto">
+        <label className="group relative block cursor-pointer aspect-video bg-muted">
+          {thumbnailPreview ? (
+            <img src={thumbnailPreview} alt="Thumbnail preview" className="w-full h-full object-cover" />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+              <ImagePlus className="w-8 h-8" />
+            </div>
+          )}
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-xs font-mono uppercase tracking-wider flex items-center gap-1.5">
+              <ImagePlus className="w-3.5 h-3.5" />
+              {t('thumbnail')}
+            </span>
+          </div>
+          <input
+            type="file"
+            accept="image/png,image/jpeg,image/webp,image/avif"
+            className="sr-only"
+            onChange={(event) => handleThumbnailSelect(event.target.files?.[0])}
+          />
+        </label>
+        {thumbnailPreview && cropSource && (
+          <div className="flex justify-end border-t border-border bg-card px-3 py-2">
+            <button
+              type="button"
+              onClick={() => setCropSrc(cropSource)}
+              className="btn-outline px-3 py-1.5 text-xs inline-flex items-center gap-1.5"
+            >
+              <Crop className="w-3.5 h-3.5" />
+              {t('cropAdjust')}
+            </button>
+          </div>
+        )}
+        {thumbnailError && <p className="mt-2 text-xs text-red-500 px-px">{thumbnailError}</p>}
+      </div>
+
+      <div className="max-w-3xl mx-auto border-t border-border pt-8">
+        <BlockNoteEditorField
+          initialMarkdown={initialValues?.content_md ?? ''}
+          initialContentJson={initialValues?.content_json}
+          onContentChange={({ contentJson: nextContentJson, contentMd: nextContentMd }) => {
+            setContentJson(nextContentJson);
+            setContentMd(nextContentMd);
+          }}
+        />
       </div>
 
       {cropSrc && (

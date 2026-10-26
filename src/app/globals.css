@@ -1397,7 +1397,9 @@
   body {
     color: var(--foreground);
     background: var(--background);
-    overflow-y: scroll;
+    /* No overflow-y here: any scroll value turns body into its own scroll
+       container (clip then computes to hidden), and position: sticky stops
+       working. html's scrollbar-gutter keeps the layout from shifting. */
     overflow-x: clip;
     /* Geist Sans only covers Latin glyphs. Noto Sans JP (self-hosted, see
      main.tsx) covers Japanese with correctly-designed glyphs (including
