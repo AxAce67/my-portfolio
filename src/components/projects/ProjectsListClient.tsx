@@ -4,7 +4,7 @@ import { useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useLocale } from '@/hooks/useLocale';
 import Image from '@/components/ui/Image';
-import { Search } from 'lucide-react';
+import { Box, Search } from 'lucide-react';
 import { Link, useRouter } from '@/i18n/routing';
 import { useRouter as useTransitionRouter } from '@/i18n/routing';
 import { StaggerContainer, StaggerItem } from '@/components/ui/ScrollReveal';
@@ -173,7 +173,11 @@ export default function ProjectsListClient({ projects }: Props) {
                         loading="lazy"
                         style={{ viewTransitionName: `proj-${project.id}`, viewTransitionClass: 'project-media' }}
                       />
-                    ) : null}
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Box className="w-10 h-10 text-muted-foreground/30" strokeWidth={1} />
+                      </div>
+                    )}
                   </div>
                   <div className="p-2.5 sm:p-4 flex-1 flex flex-col sm:justify-center overflow-hidden">
                     <h2 className="text-sm sm:text-xl font-semibold tracking-tight mb-1 sm:mb-2 line-clamp-2">{project.title}</h2>
