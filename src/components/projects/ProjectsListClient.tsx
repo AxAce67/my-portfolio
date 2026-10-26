@@ -4,7 +4,7 @@ import { useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useLocale } from '@/hooks/useLocale';
 import Image from '@/components/ui/Image';
-import { Box, Search } from 'lucide-react';
+import { Box, ChevronDown, Search } from 'lucide-react';
 import { Link, useRouter } from '@/i18n/routing';
 import { useRouter as useTransitionRouter } from '@/i18n/routing';
 import { StaggerContainer, StaggerItem } from '@/components/ui/ScrollReveal';
@@ -180,24 +180,27 @@ export default function ProjectsListClient({ projects }: Props) {
             </button>
           ))}
           <label htmlFor="projects-tag" className="sr-only">{t('tagLabel')}</label>
-          <select
-            id="projects-tag"
-            value={tagFilter ?? ''}
-            onChange={(event) => {
-              setTagFilter(event.target.value || null);
-              setPage(1);
-            }}
-            className={`ml-auto rounded-full border bg-card px-3 py-1 text-xs font-mono ${tagFilter
-              ? 'border-foreground text-foreground'
-              : 'border-border text-muted-foreground hover:border-border-hover'}`}
-          >
-            <option value="">{t('allTags')}</option>
-            {tagOptions.map(([tag, count]) => (
-              <option key={tag} value={tag}>
-                {tag} ({count})
-              </option>
-            ))}
-          </select>
+          <span className="relative ml-auto">
+            <select
+              id="projects-tag"
+              value={tagFilter ?? ''}
+              onChange={(event) => {
+                setTagFilter(event.target.value || null);
+                setPage(1);
+              }}
+              className={`appearance-none rounded-full border bg-card pl-3 pr-8 py-1 text-xs font-mono ${tagFilter
+                ? 'border-foreground text-foreground'
+                : 'border-border text-muted-foreground hover:border-border-hover'}`}
+            >
+              <option value="">{t('allTags')}</option>
+              {tagOptions.map(([tag, count]) => (
+                <option key={tag} value={tag}>
+                  {tag} ({count})
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+          </span>
         </div>
       </div>
 
