@@ -28,7 +28,7 @@ export default function EditProjectPage() {
     if (!id) return;
     getAdminProjectById(id).then((data) => {
       if (!data) {
-        router.replace(`/${locale}/admin?tab=projects`);
+        router.replace(`/${locale}/admin`);
         return;
       }
       setProject(data);
@@ -61,7 +61,7 @@ export default function EditProjectPage() {
     <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-10 sm:pb-20">
       <div className="mb-4 sm:mb-6 flex items-center justify-between gap-3">
         <TransitionLink
-          href={`/${locale}/admin?tab=projects`}
+          href={`/${locale}/admin`}
           onClick={handleBackClick}
           className="back-link"
           direction="backward"

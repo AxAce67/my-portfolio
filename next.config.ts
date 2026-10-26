@@ -25,6 +25,12 @@ const nextConfig: NextConfig = {
         permanent: false,
       },
       {
+        // The project list is the dashboard's first tab, at /admin.
+        source: '/:locale/admin/projects',
+        destination: '/:locale/admin',
+        permanent: false,
+      },
+      {
         source: '/radar',
         destination: '/ja/radar',
         permanent: false,

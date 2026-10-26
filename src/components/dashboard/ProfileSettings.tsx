@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { ImagePlus, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';

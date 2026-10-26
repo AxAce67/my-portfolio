@@ -38,11 +38,11 @@ Single Appwrite project. Content, auth, and Storage calls happen directly from t
 
 ### Admin Area (`/admin`)
 
-Single route serves both login and dashboard — `src/views/AdminPage.tsx` checks the session (`useSession` hook) and renders `LoginForm` or `DashboardPage` accordingly. No separate `/login` route.
+The dashboard tabs are separate URLs: `/admin` (projects), `/admin/active`, `/admin/profile`, `/admin/links` (old `/admin?tab=…` links are redirected client-side, `/admin/projects` by `next.config.ts`). They share the `(dashboard)` route-group layout, whose `src/views/AdminDashboardShell.tsx` checks the session (`useSession` hook), shows `LoginForm` when signed out, and draws the heading and tab bar, so switching tabs keeps the session. No separate `/login` route.
 
 - Auth: Appwrite Account API (`account.createEmailPasswordSession`), single/few admin users created manually via the Appwrite console — there is no public signup
-- `RequireAuth` (`src/components/auth/RequireAuth.tsx`) gates `/admin/projects/new` and `/admin/projects/:id`, redirecting to `/admin` if unauthenticated
-- `DashboardPage` has 3 tabs (projects, active, mutual links) — no audit-log tab (that depended on Supabase-only rate-limit/audit infra that no longer exists)
+- `RequireAuth` (`src/components/auth/RequireAuth.tsx`) gates `/admin/projects/new`, `/admin/projects/:id` and its `/preview`, redirecting to `/admin` if unauthenticated
+- Four tabs (projects, active, profile, mutual links) — no audit-log tab (that depended on Supabase-only rate-limit/audit infra that no longer exists)
 - `ProjectEditorForm` mirrors the live article page's typography (`.article-content`) so editing looks like the published result. It autosaves a draft to `localStorage` (debounced) and warns on unsaved navigation/tab-close
 - Thumbnails go through a crop step (`react-easy-crop`, locked 16:9) before upload
 - Active Projects use `@dnd-kit` for drag-to-reorder (no manual priority field — `display_order` is set automatically)

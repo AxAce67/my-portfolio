@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getValidLocale } from '@/i18n/locales';
 import { createPageMetadata } from '@/lib/metadata';
-import AdminPage from '@/views/AdminPage';
+import ProfileSettings from '@/components/dashboard/ProfileSettings';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -13,5 +13,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function Page() {
-  return <AdminPage />;
+  return <ProfileSettings />;
 }

@@ -1,3 +1,5 @@
+'use client';
+
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { ExternalLink, GripVertical, ImageOff, ImagePlus, Loader2, Pencil, Plus, Trash2 } from 'lucide-react';
