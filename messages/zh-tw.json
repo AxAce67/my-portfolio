@@ -40,9 +40,10 @@
       "webDev": "Web 開發",
       "discordBots": "Discord 機器人",
       "serverOps": "伺服器維運",
-      "networking": "網路（BGP）",
+      "networking": "網路",
       "aiAssisted": "AI 輔助開發",
-      "videoEditing": "影片剪輯"
+      "rapidPrototyping": "快速原型",
+      "problemSolving": "問題解決"
     },
     "linksLabel": "Links",
     "role": "獨立開發者",

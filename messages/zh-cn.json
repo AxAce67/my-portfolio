@@ -40,9 +40,10 @@
       "webDev": "Web 开发",
       "discordBots": "Discord 机器人",
       "serverOps": "服务器运维",
-      "networking": "网络（BGP）",
+      "networking": "网络",
       "aiAssisted": "AI 辅助开发",
-      "videoEditing": "视频剪辑"
+      "rapidPrototyping": "快速原型",
+      "problemSolving": "问题解决"
     },
     "linksLabel": "Links",
     "role": "独立开发者",

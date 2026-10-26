@@ -40,9 +40,10 @@
       "webDev": "Web 開発",
       "discordBots": "Discord Bot",
       "serverOps": "サーバー運用",
-      "networking": "ネットワーク（BGP）",
+      "networking": "ネットワーク",
       "aiAssisted": "AI 活用",
-      "videoEditing": "動画編集"
+      "rapidPrototyping": "高速プロトタイピング",
+      "problemSolving": "課題解決"
     },
     "linksLabel": "Links",
     "role": "個人開発者",

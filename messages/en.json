@@ -40,9 +40,10 @@
       "webDev": "Web Development",
       "discordBots": "Discord Bots",
       "serverOps": "Server Ops",
-      "networking": "Networking (BGP)",
+      "networking": "Networking",
       "aiAssisted": "AI-assisted Dev",
-      "videoEditing": "Video Editing"
+      "rapidPrototyping": "Rapid Prototyping",
+      "problemSolving": "Problem Solving"
     },
     "linksLabel": "Links",
     "role": "Independent Developer",
