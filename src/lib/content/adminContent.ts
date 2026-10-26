@@ -466,3 +466,12 @@ export async function deleteMutualLink(id: string): Promise<void> {
     await storage.deleteFile({ bucketId: ASSETS_BUCKET_ID, fileId }).catch(() => {});
   }
 }
+
+/**
+ * Remove an image that was uploaded for a form the admin then closed without
+ * saving (or replaced before saving). Best effort, like the other cleanups.
+ */
+export async function discardUploadedImage(url: string | null): Promise<void> {
+  const fileId = url ? extractFileIdFromUrl(url) : null;
+  if (fileId) await storage.deleteFile({ bucketId: ASSETS_BUCKET_ID, fileId }).catch(() => {});
+}

@@ -288,9 +288,10 @@
     },
     "profile": {
       "title": "프로필 사진",
-      "description": "사진에 마우스를 올리면 새로 업로드할 수 있습니다.",
+      "description": "사이트 소개 섹션에 표시됩니다. 사진을 고른 뒤 정사각형으로 자르면 저장됩니다.",
       "updated": "프로필 사진을 업데이트했습니다.",
-      "updateFailed": "프로필 사진 업데이트에 실패했습니다."
+      "updateFailed": "프로필 사진 업데이트에 실패했습니다.",
+      "change": "사진 변경"
     },
     "mutualLinks": {
       "title": "상호 링크",
@@ -323,7 +324,8 @@
         "close": "닫기",
         "create": "생성",
         "update": "업데이트",
-        "cancel": "취소"
+        "cancel": "취소",
+        "open": "사이트 열기"
       },
       "dragHandle": "드래그하여 순서 변경"
     }

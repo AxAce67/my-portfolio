@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { SwitchTrack } from '@/components/ui/SwitchTrack';
 import { Select } from '@/components/ui/Select';
+import { ICON_BUTTON_CLASS } from '@/components/dashboard/adminUi';
 import { ImageOff, Eye, Plus, Search } from 'lucide-react';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useLocale } from '@/hooks/useLocale';
@@ -216,7 +217,7 @@ export default function DashboardPage({ onSignOut }: DashboardPageProps) {
                         </div>
                       </div>
                     </TransitionLink>
-                    <div className="flex items-center gap-2 w-full sm:w-auto">
+                    <div className="flex items-center gap-1.5 w-full sm:w-auto">
                       <button
                         type="button"
                         role="switch"
@@ -232,7 +233,7 @@ export default function DashboardPage({ onSignOut }: DashboardPageProps) {
                         href={project.is_published ? `/${locale}/projects/${project.id}` : `/${locale}/admin/projects/${project.id}/preview`}
                         title={project.is_published ? t('actions.read') : t('projects.preview')}
                         aria-label={project.is_published ? t('actions.read') : t('projects.preview')}
-                        className="btn-outline px-3 py-2 text-xs inline-flex items-center justify-center"
+                        className={ICON_BUTTON_CLASS}
                       >
                         <Eye className="w-3.5 h-3.5" />
                       </TransitionLink>
