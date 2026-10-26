@@ -7,17 +7,17 @@ import type { ProjectKind } from '@/lib/content/publicContent';
 
 const BADGE = 'inline-flex items-center rounded-full px-2 py-0.5 text-[10px] sm:text-[11px] font-medium';
 
-/** Status badge ("Running", "In development", …) plus a "Service" badge for services. */
+/** Status badge ("Running", "In development", …), then a "Service" badge for services; tags follow. */
 export function ProjectBadges({ kind, status, className = '' }: { kind: ProjectKind; status: string | null; className?: string }) {
   const t = useTranslations('ProjectStatus');
   const tKind = useTranslations('ProjectKind');
   if (kind !== 'service' && !isProjectStatus(status)) return null;
   return (
     <span className={`inline-flex flex-wrap items-center gap-1.5 ${className}`}>
+      {isProjectStatus(status) && <span className={`${BADGE} ${PROJECT_STATUS_BADGE_CLASS[status]}`}>{t(status)}</span>}
       {kind === 'service' && (
         <span className={`${BADGE} bg-violet-500/15 text-violet-600 dark:text-violet-300 border border-violet-500/25`}>{tKind('service')}</span>
       )}
-      {isProjectStatus(status) && <span className={`${BADGE} ${PROJECT_STATUS_BADGE_CLASS[status]}`}>{t(status)}</span>}
     </span>
   );
 }
