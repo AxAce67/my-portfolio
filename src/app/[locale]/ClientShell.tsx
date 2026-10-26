@@ -5,6 +5,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { AppToaster } from '@/components/ui/AppToaster';
 import { ScrollToTop } from '@/components/ui/ScrollToTop';
+import { HistoryViewTransition } from '@/components/ui/HistoryViewTransition';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { getLocaleMeta, type AppLocale } from '@/i18n/routing';
 import { LocaleProvider, useAppLocale } from '@/i18n/LocaleProvider';
@@ -27,6 +28,7 @@ function ClientShellContent({ children }: Pick<Props, 'children'>) {
   return (
     <ThemeProvider>
       <ScrollToTop />
+      <HistoryViewTransition />
       <div className="flex min-h-screen flex-col">
         <a href="#main-content" className="skip-link">
           {getLocaleMeta(locale).skipToContentLabel}
