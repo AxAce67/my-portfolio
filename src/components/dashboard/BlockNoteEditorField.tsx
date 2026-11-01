@@ -11,8 +11,10 @@ type BlockNoteEditorFieldProps = {
   onContentChange?: (payload: { contentJson: unknown; contentMd: string }) => void;
 };
 
+// BlockNote throws on an empty initialContent array, which is what a project
+// saved with an empty body stores; undefined gives it a fresh empty document.
 function normalizeBlocks(input: unknown) {
-  return Array.isArray(input) ? input : undefined;
+  return Array.isArray(input) && input.length > 0 ? input : undefined;
 }
 
 // BlockNote ships as a self-contained "card" widget (white background,
