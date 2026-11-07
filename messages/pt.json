@@ -148,7 +148,8 @@
       "projects": "Projetos",
       "activeProjects": "Projetos em andamento",
       "profile": "Perfil",
-      "mutualLinks": "Links"
+      "mutualLinks": "Links",
+      "inbox": "Caixa de entrada"
     },
     "actions": {
       "read": "Ler",
@@ -328,6 +329,42 @@
         "open": "Abrir site"
       },
       "dragHandle": "Arraste para reordenar"
+    },
+    "inbox": {
+      "title": "Caixa de entrada",
+      "description": "Mensagens enviadas pelo formulário de contato.",
+      "filters": {
+        "all": "Todas ({count})",
+        "unread": "Não lidas ({count})"
+      },
+      "empty": "Ainda não há mensagens.",
+      "emptyUnread": "Não há mensagens não lidas.",
+      "status": {
+        "new": "Não lida",
+        "read": "Lida",
+        "replied": "Respondida"
+      },
+      "fields": {
+        "from": "De",
+        "received": "Recebida em",
+        "language": "Idioma"
+      },
+      "noEmail": "Nenhum e-mail foi informado, então não é possível responder.",
+      "actions": {
+        "reply": "Responder por e-mail",
+        "markUnread": "Marcar como não lida",
+        "delete": "Excluir",
+        "close": "Fechar",
+        "cancel": "Cancelar"
+      },
+      "deleteModal": {
+        "title": "Excluir esta mensagem?",
+        "description": "\"{subject}\" será excluída. Esta ação não pode ser desfeita."
+      },
+      "loadFailed": "Não foi possível carregar a caixa de entrada.",
+      "updateFailed": "Não foi possível alterar o status.",
+      "deleted": "Mensagem excluída.",
+      "deleteFailed": "Não foi possível excluir a mensagem."
     }
   },
   "ActiveProjects": {

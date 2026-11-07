@@ -148,7 +148,8 @@
       "projects": "プロジェクト",
       "activeProjects": "進行中プロジェクト",
       "profile": "プロフィール",
-      "mutualLinks": "相互リンク"
+      "mutualLinks": "相互リンク",
+      "inbox": "受信箱"
     },
     "actions": {
       "read": "閲覧",
@@ -328,6 +329,42 @@
         "open": "サイトを開く"
       },
       "dragHandle": "ドラッグして並び替え"
+    },
+    "inbox": {
+      "title": "受信箱",
+      "description": "お問い合わせフォームから届いたメッセージです。",
+      "filters": {
+        "all": "すべて ({count})",
+        "unread": "未読 ({count})"
+      },
+      "empty": "まだお問い合わせはありません。",
+      "emptyUnread": "未読のお問い合わせはありません。",
+      "status": {
+        "new": "未読",
+        "read": "既読",
+        "replied": "返信済み"
+      },
+      "fields": {
+        "from": "差出人",
+        "received": "受信日時",
+        "language": "言語"
+      },
+      "noEmail": "メールアドレスが書かれていないため、返信できません。",
+      "actions": {
+        "reply": "メールで返信",
+        "markUnread": "未読に戻す",
+        "delete": "削除",
+        "close": "閉じる",
+        "cancel": "キャンセル"
+      },
+      "deleteModal": {
+        "title": "お問い合わせを削除しますか？",
+        "description": "「{subject}」を削除します。この操作は取り消せません。"
+      },
+      "loadFailed": "受信箱を読み込めませんでした。",
+      "updateFailed": "状態を変更できませんでした。",
+      "deleted": "お問い合わせを削除しました。",
+      "deleteFailed": "お問い合わせを削除できませんでした。"
     }
   },
   "ActiveProjects": {

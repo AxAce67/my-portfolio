@@ -42,11 +42,12 @@ Single route serves both login and dashboard — `src/views/AdminPage.tsx` check
 
 - Auth: Appwrite Account API (`account.createEmailPasswordSession`), single/few admin users created manually via the Appwrite console — there is no public signup
 - `RequireAuth` (`src/components/auth/RequireAuth.tsx`) gates `/admin/projects/new` and `/admin/projects/:id`, redirecting to `/admin` if unauthenticated
-- `DashboardPage` has 3 tabs (projects, active, mutual links) — no audit-log tab (that depended on Supabase-only rate-limit/audit infra that no longer exists)
+- The dashboard has 5 tabs (projects, active, profile, mutual links, inbox) — no audit-log tab (that depended on Supabase-only rate-limit/audit infra that no longer exists)
 - `ProjectEditorForm` mirrors the live article page's typography (`.article-content`) so editing looks like the published result. It autosaves a draft to `localStorage` (debounced) and warns on unsaved navigation/tab-close
 - Thumbnails go through a crop step (`react-easy-crop`, locked 16:9) before upload
 - Active Projects use `@dnd-kit` for drag-to-reorder (no manual priority field — `display_order` is set automatically)
 - Admin editor routes import BlockNote/Mantine CSS only on the editor pages that need them
+- Inbox (`src/components/dashboard/ContactInbox.tsx`): contact form messages from the `contact_messages` table, newest first, status new/read/replied (opening marks read, the reply button opens a `mailto:` and marks replied). The table grants read/update/delete to `label:admin` only and no create permission; rows are created only by `/api/contact` with a server key
 
 ### Content Storage
 
@@ -78,7 +79,7 @@ NEXT_PUBLIC_APPWRITE_PROJECT_ID
 NEXT_PUBLIC_SITE_URL          # SEO/OGP base URL fallback
 ```
 
-See `.env.example` for the full list (contact form, GitHub activity card, Tailscale status). The contact form posts to `/api/contact`, which verifies Turnstile with `TURNSTILE_SECRET_KEY` and delivers to `CONTACT_DISCORD_WEBHOOK_URL`.
+See `.env.example` for the full list (contact form, GitHub activity card, Tailscale status). The contact form posts to `/api/contact`, which verifies Turnstile with `TURNSTILE_SECRET_KEY`, saves the message to `contact_messages` with `APPWRITE_CONTACT_API_KEY` (rows.write only) and posts a notification to ntfy (`NTFY_URL`, `NTFY_CONTACT_TOKEN`, topic `contact`). Either succeeding counts as delivered; if saving fails, the ntfy message carries the full text.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

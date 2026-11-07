@@ -13,4 +13,5 @@ export const PROJECTS_TABLE_ID = 'projects';
 export const ACTIVE_PROJECTS_TABLE_ID = 'active_projects';
 export const SITE_SETTINGS_TABLE_ID = 'site_settings';
 export const MUTUAL_LINKS_TABLE_ID = 'mutual_links';
+export const CONTACT_MESSAGES_TABLE_ID = 'contact_messages';
 export const ASSETS_BUCKET_ID = 'portfolio-assets';

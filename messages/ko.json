@@ -148,7 +148,8 @@
       "projects": "프로젝트",
       "activeProjects": "진행 중 프로젝트",
       "profile": "프로필",
-      "mutualLinks": "상호 링크"
+      "mutualLinks": "상호 링크",
+      "inbox": "받은편지함"
     },
     "actions": {
       "read": "보기",
@@ -328,6 +329,42 @@
         "open": "사이트 열기"
       },
       "dragHandle": "드래그하여 순서 변경"
+    },
+    "inbox": {
+      "title": "받은편지함",
+      "description": "문의 양식으로 받은 메시지입니다.",
+      "filters": {
+        "all": "전체 ({count})",
+        "unread": "읽지 않음 ({count})"
+      },
+      "empty": "아직 받은 문의가 없습니다.",
+      "emptyUnread": "읽지 않은 문의가 없습니다.",
+      "status": {
+        "new": "읽지 않음",
+        "read": "읽음",
+        "replied": "답장함"
+      },
+      "fields": {
+        "from": "보낸 사람",
+        "received": "받은 시간",
+        "language": "언어"
+      },
+      "noEmail": "이메일 주소가 없어 답장할 수 없습니다.",
+      "actions": {
+        "reply": "이메일로 답장",
+        "markUnread": "읽지 않음으로 표시",
+        "delete": "삭제",
+        "close": "닫기",
+        "cancel": "취소"
+      },
+      "deleteModal": {
+        "title": "이 문의를 삭제하시겠습니까?",
+        "description": "\"{subject}\"을 삭제합니다. 이 작업은 취소할 수 없습니다."
+      },
+      "loadFailed": "받은편지함을 불러오지 못했습니다.",
+      "updateFailed": "상태를 변경하지 못했습니다.",
+      "deleted": "문의를 삭제했습니다.",
+      "deleteFailed": "문의를 삭제하지 못했습니다."
     }
   },
   "ActiveProjects": {

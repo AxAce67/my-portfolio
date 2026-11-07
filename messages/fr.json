@@ -148,7 +148,8 @@
       "projects": "Projets",
       "activeProjects": "Projets en cours",
       "profile": "Profil",
-      "mutualLinks": "Liens"
+      "mutualLinks": "Liens",
+      "inbox": "Boîte de réception"
     },
     "actions": {
       "read": "Lire",
@@ -328,6 +329,42 @@
         "open": "Ouvrir le site"
       },
       "dragHandle": "Glisser pour réorganiser"
+    },
+    "inbox": {
+      "title": "Boîte de réception",
+      "description": "Messages envoyés via le formulaire de contact.",
+      "filters": {
+        "all": "Tous ({count})",
+        "unread": "Non lus ({count})"
+      },
+      "empty": "Aucun message pour l’instant.",
+      "emptyUnread": "Aucun message non lu.",
+      "status": {
+        "new": "Non lu",
+        "read": "Lu",
+        "replied": "Répondu"
+      },
+      "fields": {
+        "from": "De",
+        "received": "Reçu le",
+        "language": "Langue"
+      },
+      "noEmail": "Aucune adresse e-mail n’a été indiquée, impossible de répondre.",
+      "actions": {
+        "reply": "Répondre par e-mail",
+        "markUnread": "Marquer comme non lu",
+        "delete": "Supprimer",
+        "close": "Fermer",
+        "cancel": "Annuler"
+      },
+      "deleteModal": {
+        "title": "Supprimer ce message ?",
+        "description": "« {subject} » sera supprimé. Cette action est irréversible."
+      },
+      "loadFailed": "Impossible de charger la boîte de réception.",
+      "updateFailed": "Impossible de modifier le statut.",
+      "deleted": "Message supprimé.",
+      "deleteFailed": "Impossible de supprimer le message."
     }
   },
   "ActiveProjects": {

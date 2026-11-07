@@ -148,7 +148,8 @@
       "projects": "Proyectos",
       "activeProjects": "Proyectos en curso",
       "profile": "Perfil",
-      "mutualLinks": "Enlaces"
+      "mutualLinks": "Enlaces",
+      "inbox": "Bandeja"
     },
     "actions": {
       "read": "Ver",
@@ -328,6 +329,42 @@
         "open": "Abrir sitio"
       },
       "dragHandle": "Arrastra para reordenar"
+    },
+    "inbox": {
+      "title": "Bandeja de entrada",
+      "description": "Mensajes enviados a través del formulario de contacto.",
+      "filters": {
+        "all": "Todos ({count})",
+        "unread": "No leídos ({count})"
+      },
+      "empty": "Todavía no hay mensajes.",
+      "emptyUnread": "No hay mensajes sin leer.",
+      "status": {
+        "new": "No leído",
+        "read": "Leído",
+        "replied": "Respondido"
+      },
+      "fields": {
+        "from": "De",
+        "received": "Recibido",
+        "language": "Idioma"
+      },
+      "noEmail": "No se indicó un correo electrónico, así que no se puede responder.",
+      "actions": {
+        "reply": "Responder por correo",
+        "markUnread": "Marcar como no leído",
+        "delete": "Eliminar",
+        "close": "Cerrar",
+        "cancel": "Cancelar"
+      },
+      "deleteModal": {
+        "title": "¿Eliminar este mensaje?",
+        "description": "Se eliminará \"{subject}\". Esta acción no se puede deshacer."
+      },
+      "loadFailed": "No se pudo cargar la bandeja.",
+      "updateFailed": "No se pudo cambiar el estado.",
+      "deleted": "Mensaje eliminado.",
+      "deleteFailed": "No se pudo eliminar el mensaje."
     }
   },
   "ActiveProjects": {

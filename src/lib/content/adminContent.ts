@@ -7,6 +7,7 @@ import {
   ACTIVE_PROJECTS_TABLE_ID,
   SITE_SETTINGS_TABLE_ID,
   MUTUAL_LINKS_TABLE_ID,
+  CONTACT_MESSAGES_TABLE_ID,
   ASSETS_BUCKET_ID,
 } from '@/lib/appwrite/client';
 import { parseContentJson } from '@/lib/content/publicContent';
@@ -474,4 +475,59 @@ export async function deleteMutualLink(id: string): Promise<void> {
 export async function discardUploadedImage(url: string | null): Promise<void> {
   const fileId = url ? extractFileIdFromUrl(url) : null;
   if (fileId) await storage.deleteFile({ bucketId: ASSETS_BUCKET_ID, fileId }).catch(() => {});
+}
+
+// Contact form inbox. Rows are created only by /api/contact with a server key;
+// the table grants read, update and delete to label:admin and nothing else.
+
+export type ContactMessageStatus = 'new' | 'read' | 'replied';
+
+type ContactMessageRow = Models.Row & {
+  name: string | null;
+  email: string | null;
+  subject: string | null;
+  message: string | null;
+  status: ContactMessageStatus | null;
+  locale: string | null;
+};
+
+export type AdminContactMessage = {
+  id: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  status: ContactMessageStatus;
+  locale: string;
+  createdAt: string;
+};
+
+function toContactMessage(row: ContactMessageRow): AdminContactMessage {
+  return {
+    id: row.$id,
+    name: row.name ?? '',
+    email: row.email ?? '',
+    subject: row.subject ?? '',
+    message: row.message ?? '',
+    status: row.status ?? 'new',
+    locale: row.locale ?? '',
+    createdAt: row.$createdAt,
+  };
+}
+
+export async function listContactMessages(): Promise<AdminContactMessage[]> {
+  const rows = await tablesDB.listRows<ContactMessageRow>({
+    databaseId: DATABASE_ID,
+    tableId: CONTACT_MESSAGES_TABLE_ID,
+    queries: [Query.orderDesc('$createdAt'), Query.limit(500)],
+  });
+  return rows.rows.map(toContactMessage);
+}
+
+export async function setContactMessageStatus(id: string, status: ContactMessageStatus): Promise<void> {
+  await tablesDB.updateRow({ databaseId: DATABASE_ID, tableId: CONTACT_MESSAGES_TABLE_ID, rowId: id, data: { status } });
+}
+
+export async function deleteContactMessage(id: string): Promise<void> {
+  await tablesDB.deleteRow({ databaseId: DATABASE_ID, tableId: CONTACT_MESSAGES_TABLE_ID, rowId: id });
 }

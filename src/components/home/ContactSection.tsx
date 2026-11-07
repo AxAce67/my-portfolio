@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from '@/hooks/useTranslations';
+import { useLocale } from '@/hooks/useLocale';
 import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { CheckCircle2, Send } from 'lucide-react';
@@ -25,6 +26,7 @@ function getFocusableElements(container: HTMLElement) {
 
 export default function ContactSection() {
   const t = useTranslations('Contact');
+  const locale = useLocale();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitState, setSubmitState] = useState<'idle' | 'success' | 'error' | 'turnstile'>('idle');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -228,6 +230,7 @@ export default function ContactSection() {
           subject: pendingPayload.subject,
           message: pendingPayload.message,
           token: pendingPayload.token,
+          locale,
         }),
       });
 

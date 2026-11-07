@@ -15,13 +15,14 @@ const TABS = [
   { path: '/active', label: 'tabs.activeProjects' },
   { path: '/profile', label: 'tabs.profile' },
   { path: '/links', label: 'tabs.mutualLinks' },
+  { path: '/inbox', label: 'tabs.inbox' },
 ] as const;
 
-const LEGACY_TABS: Record<string, string> = { projects: '/projects', active: '/active', profile: '/profile', links: '/links' };
+const LEGACY_TABS: Record<string, string> = { projects: '/projects', active: '/active', profile: '/profile', links: '/links', inbox: '/inbox' };
 
 /**
  * Login check, heading and tab bar for /admin/projects, /admin/active,
- * /admin/profile and /admin/links (/admin itself redirects to the first). It lives in the layout, so switching tabs keeps the
+ * /admin/profile, /admin/links and /admin/inbox (/admin itself redirects to the first). It lives in the layout, so switching tabs keeps the
  * session and only swaps the content below.
  */
 export default function AdminDashboardShell({ children }: { children: ReactNode }) {

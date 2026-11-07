@@ -148,7 +148,8 @@
       "projects": "Projects",
       "activeProjects": "Active Projects",
       "profile": "Profile",
-      "mutualLinks": "Links"
+      "mutualLinks": "Links",
+      "inbox": "Inbox"
     },
     "actions": {
       "read": "Read",
@@ -328,6 +329,42 @@
         "open": "Open site"
       },
       "dragHandle": "Drag to reorder"
+    },
+    "inbox": {
+      "title": "Inbox",
+      "description": "Messages sent through the contact form.",
+      "filters": {
+        "all": "All ({count})",
+        "unread": "Unread ({count})"
+      },
+      "empty": "No messages yet.",
+      "emptyUnread": "No unread messages.",
+      "status": {
+        "new": "Unread",
+        "read": "Read",
+        "replied": "Replied"
+      },
+      "fields": {
+        "from": "From",
+        "received": "Received",
+        "language": "Language"
+      },
+      "noEmail": "No email address was given, so this message cannot be answered.",
+      "actions": {
+        "reply": "Reply by email",
+        "markUnread": "Mark as unread",
+        "delete": "Delete",
+        "close": "Close",
+        "cancel": "Cancel"
+      },
+      "deleteModal": {
+        "title": "Delete this message?",
+        "description": "Delete \"{subject}\". This action cannot be undone."
+      },
+      "loadFailed": "Could not load the inbox.",
+      "updateFailed": "Could not change the status.",
+      "deleted": "Message deleted.",
+      "deleteFailed": "Could not delete the message."
     }
   },
   "ActiveProjects": {
