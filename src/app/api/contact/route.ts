@@ -91,7 +91,7 @@ async function notifyNtfy(input: ContactMessage, saved: boolean): Promise<boolea
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
     body: JSON.stringify({
       topic: 'contact',
-      title: `✉️ お問い合わせ：${input.subject}`.slice(0, 250),
+      title: `✉️ aki.quest：${input.subject}`.slice(0, 250),
       message: body,
       priority: 4,
       click: `${site}/ja/admin/inbox`,
