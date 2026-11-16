@@ -1,8 +1,9 @@
 import type { NextConfig } from 'next';
 
 const securityHeaders = [
-  // aki.sh only (no includeSubDomains): some subdomains are plain HTTP.
-  { key: 'Strict-Transport-Security', value: 'max-age=31536000' },
+  // Cloudflare sets the same header for the whole aki.sh zone (includeSubDomains);
+  // this copy matters only when the site is reached without Cloudflare.
+  { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' },
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
   { key: 'X-Frame-Options', value: 'DENY' },
