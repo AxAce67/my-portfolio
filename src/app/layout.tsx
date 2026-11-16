@@ -77,7 +77,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       <body suppressHydrationWarning>
         <Script id="theme-init" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: getThemeInitScript() }} />
         <Script
-          src="https://analytics.aki.quest/script.js"
+          src="https://analytics.aki.sh/script.js"
           data-website-id="37176f59-41f2-4fd6-b3f8-949a03f12d5c"
           data-domains="aki.sh"
           strategy="afterInteractive"
