@@ -109,7 +109,7 @@ const profileLinks: ProfileLink[] = [
   {
     id: 'email',
     label: 'Email',
-    href: 'mailto:hello@aki.quest',
+    href: 'mailto:hello@aki.sh',
     icon: <Mail className="w-4 h-4" strokeWidth={1.5} />,
   },
 ];

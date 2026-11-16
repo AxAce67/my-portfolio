@@ -13,7 +13,7 @@ const socialLinks = [
     { icon: Github, href: 'https://github.com/AxAce67', label: 'GitHub' },
     { icon: Twitter, href: 'https://x.com/real_Aki', label: 'X' },
     { icon: SiDiscord, href: '', label: 'Discord', copyText: '@xaki67' },
-    { icon: Mail, href: 'mailto:hello@aki.quest', label: 'Email' },
+    { icon: Mail, href: 'mailto:hello@aki.sh', label: 'Email' },
 ];
 
 export function Footer() {

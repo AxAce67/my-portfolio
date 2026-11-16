@@ -9,7 +9,7 @@ type ContactMethodsProps = {
   thirdMethod?: 'form' | 'email';
 };
 
-const DEFAULT_CONTACT_EMAIL = 'hello@aki.quest';
+const DEFAULT_CONTACT_EMAIL = 'hello@aki.sh';
 
 export function ContactMethods({ className = '', thirdMethod = 'form' }: ContactMethodsProps) {
   const t = useTranslations('Contact');
