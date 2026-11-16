@@ -6,7 +6,7 @@ import { useTranslations } from '@/hooks/useTranslations';
 import { Link } from '@/i18n/routing';
 import { navigationStateKeys, readSessionValue, writeSessionValue } from '@/lib/navigationState';
 
-const RADAR_URL = 'https://tar1090.aki.quest/tar1090/';
+const RADAR_URL = 'https://tar1090.aki.sh/tar1090/';
 
 export default function RadarPage() {
   const t = useTranslations('Radar');
