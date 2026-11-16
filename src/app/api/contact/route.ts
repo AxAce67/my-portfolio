@@ -84,14 +84,14 @@ async function notifyNtfy(input: ContactMessage, saved: boolean): Promise<boolea
   const body = saved
     ? `${from}\n\n${input.message.length > 400 ? `${input.message.slice(0, 400)}…` : input.message}`
     : `⚠️ 受信箱への保存に失敗したので、全文をここに残します。\n${from}\n\n${input.message}`;
-  const site = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aki.quest';
+  const site = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aki.sh';
 
   const response = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
     body: JSON.stringify({
       topic: 'contact',
-      title: `✉️ aki.quest：${input.subject}`.slice(0, 250),
+      title: `✉️ aki.sh：${input.subject}`.slice(0, 250),
       message: body,
       priority: 4,
       click: `${site}/ja/admin/inbox`,

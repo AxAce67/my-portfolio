@@ -3,7 +3,7 @@ import { getMessages } from '@/i18n/messages';
 
 export function getSiteUrl(): string {
   const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-  if (!configured) return 'https://aki.quest';
+  if (!configured) return 'https://aki.sh';
   return configured.replace(/\/+$/, '');
 }
 

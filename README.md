@@ -5,7 +5,7 @@ Next.js App Router + React をベースに、多言語対応、記事ページ�
 
 公開サイト:
 
-- https://aki.quest
+- https://aki.sh
 
 ## Overview
 
