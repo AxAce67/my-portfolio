@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from '@/hooks/useTranslations';
 
 // A clock corrected against Aki's own public NTP server. The status page on
-// ntp-jp.aki.quest exposes the server clock at /time (CORS-enabled); the
+// ntp-jp.aki.sh exposes the server clock at /time (CORS-enabled); the
 // sample with the shortest round trip gives the best offset estimate.
-const TIME_URL = 'https://ntp-jp.aki.quest/time';
-const SERVER_LABEL = 'ntp-jp.aki.quest';
+const TIME_URL = 'https://ntp-jp.aki.sh/time';
+const SERVER_LABEL = 'ntp-jp.aki.sh';
 const SAMPLES = 3;
 
 type Sync = { offsetMs: number; accuracyMs: number };
