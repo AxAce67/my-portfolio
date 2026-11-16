@@ -8,6 +8,23 @@ const securityHeaders = [
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
   { key: 'X-Frame-Options', value: 'DENY' },
   { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), payment=()' },
+  // Report-only for now (2026-11-17): watch for violations before enforcing.
+  {
+    key: 'Content-Security-Policy-Report-Only',
+    value: [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://analytics.aki.sh https://adring.net",
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: blob: https://appwrite.aki.sh https://count.getloli.com https://github.com https://*.githubusercontent.com",
+      "font-src 'self' data:",
+      "connect-src 'self' https://appwrite.aki.sh wss://appwrite.aki.sh https://analytics.aki.sh https://ntp-jp.aki.sh",
+      "frame-src https://challenges.cloudflare.com https://tar1090.aki.sh",
+      "frame-ancestors 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "object-src 'none'",
+    ].join('; '),
+  },
 ];
 
 const nextConfig: NextConfig = {
