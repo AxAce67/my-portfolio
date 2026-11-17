@@ -140,7 +140,7 @@ export default function TechStackSection() {
 
   return (
     <section id="tech-stack" className="py-10 sm:py-12 lg:py-16 overflow-hidden">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2">{t('heading')}</h2>
           <p className="text-xs sm:text-sm text-muted-foreground mb-5 sm:mb-6">{t('subtitle')}</p>

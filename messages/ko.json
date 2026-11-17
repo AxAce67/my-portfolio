@@ -513,5 +513,17 @@
   "ProjectKind": {
     "project": "프로젝트",
     "service": "서비스"
+  },
+  "Bento": {
+    "servers": "서버",
+    "allServers": "모두 보기",
+    "ntpCaption": "하루 동안 응답한 시간 요청 ({servers}대)",
+    "atlasCaption": "개의 라이브 카메라 · {countries}개 국가와 지역",
+    "adsbCaption": "대의 항공기를 지금 수신 중",
+    "githubCaption": "이번 주 커밋",
+    "activities": "주요 활동",
+    "activitiesAll": "모두 보기",
+    "contactCta": "문의",
+    "live": "라이브"
   }
 }

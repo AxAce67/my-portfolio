@@ -513,5 +513,17 @@
   "ProjectKind": {
     "project": "專案",
     "service": "服務"
+  },
+  "Bento": {
+    "servers": "伺服器",
+    "allServers": "查看全部",
+    "ntpCaption": "一天內回應的時間請求（{servers} 台）",
+    "atlasCaption": "個直播攝影機 · {countries} 個國家和地區",
+    "adsbCaption": "架飛機正在接收",
+    "githubCaption": "本週提交",
+    "activities": "主要活動",
+    "activitiesAll": "查看全部",
+    "contactCta": "聯絡",
+    "live": "即時"
   }
 }

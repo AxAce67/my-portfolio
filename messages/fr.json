@@ -513,5 +513,17 @@
   "ProjectKind": {
     "project": "Projet",
     "service": "Service"
+  },
+  "Bento": {
+    "servers": "Serveurs",
+    "allServers": "Tout voir",
+    "ntpCaption": "requêtes d'heure servies en un jour ({servers} serveurs)",
+    "atlasCaption": "caméras en direct · {countries} pays et régions",
+    "adsbCaption": "avions reçus en ce moment",
+    "githubCaption": "commits cette semaine",
+    "activities": "Activités principales",
+    "activitiesAll": "Tout voir",
+    "contactCta": "Contact",
+    "live": "En direct"
   }
 }

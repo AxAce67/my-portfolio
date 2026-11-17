@@ -513,5 +513,17 @@
   "ProjectKind": {
     "project": "プロジェクト",
     "service": "サービス"
+  },
+  "Bento": {
+    "servers": "サーバー",
+    "allServers": "すべて見る",
+    "ntpCaption": "1 日に応えた時刻の問い合わせ（{servers} 台）",
+    "atlasCaption": "台のライブカメラ · {countries} の国と地域",
+    "adsbCaption": "機の飛行機を今受信中",
+    "githubCaption": "今週のコミット",
+    "activities": "主な活動",
+    "activitiesAll": "すべて見る",
+    "contactCta": "お問い合わせ",
+    "live": "ライブ"
   }
 }

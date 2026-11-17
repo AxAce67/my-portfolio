@@ -79,7 +79,7 @@ export default function SponsorsSection() {
 
   return (
     <section id="sponsors" className={rendered ? 'py-10 sm:py-12 lg:py-16' : 'h-0 overflow-hidden'} aria-hidden={!rendered}>
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
           <h2 className="mb-5 text-2xl sm:mb-6 sm:text-4xl font-bold tracking-tight">{t('heading')}</h2>
         </ScrollReveal>

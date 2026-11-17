@@ -67,9 +67,9 @@ Article display (`src/views/ProjectDetailPage.tsx`) prefers `content_json` when 
 - **Tailwind Preflight resets heading and list styles** — `.article-content` in `globals.css` carries the typography for rendered/edited article content (also used directly by the admin editor — see above)
 - Mantine + BlockNote CSS imported directly in the admin pages that need them (`NewProjectPage.tsx`/`EditProjectPage.tsx`), not globally
 
-### Removed vs. the old Next.js version
+### Security headers and what was removed
 
-No CSP middleware, no CSP violation reporting endpoint, no login rate-limiting, and no auth audit-log table. These controls were removed during the former Vite/Appwrite migration and were not reintroduced after returning to Next.js. Appwrite permissions remain the enforcement boundary for content administration.
+No login rate-limiting and no auth audit-log table (removed in the former Vite/Appwrite migration). A Content-Security-Policy-Report-Only header is set in `next.config.ts` (2026-11-17); browsers report violations to `/api/csp-report`, which logs one short line each. Appwrite permissions remain the enforcement boundary for content administration.
 
 ## Key Environment Variables
 

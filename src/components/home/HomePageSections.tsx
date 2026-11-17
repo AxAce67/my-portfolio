@@ -5,28 +5,22 @@ import { useLocale } from '@/hooks/useLocale';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import Image from '@/components/ui/Image';
-import { BrandLogo } from '@/components/ui/BrandLogo';
-import { ArrowUpRight, ExternalLink, Terminal, Code2, Globe, Box, Mail, List, LayoutGrid, Film, Sparkles, Wrench } from 'lucide-react';
+import { ArrowUpRight, Box, Mail } from 'lucide-react';
 import { Github, Twitter } from '@/components/ui/brandIcons';
-import { motion, useInView, useReducedMotion, AnimatePresence } from 'framer-motion';
+import { useReducedMotion } from 'framer-motion';
 import { ScrollReveal, StaggerContainer, StaggerItem } from '@/components/ui/ScrollReveal';
 import { TransitionLink } from '@/components/ui/TransitionLink';
 import { Link, useRouter } from '@/i18n/routing';
 import { useRouter as useTransitionRouter } from '@/i18n/routing';
-import TechStackSectionStatic, { techStackCount } from '@/components/sections/TechStackSection';
-import { TiltCard } from '@/components/ui/TiltCard';
+import TechStackSectionStatic from '@/components/sections/TechStackSection';
 import { canUseSharedElementTransitions, isPlainLeftClick, runRouteTransition, runViewTransition, shouldUseMobileRouteTransitions } from '@/lib/viewTransitions';
 import { areSameCalendarDate, formatLocaleDate } from '@/lib/dates';
 import { navigationStateKeys, readSessionValue, removeSessionValue, writeSessionValue } from '@/lib/navigationState';
-import { toast } from 'sonner';
 import SponsorsSection from '@/components/home/SponsorsSection';
 import { ProjectBadges, TagChip } from '@/components/projects/ProjectBadges';
-import { selfHostedServers } from '@/lib/selfHostedServers';
-import { findServerDevice, useServerStatus } from '@/hooks/useServerStatus';
 import { SiDiscord } from 'react-icons/si';
 import {
   type HomeProject as CompletedProject,
-  type HomeActiveProject as ActiveProject,
   type MutualLink,
 } from '@/lib/content/publicContent';
 
@@ -41,41 +35,6 @@ const BIRTH_DATE_JST = {
   day: 7,
 };
 
-type SkillCategory = 'Languages' | 'Stack' | 'AI' | 'Creative';
-type SkillItem = {
-  name: string;
-  category: SkillCategory;
-  featured?: boolean;
-  // Full-color brand logo under public/brands/stack (shared with Tech Stack).
-  logo: string;
-  hasDarkVariant?: boolean;
-  level?: 'main' | 'familiar' | 'learning';
-};
-
-const brandLogo = (slug: string) => `/brands/stack/${slug}.svg`;
-
-const sampleSkills: SkillItem[] = [
-  { name: 'TypeScript', category: 'Languages', featured: true, logo: brandLogo('typescript'), level: 'main' },
-  { name: 'Python', category: 'Languages', featured: true, logo: brandLogo('python'), level: 'main' },
-  { name: 'JavaScript', category: 'Languages', logo: brandLogo('javascript'), level: 'familiar' },
-  { name: 'HTML', category: 'Languages', logo: brandLogo('html'), level: 'familiar' },
-  { name: 'CSS', category: 'Languages', logo: brandLogo('css'), level: 'familiar' },
-
-  { name: 'Next.js', category: 'Stack', featured: true, logo: brandLogo('nextjs'), level: 'main' },
-  { name: 'React', category: 'Stack', featured: true, logo: brandLogo('react'), hasDarkVariant: true, level: 'main' },
-  { name: 'Tailwind CSS', category: 'Stack', logo: brandLogo('tailwindcss'), level: 'familiar' },
-  { name: 'Appwrite', category: 'Stack', logo: brandLogo('appwrite'), level: 'familiar' },
-  { name: 'Vercel', category: 'Stack', logo: brandLogo('vercel'), hasDarkVariant: true, level: 'familiar' },
-
-  { name: 'ChatGPT / Codex', category: 'AI', featured: true, logo: brandLogo('openai'), hasDarkVariant: true, level: 'main' },
-  { name: 'Claude / Claude Code', category: 'AI', featured: true, logo: brandLogo('claude'), level: 'main' },
-  { name: 'Gemini', category: 'AI', logo: brandLogo('gemini'), level: 'familiar' },
-  { name: 'Manus', category: 'AI', logo: brandLogo('manus'), hasDarkVariant: true, level: 'familiar' },
-
-  { name: 'Adobe Premiere Pro', category: 'Creative', featured: true, logo: brandLogo('premiere'), level: 'main' },
-  { name: 'Wondershare Filmora', category: 'Creative', logo: brandLogo('filmora'), hasDarkVariant: true, level: 'familiar' },
-  { name: 'Canva', category: 'Creative', logo: brandLogo('canva'), level: 'familiar' },
-];
 
 type ProfileLink = {
   id: string;
@@ -86,7 +45,7 @@ type ProfileLink = {
   copyText?: string;
 };
 
-const profileLinks: ProfileLink[] = [
+export const profileLinks: ProfileLink[] = [
   {
     id: 'github',
     label: 'GitHub',
@@ -116,23 +75,11 @@ const profileLinks: ProfileLink[] = [
 
 type HomePageSectionsProps = {
   initialCompletedProjects: CompletedProject[];
-  initialActiveProjects: ActiveProject[];
-  avatarUrl: string;
   mutualLinks: MutualLink[];
-  projectCount: number;
   returningProjectId?: string | null;
   isLoading?: boolean;
 };
 
-type AboutStatItem = {
-  id: string;
-  value: number;
-  suffix?: string;
-  label: string;
-  href?: string;
-  onActivate?: () => void;
-  badge?: ReactNode;
-};
 
 type GitHubMomentumStatus = 'loading' | 'ready' | 'error';
 type GitHubDaySummary = {
@@ -222,6 +169,61 @@ function createMomentumStateFromPayload(payload: GitHubMomentumApiResponse, fall
   };
 }
 
+// GitHub commit momentum for the home tiles: localStorage cache first (no
+// loading flash for returning visitors), then /api/github/momentum every 5 min.
+export function useGitHubMomentum() {
+  const locale = useLocale();
+  const fallbackDays = useMemo(() => buildFallbackMomentumDays(), []);
+  const [momentum, setMomentum] = useState<GitHubMomentumState>({
+    status: 'loading',
+    username: 'AxAce67',
+    weeklyCommits: 0,
+    streakDays: 0,
+    daily: [],
+    updatedAt: null,
+    hasLoadedOnce: false,
+  });
+
+  useLayoutEffect(() => {
+    const cachedPayload = readCachedMomentum();
+    if (cachedPayload) setMomentum(createMomentumStateFromPayload(cachedPayload, fallbackDays));
+  }, [fallbackDays]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const fetchMomentum = async () => {
+      try {
+        const response = await fetch('/api/github/momentum', { signal: controller.signal });
+        const payload = (await response.json()) as GitHubMomentumApiResponse;
+        if (!response.ok || !payload.ok) throw new Error('momentum unavailable');
+        writeCachedMomentum(payload);
+        setMomentum(createMomentumStateFromPayload(payload, fallbackDays));
+      } catch {
+        if (controller.signal.aborted) return;
+        setMomentum((current) =>
+          current.hasLoadedOnce
+            ? current
+            : { ...current, status: 'error', daily: fallbackDays, weeklyCommits: 0, streakDays: 0, updatedAt: null, hasLoadedOnce: true },
+        );
+      }
+    };
+    void fetchMomentum();
+    const intervalId = window.setInterval(fetchMomentum, 5 * 60 * 1000);
+    return () => {
+      controller.abort();
+      window.clearInterval(intervalId);
+    };
+  }, [fallbackDays]);
+
+  const daysForRender = momentum.daily.length === 7 ? momentum.daily : fallbackDays;
+  const days: GitHubDaySummary[] = daysForRender.map((day) => ({
+    key: day.date,
+    shortLabel: new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(new Date(`${day.date}T00:00:00Z`)),
+    commits: day.commits,
+  }));
+  return { momentum, days };
+}
+
 declare global {
   interface Window {
     onTurnstileSuccess?: (token: string) => void;
@@ -235,28 +237,22 @@ declare global {
 
 export default function HomePageSections({
   initialCompletedProjects,
-  initialActiveProjects,
-  avatarUrl,
   mutualLinks,
-  projectCount,
   returningProjectId = null,
   isLoading = false,
 }: HomePageSectionsProps) {
   return (
     <>
-      <AboutSection avatarUrl={avatarUrl} projectCount={projectCount} />
-      <SkillsSection />
-      <TechStackSection />
       <ProjectsSection initialProjects={initialCompletedProjects} returningProjectId={returningProjectId} isLoading={isLoading} />
-      <ActiveProjectsSection initialActiveProjects={initialActiveProjects} isLoading={isLoading} />
+      <TechStackSection />
+      <ContactSection />
       <MutualLinksSection links={mutualLinks} />
       <SponsorsSection />
-      <ContactSection />
     </>
   );
 }
 
-function CountUpNumber({
+export function CountUpNumber({
   end,
   suffix = '',
   durationMs = 1400,
@@ -322,73 +318,7 @@ function CountUpNumber({
   );
 }
 
-function AboutStatCard({
-  value,
-  suffix,
-  label,
-  durationMs,
-  className = '',
-  href,
-  onActivate,
-  badge,
-}: {
-  value: number;
-  suffix?: string;
-  label: string;
-  durationMs: number;
-  className?: string;
-  href?: string;
-  onActivate?: () => void;
-  badge?: ReactNode;
-}) {
-  const cardRef = useRef<HTMLDivElement | null>(null);
-  const isCardInView = useInView(cardRef, { once: true, amount: 0.5 });
-  const isInteractive = Boolean(href || onActivate);
-
-  const tiltClassName = `bento-card about-card-motion flex flex-col items-center justify-center ${isInteractive ? 'group cursor-pointer' : ''} ${className}`.trim();
-
-  const inner = (
-    <div ref={cardRef} className="flex flex-col items-center justify-center">
-      <p className="text-2xl sm:text-4xl font-bold tracking-tight tabular-nums">
-        <CountUpNumber end={value} suffix={suffix} durationMs={durationMs} play={isCardInView} />
-      </p>
-      <p className="text-[12px] text-muted-foreground mt-2 tracking-wider uppercase font-mono text-center text-balance">
-        {label}
-        {isInteractive && (
-          <ExternalLink className="w-3 h-3 inline-block align-middle ml-1 text-muted-foreground group-hover:text-foreground transition-colors" strokeWidth={2} />
-        )}
-      </p>
-      {badge}
-    </div>
-  );
-
-  if (href) {
-    return (
-      <Link 
-        href={href} 
-        className="contents" 
-        onClick={() => {
-          writeSessionValue(navigationStateKeys.homeScrollY, String(window.scrollY));
-          writeSessionValue(navigationStateKeys.homeReferrerHash, 'about');
-        }}
-      >
-        <TiltCard className={tiltClassName}>{inner}</TiltCard>
-      </Link>
-    );
-  }
-
-  if (onActivate) {
-    return (
-      <button type="button" onClick={onActivate} className="contents text-left">
-        <TiltCard className={tiltClassName}>{inner}</TiltCard>
-      </button>
-    );
-  }
-
-  return <TiltCard className={tiltClassName}>{inner}</TiltCard>;
-}
-
-function MomentumLineChart({
+export function MomentumLineChart({
   days,
 }: {
   days: GitHubDaySummary[];
@@ -516,7 +446,7 @@ function calculateLiveAge(now: Date): number {
 
 // Japanese school year: it starts on April 1, and a child born between
 // April 2 and April 1 of the next year enters elementary school together.
-function schoolGradeKey(now: Date): string {
+export function schoolGradeKey(now: Date): string {
   const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
   const academicYear = jst.getUTCMonth() >= 3 ? jst.getUTCFullYear() : jst.getUTCFullYear() - 1;
   const bornAfterApril1 = BIRTH_DATE_JST.monthIndex > 3 || (BIRTH_DATE_JST.monthIndex === 3 && BIRTH_DATE_JST.day > 1);
@@ -525,14 +455,6 @@ function schoolGradeKey(now: Date): string {
   if (grade <= 6) return `e${grade}`;
   if (grade <= 9) return `j${grade - 6}`;
   return `h${grade - 9}`;
-}
-
-// Live count of self-hosted machines reported online by /api/server-status
-// (Tailscale). null until the first response, or if the check is unavailable.
-function useOnlineServerCount(): number | null {
-  const status = useServerStatus();
-  if (!status) return null;
-  return selfHostedServers.filter((server) => findServerDevice(status, server)?.online).length;
 }
 
 function LiveAgeLocation({ ageLabel, locationLabel }: { ageLabel: string; locationLabel: string }) {
@@ -554,7 +476,7 @@ function LiveAgeLocation({ ageLabel, locationLabel }: { ageLabel: string; locati
   );
 }
 
-function ProfileIdentity({ role, ageLabel, locationLabel }: { role: string; ageLabel: string; locationLabel: string }) {
+export function ProfileIdentity({ role, ageLabel, locationLabel }: { role: string; ageLabel: string; locationLabel: string }) {
   return (
     <div className="min-w-0">
       <p className="text-sm font-semibold leading-tight tracking-tight">Aki</p>
@@ -563,550 +485,6 @@ function ProfileIdentity({ role, ageLabel, locationLabel }: { role: string; ageL
         <LiveAgeLocation ageLabel={ageLabel} locationLabel={locationLabel} />
       </div>
     </div>
-  );
-}
-
-function AboutSection({ avatarUrl, projectCount }: { avatarUrl: string; projectCount: number }) {
-  const t = useTranslations('About');
-  const contactT = useTranslations('Contact');
-  const locale = useLocale();
-  const focusAreas = [
-    'webDev', 'discordBots', 'serverOps', 'networking', 'aiAssisted', 'problemSolving', 'rapidPrototyping',
-  ] as const;
-  const onlineServers = useOnlineServerCount();
-  const stats: AboutStatItem[] = [
-    { id: 'projects', value: projectCount, label: t('statsProjects'), href: '/projects' },
-    {
-      id: 'technologies',
-      value: techStackCount,
-      label: t('statsTechnologies'),
-      onActivate: () => document.getElementById('tech-stack')?.scrollIntoView({ behavior: 'smooth' }),
-    },
-    { id: 'years', value: 2, suffix: '+', label: t('statsYears') },
-    {
-      id: 'servers',
-      value: selfHostedServers.length,
-      label: t('statsCommits'),
-      href: '/servers',
-      badge: onlineServers === null ? null : (
-        <span className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-mono text-muted-foreground">
-          <span className={`h-1.5 w-1.5 rounded-full ${onlineServers === selfHostedServers.length ? 'bg-emerald-500' : 'bg-amber-500'}`} aria-hidden="true" />
-          {t('serversOnline', { online: onlineServers, total: selfHostedServers.length })}
-        </span>
-      ),
-    },
-  ];
-  const fallbackDays = useMemo(() => buildFallbackMomentumDays(), []);
-  const [momentum, setMomentum] = useState<GitHubMomentumState>({
-    status: 'loading',
-    username: 'AxAce67',
-    weeklyCommits: 0,
-    streakDays: 0,
-    daily: [],
-    updatedAt: null,
-    hasLoadedOnce: false,
-  });
-
-  // Read localStorage cache synchronously before the first browser paint so
-  // returning users never see the loading placeholder flash.
-  useLayoutEffect(() => {
-    const cachedPayload = readCachedMomentum();
-    if (cachedPayload) setMomentum(createMomentumStateFromPayload(cachedPayload, fallbackDays));
-  }, [fallbackDays]);
-
-  const daysForRender = momentum.daily.length === 7 ? momentum.daily : fallbackDays;
-  const daySummaries: GitHubDaySummary[] = daysForRender.map((day) => {
-    const date = new Date(`${day.date}T00:00:00Z`);
-    return {
-      key: day.date,
-      shortLabel: new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(date),
-      commits: day.commits,
-    };
-  });
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const fetchMomentum = async () => {
-      setMomentum((current) => (current.hasLoadedOnce ? current : { ...current, status: 'loading' }));
-
-      try {
-        const response = await fetch('/api/github/momentum', {
-          signal: controller.signal,
-        });
-        const payload = (await response.json()) as GitHubMomentumApiResponse;
-        if (!response.ok || !payload.ok) {
-          throw new Error('Failed to fetch momentum from server API');
-        }
-        writeCachedMomentum(payload);
-        setMomentum(createMomentumStateFromPayload(payload, fallbackDays));
-      } catch {
-        if (controller.signal.aborted) return;
-        // Only blow away already-displayed data on the first load — a
-        // failed background refresh shouldn't reset good values to zero.
-        setMomentum((current) =>
-          current.hasLoadedOnce
-            ? current
-            : {
-                ...current,
-                status: 'error',
-                daily: fallbackDays,
-                weeklyCommits: 0,
-                streakDays: 0,
-                updatedAt: null,
-                hasLoadedOnce: true,
-              },
-        );
-      }
-    };
-
-    void fetchMomentum();
-    const intervalId = window.setInterval(fetchMomentum, 5 * 60 * 1000);
-    return () => {
-      controller.abort();
-      window.clearInterval(intervalId);
-    };
-  }, [fallbackDays]);
-
-  const weeklyValueLabel = momentum.status === 'loading' ? '…' : momentum.weeklyCommits.toString();
-  const streakValueLabel = momentum.status === 'loading' ? '…' : `${momentum.streakDays}${t('momentum.daySuffix')}`;
-  const updatedDateLabel = momentum.updatedAt
-    ? new Intl.DateTimeFormat(locale, { month: '2-digit', day: '2-digit' }).format(new Date(momentum.updatedAt))
-    : '--';
-
-  return (
-    <section id="about" className="pt-8 sm:pt-12 pb-10 sm:pb-12 lg:pb-16">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal delay={0.1}>
-          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-5 sm:mb-6">{t('heading')}</h2>
-        </ScrollReveal>
-
-        <div className="md:hidden space-y-3">
-          <ScrollReveal delay={0.15}>
-            <div className="bento-card about-card-motion">
-              <div className="flex items-center gap-3 mb-4">
-                <Image
-                  src={avatarUrl}
-                  alt="Aki profile"
-                  width={48}
-                  height={48}
-                  loading="lazy"
-                  className="w-12 h-12 rounded-full object-cover border border-border"
-                />
-                <ProfileIdentity role={t('role')} ageLabel={t('ageLabel')} locationLabel={t('locationLabel')} />
-              </div>
-              <div className="grid grid-cols-2 gap-1.5">
-                {profileLinks.map((link) =>
-                  link.disabled ? (
-                    <span
-                      key={link.id}
-                      className="flex items-center justify-center gap-1.5 px-2 py-2 rounded-md border border-border text-muted-foreground opacity-50 cursor-not-allowed"
-                      aria-label={`${link.label} (disabled)`}
-                    >
-                      <span>{link.icon}</span>
-                      <span className="text-[12px] font-mono tracking-wide">{link.label}</span>
-                    </span>
-                  ) : link.copyText ? (
-                    <button
-                      key={link.id}
-                      type="button"
-                      onClick={() => navigator.clipboard.writeText(link.copyText!).then(() => toast.success(contactT('discordCopied')))}
-                      className="flex items-center justify-center gap-1.5 px-2 py-2 rounded-md border border-border text-foreground/90 hover:text-foreground hover:border-border-hover transition-colors"
-                    >
-                      <span>{link.icon}</span>
-                      <span className="text-[12px] font-mono tracking-wide">{link.label}</span>
-                    </button>
-                  ) : (
-                    <a
-                      key={link.id}
-                      href={link.href}
-                      className="flex items-center justify-center gap-1.5 px-2 py-2 rounded-md border border-border text-foreground/90 hover:text-foreground hover:border-border-hover transition-colors"
-                      target={link.href.startsWith('mailto:') ? undefined : '_blank'}
-                      rel={link.href.startsWith('mailto:') ? undefined : 'noreferrer noopener'}
-                    >
-                      <span>{link.icon}</span>
-                      <span className="text-[12px] font-mono tracking-wide">{link.label}</span>
-                    </a>
-                  )
-                )}
-              </div>
-            </div>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.2}>
-            <StaggerContainer className="grid grid-cols-2 gap-2" staggerDelay={0.04}>
-              {stats.map(({ id, value, suffix, label, href, onActivate, badge }, idx) => (
-                <StaggerItem key={id} className="h-full">
-                  <AboutStatCard value={value} suffix={suffix} label={label} href={href} onActivate={onActivate} badge={badge} durationMs={900 + idx * 80} className="h-full py-4" />
-                </StaggerItem>
-              ))}
-            </StaggerContainer>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.25}>
-            <div className="bento-card about-card-motion">
-              <div className="flex items-center gap-2 mb-3">
-                <Terminal className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
-                <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('profileLabel')}</span>
-              </div>
-              <p className="text-[13px] text-muted-foreground leading-relaxed">{t('profileParagraph1', { grade: t(`grade.${schoolGradeKey(new Date())}`) })}</p>
-              <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph2')}</p>
-              <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph3')}</p>
-              <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph4')}</p>
-            </div>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.3}>
-            <div className="bento-card about-card-motion">
-              <div className="flex items-center gap-2 mb-3">
-                <Code2 className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
-                <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('focusLabel')}</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {focusAreas.map((area) => (
-                  <span key={area} className="text-[11px] font-mono text-muted-foreground bg-muted px-3 py-1.5 rounded-full">
-                    {t(`focus.${area}`)}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.34}>
-            <TiltCard className="bento-card about-card-motion">
-              <div className="flex items-center justify-between gap-3 mb-4">
-                <div className="flex items-center gap-2">
-                  <Github className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
-                  <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('momentum.label')}</span>
-                </div>
-                <a
-                  href={`https://github.com/${momentum.username}`}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="text-[12px] font-mono text-muted-foreground hover:text-foreground hover:border-border-hover px-2 py-1 rounded-md border border-border transition-colors"
-                >
-                  @{momentum.username}
-                </a>
-              </div>
-              <p className="text-[13px] text-muted-foreground leading-relaxed">{t('momentum.description')}</p>
-              <div className="grid grid-cols-2 gap-2 mt-4">
-                <div className="rounded-lg border border-border bg-muted/60 px-3 py-2.5">
-                  <p className="text-xl font-bold tracking-tight tabular-nums">{weeklyValueLabel}</p>
-                  <p className="text-[12px] font-mono tracking-wide uppercase text-muted-foreground mt-1">{t('momentum.weeklyCommits')}</p>
-                </div>
-                <div className="rounded-lg border border-border bg-muted/60 px-3 py-2.5">
-                  <p className="text-xl font-bold tracking-tight tabular-nums">{streakValueLabel}</p>
-                  <p className="text-[12px] font-mono tracking-wide uppercase text-muted-foreground mt-1">{t('momentum.streak')}</p>
-                </div>
-              </div>
-              <div className="mt-4">
-                <MomentumLineChart days={daySummaries} />
-              </div>
-              <p className="text-[12px] text-muted-foreground mt-3">
-                {momentum.status === 'error'
-                  ? t('momentum.unavailable')
-                  : `${t('momentum.updated')}: ${updatedDateLabel} · ${t('momentum.note')}`}
-              </p>
-            </TiltCard>
-          </ScrollReveal>
-        </div>
-
-        <div className="hidden md:grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[minmax(120px,auto)] md:auto-rows-[minmax(140px,auto)]">
-          <ScrollReveal delay={0.15} direction="left" className="order-2 md:col-start-1 md:row-start-2 md:col-span-2 md:row-span-2">
-            <TiltCard className="bento-card about-card-motion p-5 h-full flex flex-col justify-start">
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <Terminal className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
-                  <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('profileLabel')}</span>
-                </div>
-                <p className="text-[13px] text-muted-foreground leading-relaxed">{t('profileParagraph1', { grade: t(`grade.${schoolGradeKey(new Date())}`) })}</p>
-                <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph2')}</p>
-                <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph3')}</p>
-                <p className="text-[13px] text-muted-foreground leading-relaxed mt-2">{t('profileParagraph4')}</p>
-              </div>
-            </TiltCard>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.2} direction="scale">
-            <AboutStatCard value={stats[0].value} suffix={stats[0].suffix} label={stats[0].label} href={stats[0].href} onActivate={stats[0].onActivate} badge={stats[0].badge} durationMs={1200} className="h-full py-5" />
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.24} direction="scale">
-            <AboutStatCard value={stats[1].value} suffix={stats[1].suffix} label={stats[1].label} href={stats[1].href} onActivate={stats[1].onActivate} badge={stats[1].badge} durationMs={1300} className="h-full py-5" />
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.28} direction="scale">
-            <AboutStatCard value={stats[2].value} suffix={stats[2].suffix} label={stats[2].label} href={stats[2].href} onActivate={stats[2].onActivate} badge={stats[2].badge} durationMs={1400} className="h-full py-5" />
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.32} direction="scale">
-            <AboutStatCard value={stats[3].value} label={stats[3].label} href={stats[3].href} onActivate={stats[3].onActivate} badge={stats[3].badge} durationMs={1500} className="h-full py-5" />
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.2} direction="right" className="md:col-span-2">
-            <TiltCard className="bento-card about-card-motion h-full flex flex-col justify-center">
-              <div className="flex items-center gap-2 mb-3">
-                <Code2 className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
-                <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('focusLabel')}</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {focusAreas.map((area) => (
-                  <span key={area} className="text-[11px] font-mono text-muted-foreground bg-muted px-3 py-1.5 rounded-full">
-                    {t(`focus.${area}`)}
-                  </span>
-                ))}
-              </div>
-            </TiltCard>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.25} direction="right" className="order-1 md:col-start-1 md:row-start-1 md:col-span-2 md:row-span-1">
-            <TiltCard className="bento-card about-card-motion h-full flex flex-col justify-between">
-              <div className="flex items-center gap-2 mb-4">
-                <Globe className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
-                <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('linksLabel')}</span>
-              </div>
-              <div className="flex items-center gap-3 mb-4">
-                <Image
-                  src={avatarUrl}
-                  alt="Aki profile"
-                  width={48}
-                  height={48}
-                  loading="lazy"
-                  className="w-12 h-12 rounded-full object-cover border border-border"
-                />
-                <ProfileIdentity role={t('role')} ageLabel={t('ageLabel')} locationLabel={t('locationLabel')} />
-              </div>
-              <div className="grid grid-cols-2 gap-1">
-                {profileLinks.map((link) =>
-                  link.disabled ? (
-                    <span
-                      key={link.id}
-                      className="flex items-center gap-2 px-3 py-1 rounded-lg border border-border text-muted-foreground opacity-50 cursor-not-allowed"
-                      aria-label={`${link.label} (disabled)`}
-                    >
-                      <span>{link.icon}</span>
-                      <span className="text-xs font-mono tracking-wide">{link.label}</span>
-                    </span>
-                  ) : link.copyText ? (
-                    <button
-                      key={link.id}
-                      type="button"
-                      onClick={() => navigator.clipboard.writeText(link.copyText!).then(() => toast.success(contactT('discordCopied')))}
-                      className="flex items-center gap-2 px-3 py-1 rounded-lg border border-border hover:border-border-hover text-foreground/90 hover:text-foreground transition-colors"
-                    >
-                      <span>{link.icon}</span>
-                      <span className="text-xs font-mono tracking-wide">{link.label}</span>
-                    </button>
-                  ) : (
-                    <a
-                      key={link.id}
-                      href={link.href}
-                      className="flex items-center gap-2 px-3 py-1 rounded-lg border border-border hover:border-border-hover text-foreground/90 hover:text-foreground transition-colors"
-                      target={link.href.startsWith('mailto:') ? undefined : '_blank'}
-                      rel={link.href.startsWith('mailto:') ? undefined : 'noreferrer noopener'}
-                    >
-                      <span>{link.icon}</span>
-                      <span className="text-xs font-mono tracking-wide">{link.label}</span>
-                    </a>
-                  )
-                )}
-              </div>
-            </TiltCard>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.35} direction="up" className="md:col-span-4">
-            <TiltCard className="bento-card about-card-motion h-full">
-              <div className="flex items-center justify-between gap-3 mb-5">
-                <div className="flex items-center gap-2">
-                  <Github className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
-                  <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{t('momentum.label')}</span>
-                </div>
-                <a
-                  href={`https://github.com/${momentum.username}`}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="text-[12px] font-mono text-muted-foreground hover:text-foreground hover:border-border-hover px-2 py-1 rounded-md border border-border transition-colors"
-                >
-                  @{momentum.username}
-                </a>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-4 md:items-start">
-                <div className="md:col-span-2 grid grid-cols-2 gap-3">
-                  <div className="rounded-lg border border-border bg-muted/60 p-3">
-                    <p className="text-3xl font-bold tracking-tight tabular-nums">{weeklyValueLabel}</p>
-                    <p className="text-[12px] font-mono tracking-wide uppercase text-muted-foreground mt-1">{t('momentum.weeklyCommits')}</p>
-                  </div>
-                  <div className="rounded-lg border border-border bg-muted/60 p-3">
-                    <p className="text-3xl font-bold tracking-tight tabular-nums">{streakValueLabel}</p>
-                    <p className="text-[12px] font-mono tracking-wide uppercase text-muted-foreground mt-1">{t('momentum.streak')}</p>
-                  </div>
-                  <p className="text-[12px] text-muted-foreground md:col-span-2">{t('momentum.description')}</p>
-                </div>
-
-                <div className="md:col-span-3">
-                  <MomentumLineChart days={daySummaries} />
-                </div>
-              </div>
-
-              <p className="text-[12px] text-muted-foreground mt-4">
-                {momentum.status === 'error'
-                  ? t('momentum.unavailable')
-                  : `${t('momentum.updated')}: ${updatedDateLabel} · ${t('momentum.note')}`}
-              </p>
-            </TiltCard>
-          </ScrollReveal>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function SkillsSection() {
-  const t = useTranslations('Skills');
-  const categories: SkillCategory[] = ['Languages', 'Stack', 'AI', 'Creative'];
-  const [selectedCategory, setSelectedCategory] = useState<SkillCategory>('Languages');
-  const categoryLabels: Record<SkillCategory, string> = {
-    Languages: t('categories.languages'),
-    Stack: t('categories.stack'),
-    AI: t('categories.ai'),
-    Creative: t('categories.creative'),
-  };
-  const categoryDescriptions: Record<SkillCategory, string> = {
-    Languages: t('descriptions.languages'),
-    Stack: t('descriptions.stack'),
-    AI: t('descriptions.ai'),
-    Creative: t('descriptions.creative'),
-  };
-  const categoryIcons: Record<SkillCategory, ReactNode> = {
-    Languages: <Code2 className="w-4 h-4" strokeWidth={1.5} />,
-    Stack: <Wrench className="w-4 h-4" strokeWidth={1.5} />,
-    AI: <Sparkles className="w-4 h-4" strokeWidth={1.5} />,
-    Creative: <Film className="w-4 h-4" strokeWidth={1.5} />,
-  };
-  const levelLabels: Record<string, string> = {
-    main: t('levels.main'),
-    familiar: t('levels.familiar'),
-    learning: t('levels.learning'),
-  };
-
-  const selectedSkills = sampleSkills.filter((s) => s.category === selectedCategory);
-
-  return (
-    <section id="skills" className="py-10 sm:py-12 lg:py-16">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal delay={0.1}>
-          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2">{t('heading')}</h2>
-          <p className="text-xs sm:text-sm text-muted-foreground mb-5 sm:mb-6">{t('subtitle')}</p>
-        </ScrollReveal>
-
-        {/* Mobile: タブ切り替え */}
-        <div className="md:hidden">
-          <div className="grid grid-cols-4 gap-1 w-full rounded-xl border border-border p-1 bg-muted mb-4">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => setSelectedCategory(cat)}
-                className={`inline-flex w-full items-center justify-center gap-1 px-1 py-2.5 rounded-lg text-[12px] font-mono transition-all duration-200 ${selectedCategory === cat
-                  ? 'bg-background text-foreground shadow-xs'
-                  : 'text-foreground/70 hover:text-foreground'
-                  }`}
-                aria-pressed={selectedCategory === cat}
-              >
-                <span className={`transition-colors ${selectedCategory === cat ? 'text-foreground' : 'text-foreground/60'}`}>
-                  {categoryIcons[cat]}
-                </span>
-                <span className="whitespace-nowrap leading-none hidden min-[380px]:inline">{categoryLabels[cat]}</span>
-              </button>
-            ))}
-          </div>
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={selectedCategory}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2 }}
-              className="bento-card p-4"
-            >
-              <p className="text-[11px] text-muted-foreground font-mono mb-4">{categoryDescriptions[selectedCategory]}</p>
-              <div className="space-y-2">
-                {selectedSkills.map(({ name, logo, hasDarkVariant, featured }) => (
-                  <div
-                    key={name}
-                    className={`skill-item-card flex items-center gap-3 rounded-xl border px-3.5 py-3 transition-all duration-200 ${featured
-                      ? 'border-border-hover bg-muted/80'
-                      : 'border-border bg-muted/40'
-                      }`}
-                  >
-                    <span className="shrink-0 w-8 h-8 rounded-lg bg-background border border-border flex items-center justify-center">
-                      <BrandLogo src={logo} alt="" size={18} hasDarkVariant={hasDarkVariant} className="w-[18px] h-[18px]" />
-                    </span>
-                    <span className="flex-1 text-[13px] font-mono text-foreground/95 tracking-tight">{name}</span>
-                        {featured && (
-                          <span className="text-[9px] font-mono tracking-wider uppercase px-2 py-0.5 rounded-full bg-foreground/10 text-foreground/80">
-                            {levelLabels['main']}
-                          </span>
-                        )}
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Desktop: 2x2 グリッド */}
-        <div className="hidden md:grid md:grid-cols-2 gap-5">
-          {categories.map((cat, catIdx) => {
-            const skills = sampleSkills.filter((s) => s.category === cat);
-            return (
-              <ScrollReveal key={cat} delay={0.15 + catIdx * 0.06}>
-                <TiltCard className="bento-card about-card-motion p-4 h-full">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <span className="w-7 h-7 rounded-md bg-muted flex items-center justify-center text-muted-foreground">
-                        {categoryIcons[cat]}
-                      </span>
-                      <div>
-                        <span className="text-[13px] font-semibold tracking-tight text-foreground">{categoryLabels[cat]}</span>
-                        <p className="text-[9px] text-muted-foreground font-mono leading-tight mt-0.5">{categoryDescriptions[cat]}</p>
-                      </div>
-                    </div>
-                    <span className="text-[12px] font-mono text-muted-foreground bg-muted px-2 py-1 rounded-md">
-                      {skills.length}
-                    </span>
-                  </div>
-                  <div className="space-y-1">
-                    {skills.map(({ name, logo, hasDarkVariant, featured }) => (
-                      <div
-                        key={name}
-                        className={`flex items-center gap-2.5 rounded-md border px-2.5 py-2 transition-colors duration-200 ${featured
-                          ? 'border-border bg-muted/50'
-                          : 'border-transparent'
-                          }`}
-                      >
-                        <span className={`shrink-0 w-7 h-7 rounded-md flex items-center justify-center ${featured ? 'bg-background border border-border' : 'bg-muted/60'
-                          }`}>
-                          <BrandLogo src={logo} alt="" size={16} hasDarkVariant={hasDarkVariant} className="w-4 h-4" />
-                        </span>
-                        <span className="flex-1 text-[12px] font-mono text-foreground/90 tracking-tight">{name}</span>
-                        {featured && (
-                          <span className="text-[9px] font-mono tracking-wider uppercase px-1.5 py-0.5 rounded-full bg-foreground/8 text-foreground/70">
-                            {levelLabels['main']}
-                          </span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </TiltCard>
-              </ScrollReveal>
-            );
-          })}
-        </div>
-      </div>
-    </section>
   );
 }
 
@@ -1124,8 +502,7 @@ function ProjectsSection({
   const router = useRouter();
   const transitionRouter = useTransitionRouter();
   const projects = initialProjects;
-  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
-  const [isMobileViewport, setIsMobileViewport] = useState(false);
+    const [isMobileViewport, setIsMobileViewport] = useState(false);
   // 戻りナビゲーション時はカードをすぐに visible にする（viewTransitionName 要素を不透明にするため）
   const [forceCardVisible, setForceCardVisible] = useState(false);
   // Same reason: the returning card's eager image load is decided after mount.
@@ -1135,15 +512,13 @@ function ProjectsSection({
   // (not in the useState initializer) keeps the first client render equal to
   // the server HTML, and still applies before the first paint.
   useLayoutEffect(() => {
-    const storedViewMode = readSessionValue(navigationStateKeys.projectsViewMode) as 'list' | 'grid' | null;
-    if (storedViewMode) setViewMode(storedViewMode);
     if (readSessionValue(navigationStateKeys.returnToProjects) === '1') setForceCardVisible(true);
   }, []);
 
   useLayoutEffect(() => {
     setEagerProjectId(returningProjectId ?? null);
   }, [returningProjectId]);
-  const effectiveViewMode: 'list' | 'grid' = isMobileViewport ? 'grid' : viewMode;
+  const effectiveViewMode = 'grid' as 'list' | 'grid';
 
   useLayoutEffect(() => {
     const mobileQuery = window.matchMedia('(max-width: 639px)');
@@ -1155,36 +530,10 @@ function ProjectsSection({
 
   return (
     <section id="projects" className="py-10 sm:py-12 lg:py-16">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
           <div className="flex flex-wrap items-end justify-between gap-4 mb-5 sm:mb-6">
             <h2 className="text-2xl sm:text-4xl font-bold tracking-tight">{t('heading')}</h2>
-            <div className="hidden sm:inline-flex w-full sm:w-auto rounded-xl border border-border p-1 bg-muted">
-              <button
-                type="button"
-                onClick={() => setViewMode('list')}
-                className={`inline-flex flex-1 sm:flex-none items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-mono transition-colors ${viewMode === 'list'
-                  ? 'bg-background text-foreground shadow-xs'
-                  : 'text-foreground/80 hover:text-foreground hover:bg-background/60'
-                  }`}
-                aria-pressed={viewMode === 'list'}
-              >
-                <List className="w-3.5 h-3.5" />
-                {t('viewList')}
-              </button>
-              <button
-                type="button"
-                onClick={() => setViewMode('grid')}
-                className={`inline-flex flex-1 sm:flex-none items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-mono transition-colors ${viewMode === 'grid'
-                  ? 'bg-background text-foreground shadow-xs'
-                  : 'text-foreground/80 hover:text-foreground hover:bg-background/60'
-                  }`}
-                aria-pressed={viewMode === 'grid'}
-              >
-                <LayoutGrid className="w-3.5 h-3.5" />
-                {t('viewGrid')}
-              </button>
-            </div>
           </div>
         </ScrollReveal>
 
@@ -1192,7 +541,7 @@ function ProjectsSection({
           <p className="text-sm text-muted-foreground">{isLoading ? t('loading') : t('noPublishedProjects')}</p>
         )}
         <StaggerContainer
-          className={effectiveViewMode === 'grid' ? 'grid grid-cols-1 min-[420px]:grid-cols-2 md:grid-cols-2 gap-3 sm:gap-6' : 'space-y-4'}
+          className={effectiveViewMode === 'grid' ? 'grid grid-cols-1 min-[420px]:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5' : 'space-y-4'}
           staggerDelay={0.1}
           forceVisible={forceCardVisible}
         >
@@ -1302,7 +651,7 @@ function ProjectsSection({
                     </p>
                     <div className={`${effectiveViewMode === 'grid' ? 'flex flex-wrap items-center gap-1.5' : 'flex flex-wrap items-center gap-2'}`}>
                       <ProjectBadges kind={project.kind} status={project.status} />
-                      {(effectiveViewMode === 'grid' || isMobileViewport ? project.tags.slice(0, 2) : project.tags).map((tag) => (
+                      {(project.tags.slice(0, 3)).map((tag) => (
                         <TagChip key={tag} tag={tag} className="sm:text-[11px] sm:px-2.5 sm:py-1" />
                       ))}
                     </div>
@@ -1334,238 +683,12 @@ function ProjectsSection({
   );
 }
 
-function ActiveProjectsSection({
-  initialActiveProjects,
-  isLoading = false,
-}: {
-  initialActiveProjects: ActiveProject[];
-  isLoading?: boolean;
-}) {
-  const t = useTranslations('ActiveProjects');
-  const has = (key: string) => {
-    const val = t(key);
-    return val && val !== key && val !== `ActiveProjects.${key}`;
-  };
-  const text = (key: string, fallback: string) => (has(key) ? t(key) : fallback);
-  const ganttRef = useRef<HTMLDivElement>(null);
-  const isGanttInView = useInView(ganttRef, { once: true, margin: '-100px' });
-  const activeProjects = initialActiveProjects;
-  const VISIBLE_LIMIT = 5;
-  const [showAll, setShowAll] = useState(false);
-  const visibleProjects = showAll ? activeProjects : activeProjects.slice(0, VISIBLE_LIMIT);
-  const hiddenCount = activeProjects.length - VISIBLE_LIMIT;
-  const stages = [
-    text('stagePlanning', 'Planning'),
-    text('stageDesign', 'Design'),
-    text('stageDevelopment', 'Development'),
-    text('stageTesting', 'Testing'),
-    text('stageCompleted', 'Completed'),
-  ];
-  const rowAnimationDelay = (rowIdx: number) => {
-    if (!showAll || rowIdx < VISIBLE_LIMIT) return 0.3 + rowIdx * 0.2;
-    return 0.15 + (rowIdx - VISIBLE_LIMIT) * 0.12;
-  };
-
-  return (
-    <section id="timeline" className="py-10 sm:py-12 lg:py-16">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal delay={0.1}>
-          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-5 sm:mb-6">{text('heading', 'Active Projects')}</h2>
-        </ScrollReveal>
-
-        <div className="md:hidden space-y-3">
-          {activeProjects.length === 0 ? (
-            <div className="bento-card">
-              <p className="text-sm text-muted-foreground">{isLoading ? text('loading', 'Loading…') : text('empty', 'No active projects yet.')}</p>
-            </div>
-          ) : (
-            <>
-              {visibleProjects.map((project, rowIdx) => {
-                const currentStage = Math.max(0, Math.min(stages.length - 1, project.stage));
-                const lineInsetPercent = 50 / stages.length;
-                const lineTrackPercent = 100 - lineInsetPercent * 2;
-                const progressWidthPercent = lineInsetPercent + (currentStage / (stages.length - 1)) * lineTrackPercent;
-                const animationDelay = rowAnimationDelay(rowIdx);
-
-                return (
-                  <ScrollReveal key={project.id}>
-                    <div className="bento-card p-4">
-                      <p className="text-sm font-medium mb-4">{project.name}</p>
-                      <div className="relative">
-                        <div
-                          className="absolute top-[7px] h-[2px] bg-border"
-                          style={{
-                            left: `${lineInsetPercent}%`,
-                            right: `${lineInsetPercent}%`,
-                          }}
-                        />
-                        <motion.div
-                          className="absolute top-[7px] left-0 h-[2px] bg-foreground transition-all duration-700"
-                          initial={{ width: 0 }}
-                          animate={{ width: `${progressWidthPercent}%` }}
-                          transition={{
-                            duration: 0.8,
-                            delay: animationDelay,
-                            ease: [0.25, 0.1, 0.25, 1],
-                          }}
-                        />
-                        <div className="relative flex justify-between">
-                          {stages.map((stage, i) => {
-                            const isCompleted = i < currentStage;
-                            const isCurrent = i === currentStage;
-                            return (
-                              <div key={stage} className="flex flex-col items-center" style={{ width: `${100 / stages.length}%` }}>
-                                <div
-                                  className={`w-[15px] h-[15px] rounded-full border-2 flex items-center justify-center transition-all duration-300 ${isCompleted
-                                    ? 'bg-foreground border-foreground'
-                                    : isCurrent
-                                      ? 'bg-foreground border-foreground'
-                                      : 'bg-background border-border'
-                                    }`}
-                                >
-                                  {isCompleted && (
-                                    <svg width="8" height="8" viewBox="0 0 12 12" fill="none">
-                                      <path d="M2 6L5 9L10 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-background" />
-                                    </svg>
-                                  )}
-                                  {isCurrent && !isCompleted && (
-                                    <div className="w-[5px] h-[5px] rounded-full bg-background" />
-                                  )}
-                                </div>
-                                <span className={`text-[8px] font-mono mt-1.5 text-center leading-tight ${isCompleted || isCurrent ? 'text-foreground' : 'text-muted-foreground/50'}`}>
-                                  {stage}
-                                </span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </div>
-                  </ScrollReveal>
-                );
-              })}
-              {hiddenCount > 0 && (
-                <button
-                  onClick={() => setShowAll(!showAll)}
-                  className="w-full py-2.5 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors border border-border rounded-xl hover:border-foreground/20"
-                >
-                  {showAll ? '閉じる ↑' : `+ ${hiddenCount}件を表示 ↓`}
-                </button>
-              )}
-            </>
-          )}
-        </div>
-
-        <div ref={ganttRef} className="hidden md:block gantt-chart">
-          <div className="gantt-header">
-            <div className="gantt-label-col">
-              <span className="text-[12px] font-mono text-muted-foreground uppercase tracking-wider">
-                {text('projectColumn', 'Project')}
-              </span>
-            </div>
-            <div className="gantt-stages-area">
-              {stages.map((stage) => (
-                <div key={stage} className="gantt-stage-col">
-                  <span className="text-[12px] font-mono text-muted-foreground uppercase tracking-wider">{stage}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {visibleProjects.map((project, rowIdx) => {
-            const animationDelay = rowAnimationDelay(rowIdx);
-
-            return (
-              <div key={project.id} className="gantt-row group">
-                <div className="gantt-label-col">
-                  <span className="text-sm font-medium group-hover:text-foreground transition-colors">{project.name}</span>
-                </div>
-                <div className="gantt-stages-area">
-                  <div className="gantt-bg-line" />
-
-                  <motion.div
-                    className="gantt-fg-line"
-                    initial={{ width: 0 }}
-                    animate={
-                      isGanttInView ? { width: `${((project.stage + 0.5) / stages.length) * 100}%` } : { width: 0 }
-                    }
-                    transition={{
-                      duration: 1.4,
-                      delay: animationDelay,
-                      ease: [0.25, 0.1, 0.25, 1],
-                    }}
-                  />
-
-                  {stages.map((_, i) => {
-                    const isCompleted = i < project.stage;
-                    const isCurrentArrow = i === project.stage;
-                    return (
-                      <div key={i} className="gantt-stage-cell">
-                        {isCurrentArrow && (
-                          <motion.div
-                            className="gantt-arrow"
-                            initial={{ opacity: 0, scale: 0.5 }}
-                            animate={isGanttInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
-                            transition={{ duration: 0.3, delay: animationDelay + 1.2 }}
-                          >
-                            <svg width="10" height="14" viewBox="0 0 10 14" fill="none">
-                              <path d="M0 0L10 7L0 14Z" fill="currentColor" />
-                            </svg>
-                          </motion.div>
-                        )}
-
-                        {isCompleted && (
-                          <motion.div
-                            className="gantt-check"
-                            initial={{ scale: 0 }}
-                            animate={isGanttInView ? { scale: 1 } : { scale: 0 }}
-                            transition={{ duration: 0.3, delay: animationDelay + (i + 1) * 0.15 }}
-                          >
-                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                              <path
-                                d="M2 6L5 9L10 3"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </motion.div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
-
-          {hiddenCount > 0 && (
-            <button
-              onClick={() => setShowAll(!showAll)}
-              className="w-full py-3 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors border-t border-border hover:bg-muted/50"
-            >
-              {showAll ? '閉じる ↑' : `+ ${hiddenCount}件を表示 ↓`}
-            </button>
-          )}
-
-          {activeProjects.length === 0 && (
-            <div className="px-6 py-6">
-              <p className="text-sm text-muted-foreground">{isLoading ? text('loading', 'Loading…') : text('empty', 'No active projects yet.')}</p>
-            </div>
-          )}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function MutualLinksSection({ links }: { links: MutualLink[] }) {
   const t = useTranslations('MutualLinks');
 
   return (
     <section id="links" className="py-10 sm:py-12 lg:py-16">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal delay={0.1}>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2">{t('heading')}</h2>
           <p className="text-xs sm:text-sm text-muted-foreground mb-5 sm:mb-6">{t('subtitle')}</p>
